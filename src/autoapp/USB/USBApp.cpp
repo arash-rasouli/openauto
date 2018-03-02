@@ -63,6 +63,11 @@ void USBApp::aoapDeviceHandler(aasdk::usb::DeviceHandle deviceHandle)
 {
     OPENAUTO_LOG(info) << "[USBApp] Device connected.";
 
+#ifdef RASPBERRYPI3
+    OPENAUTO_LOG(info) << "[USBApp] Waking up the system.";
+    system("/opt/crankshaft/dumb_suid wake_up.sh");
+#endif
+
     if(androidAutoEntity_ == nullptr)
     {
         try

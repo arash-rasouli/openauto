@@ -4,5 +4,13 @@
         <file>ico_warning.png</file>
         <file>ico_setting.png</file>
         <file>ico_info.png</file>
+        <file>connect.png</file>
+        <file>cursor-hot.png</file>
+        <file>power-hot.png</file>
+        <file>settings-hot.png</file>
+        <file>circle.png</file>
+        <file>circle-hot.png</file>
+        <file>circle-pressed.png</file>
+        <file>sleep-hot.png</file>
     </qresource>
 </RCC>

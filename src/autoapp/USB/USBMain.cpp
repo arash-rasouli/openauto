@@ -65,6 +65,11 @@ int USBMain::exec(int argc, char* argv[])
         cursorVisible = !cursorVisible;
         qApplication.setOverrideCursor(cursorVisible ? Qt::ArrowCursor : Qt::BlankCursor);
     });
+    QObject::connect(&mainWindow, &ui::MainWindow::sleep, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/dumb_suid sleep.sh");
+#endif
+    });
 
     mainWindow.showFullScreen();
 

@@ -33,10 +33,16 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui_(new Ui::MainWindow)
 {
+    this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0); background: url(:/connect.png)} \
+        QPushButton { background: url(:/circle.png); border: 0; } \
+        QPushButton:hover { background: url(:/circle-hot.png); } \
+        QPushButton:pressed { background: url(:/circle-pressed.png); } \
+    ");
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::exit);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
+    connect(ui_->pushButtonSleep, &QPushButton::clicked, this, &MainWindow::sleep);
 }
 
 MainWindow::~MainWindow()

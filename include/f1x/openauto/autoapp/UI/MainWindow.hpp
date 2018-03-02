@@ -46,6 +46,7 @@ signals:
     void exit();
     void openSettings();
     void toggleCursor();
+    void sleep();
 
 private:
     Ui::MainWindow* ui_;
