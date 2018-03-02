@@ -20,6 +20,7 @@
 
 #include <memory>
 #include <QMainWindow>
+#include <QFile>
 
 namespace Ui
 {
@@ -47,9 +48,20 @@ signals:
     void openSettings();
     void toggleCursor();
     void openConnectDialog();
+    void showBrightnessSlider();
+
+private slots:
+    void on_horizontalSliderBrightness_valueChanged(int value);
+
+private slots:
+    void on_pushButtonBrightness_clicked();
 
 private:
     Ui::MainWindow* ui_;
+    bool brightnessSliderVisible = false;
+    QString brightnessFilename = "/sys/class/backlight/rpi_backlight/brightness";
+    QFile *brightnessFile;
+    char brightness_str[5];
 };
 
 }
