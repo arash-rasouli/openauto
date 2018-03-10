@@ -18,6 +18,7 @@
 
 #include <QApplication>
 #include <f1x/openauto/autoapp/UI/MainWindow.hpp>
+#include <QFileInfo>
 #include "ui_mainwindow.h"
 
 namespace f1x
@@ -33,11 +34,24 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui_(new Ui::MainWindow)
 {
-    this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0); background: url(:/connect.png)} \
+
+    this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);} \
         QPushButton { background: url(:/circle.png); border: 0; } \
         QPushButton:hover { background: url(:/circle-hot.png); } \
         QPushButton:pressed { background: url(:/circle-pressed.png); } \
     ");
+    QFileInfo wallpaperFile("wallpaper.png");
+    bool wallpaperFileExists = wallpaperFile.exists();
+    if (wallpaperFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperFile.symLinkTarget());
+        wallpaperFileExists = linkTarget.exists();
+    }
+    if (wallpaperFileExists) {
+        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+    } else {
+        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+    }
+
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::exit);
