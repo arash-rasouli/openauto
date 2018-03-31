@@ -105,6 +105,7 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::exec);
 
     if (configuration->hasTouchScreen()) {
+        OPENAUTO_LOG(info) << "[Touchdev] Hiding mouse cursor due to detection of a touch device";
         qApplication.setOverrideCursor(Qt::BlankCursor);
         QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCursor, [&qApplication]() {
             const auto cursor = qApplication.overrideCursor()->shape() == Qt::BlankCursor ? Qt::ArrowCursor : Qt::BlankCursor;

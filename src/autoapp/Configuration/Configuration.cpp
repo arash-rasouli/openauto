@@ -160,8 +160,16 @@ void Configuration::save()
 bool Configuration::hasTouchScreen() const
 {
     auto touchdevs = QTouchDevice::devices();
+
+    OPENAUTO_LOG(info) << "[Touchdev] " <<
+                          "Querying available touch devices [" <<
+                          touchdevs.length() << " available]";
+
     for (int i = 0; i < touchdevs.length(); i++) {
         if (touchdevs[i]->type() == QTouchDevice::TouchScreen) {
+            OPENAUTO_LOG(info) << "[Touchdev] Device " << i <<
+                                  ": " << touchdevs[i]->name().toStdString() <<
+                                  ", type " << touchdevs[i]->type();
             return true;
         }
     }
