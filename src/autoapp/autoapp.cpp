@@ -84,10 +84,12 @@ int main(int argc, char* argv[])
     startIOServiceWorkers(ioService, threadPool);
 
     QApplication qApplication(argc, argv);
-    autoapp::ui::MainWindow mainWindow;
-    mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     auto configuration = std::make_shared<autoapp::configuration::Configuration>();
+
+    autoapp::ui::MainWindow mainWindow(configuration);
+    mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
+
     autoapp::ui::SettingsWindow settingsWindow(configuration);
     settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
@@ -102,13 +104,13 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::exec);
 
-#ifdef RPI3_BUILD
-    qApplication.setOverrideCursor(Qt::BlankCursor);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCursor, [&qApplication]() {
-        const auto cursor = qApplication.overrideCursor()->shape() == Qt::BlankCursor ? Qt::ArrowCursor : Qt::BlankCursor;
-        qApplication.setOverrideCursor(cursor);
-    });
-#endif
+    if (configuration->hasTouchScreen()) {
+        qApplication.setOverrideCursor(Qt::BlankCursor);
+        QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCursor, [&qApplication]() {
+            const auto cursor = qApplication.overrideCursor()->shape() == Qt::BlankCursor ? Qt::ArrowCursor : Qt::BlankCursor;
+            qApplication.setOverrideCursor(cursor);
+        });
+    }
 
     mainWindow.showFullScreen();
 

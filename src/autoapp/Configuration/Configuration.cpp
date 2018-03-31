@@ -18,6 +18,7 @@
 
 #include <f1x/openauto/autoapp/Configuration/Configuration.hpp>
 #include <f1x/openauto/Common/Log.hpp>
+#include <QTouchDevice>
 
 namespace f1x
 {
@@ -154,6 +155,17 @@ void Configuration::save()
     iniConfig.put<bool>(cAudioSpeechAudioChannelEnabled, speechAudiochannelEnabled_);
     iniConfig.put<uint32_t>(cAudioOutputBackendType, static_cast<uint32_t>(audioOutputBackendType_));
     boost::property_tree::ini_parser::write_ini(cConfigFileName, iniConfig);
+}
+
+bool Configuration::hasTouchScreen() const
+{
+    auto touchdevs = QTouchDevice::devices();
+    for (int i = 0; i < touchdevs.length(); i++) {
+        if (touchdevs[i]->type() == QTouchDevice::TouchScreen) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Configuration::setHandednessOfTrafficType(HandednessOfTrafficType value)

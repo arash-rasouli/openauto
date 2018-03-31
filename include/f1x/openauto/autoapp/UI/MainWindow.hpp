@@ -21,6 +21,7 @@
 #include <memory>
 #include <QMainWindow>
 #include <QFile>
+#include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 
 namespace Ui
 {
@@ -40,7 +41,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(configuration::IConfiguration::Pointer configuration, QWidget *parent = nullptr);
     ~MainWindow() override;
 
 signals:

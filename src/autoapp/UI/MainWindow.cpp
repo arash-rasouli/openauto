@@ -31,14 +31,14 @@ namespace autoapp
 namespace ui
 {
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWidget *parent)
     : QMainWindow(parent)
     , ui_(new Ui::MainWindow)
 {
-
     this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);} \
         QPushButton { background: url(:/circle.png); border: 0; } \
         QPushButton:hover { background: url(:/circle-hot.png); } \
+        QPushButton:focus { background: url(:/circle-hot.png); } \
         QPushButton:pressed { background: url(:/circle-pressed.png); } \
     ");
     QFileInfo wallpaperFile("wallpaper.png");
@@ -59,7 +59,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
-    ui_->pushButtonToggleCursor->hide();
+
+    if (configuration->hasTouchScreen()) {
+        ui_->pushButtonToggleCursor->hide();
+    }
+
+#ifdef RASPBERRYPI3
+    ui_->pushButtonWirelessConnection->hide();
+#endif
+
     ui_->horizontalSliderBrightness->hide();
 
     QFileInfo brightnessFile(brightnessFilename);

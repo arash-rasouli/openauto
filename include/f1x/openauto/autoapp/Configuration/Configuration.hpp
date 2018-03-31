@@ -39,6 +39,8 @@ public:
     void reset() override;
     void save() override;
 
+    bool hasTouchScreen() const override;
+
     void setHandednessOfTrafficType(HandednessOfTrafficType value) override;
     HandednessOfTrafficType getHandednessOfTrafficType() const override;
     void showClock(bool value) override;

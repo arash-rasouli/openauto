@@ -48,6 +48,8 @@ public:
     virtual void reset() = 0;
     virtual void save() = 0;
 
+    virtual bool hasTouchScreen() const = 0;
+
     virtual void setHandednessOfTrafficType(HandednessOfTrafficType value) = 0;
     virtual HandednessOfTrafficType getHandednessOfTrafficType() const = 0;
     virtual void showClock(bool value) = 0;
