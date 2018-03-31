@@ -103,7 +103,7 @@ void Configuration::load()
 
         musicAudioChannelEnabled_ = iniConfig.get<bool>(cAudioMusicAudioChannelEnabled, true);
         speechAudiochannelEnabled_ = iniConfig.get<bool>(cAudioSpeechAudioChannelEnabled, true);
-        audioOutputBackendType_ = static_cast<AudioOutputBackendType>(iniConfig.get<uint32_t>(cAudioOutputBackendType, static_cast<uint32_t>(AudioOutputBackendType::RTAUDIO)));
+        audioOutputBackendType_ = static_cast<AudioOutputBackendType>(iniConfig.get<uint32_t>(cAudioOutputBackendType, static_cast<uint32_t>(AudioOutputBackendType::QT)));
     }
     catch(const boost::property_tree::ini_parser_error& e)
     {
@@ -129,7 +129,7 @@ void Configuration::reset()
     bluetoothRemoteAdapterAddress_ = "";
     musicAudioChannelEnabled_ = true;
     speechAudiochannelEnabled_ = true;
-    audioOutputBackendType_ = AudioOutputBackendType::RTAUDIO;
+    audioOutputBackendType_ = AudioOutputBackendType::QT;
 }
 
 void Configuration::save()
