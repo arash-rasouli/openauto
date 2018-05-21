@@ -56,6 +56,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::exit);
+    connect(ui_->pushButtonToggleCamera, &QPushButton::clicked, this, &MainWindow::toggleCamera);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);

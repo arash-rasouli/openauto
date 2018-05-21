@@ -110,6 +110,15 @@ int main(int argc, char* argv[])
         qApplication.setOverrideCursor(cursor);
     });
 
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCamera, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/toggle_rpicam.sh &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCam script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
     mainWindow.showFullScreen();
 
     aasdk::usb::USBWrapper usbWrapper(usbContext);

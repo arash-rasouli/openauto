@@ -48,6 +48,7 @@ signals:
     void exit();
     void openSettings();
     void toggleCursor();
+    void toggleCamera();
     void openConnectDialog();
     void showBrightnessSlider();
 
