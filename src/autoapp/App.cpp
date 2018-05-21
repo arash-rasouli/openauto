@@ -98,10 +98,6 @@ void App::stop()
 void App::aoapDeviceHandler(aasdk::usb::DeviceHandle deviceHandle)
 {
     OPENAUTO_LOG(info) << "[App] Device connected.";
-#ifdef RASPBERRYPI3
-    system("/opt/crankshaft/dumb_suid usb_plug.sh &");
-    OPENAUTO_LOG(info) << "[CS] Ran USB Plug script.";
-#endif
 
     if(androidAutoEntity_ != nullptr)
     {
@@ -156,11 +152,6 @@ void App::onAndroidAutoQuit()
 
         androidAutoEntity_->stop();
         androidAutoEntity_.reset();
-
-#ifdef RASPBERRYPI3
-        system("/opt/crankshaft/dumb_suid usb_unplug.sh &");
-        OPENAUTO_LOG(info) << "[CS] Ran USB Unplug script.";
-#endif
 
         if(!isStopped_)
         {
