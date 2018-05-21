@@ -37,8 +37,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 {
     this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);} \
         QPushButton { background: url(:/circle.png); border: 0; } \
-        QPushButton:hover { background: url(:/circle-hot.png); } \
-        QPushButton:focus { background: url(:/circle-hot.png); } \
+        QPushButton:hover { background: url(:/circle.png); } \
+        QPushButton:focus { background: url(:/circle.png); } \
         QPushButton:pressed { background: url(:/circle-pressed.png); } \
     ");
     QFileInfo wallpaperFile("wallpaper.png");
