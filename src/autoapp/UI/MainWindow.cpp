@@ -61,20 +61,37 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
 
-    if (configuration->hasTouchScreen()) {
+    QFileInfo cursorButtonFile("/etc/button_cursor_visible");
+    bool cursorButtonForce = cursorButtonFile.exists();
+
+    QFileInfo wifiButtonFile("/etc/button_wifi_visible");
+    bool wifiButtonForce = wifiButtonFile.exists();
+
+    QFileInfo cameraButtonFile("/etc/button_camera_visible");
+    bool cameraButtonForce = cameraButtonFile.exists();
+
+    QFileInfo brightnessButtonFile("/etc/button_brightness_visible");
+    bool brightnessButtonForce = brightnessButtonFile.exists();
+
+    if (configuration->hasTouchScreen() && !cursorButtonForce) {
         ui_->pushButtonToggleCursor->hide();
     }
 
-#ifdef RASPBERRYPI3
-    ui_->pushButtonWirelessConnection->hide();
-#endif
+    if (!cameraButtonForce) {
+        ui_->pushButtonToggleCamera->hide();
+    }
 
-    ui_->horizontalSliderBrightness->hide();
+    if (!wifiButtonForce) {
+        ui_->pushButtonWirelessConnection->hide();
+    }
 
     QFileInfo brightnessFile(brightnessFilename);
-    if (!brightnessFile.exists()) {
+
+    if (!brightnessFile.exists() && !brightnessButtonForce) {
         ui_->pushButtonBrightness->hide();
     }
+
+    ui_->horizontalSliderBrightness->hide();
 }
 
 MainWindow::~MainWindow()
