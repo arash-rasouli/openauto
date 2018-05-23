@@ -119,6 +119,24 @@ int main(int argc, char* argv[])
 #endif
     });
 
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptNight, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/service_daynight.sh night &");
+        OPENAUTO_LOG(info) << "[CS] Run night script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptDay, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/service_daynight.sh day &");
+        OPENAUTO_LOG(info) << "[CS] Run day script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
+#endif
+    });
+
     mainWindow.showFullScreen();
 
     aasdk::usb::USBWrapper usbWrapper(usbContext);

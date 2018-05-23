@@ -15,5 +15,7 @@
         <file>wifi-hot.png</file>
         <file>brightness-hot.png</file>
         <file>camera-hot.png</file>
+        <file>day-hot.png</file>
+        <file>night-hot.png</file>
     </qresource>
 </RCC>

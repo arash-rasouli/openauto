@@ -48,6 +48,8 @@ signals:
     void exit();
     void openSettings();
     void toggleCursor();
+    void TriggerScriptDay();
+    void TriggerScriptNight();
     void toggleCamera();
     void openConnectDialog();
     void showBrightnessSlider();
@@ -57,6 +59,8 @@ private slots:
 
 private slots:
     void on_pushButtonBrightness_clicked();
+    void switchGuiToDay();
+    void switchGuiToNight();
 
 private:
     Ui::MainWindow* ui_;

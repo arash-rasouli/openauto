@@ -41,16 +41,23 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QPushButton:focus { background: url(:/circle.png); } \
         QPushButton:pressed { background: url(:/circle-pressed.png); } \
     ");
-    QFileInfo wallpaperFile("wallpaper.png");
-    bool wallpaperFileExists = wallpaperFile.exists();
-    if (wallpaperFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperFile.symLinkTarget());
-        wallpaperFileExists = linkTarget.exists();
+    QFileInfo wallpaperDayFile("wallpaper.png");
+    bool wallpaperDayFileExists = wallpaperDayFile.exists();
+
+    QFileInfo wallpaperNightFile("wallpaper-night.png");
+    bool wallpaperNightFileExists = wallpaperNightFile.exists();
+
+    QFileInfo nightSwitchFile("/tmp/night_mode_enabled");
+    bool nightSwitchExists = nightSwitchFile.exists();
+
+    if (wallpaperDayFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperDayFile.symLinkTarget());
+        wallpaperDayFileExists = linkTarget.exists();
     }
-    if (wallpaperFileExists) {
-        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
-    } else {
-        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+
+    if (wallpaperNightFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperNightFile.symLinkTarget());
+        wallpaperNightFileExists = linkTarget.exists();
     }
 
     ui_->setupUi(this);
@@ -58,9 +65,30 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::exit);
     connect(ui_->pushButtonToggleCamera, &QPushButton::clicked, this, &MainWindow::toggleCamera);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
+    connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::TriggerScriptDay);
+    connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::switchGuiToDay);
+    connect(ui_->pushButtonNight, &QPushButton::clicked, this, &MainWindow::TriggerScriptNight);
+    connect(ui_->pushButtonNight, &QPushButton::clicked, this, &MainWindow::switchGuiToNight);
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
 
+    if (!nightSwitchExists) {
+	ui_->pushButtonNight->show();
+	ui_->pushButtonDay->hide();
+	if (wallpaperDayFileExists) {
+	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+	} else {
+    	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+	}
+    } else {
+	ui_->pushButtonDay->show();
+	ui_->pushButtonNight->hide();
+	if (wallpaperNightFileExists) {
+	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+	} else {
+    	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+	}
+    }
     QFileInfo cursorButtonFile("/etc/button_cursor_visible");
     bool cursorButtonForce = cursorButtonFile.exists();
 
@@ -136,4 +164,18 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
         this->brightnessFile->write(this->brightness_str);
         this->brightnessFile->close();
     }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
+{
+    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+    ui_->pushButtonDay->show();
+    ui_->pushButtonNight->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
+{
+    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+    ui_->pushButtonNight->show();
+    ui_->pushButtonDay->hide();
 }
