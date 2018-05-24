@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptNight, [&qApplication]() {
 #ifdef RASPBERRYPI3
-        system("/opt/crankshaft/service_daynight.sh night &");
+        system("/opt/crankshaft/service_daynight.sh app night &");
         OPENAUTO_LOG(info) << "[CS] Run night script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptDay, [&qApplication]() {
 #ifdef RASPBERRYPI3
-        system("/opt/crankshaft/service_daynight.sh day &");
+        system("/opt/crankshaft/service_daynight.sh app day &");
         OPENAUTO_LOG(info) << "[CS] Run day script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
