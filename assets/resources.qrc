@@ -17,5 +17,6 @@
         <file>camera-hot.png</file>
         <file>day-hot.png</file>
         <file>night-hot.png</file>
+        <file>slider.png</file>
     </qresource>
 </RCC>

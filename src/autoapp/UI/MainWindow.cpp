@@ -40,7 +40,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QPushButton:hover { background: url(:/circle.png); } \
         QPushButton:focus { background: url(:/circle.png); } \
         QPushButton:pressed { background: url(:/circle-pressed.png); } \
+        QSlider:horizontal { background: url(:/slider.png); border: 1px solid #ffffff; border-radius: 2px; min-height: 32px;} \
+	QSlider::groove:horizontal { background: #6d6d6d; height: 32px;} \
+	QSlider::handle:horizontal { background: white; height: 52px; width: 52px; margin: 0 0;} \
     ");
+
     QFileInfo wallpaperDayFile("wallpaper.png");
     bool wallpaperDayFileExists = wallpaperDayFile.exists();
 

@@ -210,13 +210,16 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>1</number>
+     <number>30</number>
     </property>
     <property name="maximum">
      <number>255</number>
     </property>
     <property name="singleStep">
-     <number>5</number>
+     <number>25</number>
+    </property>
+    <property name="tickInterval">
+     <number>25</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
