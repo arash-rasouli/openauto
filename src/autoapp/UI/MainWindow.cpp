@@ -21,6 +21,8 @@
 #include <QFileInfo>
 #include <QFile>
 #include "ui_mainwindow.h"
+#include <QTimer>
+#include <QDateTime>
 
 namespace f1x
 {
@@ -43,6 +45,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QSlider:horizontal { background: url(:/slider.png); border: 1px solid #ffffff; border-radius: 2px; min-height: 32px;} \
 	QSlider::groove:horizontal { background: #6d6d6d; height: 32px;} \
 	QSlider::handle:horizontal { background: white; height: 52px; width: 52px; margin: 0 0;} \
+        QLabel { color: #ffffff; font-weight: bold;} \
     ");
 
     QFileInfo wallpaperDayFile("wallpaper.png");
@@ -93,6 +96,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
 	}
     }
+
+    QTimer *timer=new QTimer(this);
+    connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
+    timer->start();
+
     QFileInfo cursorButtonFile("/etc/button_cursor_visible");
     bool cursorButtonForce = cursorButtonFile.exists();
 
@@ -124,6 +132,10 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     ui_->horizontalSliderBrightness->hide();
+
+    if (!configuration->showClock()) {
+	ui_->Digital_clock->hide();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -182,4 +194,11 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
     this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
     ui_->pushButtonNight->show();
     ui_->pushButtonDay->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::showTime()
+{
+    QTime time=QTime::currentTime();
+    QString time_text=time.toString("hh : mm : ss");
+    ui_->Digital_clock->setText(time_text);
 }

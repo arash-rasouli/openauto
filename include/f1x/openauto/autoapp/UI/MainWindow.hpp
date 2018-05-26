@@ -61,6 +61,7 @@ private slots:
     void on_pushButtonBrightness_clicked();
     void switchGuiToDay();
     void switchGuiToNight();
+    void showTime();
 
 private:
     Ui::MainWindow* ui_;
