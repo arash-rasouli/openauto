@@ -54,8 +54,14 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFileInfo wallpaperNightFile("wallpaper-night.png");
     bool wallpaperNightFileExists = wallpaperNightFile.exists();
 
-    QFileInfo nightSwitchFile("/tmp/night_mode_enabled");
-    bool nightSwitchExists = nightSwitchFile.exists();
+    QFileInfo wallpaperDevFile("wallpaper-devmode.png");
+    bool wallpaperDevFileExists = wallpaperDevFile.exists();
+
+    QFileInfo nightModeFile("/tmp/night_mode_enabled");
+    bool nightModeEnabled = nightModeFile.exists();
+
+    QFileInfo devModeFile("/tmp/dev_mode_enabled");
+    bool devModeEnabled = devModeFile.exists();
 
     if (wallpaperDayFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperDayFile.symLinkTarget());
@@ -65,6 +71,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     if (wallpaperNightFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperNightFile.symLinkTarget());
         wallpaperNightFileExists = linkTarget.exists();
+    }
+
+    if (wallpaperDevFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperDevFile.symLinkTarget());
+        wallpaperDevFileExists = linkTarget.exists();
     }
 
     ui_->setupUi(this);
@@ -79,22 +90,30 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
 
-    if (!nightSwitchExists) {
-	ui_->pushButtonNight->show();
-	ui_->pushButtonDay->hide();
-	if (wallpaperDayFileExists) {
-	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+    if (devModeEnabled) {
+	if (wallpaperDevFileExists) {
+	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode.png) }") );
 	} else {
     	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
 	}
     } else {
-	ui_->pushButtonDay->show();
-	ui_->pushButtonNight->hide();
-	if (wallpaperNightFileExists) {
-	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
-	} else {
-    	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-	}
+        if (!nightModeEnabled) {
+    	    ui_->pushButtonNight->show();
+	    ui_->pushButtonDay->hide();
+	    if (wallpaperDayFileExists) {
+	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+	    } else {
+    	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+	    }
+        } else {
+	    ui_->pushButtonDay->show();
+	    ui_->pushButtonNight->hide();
+	    if (wallpaperNightFileExists) {
+	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+	    } else {
+    	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+	    }
+        }
     }
 
     QTimer *timer=new QTimer(this);
