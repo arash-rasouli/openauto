@@ -206,6 +206,10 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
     this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
     ui_->pushButtonDay->show();
     ui_->pushButtonNight->hide();
+    if (this->brightnessSliderVisible) {
+        ui_->horizontalSliderBrightness->hide();
+	this->brightnessSliderVisible = false;
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
@@ -213,6 +217,10 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
     this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
     ui_->pushButtonNight->show();
     ui_->pushButtonDay->hide();
+    if (this->brightnessSliderVisible) {
+        ui_->horizontalSliderBrightness->hide();
+	this->brightnessSliderVisible = false;
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
