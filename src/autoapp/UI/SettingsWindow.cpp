@@ -100,6 +100,7 @@ void SettingsWindow::onSave()
     configuration_->setAudioOutputBackendType(ui_->radioButtonRtAudio->isChecked() ? configuration::AudioOutputBackendType::RTAUDIO : configuration::AudioOutputBackendType::QT);
 
     configuration_->save();
+
     this->close();
 }
 

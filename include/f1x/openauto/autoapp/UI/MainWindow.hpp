@@ -69,6 +69,15 @@ private:
     QString brightnessFilename = "/sys/class/backlight/rpi_backlight/brightness";
     QFile *brightnessFile;
     char brightness_str[5];
+
+    bool nightModeEnabled = false;
+    bool DayNightModeState = false;
+    bool devModeEnabled = false;
+
+    bool wallpaperDayFileExists = false;
+    bool wallpaperNightFileExists = false;
+    bool wallpaperDevFileExists = false;
+    bool wallpaperDevNightFileExists = false;
 };
 
 }

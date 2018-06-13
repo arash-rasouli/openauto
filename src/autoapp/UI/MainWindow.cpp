@@ -48,34 +48,43 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QLabel { color: #ffffff; font-weight: bold;} \
     ");
 
+    // inits by files
     QFileInfo wallpaperDayFile("wallpaper.png");
-    bool wallpaperDayFileExists = wallpaperDayFile.exists();
+    this->wallpaperDayFileExists = wallpaperDayFile.exists();
 
     QFileInfo wallpaperNightFile("wallpaper-night.png");
-    bool wallpaperNightFileExists = wallpaperNightFile.exists();
+    this->wallpaperNightFileExists = wallpaperNightFile.exists();
 
     QFileInfo wallpaperDevFile("wallpaper-devmode.png");
-    bool wallpaperDevFileExists = wallpaperDevFile.exists();
+    this->wallpaperDevFileExists = wallpaperDevFile.exists();
+
+    QFileInfo wallpaperDevNightFile("wallpaper-devmode-night.png");
+    this->wallpaperDevNightFileExists = wallpaperDevNightFile.exists();
 
     QFileInfo nightModeFile("/tmp/night_mode_enabled");
-    bool nightModeEnabled = nightModeFile.exists();
+    this->nightModeEnabled = nightModeFile.exists();
 
     QFileInfo devModeFile("/tmp/dev_mode_enabled");
-    bool devModeEnabled = devModeFile.exists();
+    this->devModeEnabled = devModeFile.exists();
 
     if (wallpaperDayFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperDayFile.symLinkTarget());
-        wallpaperDayFileExists = linkTarget.exists();
+        this->wallpaperDayFileExists = linkTarget.exists();
     }
 
     if (wallpaperNightFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperNightFile.symLinkTarget());
-        wallpaperNightFileExists = linkTarget.exists();
+        this->wallpaperNightFileExists = linkTarget.exists();
     }
 
     if (wallpaperDevFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperDevFile.symLinkTarget());
-        wallpaperDevFileExists = linkTarget.exists();
+        this->wallpaperDevFileExists = linkTarget.exists();
+    }
+
+    if (wallpaperDevNightFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperDevNightFile.symLinkTarget());
+        this->wallpaperDevNightFileExists = linkTarget.exists();
     }
 
     ui_->setupUi(this);
@@ -89,32 +98,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonNight, &QPushButton::clicked, this, &MainWindow::switchGuiToNight);
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
-
-    if (devModeEnabled) {
-	if (wallpaperDevFileExists) {
-	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode.png) }") );
-	} else {
-    	    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-	}
-    } else {
-        if (!nightModeEnabled) {
-    	    ui_->pushButtonNight->show();
-	    ui_->pushButtonDay->hide();
-	    if (wallpaperDayFileExists) {
-	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
-	    } else {
-    	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-	    }
-        } else {
-	    ui_->pushButtonDay->show();
-	    ui_->pushButtonNight->hide();
-	    if (wallpaperNightFileExists) {
-	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
-	    } else {
-    	        this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-	    }
-        }
-    }
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
@@ -154,6 +137,37 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     if (!configuration->showClock()) {
 	ui_->Digital_clock->hide();
+    }
+
+    // init bg's on startup
+    if (!this->nightModeEnabled) {
+        if (this->devModeEnabled) {
+            if (this->wallpaperDevFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode.png) }") );
+            } else {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            }
+        } else {
+            if (this->wallpaperDayFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+            } else {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            }
+        }
+    } else {
+        if (this->devModeEnabled) {
+            if (this->wallpaperDevNightFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode-night.png) }") );
+            } else {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            }
+        } else {
+            if (this->wallpaperNightFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+            } else {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            }
+        }
     }
 }
 
@@ -203,23 +217,47 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
 {
-    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+    if (this->devModeEnabled) {
+        if (this->wallpaperDevNightFileExists) {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode-night.png) }") );
+        } else {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+        }
+    } else {
+        if (this->wallpaperNightFileExists) {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+        } else {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+        }
+    }
     ui_->pushButtonDay->show();
     ui_->pushButtonNight->hide();
     if (this->brightnessSliderVisible) {
         ui_->horizontalSliderBrightness->hide();
-	this->brightnessSliderVisible = false;
+        this->brightnessSliderVisible = false;
     }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
 {
-    this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+    if (this->devModeEnabled) {
+        if (this->wallpaperDevFileExists) {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode.png) }") );
+        } else {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+        }
+    } else {
+        if (this->wallpaperDayFileExists) {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+        } else {
+            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+        }
+    }
     ui_->pushButtonNight->show();
     ui_->pushButtonDay->hide();
     if (this->brightnessSliderVisible) {
         ui_->horizontalSliderBrightness->hide();
-	this->brightnessSliderVisible = false;
+        this->brightnessSliderVisible = false;
     }
 }
 
@@ -228,4 +266,29 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     QTime time=QTime::currentTime();
     QString time_text=time.toString("hh : mm : ss");
     ui_->Digital_clock->setText(time_text);
+
+    /**if (configuration_->showClock()) {
+	if (ui_->Digital_clock->isVisible() == true) {
+	    ui_->Digital_clock->hide();
+	}
+    } else {
+	if (ui_->Digital_clock->isVisible() == false) {
+	    ui_->Digital_clock->show();
+	}
+    }**/
+
+    QFileInfo nightModeFile("/tmp/night_mode_enabled");
+    this->nightModeEnabled = nightModeFile.exists();
+
+    if (this->nightModeEnabled) {
+	if (!this->DayNightModeState) {
+	    this->DayNightModeState = true;
+	    f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight();
+	}
+    } else {
+	if (this->DayNightModeState) {
+	    this->DayNightModeState = false;
+	    f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay();
+	}
+    }
 }
