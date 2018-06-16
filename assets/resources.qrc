@@ -18,5 +18,10 @@
         <file>day-hot.png</file>
         <file>night-hot.png</file>
         <file>slider.png</file>
+        <file>bg_dashcam.png</file>
+        <file>bg_buttons.png</file>
+        <file>record-hot.png</file>
+        <file>stop-hot.png</file>
+        <file>save-hot.png</file>
     </qresource>
 </RCC>

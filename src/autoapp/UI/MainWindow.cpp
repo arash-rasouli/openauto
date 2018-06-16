@@ -90,7 +90,13 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::exit);
-    connect(ui_->pushButtonToggleCamera, &QPushButton::clicked, this, &MainWindow::toggleCamera);
+    connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraShow);
+    connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraControlShow);
+    connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraHide);
+    connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
+    connect(ui_->pushButtonStop, &QPushButton::clicked, this, &MainWindow::cameraStop);
+    connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
+    connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
     connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::TriggerScriptDay);
     connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::switchGuiToDay);
@@ -119,8 +125,19 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonToggleCursor->hide();
     }
 
+    QPixmap image;
+    image.load(":/bg_buttons.png");
+    ui_->masterButtonBG->setPixmap(image);
+    ui_->pushButtonStop->hide();
+    ui_->pushButtonRecord->hide();
+    ui_->pushButtonSave->hide();
+
     if (!cameraButtonForce) {
-        ui_->pushButtonToggleCamera->hide();
+        ui_->pushButtonCameraShow->hide();
+        ui_->pushButtonCameraHide->hide();
+    } else {
+        ui_->pushButtonCameraShow->show();
+        ui_->pushButtonCameraHide->hide();
     }
 
     if (!wifiButtonForce) {
@@ -136,7 +153,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->horizontalSliderBrightness->hide();
 
     if (!configuration->showClock()) {
-	ui_->Digital_clock->hide();
+        ui_->Digital_clock->hide();
     }
 
     // init bg's on startup
@@ -185,6 +202,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
 {
     this->brightnessSliderVisible = !this->brightnessSliderVisible;
     if (this->brightnessSliderVisible) {
+	f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
         // Get the current brightness value
         this->brightnessFile = new QFile(this->brightnessFilename);
         if (this->brightnessFile->open(QIODevice::ReadOnly)) {
@@ -259,6 +277,31 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
         ui_->horizontalSliderBrightness->hide();
         this->brightnessSliderVisible = false;
     }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::cameraControlHide()
+{
+    ui_->pushButtonCameraHide->hide();
+    ui_->pushButtonStop->hide();
+    ui_->pushButtonRecord->hide();
+    ui_->pushButtonSave->hide();
+    ui_->dashcamBG->hide();
+    this->dashcamBGState = false;
+    ui_->pushButtonCameraShow->show();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
+{
+    ui_->pushButtonCameraShow->hide();
+    QPixmap image;
+    image.load(":/bg_dashcam.png");
+    ui_->dashcamBG->setPixmap(image);
+    ui_->dashcamBG->show();
+    ui_->pushButtonStop->show();
+    ui_->pushButtonRecord->show();
+    ui_->pushButtonSave->show();
+    this->dashcamBGState = true;
+    ui_->pushButtonCameraHide->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::showTime()

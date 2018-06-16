@@ -14,6 +14,16 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="masterButtonBG">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>640</width>
+      <height>440</height>
+     </rect>
+    </property>
+   </widget>
    <widget class="QLabel" name="Digital_clock">
     <property name="geometry">
      <rect>
@@ -42,12 +52,6 @@
       <width>64</width>
       <height>64</height>
      </size>
-    </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
-    <property name="default">
-     <bool>false</bool>
     </property>
     <property name="flat">
      <bool>true</bool>
@@ -101,12 +105,6 @@
       <height>64</height>
      </size>
     </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
-    <property name="default">
-     <bool>false</bool>
-    </property>
     <property name="flat">
      <bool>true</bool>
     </property>
@@ -135,12 +133,6 @@
       <width>64</width>
       <height>64</height>
      </size>
-    </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
-    <property name="default">
-     <bool>false</bool>
     </property>
     <property name="flat">
      <bool>true</bool>
@@ -171,12 +163,6 @@
       <height>64</height>
      </size>
     </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
-    <property name="default">
-     <bool>false</bool>
-    </property>
     <property name="flat">
      <bool>true</bool>
     </property>
@@ -199,12 +185,6 @@
       <width>64</width>
       <height>64</height>
      </size>
-    </property>
-    <property name="autoDefault">
-     <bool>false</bool>
-    </property>
-    <property name="default">
-     <bool>false</bool>
     </property>
     <property name="flat">
      <bool>true</bool>
@@ -235,7 +215,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButtonToggleCamera">
+   <widget class="QPushButton" name="pushButtonCameraShow">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -254,8 +234,28 @@
       <height>64</height>
      </size>
     </property>
-    <property name="autoDefault">
-     <bool>false</bool>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonCameraHide">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>314</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/camera-hot.png</normaloff>:/camera-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
     </property>
     <property name="flat">
      <bool>true</bool>
@@ -280,8 +280,84 @@
       <height>64</height>
      </size>
     </property>
-    <property name="autoDefault">
-     <bool>false</bool>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="dashcamBG">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>20</y>
+      <width>640</width>
+      <height>440</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonStop">
+    <property name="geometry">
+     <rect>
+      <x>146</x>
+      <y>384</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/stop-hot.png</normaloff>:/stop-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRecord">
+    <property name="geometry">
+     <rect>
+      <x>216</x>
+      <y>384</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/record-hot.png</normaloff>:/record-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonSave">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>384</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/save-hot.png</normaloff>:/save-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
     </property>
     <property name="flat">
      <bool>true</bool>

@@ -110,10 +110,46 @@ int main(int argc, char* argv[])
         qApplication.setOverrideCursor(cursor);
     });
 
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCamera, [&qApplication]() {
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraHide, [&qApplication]() {
 #ifdef RASPBERRYPI3
-        system("/opt/crankshaft/toggle_rpicam.sh &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCam script.";
+        system("/opt/crankshaft/cameracontrol.py Background &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraShow, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/cameracontrol.py Foreground &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraRecord, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/cameracontrol.py Record &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraStop, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/cameracontrol.py Stop &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraSave, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/cameracontrol.py Save &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
 #endif

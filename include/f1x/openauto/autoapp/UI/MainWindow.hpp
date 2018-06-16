@@ -50,7 +50,11 @@ signals:
     void toggleCursor();
     void TriggerScriptDay();
     void TriggerScriptNight();
-    void toggleCamera();
+    void cameraShow();
+    void cameraHide();
+    void cameraStop();
+    void cameraSave();
+    void cameraRecord();
     void openConnectDialog();
     void showBrightnessSlider();
 
@@ -62,6 +66,8 @@ private slots:
     void switchGuiToDay();
     void switchGuiToNight();
     void showTime();
+    void cameraControlShow();
+    void cameraControlHide();
 
 private:
     Ui::MainWindow* ui_;
@@ -78,6 +84,9 @@ private:
     bool wallpaperNightFileExists = false;
     bool wallpaperDevFileExists = false;
     bool wallpaperDevNightFileExists = false;
+
+    bool masterButtonBGState = false;
+    bool dashcamBGState = false;
 };
 
 }
