@@ -80,6 +80,29 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButtonKodi">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>104</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/kodi-hot.png</normaloff>:/kodi-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
    <widget class="QPushButton" name="pushButtonToggleCursor">
     <property name="geometry">
      <rect>
@@ -340,6 +363,52 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButtonRecordActive">
+    <property name="geometry">
+     <rect>
+      <x>216</x>
+      <y>384</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/recordactive-hot.png</normaloff>:/recordactive-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRearcam">
+    <property name="geometry">
+     <rect>
+      <x>286</x>
+      <y>384</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/rearcam-hot.png</normaloff>:/rearcam-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
    <widget class="QPushButton" name="pushButtonSave">
     <property name="geometry">
      <rect>
@@ -357,6 +426,118 @@
      <size>
       <width>64</width>
       <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="exitBG">
+    <property name="geometry">
+     <rect>
+      <x>284</x>
+      <y>198</y>
+      <width>232</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonShutdown">
+    <property name="geometry">
+     <rect>
+      <x>294</x>
+      <y>208</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/power-hot.png</normaloff>:/power-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonReboot">
+    <property name="geometry">
+     <rect>
+      <x>368</x>
+      <y>208</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/reboot-hot.png</normaloff>:/reboot-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonCancel">
+    <property name="geometry">
+     <rect>
+      <x>442</x>
+      <y>208</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/back-hot.png</normaloff>:/back-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="rearcamBG">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>480</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRearcamBack">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>480</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/bg_rearcam.png</normaloff>:/bg_rearcam.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>800</width>
+      <height>480</height>
      </size>
     </property>
     <property name="flat">

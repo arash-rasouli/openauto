@@ -46,6 +46,7 @@ public:
 
 signals:
     void exit();
+    void reboot();
     void openSettings();
     void toggleCursor();
     void TriggerScriptDay();
@@ -57,6 +58,9 @@ signals:
     void cameraRecord();
     void openConnectDialog();
     void showBrightnessSlider();
+    void startKodi();
+    void showRearCam();
+    void hideRearCam();
 
 private slots:
     void on_horizontalSliderBrightness_valueChanged(int value);
@@ -68,6 +72,9 @@ private slots:
     void showTime();
     void cameraControlShow();
     void cameraControlHide();
+    void toggleExit();
+    void showRearCamBG();
+    void hideRearCamBG();
 
 private:
     Ui::MainWindow* ui_;
@@ -76,8 +83,14 @@ private:
     QFile *brightnessFile;
     char brightness_str[5];
 
+    bool wifiButtonForce = false;
+    bool cameraButtonForce = false;
+    bool kodiButtonForce = false;
+    bool brightnessButtonForce = false;
+
     bool nightModeEnabled = false;
     bool DayNightModeState = false;
+
     bool devModeEnabled = false;
 
     bool wallpaperDayFileExists = false;
@@ -86,7 +99,13 @@ private:
     bool wallpaperDevNightFileExists = false;
 
     bool masterButtonBGState = false;
+    bool exitMenuVisible = false;
+
+    bool rearCamEnabled = false;
     bool dashcamBGState = false;
+    bool rearcamState = false;
+
+    bool dashCamRecording = false;
 };
 
 }

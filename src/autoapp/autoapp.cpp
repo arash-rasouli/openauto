@@ -110,6 +110,10 @@ int main(int argc, char* argv[])
         qApplication.setOverrideCursor(cursor);
     });
 
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, [&qApplication]() {
+        system("sudo shutdown -r now");
+    });
+
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraHide, [&qApplication]() {
 #ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Background &");
@@ -122,6 +126,25 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraShow, [&qApplication]() {
 #ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Foreground &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::hideRearCam, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/cameracontrol.py DashcamMode &");
+        system("sudo rm /tmp/rearcam_enabled &");
+        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::showRearCam, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/opt/crankshaft/cameracontrol.py Rearcam &");
         OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
@@ -170,6 +193,15 @@ int main(int argc, char* argv[])
         OPENAUTO_LOG(info) << "[CS] Run day script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
+#endif
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::startKodi, [&qApplication]() {
+#ifdef RASPBERRYPI3
+        system("/usr/bin/kodi &");
+        OPENAUTO_LOG(info) << "[CS] Run kodi binary.";
+#else
+        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping kodi.";
 #endif
     });
 

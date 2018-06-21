@@ -23,5 +23,12 @@
         <file>record-hot.png</file>
         <file>stop-hot.png</file>
         <file>save-hot.png</file>
+        <file>reboot-hot.png</file>
+        <file>back-hot.png</file>
+        <file>bg_exit.png</file>
+        <file>kodi-hot.png</file>
+        <file>bg_rearcam.png</file>
+        <file>rearcam-hot.png</file>
+        <file>recordactive-hot.png</file>
     </qresource>
 </RCC>
