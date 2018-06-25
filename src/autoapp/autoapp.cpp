@@ -101,6 +101,7 @@ int main(int argc, char* argv[])
     connectDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { std::exit(0); });
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::exec);
 
@@ -108,10 +109,6 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCursor, [&qApplication]() {
         const auto cursor = qApplication.overrideCursor()->shape() == Qt::BlankCursor ? Qt::ArrowCursor : Qt::BlankCursor;
         qApplication.setOverrideCursor(cursor);
-    });
-
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, [&qApplication]() {
-        system("sudo shutdown -r now");
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraHide, [&qApplication]() {
