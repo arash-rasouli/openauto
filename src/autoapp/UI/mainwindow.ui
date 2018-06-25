@@ -27,11 +27,40 @@
    <widget class="QLabel" name="Digital_clock">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>14</y>
+      <x>668</x>
+      <y>12</y>
       <width>120</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="versionString">
+    <property name="geometry">
+     <rect>
+      <x>578</x>
+      <y>428</y>
+      <width>210</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="dateString">
+    <property name="geometry">
+     <rect>
+      <x>578</x>
+      <y>448</y>
+      <width>210</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonSettings">
@@ -231,11 +260,11 @@
     <property name="singleStep">
      <number>25</number>
     </property>
-    <property name="tickInterval">
-     <number>25</number>
-    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="tickInterval">
+     <number>25</number>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonCameraShow">
@@ -551,11 +580,8 @@
   <tabstop>pushButtonWirelessConnection</tabstop>
   <tabstop>pushButtonToggleCursor</tabstop>
   <tabstop>pushButtonBrightness</tabstop>
-  <tabstop>pushButtonToggleCamera</tabstop>
   <tabstop>pushButtonExit</tabstop>
  </tabstops>
- <resources>
-  <include location="../../../assets/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

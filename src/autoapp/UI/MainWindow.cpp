@@ -24,6 +24,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QTextStream>
 
 namespace f1x
 {
@@ -123,6 +124,32 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start();
+
+    // Get version string
+    QFileInfo vFile("/etc/crankshaft.build");
+    if (vFile.exists()) {
+        QFile versionFile(QString("/etc/crankshaft.build"));
+        versionFile.open(QIODevice::ReadOnly);
+        QTextStream data_version(&versionFile);
+        QString lineversion = data_version.readAll();
+        versionFile.close();
+        ui_->versionString->setText(lineversion);
+    } else {
+        ui_->versionString->setText("");
+    }
+
+    // Get date string
+    QFileInfo dFile("/etc/crankshaft.build");
+    if (dFile.exists()) {
+        QFile dateFile(QString("/etc/crankshaft.date"));
+        dateFile.open(QIODevice::ReadOnly);
+        QTextStream data_date(&dateFile);
+        QString linedate = data_date.readAll();
+        dateFile.close();
+        ui_->dateString->setText(linedate);
+    } else {
+        ui_->dateString->setText("");
+    }
 
     QFileInfo cursorButtonFile("/etc/button_cursor_visible");
     bool cursorButtonForce = cursorButtonFile.exists();
