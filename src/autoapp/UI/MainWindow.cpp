@@ -213,6 +213,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonReboot->hide();
     ui_->pushButtonCancel->hide();
 
+    ui_->phoneConnected->hide();
     // init bg's on startup
     if (!this->nightModeEnabled) {
         if (this->devModeEnabled) {
@@ -419,6 +420,18 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             ui_->Digital_clock->show();
         }
     }**/
+
+    QFileInfo phoneConnectedFile("/tmp/android_device");
+    if (phoneConnectedFile.exists()) {
+        if (ui_->phoneConnected->isVisible() == false) {
+            ui_->phoneConnected->setText("Phone connected");
+            ui_->phoneConnected->show();
+        }
+    } else {
+        if (ui_->phoneConnected->isVisible() == true) {
+            ui_->phoneConnected->hide();
+        }
+    }
 
     QFileInfo nightModeFile("/tmp/night_mode_enabled");
     this->nightModeEnabled = nightModeFile.exists();

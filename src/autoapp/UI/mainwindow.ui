@@ -37,6 +37,19 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="phoneConnected">
+    <property name="geometry">
+     <rect>
+      <x>578</x>
+      <y>408</y>
+      <width>210</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
    <widget class="QLabel" name="versionString">
     <property name="geometry">
      <rect>
