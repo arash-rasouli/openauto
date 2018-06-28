@@ -25,6 +25,8 @@
 #include <QDateTime>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QFontDatabase>
+#include <QFont>
 
 namespace f1x
 {
@@ -49,6 +51,12 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QSlider::handle:horizontal { background: white; height: 52px; width: 52px; margin: 0 0;} \
         QLabel { color: #ffffff; font-weight: bold;} \
     ");
+
+    // Set default font and size
+    int id = QFontDatabase::addApplicationFont(":/Roboto-Regular.ttf");
+    QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+    QFont _font(family, 11);
+    qApp->setFont(_font);
 
     // inits by files
     QFileInfo wallpaperDayFile("wallpaper.png");
@@ -179,7 +187,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonSave->hide();
     ui_->pushButtonRearcam->hide();
     ui_->pushButtonRearcamBack->hide();
-    ui_->rearcamBG->hide();
 
     if (!this->cameraButtonForce) {
         ui_->pushButtonCameraShow->hide();

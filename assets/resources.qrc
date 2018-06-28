@@ -30,5 +30,6 @@
         <file>bg_rearcam.png</file>
         <file>rearcam-hot.png</file>
         <file>recordactive-hot.png</file>
+        <file>Roboto-Regular.ttf</file>
     </qresource>
 </RCC>

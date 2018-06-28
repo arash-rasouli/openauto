@@ -30,8 +30,22 @@
       <x>668</x>
       <y>12</y>
       <width>120</width>
-      <height>20</height>
+      <height>24</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>120</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -41,39 +55,84 @@
     <property name="geometry">
      <rect>
       <x>578</x>
-      <y>408</y>
+      <y>368</y>
       <width>210</width>
-      <height>20</height>
+      <height>24</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>210</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
     </property>
    </widget>
    <widget class="QLabel" name="versionString">
     <property name="geometry">
      <rect>
       <x>578</x>
-      <y>428</y>
+      <y>412</y>
       <width>210</width>
-      <height>20</height>
+      <height>24</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>210</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>8</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
     </property>
    </widget>
    <widget class="QLabel" name="dateString">
     <property name="geometry">
      <rect>
       <x>578</x>
-      <y>448</y>
+      <y>446</y>
       <width>210</width>
-      <height>20</height>
+      <height>24</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>210</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>8</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonSettings">
@@ -475,6 +534,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="exitBG">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>284</x>
@@ -553,17 +615,10 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="rearcamBG">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>800</width>
-      <height>480</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButtonRearcamBack">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -595,6 +650,8 @@
   <tabstop>pushButtonBrightness</tabstop>
   <tabstop>pushButtonExit</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../../assets/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
