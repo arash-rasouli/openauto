@@ -108,18 +108,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::exit);
     connect(ui_->pushButtonReboot, &QPushButton::clicked, this, &MainWindow::reboot);
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &MainWindow::toggleExit);
-    connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraShow);
-    connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraControlShow);
-    connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraHide);
-    connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
-    connect(ui_->pushButtonStop, &QPushButton::clicked, this, &MainWindow::cameraStop);
-    connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
-    connect(ui_->pushButtonRearcam, &QPushButton::clicked, this, &MainWindow::showRearCamBG);
-    connect(ui_->pushButtonRearcam, &QPushButton::clicked, this, &MainWindow::showRearCam);
-    connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCamBG);
-    connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCam);
-    connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
-    connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
     connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::TriggerScriptDay);
     connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::switchGuiToDay);
@@ -168,6 +156,27 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFileInfo cameraButtonFile("/etc/button_camera_visible");
     this->cameraButtonForce = cameraButtonFile.exists();
 
+    if (this->cameraButtonForce) {
+	connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraShow);
+	connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraControlShow);
+	connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraHide);
+	connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
+	connect(ui_->pushButtonStop, &QPushButton::clicked, this, &MainWindow::cameraStop);
+	connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
+	connect(ui_->pushButtonRearcam, &QPushButton::clicked, this, &MainWindow::showRearCamBG);
+	connect(ui_->pushButtonRearcam, &QPushButton::clicked, this, &MainWindow::showRearCam);
+	connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCamBG);
+	connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCam);
+	connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
+	connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
+        ui_->pushButtonCameraShow->show();
+        ui_->pushButtonCameraHide->hide();
+    } else {
+        ui_->pushButtonCameraShow->hide();
+        ui_->pushButtonCameraHide->hide();
+
+    }
+
     QFileInfo brightnessButtonFile("/etc/button_brightness_visible");
     this->brightnessButtonForce = brightnessButtonFile.exists();
 
@@ -187,14 +196,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonSave->hide();
     ui_->pushButtonRearcam->hide();
     ui_->pushButtonRearcamBack->hide();
-
-    if (!this->cameraButtonForce) {
-        ui_->pushButtonCameraShow->hide();
-        ui_->pushButtonCameraHide->hide();
-    } else {
-        ui_->pushButtonCameraShow->show();
-        ui_->pushButtonCameraHide->hide();
-    }
 
     if (!this->wifiButtonForce) {
         ui_->pushButtonWirelessConnection->hide();
@@ -221,6 +222,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonCancel->hide();
 
     ui_->phoneConnected->hide();
+
     // init bg's on startup
     if (!this->nightModeEnabled) {
         if (this->devModeEnabled) {
@@ -267,8 +269,10 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
 {
     this->brightnessSliderVisible = !this->brightnessSliderVisible;
     if (this->brightnessSliderVisible) {
-        f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
-        f1x::openauto::autoapp::ui::MainWindow::cameraHide();
+	if (this->cameraButtonForce) {
+    	    f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
+    	    f1x::openauto::autoapp::ui::MainWindow::cameraHide();
+	}
         // Get the current brightness value
         this->brightnessFile = new QFile(this->brightnessFilename);
         if (this->brightnessFile->open(QIODevice::ReadOnly)) {
@@ -443,24 +447,26 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     QFileInfo nightModeFile("/tmp/night_mode_enabled");
     this->nightModeEnabled = nightModeFile.exists();
 
-    QFileInfo rearCamFile("/tmp/rearcam_enabled");
-    this->rearCamEnabled = rearCamFile.exists();
+    if (this->cameraButtonForce) {
+	QFileInfo rearCamFile("/tmp/rearcam_enabled");
+	this->rearCamEnabled = rearCamFile.exists();
 
-    QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
-    this->dashCamRecording = dashCamRecordingFile.exists();
+	QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
+	this->dashCamRecording = dashCamRecordingFile.exists();
 
-    if (this->dashcamBGState) {
-        if (this->dashCamRecording) {
-            if (ui_->pushButtonRecord->isVisible() == true) {
-                ui_->pushButtonRecordActive->show();
-                ui_->pushButtonRecord->hide();
-            }
-        } else {
-            if (ui_->pushButtonRecordActive->isVisible() == true) {
-                ui_->pushButtonRecord->show();
-                ui_->pushButtonRecordActive->hide();
-            }
-        }
+	if (this->dashcamBGState) {
+    	    if (this->dashCamRecording) {
+        	if (ui_->pushButtonRecord->isVisible() == true) {
+            	    ui_->pushButtonRecordActive->show();
+            	    ui_->pushButtonRecord->hide();
+        	}
+    	    } else {
+        	if (ui_->pushButtonRecordActive->isVisible() == true) {
+            	    ui_->pushButtonRecord->show();
+            	    ui_->pushButtonRecordActive->hide();
+        	}
+    	    }
+	}
     }
 
     if (this->nightModeEnabled) {
@@ -474,18 +480,20 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay();
         }
     }
-    if (this->rearCamEnabled) {
-        if (!this->rearcamState) {
-            f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
-            f1x::openauto::autoapp::ui::MainWindow::showRearCamBG();
-            f1x::openauto::autoapp::ui::MainWindow::showRearCam();
-            this->rearcamState = true;
-        }
-    } else {
-        if (this->rearcamState) {
-            f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG();
-            f1x::openauto::autoapp::ui::MainWindow::hideRearCam();
-            this->rearcamState = false;
-        }
+    if (this->cameraButtonForce) {
+	if (this->rearCamEnabled) {
+    	    if (!this->rearcamState) {
+        	this->rearcamState = true;
+        	f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
+        	f1x::openauto::autoapp::ui::MainWindow::showRearCamBG();
+        	f1x::openauto::autoapp::ui::MainWindow::showRearCam();
+    	    }
+	} else {
+    	    if (this->rearcamState) {
+        	this->rearcamState = false;
+        	f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG();
+        	f1x::openauto::autoapp::ui::MainWindow::hideRearCam();
+    	    }
+	}
     }
 }

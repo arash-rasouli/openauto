@@ -314,31 +314,6 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSliderBrightness">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>210</y>
-      <width>400</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>30</number>
-    </property>
-    <property name="maximum">
-     <number>255</number>
-    </property>
-    <property name="singleStep">
-     <number>25</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-    <property name="tickInterval">
-     <number>25</number>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButtonCameraShow">
     <property name="geometry">
      <rect>
@@ -639,6 +614,31 @@
     </property>
     <property name="flat">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QSlider" name="horizontalSliderBrightness">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>210</y>
+      <width>400</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>30</number>
+    </property>
+    <property name="maximum">
+     <number>255</number>
+    </property>
+    <property name="singleStep">
+     <number>25</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="tickInterval">
+     <number>25</number>
     </property>
    </widget>
   </widget>
