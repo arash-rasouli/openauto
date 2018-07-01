@@ -428,13 +428,14 @@ void f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG()
 
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
+    
     QTime time=QTime::currentTime();
     QString time_text=time.toString("hh : mm : ss");
     ui_->Digital_clock->setText(time_text);
 
     using namespace std::this_thread; // sleep_for
     using namespace std::chrono; // milliseconds
-    sleep_for(milliseconds(125));
+    sleep_for(milliseconds(5));
 
     /**if (configuration_->showClock()) {
         if (ui_->Digital_clock->isVisible() == true) {
