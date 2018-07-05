@@ -19,6 +19,10 @@
 #include <QMessageBox>
 #include <f1x/openauto/autoapp/UI/SettingsWindow.hpp>
 #include "ui_settingswindow.h"
+#include <QFile>
+#include <QFileInfo>
+#include <QTextStream>
+#include <string>
 
 namespace f1x
 {
@@ -45,6 +49,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonSelectAll, &QPushButton::clicked, std::bind(&SettingsWindow::setButtonCheckBoxes, this, true));
     connect(ui_->pushButtonResetToDefaults, &QPushButton::clicked, this, &SettingsWindow::onResetToDefaults);
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
+    connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
 }
 
 SettingsWindow::~SettingsWindow()
@@ -100,6 +105,8 @@ void SettingsWindow::onSave()
     configuration_->setAudioOutputBackendType(ui_->radioButtonRtAudio->isChecked() ? configuration::AudioOutputBackendType::RTAUDIO : configuration::AudioOutputBackendType::QT);
 
     configuration_->save();
+
+    system((std::string("/usr/local/bin/oasysif setvolume ") + std::to_string(ui_->horizontalSliderSystemVolume->value())).c_str());
 
     this->close();
 }
@@ -231,6 +238,103 @@ void SettingsWindow::saveButtonCheckBox(const QCheckBox* checkBox, configuration
 void SettingsWindow::onUpdateScreenDPI(int value)
 {
     ui_->labelScreenDPIValue->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateSystemVolume(int value)
+{
+    ui_->labelSystemVolumeValue->setText(QString::number(value));
+    //system((std::string("/usr/local/bin/oasysif setvolume ") + std::to_string(value)).c_str());
+}
+
+void SettingsWindow::loadSystemValues()
+{
+    // Get version string
+    QFileInfo vFile("/etc/crankshaft.build");
+    if (vFile.exists()) {
+        QFile versionFile(QString("/etc/crankshaft.build"));
+        versionFile.open(QIODevice::ReadOnly);
+        QTextStream data_version(&versionFile);
+        QString valueversion = data_version.readAll();
+        versionFile.close();
+        ui_->valueSystemVersion->setText(valueversion);
+    } else {
+        ui_->valueSystemVersion->setText("");
+    }
+
+    // Get date string
+    QFileInfo dFile("/etc/crankshaft.date");
+    if (dFile.exists()) {
+        QFile dateFile(QString("/etc/crankshaft.date"));
+        dateFile.open(QIODevice::ReadOnly);
+        QTextStream data_date(&dateFile);
+        QString valuedate = data_date.readAll();
+        dateFile.close();
+        ui_->valueSystemBuildDate->setText(valuedate);
+    } else {
+        ui_->valueSystemBuildDate->setText("");
+    }
+
+    system("/usr/local/bin/oasysif getvolume");
+    QFileInfo rFile("/tmp/return_value");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString currentvol = data_return.readAll();
+        returnFile.close();
+        ui_->labelSystemVolumeValue->setText(currentvol);
+        ui_->horizontalSliderSystemVolume->setValue(currentvol.toInt());
+    }
+
+    system("/usr/local/bin/oasysif getfreemem");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString currentmem = data_return.readAll();
+        returnFile.close();
+        ui_->valueSystemFreeMem->setText(currentmem);
+    }
+
+    system("/usr/local/bin/oasysif getcpufreq");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString currentfreq = data_return.readAll();
+        returnFile.close();
+        ui_->valueSystemCPUFreq->setText(currentfreq);
+    }
+
+    system("/usr/local/bin/oasysif getcputemp");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString cputemp = data_return.readAll();
+        returnFile.close();
+        ui_->valueSystemCPUTemp->setText(cputemp);
+    }
+
+    system("/usr/local/bin/oasysif getshutdown");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString shutdowntimer = data_return.readAll();
+        returnFile.close();
+        ui_->valueShutdownTimer->setText(shutdowntimer);
+    }
+
+    system("/usr/local/bin/oasysif getdisconnect");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString disconnecttimer = data_return.readAll();
+        returnFile.close();
+        ui_->valueDisconnectTimer->setText(disconnecttimer);
+    }
 }
 
 void SettingsWindow::onShowBindings()

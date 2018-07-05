@@ -27,7 +27,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(46, 52, 54);
-color: rgb(238, 238, 236);</string>
+color: rgb(238, 238, 236);
+</string>
   </property>
   <widget class="QPushButton" name="pushButtonSave">
    <property name="geometry">
@@ -74,7 +75,7 @@ color: rgb(238, 238, 236);</string>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tabGeneral">
     <attribute name="title">
@@ -290,7 +291,7 @@ color: rgb(238, 238, 236);</string>
        <rect>
         <x>60</x>
         <y>80</y>
-        <width>311</width>
+        <width>360</width>
         <height>31</height>
        </rect>
       </property>
@@ -405,8 +406,12 @@ color: rgb(238, 238, 236);</string>
         <x>20</x>
         <y>40</y>
         <width>531</width>
-        <height>31</height>
+        <height>34</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
       <property name="maximum">
        <number>400</number>
@@ -896,7 +901,7 @@ color: rgb(238, 238, 236);</string>
        <rect>
         <x>180</x>
         <y>160</y>
-        <width>271</width>
+        <width>320</width>
         <height>31</height>
        </rect>
       </property>
@@ -954,6 +959,265 @@ color: rgb(238, 238, 236);</string>
       </property>
       <property name="text">
        <string>In order to use bluetooth features please remember to pair your device.</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tabCrankshaftNG">
+    <attribute name="title">
+     <string>Crankshaft NG</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBoxSystemInfo">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>621</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>System Information</string>
+     </property>
+     <widget class="QLabel" name="labelSystemVersion">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Version:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSystemVersion">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>34</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSystemBuildDate">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Build Date:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSystemBuildDate">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>64</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSystemFreeMem">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>30</y>
+        <width>110</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Free Memory:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSystemFreeMem">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>34</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSystemCPUFreq">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>60</y>
+        <width>110</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>CPU Frequency:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSystemCPUFreq">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>64</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSystemCPUTemp">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>30</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>CPU Temp:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueSystemCPUTemp">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>34</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxSystemVolume">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>110</y>
+       <width>621</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Master System Volume</string>
+     </property>
+     <widget class="QLabel" name="labelSystemVolumeValue">
+      <property name="geometry">
+       <rect>
+        <x>570</x>
+        <y>40</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>100</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="horizontalSliderSystemVolume">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>531</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="Timers">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>200</y>
+       <width>621</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Timer</string>
+     </property>
+     <widget class="QLabel" name="labelShutdownTimer">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>150</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Shutdown Timeout:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueShutdownTimer">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>34</y>
+        <width>240</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDisconnectTimer">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>150</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Disconnect Timeout:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="valueDisconnectTimer">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>64</y>
+        <width>240</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
     </widget>

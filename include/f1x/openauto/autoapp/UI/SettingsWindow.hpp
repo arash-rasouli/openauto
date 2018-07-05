@@ -44,12 +44,14 @@ class SettingsWindow : public QWidget
 public:
     explicit SettingsWindow(configuration::IConfiguration::Pointer configuration, QWidget *parent = nullptr);
     ~SettingsWindow() override;
+    void loadSystemValues();
 
 private slots:
     void onSave();
     void onResetToDefaults();
     void onUpdateScreenDPI(int value);
     void onShowBindings();
+    void onUpdateSystemVolume(int value);
 
 private:
     void showEvent(QShowEvent* event);
