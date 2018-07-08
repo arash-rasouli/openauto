@@ -52,6 +52,7 @@ private slots:
     void onUpdateScreenDPI(int value);
     void onShowBindings();
     void onUpdateSystemVolume(int value);
+    void onUpdateSystemCapture(int value);
 
 private:
     void showEvent(QShowEvent* event);

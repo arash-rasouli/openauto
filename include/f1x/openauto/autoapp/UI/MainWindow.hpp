@@ -75,6 +75,7 @@ private slots:
     void toggleExit();
     void showRearCamBG();
     void hideRearCamBG();
+    void saveVolumeOnExit();
 
 private:
     Ui::MainWindow* ui_;

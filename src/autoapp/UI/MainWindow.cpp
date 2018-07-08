@@ -29,6 +29,7 @@
 #include <QFont>
 #include <thread>
 #include <chrono>
+#include <string>
 
 namespace f1x
 {
@@ -53,6 +54,28 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QSlider::handle:horizontal { background: white; height: 52px; width: 52px; margin: 0 0;} \
         QLabel { color: #ffffff; font-weight: bold;} \
     ");
+
+    // restore audio vol on startup if file exists
+    QFileInfo volFile("/boot/crankshaft/volume");
+    if (volFile.exists()) {
+        QFile volumeFile(QString("/boot/crankshaft/volume"));
+        volumeFile.open(QIODevice::ReadOnly);
+        QTextStream data_volume(&volumeFile);
+        QString linevolume = data_volume.readAll();
+        volumeFile.close();
+        system((std::string("/usr/local/bin/autoapp_helper setvolume ") + std::string(linevolume.toStdString())).c_str());
+    }
+
+    // restore audio vol on startup if file exists
+    QFileInfo capvolFile("/boot/crankshaft/capvolume");
+    if (capvolFile.exists()) {
+        QFile capvolumeFile(QString("/boot/crankshaft/capvolume"));
+        capvolumeFile.open(QIODevice::ReadOnly);
+        QTextStream data_capvolume(&capvolumeFile);
+        QString linecapvolume = data_capvolume.readAll();
+        capvolumeFile.close();
+        system((std::string("/usr/local/bin/autoapp_helper setcapvolume ") + std::string(linecapvolume.toStdString())).c_str());
+    }
 
     // Set default font and size
     int id = QFontDatabase::addApplicationFont(":/Roboto-Regular.ttf");
@@ -107,7 +130,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraStop);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraHide);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
+    connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::saveVolumeOnExit);
     connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::exit);
+    connect(ui_->pushButtonReboot, &QPushButton::clicked, this, &MainWindow::saveVolumeOnExit);
     connect(ui_->pushButtonReboot, &QPushButton::clicked, this, &MainWindow::reboot);
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
@@ -426,16 +451,93 @@ void f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG()
     ui_->pushButtonRearcamBack->hide();
 }
 
+void f1x::openauto::autoapp::ui::MainWindow::saveVolumeOnExit()
+{
+    system("/usr/local/bin/autoapp_helper savevolume");
+    system("/usr/local/bin/autoapp_helper savecapvolume");
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
-    
+
     QTime time=QTime::currentTime();
     QString time_text=time.toString("hh : mm : ss");
+    if ((time.second() % 2) == 0) {
+        time_text[3] = ' ';
+        time_text[8] = ' ';
+
+        QFileInfo phoneConnectedFile("/tmp/android_device");
+        if (phoneConnectedFile.exists()) {
+            if (ui_->phoneConnected->isVisible() == false) {
+                ui_->phoneConnected->setText("Phone connected");
+                ui_->phoneConnected->show();
+            }
+        } else {
+            if (ui_->phoneConnected->isVisible() == true) {
+                ui_->phoneConnected->hide();
+            }
+        }
+
+        QFileInfo nightModeFile("/tmp/night_mode_enabled");
+        this->nightModeEnabled = nightModeFile.exists();
+
+        if (this->cameraButtonForce) {
+            QFileInfo rearCamFile("/tmp/rearcam_enabled");
+            this->rearCamEnabled = rearCamFile.exists();
+
+            QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
+            this->dashCamRecording = dashCamRecordingFile.exists();
+
+            if (this->dashcamBGState) {
+                if (this->dashCamRecording) {
+                    if (ui_->pushButtonRecord->isVisible() == true) {
+                        ui_->pushButtonRecordActive->show();
+                        ui_->pushButtonRecord->hide();
+                    }
+                } else {
+                    if (ui_->pushButtonRecordActive->isVisible() == true) {
+                        ui_->pushButtonRecord->show();
+                        ui_->pushButtonRecordActive->hide();
+                    }
+                }
+            }
+        }
+
+        if (this->nightModeEnabled) {
+            if (!this->DayNightModeState) {
+                this->DayNightModeState = true;
+                f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight();
+            }
+        } else {
+            if (this->DayNightModeState) {
+                this->DayNightModeState = false;
+                f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay();
+            }
+        }
+
+        if (this->cameraButtonForce) {
+            if (this->rearCamEnabled) {
+                if (!this->rearcamState) {
+                    this->rearcamState = true;
+                    f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
+                    f1x::openauto::autoapp::ui::MainWindow::showRearCamBG();
+                    f1x::openauto::autoapp::ui::MainWindow::showRearCam();
+                }
+            } else {
+                if (this->rearcamState) {
+                    this->rearcamState = false;
+                    f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG();
+                    f1x::openauto::autoapp::ui::MainWindow::hideRearCam();
+                }
+            }
+        }
+    }
+
     ui_->Digital_clock->setText(time_text);
 
     using namespace std::this_thread; // sleep_for
     using namespace std::chrono; // milliseconds
-    sleep_for(milliseconds(5));
+    sleep_for(milliseconds(10));
 
     /**if (configuration_->showClock()) {
         if (ui_->Digital_clock->isVisible() == true) {
@@ -446,69 +548,4 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             ui_->Digital_clock->show();
         }
     }**/
-
-    QFileInfo phoneConnectedFile("/tmp/android_device");
-    if (phoneConnectedFile.exists()) {
-        if (ui_->phoneConnected->isVisible() == false) {
-            ui_->phoneConnected->setText("Phone connected");
-            ui_->phoneConnected->show();
-        }
-    } else {
-        if (ui_->phoneConnected->isVisible() == true) {
-            ui_->phoneConnected->hide();
-        }
-    }
-
-    QFileInfo nightModeFile("/tmp/night_mode_enabled");
-    this->nightModeEnabled = nightModeFile.exists();
-
-    if (this->cameraButtonForce) {
-        QFileInfo rearCamFile("/tmp/rearcam_enabled");
-        this->rearCamEnabled = rearCamFile.exists();
-
-        QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
-        this->dashCamRecording = dashCamRecordingFile.exists();
-
-        if (this->dashcamBGState) {
-            if (this->dashCamRecording) {
-                if (ui_->pushButtonRecord->isVisible() == true) {
-                    ui_->pushButtonRecordActive->show();
-                    ui_->pushButtonRecord->hide();
-                }
-            } else {
-                if (ui_->pushButtonRecordActive->isVisible() == true) {
-                    ui_->pushButtonRecord->show();
-                    ui_->pushButtonRecordActive->hide();
-                }
-            }
-        }
-    }
-
-    if (this->nightModeEnabled) {
-        if (!this->DayNightModeState) {
-            this->DayNightModeState = true;
-            f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight();
-        }
-    } else {
-        if (this->DayNightModeState) {
-            this->DayNightModeState = false;
-            f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay();
-        }
-    }
-    if (this->cameraButtonForce) {
-        if (this->rearCamEnabled) {
-            if (!this->rearcamState) {
-                this->rearcamState = true;
-                f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
-                f1x::openauto::autoapp::ui::MainWindow::showRearCamBG();
-                f1x::openauto::autoapp::ui::MainWindow::showRearCam();
-            }
-        } else {
-            if (this->rearcamState) {
-                this->rearcamState = false;
-                f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG();
-                f1x::openauto::autoapp::ui::MainWindow::hideRearCam();
-            }
-        }
-    }
 }

@@ -50,6 +50,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonResetToDefaults, &QPushButton::clicked, this, &SettingsWindow::onResetToDefaults);
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
+    connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
 }
 
 SettingsWindow::~SettingsWindow()
@@ -106,7 +107,8 @@ void SettingsWindow::onSave()
 
     configuration_->save();
 
-    system((std::string("/usr/local/bin/oasysif setvolume ") + std::to_string(ui_->horizontalSliderSystemVolume->value())).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setvolume ") + std::to_string(ui_->horizontalSliderSystemVolume->value())).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setcapvolume ") + std::to_string(ui_->horizontalSliderSystemCapture->value())).c_str());
 
     this->close();
 }
@@ -243,7 +245,11 @@ void SettingsWindow::onUpdateScreenDPI(int value)
 void SettingsWindow::onUpdateSystemVolume(int value)
 {
     ui_->labelSystemVolumeValue->setText(QString::number(value));
-    //system((std::string("/usr/local/bin/oasysif setvolume ") + std::to_string(value)).c_str());
+}
+
+void SettingsWindow::onUpdateSystemCapture(int value)
+{
+    ui_->labelSystemCaptureValue->setText(QString::number(value));
 }
 
 void SettingsWindow::loadSystemValues()
@@ -274,7 +280,7 @@ void SettingsWindow::loadSystemValues()
         ui_->valueSystemBuildDate->setText("");
     }
 
-    system("/usr/local/bin/oasysif getvolume");
+    system("/usr/local/bin/autoapp_helper getvolume");
     QFileInfo rFile("/tmp/return_value");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
@@ -286,7 +292,18 @@ void SettingsWindow::loadSystemValues()
         ui_->horizontalSliderSystemVolume->setValue(currentvol.toInt());
     }
 
-    system("/usr/local/bin/oasysif getfreemem");
+    system("/usr/local/bin/autoapp_helper getcapvolume");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QString currentcapvol = data_return.readAll();
+        returnFile.close();
+        ui_->labelSystemCaptureValue->setText(currentcapvol);
+        ui_->horizontalSliderSystemCapture->setValue(currentcapvol.toInt());
+    }
+
+    system("/usr/local/bin/autoapp_helper getfreemem");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
@@ -296,7 +313,7 @@ void SettingsWindow::loadSystemValues()
         ui_->valueSystemFreeMem->setText(currentmem);
     }
 
-    system("/usr/local/bin/oasysif getcpufreq");
+    system("/usr/local/bin/autoapp_helper getcpufreq");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
@@ -306,7 +323,7 @@ void SettingsWindow::loadSystemValues()
         ui_->valueSystemCPUFreq->setText(currentfreq);
     }
 
-    system("/usr/local/bin/oasysif getcputemp");
+    system("/usr/local/bin/autoapp_helper getcputemp");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
@@ -316,7 +333,7 @@ void SettingsWindow::loadSystemValues()
         ui_->valueSystemCPUTemp->setText(cputemp);
     }
 
-    system("/usr/local/bin/oasysif getshutdown");
+    system("/usr/local/bin/autoapp_helper getshutdown");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
@@ -326,7 +343,7 @@ void SettingsWindow::loadSystemValues()
         ui_->valueShutdownTimer->setText(shutdowntimer);
     }
 
-    system("/usr/local/bin/oasysif getdisconnect");
+    system("/usr/local/bin/autoapp_helper getdisconnect");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
