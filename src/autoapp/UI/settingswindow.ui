@@ -278,7 +278,7 @@ color: rgb(238, 238, 236);
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>91</width>
+        <width>90</width>
         <height>21</height>
        </rect>
       </property>
@@ -317,17 +317,30 @@ color: rgb(238, 238, 236);
        <rect>
         <x>100</x>
         <y>30</y>
-        <width>71</width>
+        <width>100</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="labelVideoMarginWidth">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>210</x>
         <y>40</y>
-        <width>101</width>
+        <width>95</width>
         <height>21</height>
        </rect>
       </property>
@@ -338,11 +351,24 @@ color: rgb(238, 238, 236);
      <widget class="QSpinBox" name="spinBoxVideoMarginWidth">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>305</x>
         <y>30</y>
-        <width>71</width>
+        <width>100</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="maximum">
        <number>99999</number>
@@ -351,9 +377,9 @@ color: rgb(238, 238, 236);
      <widget class="QLabel" name="labelVideoMarginHeight">
       <property name="geometry">
        <rect>
-        <x>410</x>
+        <x>415</x>
         <y>40</y>
-        <width>111</width>
+        <width>100</width>
         <height>21</height>
        </rect>
       </property>
@@ -364,11 +390,24 @@ color: rgb(238, 238, 236);
      <widget class="QSpinBox" name="spinBoxVideoMarginHeight">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>515</x>
         <y>30</y>
-        <width>71</width>
+        <width>100</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="maximum">
        <number>99999</number>
@@ -1208,7 +1247,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <x>0</x>
        <y>300</y>
        <width>621</width>
-       <height>91</height>
+       <height>129</height>
       </rect>
      </property>
      <property name="title">
@@ -1220,7 +1259,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         <x>10</x>
         <y>30</y>
         <width>150</width>
-        <height>23</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -1231,7 +1270,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>34</y>
+        <y>42</y>
         <width>240</width>
         <height>23</height>
        </rect>
@@ -1244,9 +1283,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>81</y>
         <width>150</width>
-        <height>23</height>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
@@ -1257,13 +1296,83 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>160</x>
-        <y>64</y>
+        <y>93</y>
         <width>240</width>
         <height>23</height>
        </rect>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBoxDisconnect">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>81</y>
+        <width>110</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="minimum">
+       <number>30</number>
+      </property>
+      <property name="maximum">
+       <number>300</number>
+      </property>
+      <property name="singleStep">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBoxShutdown">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>30</y>
+        <width>110</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="frame">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="minimum">
+       <number>5</number>
+      </property>
+      <property name="maximum">
+       <number>60</number>
+      </property>
+      <property name="singleStep">
+       <number>5</number>
+      </property>
+      <property name="value">
+       <number>60</number>
       </property>
      </widget>
     </widget>
