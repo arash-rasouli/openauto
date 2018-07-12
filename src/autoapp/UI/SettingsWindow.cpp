@@ -107,8 +107,27 @@ void SettingsWindow::onSave()
 
     configuration_->save();
 
-    system((std::string("/usr/local/bin/autoapp_helper setvolume ") + std::to_string(ui_->horizontalSliderSystemVolume->value())).c_str());
-    system((std::string("/usr/local/bin/autoapp_helper setcapvolume ") + std::to_string(ui_->horizontalSliderSystemCapture->value())).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setvolumes ") + std::to_string(ui_->horizontalSliderSystemVolume->value()) + std::string(" ")  + std::to_string(ui_->horizontalSliderSystemCapture->value()) ).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setdisconnect ") + std::to_string(ui_->spinBoxDisconnect->value())).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setshutdown ") + std::to_string(ui_->spinBoxShutdown->value())).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setdaynight ") + std::to_string(ui_->spinBoxDay->value()) + std::string(" ")  + std::to_string(ui_->spinBoxNight->value()) ).c_str());
+    if (ui_->checkBoxGPIO->isChecked()) {
+        system((std::string("/usr/local/bin/autoapp_helper setgpios ") + std::string("1 ") + std::string(ui_->comboBoxDevMode->currentText().toStdString() + " ") + std::string(ui_->comboBoxInvert->currentText().toStdString() + " ") + std::string(ui_->comboBoxX11->currentText().toStdString() + " ") + std::string(ui_->comboBoxRearcam->currentText().toStdString() + " ") + std::string(ui_->comboBoxAndroid->currentText().toStdString()) ).c_str());
+    } else {
+        system((std::string("/usr/local/bin/autoapp_helper setgpios ") + std::string("0 ") + std::string(ui_->comboBoxDevMode->currentText().toStdString() + " ") + std::string(ui_->comboBoxInvert->currentText().toStdString() + " ") + std::string(ui_->comboBoxX11->currentText().toStdString() + " ") + std::string(ui_->comboBoxRearcam->currentText().toStdString() + " ") + std::string(ui_->comboBoxAndroid->currentText().toStdString()) ).c_str());
+    }
+
+    if (ui_->radioButtonX11->isChecked()) {
+        system((std::string("/usr/local/bin/autoapp_helper setmode 1")).c_str());
+    } else {
+        system((std::string("/usr/local/bin/autoapp_helper setmode 0")).c_str());
+    }
+
+    if (ui_->radioButtonScreenRotated->isChecked()) {
+        system((std::string("/usr/local/bin/autoapp_helper setflip 1")).c_str());
+    } else {
+        system((std::string("/usr/local/bin/autoapp_helper setflip 0")).c_str());
+    }
 
     this->close();
 }
@@ -351,6 +370,56 @@ void SettingsWindow::loadSystemValues()
         QString disconnecttimer = data_return.readAll();
         returnFile.close();
         ui_->valueDisconnectTimer->setText(disconnecttimer);
+    }
+
+    system("/usr/local/bin/autoapp_helper getgpios");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList gpiosetup = data_return.readAll().split(" ");
+        returnFile.close();
+        if (gpiosetup[0] == "1") {
+            ui_->checkBoxGPIO->setChecked(true);
+        } else {
+            ui_->checkBoxGPIO->setChecked(false);
+        }
+        ui_->comboBoxDevMode->setCurrentText(gpiosetup[1]);
+        ui_->comboBoxInvert->setCurrentText(gpiosetup[2]);
+        ui_->comboBoxX11->setCurrentText(gpiosetup[3]);
+        ui_->comboBoxRearcam->setCurrentText(gpiosetup[4]);
+        ui_->comboBoxAndroid->setCurrentText(gpiosetup[5]);
+    }
+
+    system("/usr/local/bin/autoapp_helper getmodeflip");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList modeflip = data_return.readAll().split(" ");
+        returnFile.close();
+        if (modeflip[0] == "0") {
+            ui_->radioButtonEGL->setChecked(true);
+        } else {
+            ui_->radioButtonX11->setChecked(true);
+        }
+        if (modeflip[1] == "0") {
+            ui_->radioButtonScreenNormal->setChecked(true);
+        } else {
+            ui_->radioButtonScreenRotated->setChecked(true);
+        }
+
+    }
+
+    system("/usr/local/bin/autoapp_helper getdaynight");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList daynight = data_return.readAll().split(" ");
+        returnFile.close();
+        ui_->spinBoxDay->setValue(daynight[0].toInt());
+        ui_->spinBoxNight->setValue(daynight[1].toInt());
     }
 }
 

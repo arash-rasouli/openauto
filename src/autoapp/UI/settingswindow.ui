@@ -86,7 +86,7 @@ color: rgb(238, 238, 236);
       <rect>
        <x>0</x>
        <y>10</y>
-       <width>621</width>
+       <width>616</width>
        <height>91</height>
       </rect>
      </property>
@@ -104,6 +104,9 @@ color: rgb(238, 238, 236);
       </property>
       <property name="text">
        <string>Left-hand drive</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QRadioButton" name="radioButtonRightHandDrive">
@@ -143,7 +146,7 @@ color: rgb(238, 238, 236);
       <rect>
        <x>0</x>
        <y>80</y>
-       <width>621</width>
+       <width>616</width>
        <height>141</height>
       </rect>
      </property>
@@ -161,6 +164,9 @@ color: rgb(238, 238, 236);
       </property>
       <property name="text">
        <string>480p</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QRadioButton" name="radioButton720p">
@@ -227,7 +233,7 @@ color: rgb(238, 238, 236);
       <rect>
        <x>0</x>
        <y>10</y>
-       <width>621</width>
+       <width>616</width>
        <height>61</height>
       </rect>
      </property>
@@ -259,6 +265,9 @@ color: rgb(238, 238, 236);
       <property name="text">
        <string>30 FPS</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBoxOmxLayerIndex">
@@ -266,7 +275,7 @@ color: rgb(238, 238, 236);
       <rect>
        <x>0</x>
        <y>230</y>
-       <width>621</width>
+       <width>616</width>
        <height>121</height>
       </rect>
      </property>
@@ -419,7 +428,7 @@ subcontrol-position: center left;
       <rect>
        <x>0</x>
        <y>360</y>
-       <width>621</width>
+       <width>616</width>
        <height>81</height>
       </rect>
      </property>
@@ -455,6 +464,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="maximum">
        <number>400</number>
       </property>
+      <property name="value">
+       <number>100</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -470,7 +482,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>-1</x>
        <y>10</y>
-       <width>621</width>
+       <width>616</width>
        <height>111</height>
       </rect>
      </property>
@@ -535,7 +547,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>0</x>
        <y>130</y>
-       <width>621</width>
+       <width>616</width>
        <height>61</height>
       </rect>
      </property>
@@ -592,7 +604,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>0</x>
        <y>70</y>
-       <width>621</width>
+       <width>616</width>
        <height>381</height>
       </rect>
      </property>
@@ -879,7 +891,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>0</x>
        <y>10</y>
-       <width>621</width>
+       <width>616</width>
        <height>441</height>
       </rect>
      </property>
@@ -1004,14 +1016,14 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
    </widget>
    <widget class="QWidget" name="tabCrankshaftNG">
     <attribute name="title">
-     <string>Crankshaft NG</string>
+     <string>CS-NG Base</string>
     </attribute>
     <widget class="QGroupBox" name="groupBoxSystemInfo">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>10</y>
-       <width>621</width>
+       <width>616</width>
        <height>91</height>
       </rect>
      </property>
@@ -1154,7 +1166,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>0</x>
        <y>110</y>
-       <width>621</width>
+       <width>616</width>
        <height>81</height>
       </rect>
      </property>
@@ -1200,7 +1212,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>0</x>
        <y>200</y>
-       <width>621</width>
+       <width>616</width>
        <height>81</height>
       </rect>
      </property>
@@ -1246,7 +1258,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <rect>
        <x>0</x>
        <y>300</y>
-       <width>621</width>
+       <width>616</width>
        <height>129</height>
       </rect>
      </property>
@@ -1336,6 +1348,9 @@ subcontrol-position: center left;
       <property name="singleStep">
        <number>10</number>
       </property>
+      <property name="value">
+       <number>120</number>
+      </property>
      </widget>
      <widget class="QSpinBox" name="spinBoxShutdown">
       <property name="geometry">
@@ -1373,6 +1388,1104 @@ subcontrol-position: center left;
       </property>
       <property name="value">
        <number>60</number>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tabGPIO">
+    <attribute name="title">
+     <string>CS-NG Special</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBoxGPIO">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>616</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>GPIO Settings</string>
+     </property>
+     <widget class="QCheckBox" name="checkBoxGPIO">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>100</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enable GPIO</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxDevMode">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>60</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>- - -</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>- - -</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>13</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>14</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>16</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>17</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>18</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>19</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>21</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>22</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>23</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>24</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>25</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>26</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelDevMode">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Dev Mode</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxInvert">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>60</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>- - -</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>- - -</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>13</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>14</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>16</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>17</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>18</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>19</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>21</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>22</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>23</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>24</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>25</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>26</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QComboBox" name="comboBoxX11">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>100</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>- - -</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>- - -</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>13</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>14</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>16</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>17</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>18</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>19</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>21</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>22</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>23</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>24</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>25</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>26</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelX11">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>X11 Pin</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelRearcam">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>100</y>
+        <width>90</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Rearcam Pin</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxAndroid">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>60</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>- - -</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>- - -</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>13</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>14</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>16</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>17</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>18</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>19</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>21</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>22</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>23</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>24</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>25</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>26</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelAndroid">
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>60</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Android Pin</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxRearcam">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>100</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>- - -</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>- - -</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>13</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>14</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>16</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>17</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>18</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>19</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>21</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>22</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>23</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>24</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>25</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>26</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelInvert">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>60</y>
+        <width>90</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Invert Pin</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxDayNight">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>180</y>
+       <width>616</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Auto Day / Night</string>
+     </property>
+     <widget class="QLabel" name="labelDay">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>80</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Start Day</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelNight">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>40</y>
+        <width>80</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Start Night</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBoxDay">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="maximum">
+       <number>23</number>
+      </property>
+      <property name="value">
+       <number>8</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="spinBoxNight">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>30</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QSpinBox::up-button { width: 32px; height: 32px;
+subcontrol-origin: margin;
+subcontrol-position: center right;
+}
+QSpinBox::down-button { width: 32px; height: 32px; 
+subcontrol-origin: margin;
+subcontrol-position: center left;
+}</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="maximum">
+       <number>23</number>
+      </property>
+      <property name="value">
+       <number>18</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDayNightNote">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>40</y>
+        <width>171</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Needs configured rtc!</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelBluetoothAddressFormatInfoIcon_3">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>36</y>
+        <width>21</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxStartMode">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>290</y>
+       <width>300</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Start Mode Openauto</string>
+     </property>
+     <widget class="QRadioButton" name="radioButtonX11">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>X11</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonEGL">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>EGL</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="labelSettingsInfo">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>410</y>
+       <width>616</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>To activate this settings you have to reboot after changing!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelSettingsInfo_Icon">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>406</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxScreenOrientation">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>290</y>
+       <width>296</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Screen Orientation</string>
+     </property>
+     <widget class="QRadioButton" name="radioButtonScreenRotated">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>120</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>180° Rotated</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonScreenNormal">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Normal</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

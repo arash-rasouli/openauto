@@ -57,24 +57,22 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // restore audio vol on startup if file exists
     QFileInfo volFile("/boot/crankshaft/volume");
-    if (volFile.exists()) {
+    QFileInfo capvolFile("/boot/crankshaft/capvolume");
+    if (volFile.exists() + capvolFile.exists()) {
+
         QFile volumeFile(QString("/boot/crankshaft/volume"));
         volumeFile.open(QIODevice::ReadOnly);
         QTextStream data_volume(&volumeFile);
         QString linevolume = data_volume.readAll();
         volumeFile.close();
-        system((std::string("/usr/local/bin/autoapp_helper setvolume ") + std::string(linevolume.toStdString())).c_str());
-    }
 
-    // restore audio vol on startup if file exists
-    QFileInfo capvolFile("/boot/crankshaft/capvolume");
-    if (capvolFile.exists()) {
         QFile capvolumeFile(QString("/boot/crankshaft/capvolume"));
         capvolumeFile.open(QIODevice::ReadOnly);
         QTextStream data_capvolume(&capvolumeFile);
         QString linecapvolume = data_capvolume.readAll();
         capvolumeFile.close();
-        system((std::string("/usr/local/bin/autoapp_helper setcapvolume ") + std::string(linecapvolume.toStdString())).c_str());
+        system( (std::string("/usr/local/bin/autoapp_helper setvolume ") + std::string(linevolume.toStdString()) ).c_str());
+        system( (std::string("/usr/local/bin/autoapp_helper setcapvolume ") + std::string(linecapvolume.toStdString()) ).c_str());
     }
 
     // Set default font and size
@@ -453,8 +451,8 @@ void f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG()
 
 void f1x::openauto::autoapp::ui::MainWindow::saveVolumeOnExit()
 {
-    system("/usr/local/bin/autoapp_helper savevolume");
-    system("/usr/local/bin/autoapp_helper savecapvolume");
+    system("/usr/local/bin/autoapp_helper savevolumes");
+    //system("/usr/local/bin/autoapp_helper savecapvolume");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
@@ -549,3 +547,5 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         }
     }**/
 }
+
+
