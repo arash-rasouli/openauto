@@ -357,9 +357,10 @@ void SettingsWindow::loadSystemValues()
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
         QTextStream data_return(&returnFile);
-        QString shutdowntimer = data_return.readAll();
+        QStringList shutdowntimer = data_return.readAll().split("-");;
         returnFile.close();
-        ui_->valueShutdownTimer->setText(shutdowntimer);
+        ui_->spinBoxShutdown->setValue(shutdowntimer[0].toInt());
+        ui_->valueShutdownTimer->setText(shutdowntimer[1]);
     }
 
     system("/usr/local/bin/autoapp_helper getdisconnect");
@@ -367,9 +368,10 @@ void SettingsWindow::loadSystemValues()
         QFile returnFile(QString("/tmp/return_value"));
         returnFile.open(QIODevice::ReadOnly);
         QTextStream data_return(&returnFile);
-        QString disconnecttimer = data_return.readAll();
+        QStringList disconnecttimer = data_return.readAll().split("-");;
         returnFile.close();
-        ui_->valueDisconnectTimer->setText(disconnecttimer);
+        ui_->spinBoxDisconnect->setValue(disconnecttimer[0].toInt());
+        ui_->valueDisconnectTimer->setText(disconnecttimer[1]);
     }
 
     system("/usr/local/bin/autoapp_helper getgpios");

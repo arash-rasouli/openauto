@@ -75,7 +75,7 @@ color: rgb(238, 238, 236);
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tabGeneral">
     <attribute name="title">
@@ -433,7 +433,7 @@ subcontrol-position: center left;
       </rect>
      </property>
      <property name="title">
-      <string>Screen DPI</string>
+      <string>Android Auto Screen DPI</string>
      </property>
      <widget class="QLabel" name="labelScreenDPIValue">
       <property name="geometry">
@@ -445,7 +445,7 @@ subcontrol-position: center left;
        </rect>
       </property>
       <property name="text">
-       <string>400</string>
+       <string>100</string>
       </property>
      </widget>
      <widget class="QSlider" name="horizontalSliderScreenDPI">
@@ -1183,7 +1183,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        </rect>
       </property>
       <property name="text">
-       <string>100</string>
+       <string>0</string>
       </property>
      </widget>
      <widget class="QSlider" name="horizontalSliderSystemVolume">
@@ -1229,7 +1229,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        </rect>
       </property>
       <property name="text">
-       <string>100</string>
+       <string>0</string>
       </property>
      </widget>
      <widget class="QSlider" name="horizontalSliderSystemCapture">
@@ -1259,7 +1259,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <x>0</x>
        <y>300</y>
        <width>616</width>
-       <height>129</height>
+       <height>161</height>
       </rect>
      </property>
      <property name="title">
@@ -1301,7 +1301,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        </rect>
       </property>
       <property name="text">
-       <string>Disconnect Timeout:</string>
+       <string>Screen Off Timeout:</string>
       </property>
      </widget>
      <widget class="QLabel" name="valueDisconnectTimer">
@@ -1378,16 +1378,42 @@ subcontrol-position: center left;
        <set>Qt::AlignCenter</set>
       </property>
       <property name="minimum">
-       <number>5</number>
+       <number>1</number>
       </property>
       <property name="maximum">
        <number>60</number>
       </property>
       <property name="singleStep">
-       <number>5</number>
+       <number>1</number>
       </property>
       <property name="value">
        <number>60</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelMinutes">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>30</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Minutes</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSeconds">
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>80</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Seconds</string>
       </property>
      </widget>
     </widget>
