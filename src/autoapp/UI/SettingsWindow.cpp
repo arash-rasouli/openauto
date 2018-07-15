@@ -128,7 +128,8 @@ void SettingsWindow::onSave()
     } else {
         system((std::string("/usr/local/bin/autoapp_helper setflip 0")).c_str());
     }
-
+    system((std::string("/usr/local/bin/autoapp_helper setoutput ") + std::string("'") + std::string(ui_->comboBoxPulseOutput->currentText().toStdString()) + std::string("'") ).c_str());
+    system((std::string("/usr/local/bin/autoapp_helper setinput ") + std::string("'") + std::string(ui_->comboBoxPulseInput->currentText().toStdString()) + std::string("'") ).c_str());
     this->close();
 }
 
@@ -423,6 +424,47 @@ void SettingsWindow::loadSystemValues()
         ui_->spinBoxDay->setValue(daynight[0].toInt());
         ui_->spinBoxNight->setValue(daynight[1].toInt());
     }
+
+    system("/usr/local/bin/autoapp_helper getoutputs");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList outputs = data_return.readAll().split("\n");
+        returnFile.close();
+        int cleaner = ui_->comboBoxPulseOutput->count();
+        while (cleaner > 0) {
+            ui_->comboBoxPulseOutput->removeItem(cleaner);
+            cleaner--;
+        }
+        int indexout = outputs.count();
+        int countout = 0;
+        while (countout < indexout-1) {
+            ui_->comboBoxPulseOutput->addItem(outputs[countout]);
+            countout++;
+        }
+    }
+
+    system("/usr/local/bin/autoapp_helper getinputs");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList inputs = data_return.readAll().split("\n");
+        returnFile.close();
+        int cleaner = ui_->comboBoxPulseInput->count();
+        while (cleaner > 0) {
+            ui_->comboBoxPulseInput->removeItem(cleaner);
+            cleaner--;
+        }
+        int indexin = inputs.count();
+        int countin = 0;
+        while (countin < indexin-1) {
+            ui_->comboBoxPulseInput->addItem(inputs[countin]);
+            countin++;
+        }
+    }
+
 }
 
 void SettingsWindow::onShowBindings()

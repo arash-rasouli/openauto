@@ -581,6 +581,124 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
      </widget>
     </widget>
+    <widget class="QGroupBox" name="groupBoxPulse">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>220</y>
+       <width>616</width>
+       <height>151</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Pulse Input / Output Device</string>
+     </property>
+     <widget class="QComboBox" name="comboBoxPulseOutput">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>30</y>
+        <width>400</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>default</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>default</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelPulseOutput">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Output</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxPulseInput">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>70</y>
+        <width>400</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>default</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>default</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelPulseInput">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Input</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSettingsInfo_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>120</y>
+        <width>616</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>To activate changed audio device you have to reboot!</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelSettingsInfo_Icon_2">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>114</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QWidget" name="tabInput">
     <attribute name="title">
