@@ -445,6 +445,16 @@ void SettingsWindow::loadSystemValues()
         }
     }
 
+    system("/usr/local/bin/autoapp_helper getdefaultoutput");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList defoutput = data_return.readAll().split("\n");
+        returnFile.close();
+        ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
+    }
+
     system("/usr/local/bin/autoapp_helper getinputs");
     if (rFile.exists()) {
         QFile returnFile(QString("/tmp/return_value"));
@@ -463,6 +473,16 @@ void SettingsWindow::loadSystemValues()
             ui_->comboBoxPulseInput->addItem(inputs[countin]);
             countin++;
         }
+    }
+
+    system("/usr/local/bin/autoapp_helper getdefaultinput");
+    if (rFile.exists()) {
+        QFile returnFile(QString("/tmp/return_value"));
+        returnFile.open(QIODevice::ReadOnly);
+        QTextStream data_return(&returnFile);
+        QStringList definput = data_return.readAll().split("\n");
+        returnFile.close();
+        ui_->comboBoxPulseInput->setCurrentText(definput[0]);
     }
 
 }
