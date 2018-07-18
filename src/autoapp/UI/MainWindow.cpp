@@ -55,26 +55,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QLabel { color: #ffffff; font-weight: bold;} \
     ");
 
-    // restore audio vol on startup if file exists
-    QFileInfo volFile("/boot/crankshaft/volume");
-    QFileInfo capvolFile("/boot/crankshaft/capvolume");
-    if (volFile.exists() + capvolFile.exists()) {
-
-        QFile volumeFile(QString("/boot/crankshaft/volume"));
-        volumeFile.open(QIODevice::ReadOnly);
-        QTextStream data_volume(&volumeFile);
-        QString linevolume = data_volume.readAll();
-        volumeFile.close();
-
-        QFile capvolumeFile(QString("/boot/crankshaft/capvolume"));
-        capvolumeFile.open(QIODevice::ReadOnly);
-        QTextStream data_capvolume(&capvolumeFile);
-        QString linecapvolume = data_capvolume.readAll();
-        capvolumeFile.close();
-        system( (std::string("/usr/local/bin/autoapp_helper setvolume ") + std::string(linevolume.toStdString()) ).c_str());
-        system( (std::string("/usr/local/bin/autoapp_helper setcapvolume ") + std::string(linecapvolume.toStdString()) ).c_str());
-    }
-
     // Set default font and size
     int id = QFontDatabase::addApplicationFont(":/Roboto-Regular.ttf");
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
@@ -221,6 +201,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonSave->hide();
     ui_->pushButtonRearcam->hide();
     ui_->pushButtonRearcamBack->hide();
+
+    ui_->systemConfigInProgress->hide();
 
     if (!this->wifiButtonForce) {
         ui_->pushButtonWirelessConnection->hide();
@@ -473,6 +455,18 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         } else {
             if (ui_->phoneConnected->isVisible() == true) {
                 ui_->phoneConnected->hide();
+            }
+        }
+
+        QFileInfo configInProgressFile("/tmp/config_in_progress");
+        if (configInProgressFile.exists()) {
+            if (ui_->systemConfigInProgress->isVisible() == false) {
+                ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
+                ui_->systemConfigInProgress->show();
+            }
+        } else {
+            if (ui_->systemConfigInProgress->isVisible() == true) {
+                ui_->systemConfigInProgress->hide();
             }
         }
 

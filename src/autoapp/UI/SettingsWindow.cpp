@@ -107,29 +107,52 @@ void SettingsWindow::onSave()
 
     configuration_->save();
 
-    system((std::string("/usr/local/bin/autoapp_helper setvolumes ") + std::to_string(ui_->horizontalSliderSystemVolume->value()) + std::string(" ")  + std::to_string(ui_->horizontalSliderSystemCapture->value()) ).c_str());
-    system((std::string("/usr/local/bin/autoapp_helper setdisconnect ") + std::to_string(ui_->spinBoxDisconnect->value())).c_str());
-    system((std::string("/usr/local/bin/autoapp_helper setshutdown ") + std::to_string(ui_->spinBoxShutdown->value())).c_str());
-    system((std::string("/usr/local/bin/autoapp_helper setdaynight ") + std::to_string(ui_->spinBoxDay->value()) + std::string(" ")  + std::to_string(ui_->spinBoxNight->value()) ).c_str());
+    // generate param string for autoapp_helper
+    std::string params;
+    params.append( std::to_string(ui_->horizontalSliderSystemVolume->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderSystemCapture->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->spinBoxDisconnect->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->spinBoxShutdown->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->spinBoxDay->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->spinBoxNight->value()) );
+    params.append("#");
     if (ui_->checkBoxGPIO->isChecked()) {
-        system((std::string("/usr/local/bin/autoapp_helper setgpios ") + std::string("1 ") + std::string(ui_->comboBoxDevMode->currentText().toStdString() + " ") + std::string(ui_->comboBoxInvert->currentText().toStdString() + " ") + std::string(ui_->comboBoxX11->currentText().toStdString() + " ") + std::string(ui_->comboBoxRearcam->currentText().toStdString() + " ") + std::string(ui_->comboBoxAndroid->currentText().toStdString()) ).c_str());
+        params.append("1");
     } else {
-        system((std::string("/usr/local/bin/autoapp_helper setgpios ") + std::string("0 ") + std::string(ui_->comboBoxDevMode->currentText().toStdString() + " ") + std::string(ui_->comboBoxInvert->currentText().toStdString() + " ") + std::string(ui_->comboBoxX11->currentText().toStdString() + " ") + std::string(ui_->comboBoxRearcam->currentText().toStdString() + " ") + std::string(ui_->comboBoxAndroid->currentText().toStdString()) ).c_str());
+        params.append("0");
     }
-
+    params.append("#");
+    params.append( std::string(ui_->comboBoxDevMode->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxInvert->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxX11->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxRearcam->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxAndroid->currentText().toStdString()) );
+    params.append("#");
     if (ui_->radioButtonX11->isChecked()) {
-        system((std::string("/usr/local/bin/autoapp_helper setmode 1")).c_str());
+        params.append("1");
     } else {
-        system((std::string("/usr/local/bin/autoapp_helper setmode 0")).c_str());
+        params.append("0");
     }
-
+    params.append("#");
     if (ui_->radioButtonScreenRotated->isChecked()) {
-        system((std::string("/usr/local/bin/autoapp_helper setflip 1")).c_str());
+        params.append("1");
     } else {
-        system((std::string("/usr/local/bin/autoapp_helper setflip 0")).c_str());
+        params.append("0");
     }
-    system((std::string("/usr/local/bin/autoapp_helper setoutput ") + std::string("'") + std::string(ui_->comboBoxPulseOutput->currentText().toStdString()) + std::string("'") ).c_str());
-    system((std::string("/usr/local/bin/autoapp_helper setinput ") + std::string("'") + std::string(ui_->comboBoxPulseInput->currentText().toStdString()) + std::string("'") ).c_str());
+    params.append("#");
+    params.append( std::string("'") + std::string(ui_->comboBoxPulseOutput->currentText().toStdString()) + std::string("'") );
+    params.append("#");
+    params.append( std::string("'") + std::string(ui_->comboBoxPulseInput->currentText().toStdString()) + std::string("'") );
+    system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
 
@@ -274,217 +297,127 @@ void SettingsWindow::onUpdateSystemCapture(int value)
 
 void SettingsWindow::loadSystemValues()
 {
-    // Get version string
-    QFileInfo vFile("/etc/crankshaft.build");
-    if (vFile.exists()) {
-        QFile versionFile(QString("/etc/crankshaft.build"));
-        versionFile.open(QIODevice::ReadOnly);
-        QTextStream data_version(&versionFile);
-        QString valueversion = data_version.readAll();
-        versionFile.close();
-        ui_->valueSystemVersion->setText(valueversion);
-    } else {
-        ui_->valueSystemVersion->setText("");
-    }
+    // Generate param file
+    system("/usr/local/bin/autoapp_helper getparams");
 
-    // Get date string
-    QFileInfo dFile("/etc/crankshaft.date");
-    if (dFile.exists()) {
-        QFile dateFile(QString("/etc/crankshaft.date"));
-        dateFile.open(QIODevice::ReadOnly);
-        QTextStream data_date(&dateFile);
-        QString valuedate = data_date.readAll();
-        dateFile.close();
-        ui_->valueSystemBuildDate->setText(valuedate);
-    } else {
-        ui_->valueSystemBuildDate->setText("");
-    }
-
-    system("/usr/local/bin/autoapp_helper getvolume");
-    QFileInfo rFile("/tmp/return_value");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QString currentvol = data_return.readAll();
-        returnFile.close();
-        ui_->labelSystemVolumeValue->setText(currentvol);
-        ui_->horizontalSliderSystemVolume->setValue(currentvol.toInt());
-    }
-
-    system("/usr/local/bin/autoapp_helper getcapvolume");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QString currentcapvol = data_return.readAll();
-        returnFile.close();
-        ui_->labelSystemCaptureValue->setText(currentcapvol);
-        ui_->horizontalSliderSystemCapture->setValue(currentcapvol.toInt());
-    }
-
-    system("/usr/local/bin/autoapp_helper getfreemem");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QString currentmem = data_return.readAll();
-        returnFile.close();
-        ui_->valueSystemFreeMem->setText(currentmem);
-    }
-
-    system("/usr/local/bin/autoapp_helper getcpufreq");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QString currentfreq = data_return.readAll();
-        returnFile.close();
-        ui_->valueSystemCPUFreq->setText(currentfreq);
-    }
-
-    system("/usr/local/bin/autoapp_helper getcputemp");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QString cputemp = data_return.readAll();
-        returnFile.close();
-        ui_->valueSystemCPUTemp->setText(cputemp);
-    }
-
-    system("/usr/local/bin/autoapp_helper getshutdown");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList shutdowntimer = data_return.readAll().split("-");;
-        returnFile.close();
-        ui_->spinBoxShutdown->setValue(shutdowntimer[0].toInt());
-        ui_->valueShutdownTimer->setText(shutdowntimer[1]);
-    }
-
-    system("/usr/local/bin/autoapp_helper getdisconnect");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList disconnecttimer = data_return.readAll().split("-");;
-        returnFile.close();
-        ui_->spinBoxDisconnect->setValue(disconnecttimer[0].toInt());
-        ui_->valueDisconnectTimer->setText(disconnecttimer[1]);
-    }
-
-    system("/usr/local/bin/autoapp_helper getgpios");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList gpiosetup = data_return.readAll().split(" ");
-        returnFile.close();
-        if (gpiosetup[0] == "1") {
+    // read param file
+    QFileInfo paramFile("/tmp/return_value");
+    if (paramFile.exists()) {
+        QFile paramFile(QString("/tmp/return_value"));
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data_param(&paramFile);
+        QStringList getparams = data_param.readAll().split("#");
+        paramFile.close();
+        // version string
+        ui_->valueSystemVersion->setText(getparams[0]);
+        // date string
+        ui_->valueSystemBuildDate->setText(getparams[1]);
+        // set volume
+        ui_->labelSystemVolumeValue->setText(getparams[2]);
+        ui_->horizontalSliderSystemVolume->setValue(getparams[2].toInt());
+        // set cap volume
+        ui_->labelSystemCaptureValue->setText(getparams[3]);
+        ui_->horizontalSliderSystemCapture->setValue(getparams[3].toInt());
+        // set shutdown
+        ui_->valueShutdownTimer->setText(getparams[4]);
+        ui_->spinBoxShutdown->setValue(getparams[5].toInt());
+        // set disconnect
+        ui_->valueDisconnectTimer->setText(getparams[6]);
+        ui_->spinBoxDisconnect->setValue(getparams[7].toInt());
+        // set day/night
+        ui_->spinBoxDay->setValue(getparams[8].toInt());
+        ui_->spinBoxNight->setValue(getparams[9].toInt());
+        // set gpios
+        if (getparams[10] == "1") {
             ui_->checkBoxGPIO->setChecked(true);
         } else {
             ui_->checkBoxGPIO->setChecked(false);
         }
-        ui_->comboBoxDevMode->setCurrentText(gpiosetup[1]);
-        ui_->comboBoxInvert->setCurrentText(gpiosetup[2]);
-        ui_->comboBoxX11->setCurrentText(gpiosetup[3]);
-        ui_->comboBoxRearcam->setCurrentText(gpiosetup[4]);
-        ui_->comboBoxAndroid->setCurrentText(gpiosetup[5]);
-    }
-
-    system("/usr/local/bin/autoapp_helper getmodeflip");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList modeflip = data_return.readAll().split(" ");
-        returnFile.close();
-        if (modeflip[0] == "0") {
+        ui_->comboBoxDevMode->setCurrentText(getparams[11]);
+        ui_->comboBoxInvert->setCurrentText(getparams[12]);
+        ui_->comboBoxX11->setCurrentText(getparams[13]);
+        ui_->comboBoxRearcam->setCurrentText(getparams[14]);
+        ui_->comboBoxAndroid->setCurrentText(getparams[15]);
+        // set mode
+        if (getparams[16] == "0") {
             ui_->radioButtonEGL->setChecked(true);
         } else {
             ui_->radioButtonX11->setChecked(true);
         }
-        if (modeflip[1] == "0") {
+        // set rotation
+        if (getparams[17] == "0") {
             ui_->radioButtonScreenNormal->setChecked(true);
         } else {
             ui_->radioButtonScreenRotated->setChecked(true);
         }
+        // set free mem
+        ui_->valueSystemFreeMem->setText(getparams[18]);
+        // set cpu freq
+        ui_->valueSystemCPUFreq->setText(getparams[19] + "MHz");
+        // set cpu temp
+        ui_->valueSystemCPUTemp->setText(getparams[20]);
 
-    }
-
-    system("/usr/local/bin/autoapp_helper getdaynight");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList daynight = data_return.readAll().split(" ");
-        returnFile.close();
-        ui_->spinBoxDay->setValue(daynight[0].toInt());
-        ui_->spinBoxNight->setValue(daynight[1].toInt());
-    }
-
-    system("/usr/local/bin/autoapp_helper getoutputs");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList outputs = data_return.readAll().split("\n");
-        returnFile.close();
-        int cleaner = ui_->comboBoxPulseOutput->count();
-        while (cleaner > 0) {
-            ui_->comboBoxPulseOutput->removeItem(cleaner);
-            cleaner--;
+        QFileInfo inputsFile("/tmp/get_inputs");
+        if (inputsFile.exists()) {
+            QFile inputsFile(QString("/tmp/get_inputs"));
+            inputsFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&inputsFile);
+            QStringList inputs = data_return.readAll().split("\n");
+            inputsFile.close();
+            int cleaner = ui_->comboBoxPulseInput->count();
+            while (cleaner > 0) {
+                ui_->comboBoxPulseInput->removeItem(cleaner);
+                cleaner--;
+            }
+            int indexin = inputs.count();
+            int countin = 0;
+            while (countin < indexin-1) {
+                ui_->comboBoxPulseInput->addItem(inputs[countin]);
+                countin++;
+            }
         }
-        int indexout = outputs.count();
-        int countout = 0;
-        while (countout < indexout-1) {
-            ui_->comboBoxPulseOutput->addItem(outputs[countout]);
-            countout++;
+
+        QFileInfo outputsFile("/tmp/get_outputs");
+        if (outputsFile.exists()) {
+            QFile outputsFile(QString("/tmp/get_outputs"));
+            outputsFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&outputsFile);
+            QStringList outputs = data_return.readAll().split("\n");
+            outputsFile.close();
+            int cleaner = ui_->comboBoxPulseOutput->count();
+            while (cleaner > 0) {
+                ui_->comboBoxPulseOutput->removeItem(cleaner);
+                cleaner--;
+            }
+            int indexout = outputs.count();
+            int countout = 0;
+            while (countout < indexout-1) {
+                ui_->comboBoxPulseOutput->addItem(outputs[countout]);
+                countout++;
+            }
         }
-    }
 
-    system("/usr/local/bin/autoapp_helper getdefaultoutput");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList defoutput = data_return.readAll().split("\n");
-        returnFile.close();
-        ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
-    }
-
-    system("/usr/local/bin/autoapp_helper getinputs");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList inputs = data_return.readAll().split("\n");
-        returnFile.close();
-        int cleaner = ui_->comboBoxPulseInput->count();
-        while (cleaner > 0) {
-            ui_->comboBoxPulseInput->removeItem(cleaner);
-            cleaner--;
+        QFileInfo defaultoutputFile("/tmp/get_default_output");
+        if (defaultoutputFile.exists()) {
+            QFile defaultoutputFile(QString("/tmp/get_default_output"));
+            defaultoutputFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&defaultoutputFile);
+            QStringList defoutput = data_return.readAll().split("\n");
+            defaultoutputFile.close();
+            ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
         }
-        int indexin = inputs.count();
-        int countin = 0;
-        while (countin < indexin-1) {
-            ui_->comboBoxPulseInput->addItem(inputs[countin]);
-            countin++;
+
+        QFileInfo defaultinputFile("/tmp/get_default_input");
+        if (defaultinputFile.exists()) {
+            QFile defaultinputFile(QString("/tmp/get_default_input"));
+            defaultinputFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&defaultinputFile);
+            QStringList definput = data_return.readAll().split("\n");
+            defaultinputFile.close();
+            ui_->comboBoxPulseInput->setCurrentText(definput[0]);
         }
-    }
 
-    system("/usr/local/bin/autoapp_helper getdefaultinput");
-    if (rFile.exists()) {
-        QFile returnFile(QString("/tmp/return_value"));
-        returnFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&returnFile);
-        QStringList definput = data_return.readAll().split("\n");
-        returnFile.close();
-        ui_->comboBoxPulseInput->setCurrentText(definput[0]);
     }
-
 }
 
 void SettingsWindow::onShowBindings()

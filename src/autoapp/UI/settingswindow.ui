@@ -1289,7 +1289,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </rect>
      </property>
      <property name="title">
-      <string>Master System Playback Volume</string>
+      <string>Playback Volume Selected Hardware</string>
      </property>
      <widget class="QLabel" name="labelSystemVolumeValue">
       <property name="geometry">
@@ -1335,7 +1335,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </rect>
      </property>
      <property name="title">
-      <string>Master System Capture Volume</string>
+      <string>Capture Volume Selected Hardware</string>
      </property>
      <widget class="QLabel" name="labelSystemCaptureValue">
       <property name="geometry">

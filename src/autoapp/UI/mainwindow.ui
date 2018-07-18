@@ -641,6 +641,37 @@
      <number>25</number>
     </property>
    </widget>
+   <widget class="QLabel" name="systemConfigInProgress">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>368</y>
+      <width>400</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>210</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
+    <property name="text">
+     <string>System config in progress - please wait ...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <tabstops>
