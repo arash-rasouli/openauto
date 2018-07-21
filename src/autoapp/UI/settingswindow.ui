@@ -2742,7 +2742,7 @@ subcontrol-position: center left;
        <bool>false</bool>
       </property>
       <property name="currentText">
-       <string>Raspberry Pi - Onboard</string>
+       <string>Custom</string>
       </property>
       <item>
        <property name="text">

@@ -450,7 +450,7 @@ void SettingsWindow::loadSystemValues()
         ui_->comboBoxTZ->setCurrentText(getparams[22]);
 
         // set dac
-        QString dac = "";
+        QString dac = "Custom";
         if (getparams[23] == "allo-boss") {
             dac = "Allo - Boss";
         }
@@ -475,7 +475,9 @@ void SettingsWindow::loadSystemValues()
         if (getparams[23] == "hifiberry-amp") {
             dac = "Hifiberry - DAC Amp";
         }
-
+        if (getparams[23] == "audio") {
+            dac = "Raspberry Pi - Onboard";
+        }
         ui_->comboBoxHardwareDAC->setCurrentText(dac);
     }
 }
