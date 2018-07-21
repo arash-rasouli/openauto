@@ -1134,7 +1134,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
    </widget>
    <widget class="QWidget" name="tabCrankshaftNG">
     <attribute name="title">
-     <string>CS-NG Base</string>
+     <string>CS Base</string>
     </attribute>
     <widget class="QGroupBox" name="groupBoxSystemInfo">
      <property name="geometry">
@@ -1538,7 +1538,7 @@ subcontrol-position: center left;
    </widget>
    <widget class="QWidget" name="tabGPIO">
     <attribute name="title">
-     <string>CS-NG Special</string>
+     <string>CS Env</string>
     </attribute>
     <widget class="QGroupBox" name="groupBoxGPIO">
      <property name="geometry">
@@ -2632,6 +2632,275 @@ subcontrol-position: center left;
        <bool>true</bool>
       </property>
      </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>CS HW</string>
+    </attribute>
+    <widget class="QGroupBox" name="groupBoxHardware">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>616</width>
+       <height>231</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Hardware Setup</string>
+     </property>
+     <widget class="QComboBox" name="comboBoxHardwareRTC">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>90</y>
+        <width>200</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>none</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>none</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>abx80x</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ds1307</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ds1339</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ds3231</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>mcp7940x</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>mcp7941x</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>pcf2127</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>pcf8523</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>pcf8563</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelHardwareRTC">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>RTC</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxHardwareDAC">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>40</y>
+        <width>200</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>Raspberry Pi - Onboard</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Custom</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Raspberry Pi - Onboard</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Allo - Boss</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Allo - Piano</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Audioinjector - Zero</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Audioinjector - Stereo</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Hifiberry - DAC</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Hifiberry - DAC Plus</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Hifiberry - DAC Digi</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Hifiberry - DAC Amp</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelHardwareDAC">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>DAC</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxTZ">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>140</y>
+        <width>200</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelHardwareRTC_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>140</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Timezone</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelTimeZoneIcon">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>186</y>
+        <width>21</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelTimeZone">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>180</y>
+        <width>521</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Timezone is needed for rtc - Sync with timeserver can be done via
+&quot;crankshaft rtc sync&quot; in shell.</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="labelSettingsInfo_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>410</y>
+       <width>616</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>To activate this settings you have to reboot after changing!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelSettingsInfo_Icon_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>406</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
     </widget>
    </widget>
   </widget>

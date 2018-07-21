@@ -152,6 +152,13 @@ void SettingsWindow::onSave()
     params.append( std::string("'") + std::string(ui_->comboBoxPulseOutput->currentText().toStdString()) + std::string("'") );
     params.append("#");
     params.append( std::string("'") + std::string(ui_->comboBoxPulseInput->currentText().toStdString()) + std::string("'") );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxHardwareRTC->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxTZ->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxHardwareDAC->currentText().toStdString()) );
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
@@ -417,6 +424,59 @@ void SettingsWindow::loadSystemValues()
             ui_->comboBoxPulseInput->setCurrentText(definput[0]);
         }
 
+        QFileInfo zoneFile("/tmp/timezone_listing");
+        if (zoneFile.exists()) {
+            QFile zoneFile(QString("/tmp/timezone_listing"));
+            zoneFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&zoneFile);
+            QStringList zones = data_return.readAll().split("\n");
+            zoneFile.close();
+            int cleaner = ui_->comboBoxTZ->count();
+            while (cleaner > 0) {
+                ui_->comboBoxTZ->removeItem(cleaner);
+                cleaner--;
+            }
+            int indexout = zones.count();
+            int countzone = 0;
+            while (countzone < indexout-1) {
+                ui_->comboBoxTZ->addItem(zones[countzone]);
+                countzone++;
+            }
+        }
+
+        // set rtc
+        ui_->comboBoxHardwareRTC->setCurrentText(getparams[21]);
+        // set timezone
+        ui_->comboBoxTZ->setCurrentText(getparams[22]);
+
+        // set dac
+        QString dac = "";
+        if (getparams[23] == "allo-boss") {
+            dac = "Allo - Boss";
+        }
+        if (getparams[23] == "allo-piano") {
+            dac = "Allo - Piano";
+        }
+        if (getparams[23] == "Audioinjector-zero") {
+            dac = "Audioinjector - Zero";
+        }
+        if (getparams[23] == "Audioinjector-stereo") {
+            dac = "Audioinjector - Stereo";
+        }
+        if (getparams[23] == "hifiberry-dac") {
+            dac = "Hifiberry - DAC";
+        }
+        if (getparams[23] == "hifiberry-dacplus") {
+            dac = "Hifiberry - DAC Plus";
+        }
+        if (getparams[23] == "hifiberry-digi") {
+            dac = "Hifiberry - DAC Digi";
+        }
+        if (getparams[23] == "hifiberry-amp") {
+            dac = "Hifiberry - DAC Amp";
+        }
+
+        ui_->comboBoxHardwareDAC->setCurrentText(dac);
     }
 }
 
