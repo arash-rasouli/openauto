@@ -159,6 +159,18 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxHardwareDAC->currentText().toStdString()) );
     params.append("#");
+    if (ui_->checkBoxDisableShutdown->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    if (ui_->checkBoxDisableScreenOff->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
@@ -451,16 +463,28 @@ void SettingsWindow::loadSystemValues()
 
         // set dac
         QString dac = "Custom";
-        if (getparams[23] == "allo-boss") {
+        if (getparams[23] == "allo-boss-dac-pcm512x-audio,slave") {
             dac = "Allo - Boss";
         }
-        if (getparams[23] == "allo-piano") {
+        if (getparams[23] == "allo-piano-dac-pcm512x-audio,slave") {
             dac = "Allo - Piano";
         }
-        if (getparams[23] == "Audioinjector-zero") {
+        if (getparams[23] == "iqaudio-dacplus") {
+            dac = "IQaudIO - Pi-DAC Plus/Pro/Zero";
+        }
+        if (getparams[23] == "iqaudio-dacplus,unmute_amp") {
+            dac = "IQaudIO - Pi-Digi Amp Plus";
+        }
+        if (getparams[23] == "iqaudio-dacplus,auto_mute_amp") {
+            dac = "IQaudIO - Pi-Digi Amp Plus - Automute";
+        }
+        if (getparams[23] == "iqaudio-digi-wm8804-audio") {
+            dac = "IQaudIO - Pi-Digi Plus";
+        }
+        if (getparams[23] == "audioinjector-zero") {
             dac = "Audioinjector - Zero";
         }
-        if (getparams[23] == "Audioinjector-stereo") {
+        if (getparams[23] == "audioinjector-stereo") {
             dac = "Audioinjector - Stereo";
         }
         if (getparams[23] == "hifiberry-dac") {
@@ -479,6 +503,20 @@ void SettingsWindow::loadSystemValues()
             dac = "Raspberry Pi - Onboard";
         }
         ui_->comboBoxHardwareDAC->setCurrentText(dac);
+
+        // set shutdown disable
+        if (getparams[24] == "1") {
+            ui_->checkBoxDisableShutdown->setChecked(true);
+        } else {
+            ui_->checkBoxDisableShutdown->setChecked(false);
+        }
+
+        // set screen off disable
+        if (getparams[25] == "1") {
+            ui_->checkBoxDisableScreenOff->setChecked(true);
+        } else {
+            ui_->checkBoxDisableScreenOff->setChecked(false);
+        }
     }
 }
 

@@ -204,8 +204,13 @@ color: rgb(238, 238, 236);
         <height>71</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;720p and 1080p must be activated in hidden Developer settings of Android Auto application.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>720p and 1080p must be activated in hidden Developer settings of Android Auto application.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -304,8 +309,13 @@ color: rgb(238, 238, 236);
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;OMX Layer is used only in case of OMX video output.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>OMX Layer is used only in case of OMX video output.</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelBluetoothAddressFormatInfoIcon_2">
@@ -524,8 +534,13 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Disable audio channel if you need custom audio routing e.g. via A2DP or AUX.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Disable audio channel if you need custom audio routing e.g. via A2DP or AUX.</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelAudioChannelDescriptionIcon">
@@ -591,7 +606,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </rect>
      </property>
      <property name="title">
-      <string>Pulse Input / Output Device</string>
+      <string>Pulseaudio Input / Output Device</string>
      </property>
      <widget class="QComboBox" name="comboBoxPulseOutput">
       <property name="geometry">
@@ -606,11 +621,11 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <bool>false</bool>
       </property>
       <property name="currentText">
-       <string>default</string>
+       <string>not selected</string>
       </property>
       <item>
        <property name="text">
-        <string>default</string>
+        <string>not selected</string>
        </property>
       </item>
      </widget>
@@ -640,11 +655,11 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <bool>false</bool>
       </property>
       <property name="currentText">
-       <string>default</string>
+       <string>not selected</string>
       </property>
       <item>
        <property name="text">
-        <string>default</string>
+        <string>not selected</string>
        </property>
       </item>
      </widget>
@@ -664,9 +679,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="labelSettingsInfo_2">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>2</x>
         <y>120</y>
-        <width>616</width>
+        <width>612</width>
         <height>23</height>
        </rect>
       </property>
@@ -1074,8 +1089,13 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-style:italic; color:#babdb6;&quot;&gt;Provide address in format AA:BB:CC:DD:EE:FF.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Provide address in format AA:BB:CC:DD:EE:FF.</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelBluetoothAddressFormatInfoIcon">
@@ -1289,7 +1309,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </rect>
      </property>
      <property name="title">
-      <string>Playback Volume Selected Hardware</string>
+      <string>Playback Volume</string>
      </property>
      <widget class="QLabel" name="labelSystemVolumeValue">
       <property name="geometry">
@@ -1335,7 +1355,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </rect>
      </property>
      <property name="title">
-      <string>Capture Volume Selected Hardware</string>
+      <string>Capture Volume</string>
      </property>
      <widget class="QLabel" name="labelSystemCaptureValue">
       <property name="geometry">
@@ -1375,9 +1395,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>300</y>
+       <y>320</y>
        <width>616</width>
-       <height>161</height>
+       <height>131</height>
       </rect>
      </property>
      <property name="title">
@@ -1399,9 +1419,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="valueShutdownTimer">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>42</y>
-        <width>240</width>
+        <width>201</width>
         <height>23</height>
        </rect>
       </property>
@@ -1425,9 +1445,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="valueDisconnectTimer">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>150</x>
         <y>93</y>
-        <width>240</width>
+        <width>201</width>
         <height>23</height>
        </rect>
       </property>
@@ -1438,7 +1458,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QSpinBox" name="spinBoxDisconnect">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>350</x>
         <y>81</y>
         <width>110</width>
         <height>41</height>
@@ -1473,7 +1493,7 @@ subcontrol-position: center left;
      <widget class="QSpinBox" name="spinBoxShutdown">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>350</x>
         <y>30</y>
         <width>110</width>
         <height>41</height>
@@ -1511,9 +1531,9 @@ subcontrol-position: center left;
      <widget class="QLabel" name="labelMinutes">
       <property name="geometry">
        <rect>
-        <x>530</x>
+        <x>470</x>
         <y>30</y>
-        <width>81</width>
+        <width>64</width>
         <height>41</height>
        </rect>
       </property>
@@ -1524,9 +1544,9 @@ subcontrol-position: center left;
      <widget class="QLabel" name="labelSeconds">
       <property name="geometry">
        <rect>
-        <x>530</x>
+        <x>470</x>
         <y>80</y>
-        <width>81</width>
+        <width>64</width>
         <height>41</height>
        </rect>
       </property>
@@ -1534,6 +1554,69 @@ subcontrol-position: center left;
        <string>Seconds</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="checkBoxDisableShutdown">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>40</y>
+        <width>71</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Disable</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBoxDisableScreenOff">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>90</y>
+        <width>71</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Disable</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="labelDayNightNote_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>290</y>
+       <width>616</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>Volume bars are only working if you select output/input device</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelBluetoothAddressFormatInfoIcon_4">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>286</y>
+       <width>21</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tabGPIO">
@@ -2491,6 +2574,11 @@ subcontrol-position: center left;
         <height>23</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
        <string>Needs configured rtc!</string>
       </property>
@@ -2557,9 +2645,9 @@ subcontrol-position: center left;
     <widget class="QLabel" name="labelSettingsInfo">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>2</x>
        <y>410</y>
-       <width>616</width>
+       <width>612</width>
        <height>23</height>
       </rect>
      </property>
@@ -2581,7 +2669,7 @@ subcontrol-position: center left;
     <widget class="QLabel" name="labelSettingsInfo_Icon">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>80</x>
        <y>406</y>
        <width>31</width>
        <height>31</height>
@@ -2655,7 +2743,7 @@ subcontrol-position: center left;
        <rect>
         <x>90</x>
         <y>90</y>
-        <width>200</width>
+        <width>300</width>
         <height>30</height>
        </rect>
       </property>
@@ -2734,7 +2822,7 @@ subcontrol-position: center left;
        <rect>
         <x>90</x>
         <y>40</y>
-        <width>200</width>
+        <width>300</width>
         <height>30</height>
        </rect>
       </property>
@@ -2743,6 +2831,12 @@ subcontrol-position: center left;
       </property>
       <property name="currentText">
        <string>Custom</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="modelColumn">
+       <number>0</number>
       </property>
       <item>
        <property name="text">
@@ -2762,6 +2856,26 @@ subcontrol-position: center left;
       <item>
        <property name="text">
         <string>Allo - Piano</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>IQaudIO - Pi-DAC Plus/Pro/Zero</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>IQaudIO - Pi-Digi Amp Plus</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>IQaudIO - Pi-Digi Amp Plus - Automute</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>IQaudIO - Pi-Digi Plus</string>
        </property>
       </item>
       <item>
@@ -2813,7 +2927,7 @@ subcontrol-position: center left;
        <rect>
         <x>90</x>
         <y>140</y>
-        <width>200</width>
+        <width>300</width>
         <height>30</height>
        </rect>
       </property>
@@ -2859,6 +2973,11 @@ subcontrol-position: center left;
         <height>41</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
        <string>Timezone is needed for rtc - Sync with timeserver can be done via
 &quot;crankshaft rtc sync&quot; in shell.</string>
@@ -2868,9 +2987,9 @@ subcontrol-position: center left;
     <widget class="QLabel" name="labelSettingsInfo_3">
      <property name="geometry">
       <rect>
-       <x>0</x>
+       <x>2</x>
        <y>410</y>
-       <width>616</width>
+       <width>612</width>
        <height>23</height>
       </rect>
      </property>
@@ -2892,7 +3011,7 @@ subcontrol-position: center left;
     <widget class="QLabel" name="labelSettingsInfo_Icon_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>80</x>
        <y>406</y>
        <width>31</width>
        <height>31</height>
