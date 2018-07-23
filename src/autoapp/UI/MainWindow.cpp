@@ -108,9 +108,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraStop);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraHide);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
-    connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::saveVolumeOnExit);
     connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::exit);
-    connect(ui_->pushButtonReboot, &QPushButton::clicked, this, &MainWindow::saveVolumeOnExit);
     connect(ui_->pushButtonReboot, &QPushButton::clicked, this, &MainWindow::reboot);
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
@@ -260,6 +258,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
             }
         }
     }
+    system("/usr/local/bin/autoapp_helper restorevolumes");
 }
 
 MainWindow::~MainWindow()
@@ -429,12 +428,6 @@ void f1x::openauto::autoapp::ui::MainWindow::showRearCamBG()
 void f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG()
 {
     ui_->pushButtonRearcamBack->hide();
-}
-
-void f1x::openauto::autoapp::ui::MainWindow::saveVolumeOnExit()
-{
-    system("/usr/local/bin/autoapp_helper savevolumes");
-    //system("/usr/local/bin/autoapp_helper savecapvolume");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
