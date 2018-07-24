@@ -80,7 +80,9 @@ private:
     Ui::MainWindow* ui_;
     bool brightnessSliderVisible = false;
     QString brightnessFilename = "/sys/class/backlight/rpi_backlight/brightness";
+    QString brightnessFilenameAlt = "/tmp/custombrightness";
     QFile *brightnessFile;
+    QFile *brightnessFileAlt;
     char brightness_str[5];
 
     bool wifiButtonForce = false;

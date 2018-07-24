@@ -517,6 +517,13 @@ void SettingsWindow::loadSystemValues()
         } else {
             ui_->checkBoxDisableScreenOff->setChecked(false);
         }
+
+        // set custom brightness command
+        if (getparams[26] == "1") {
+            ui_->checkBoxCustomBrightnessCommand->setChecked(true);
+        } else {
+            ui_->checkBoxCustomBrightnessCommand->setChecked(false);
+        }
     }
 }
 

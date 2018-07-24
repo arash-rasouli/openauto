@@ -2473,7 +2473,7 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>180</y>
+       <y>160</y>
        <width>616</width>
        <height>81</height>
       </rect>
@@ -2604,7 +2604,7 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>290</y>
+       <y>250</y>
        <width>300</width>
        <height>61</height>
       </rect>
@@ -2646,7 +2646,7 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>2</x>
-       <y>410</y>
+       <y>420</y>
        <width>612</width>
        <height>23</height>
       </rect>
@@ -2670,7 +2670,7 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>406</y>
+       <y>416</y>
        <width>31</width>
        <height>31</height>
       </rect>
@@ -2683,7 +2683,7 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>320</x>
-       <y>290</y>
+       <y>250</y>
        <width>296</width>
        <height>61</height>
       </rect>
@@ -2717,6 +2717,69 @@ subcontrol-position: center left;
        <string>Normal</string>
       </property>
       <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxFrameRate_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>320</y>
+       <width>616</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Custom Brightness Command</string>
+     </property>
+     <widget class="QCheckBox" name="checkBoxCustomBrightnessCommand">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>281</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Custom Birghtness Command activated</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelCustomBrightnessCommandInfoIcon">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>56</y>
+        <width>21</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelCustomBrightnessCommandNote">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>60</y>
+        <width>551</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>Just an information - not checkable! - Can be activated in crankshaft_env.sh!</string>
+      </property>
+      <property name="wordWrap">
        <bool>true</bool>
       </property>
      </widget>

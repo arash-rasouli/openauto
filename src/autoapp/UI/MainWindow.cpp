@@ -300,12 +300,20 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
     int n = snprintf(this->brightness_str, 4, "%d", value);
 
     this->brightnessFile = new QFile(this->brightnessFilename);
+    this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
 
     if (this->brightnessFile->open(QIODevice::WriteOnly)) {
         this->brightness_str[n] = '\n';
         this->brightness_str[n+1] = '\0';
         this->brightnessFile->write(this->brightness_str);
         this->brightnessFile->close();
+    }
+    if (this->brightnessFileAlt->open(QIODevice::WriteOnly)) {
+        this->brightness_str[n] = '\n';
+        this->brightness_str[n+1] = '\0';
+        this->brightnessFileAlt->write(this->brightness_str);
+        this->brightnessFileAlt->close();
+        system("/usr/local/bin/autoapp_helper custombrightness &");
     }
 }
 
