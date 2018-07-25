@@ -212,6 +212,13 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonBrightness->hide();
     }
 
+    QFileInfo brightnessFileAlt(brightnessFilenameAlt);
+
+    if (brightnessFileAlt.exists()) {
+        ui_->pushButtonBrightness->show();
+        this->customBrightnessControl = true;
+    }
+
     if (!this->kodiButtonForce) {
         ui_->pushButtonKodi->hide();
     }
@@ -302,18 +309,21 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
     this->brightnessFile = new QFile(this->brightnessFilename);
     this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
 
-    if (this->brightnessFile->open(QIODevice::WriteOnly)) {
-        this->brightness_str[n] = '\n';
-        this->brightness_str[n+1] = '\0';
-        this->brightnessFile->write(this->brightness_str);
-        this->brightnessFile->close();
-    }
-    if (this->brightnessFileAlt->open(QIODevice::WriteOnly)) {
-        this->brightness_str[n] = '\n';
-        this->brightness_str[n+1] = '\0';
-        this->brightnessFileAlt->write(this->brightness_str);
-        this->brightnessFileAlt->close();
-        system("/usr/local/bin/autoapp_helper custombrightness &");
+    if (!this->customBrightnessControl) {
+        if (this->brightnessFile->open(QIODevice::WriteOnly)) {
+            this->brightness_str[n] = '\n';
+            this->brightness_str[n+1] = '\0';
+            this->brightnessFile->write(this->brightness_str);
+            this->brightnessFile->close();
+        }
+    } else {
+        if (this->brightnessFileAlt->open(QIODevice::WriteOnly)) {
+            this->brightness_str[n] = '\n';
+            this->brightness_str[n+1] = '\0';
+            this->brightnessFileAlt->write(this->brightness_str);
+            this->brightnessFileAlt->close();
+            system("/usr/local/bin/autoapp_helper custombrightness &");
+        }
     }
 }
 

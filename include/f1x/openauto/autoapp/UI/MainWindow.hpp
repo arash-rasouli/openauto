@@ -84,6 +84,7 @@ private:
     QFile *brightnessFile;
     QFile *brightnessFileAlt;
     char brightness_str[5];
+    bool customBrightnessControl = false;
 
     bool wifiButtonForce = false;
     bool cameraButtonForce = false;
