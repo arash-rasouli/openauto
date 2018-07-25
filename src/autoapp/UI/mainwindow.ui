@@ -644,9 +644,9 @@
    <widget class="QLabel" name="systemConfigInProgress">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>175</x>
       <y>368</y>
-      <width>400</width>
+      <width>450</width>
       <height>24</height>
      </rect>
     </property>
@@ -670,6 +670,59 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="systemDebugging">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>368</y>
+      <width>140</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>140</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>14</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton { background: grey; border: none; }
+QPushButton:pressed { background: orange; border: none; }</string>
+    </property>
+    <property name="text">
+     <string>Create Log</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="autoRepeat">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

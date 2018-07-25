@@ -172,6 +172,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCam);
         connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
         connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
+        connect(ui_->systemDebugging, &QPushButton::clicked, this, &MainWindow::createDebuglog);
         ui_->pushButtonCameraShow->show();
         ui_->pushButtonCameraHide->hide();
     } else {
@@ -199,8 +200,14 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonSave->hide();
     ui_->pushButtonRearcam->hide();
     ui_->pushButtonRearcamBack->hide();
-
     ui_->systemConfigInProgress->hide();
+    ui_->systemDebugging->hide();
+
+    QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
+    if (DebugmodeFile.exists()) {
+        ui_->systemDebugging->show();
+        this->systemDebugmode = true;
+    }
 
     if (!this->wifiButtonForce) {
         ui_->pushButtonWirelessConnection->hide();
@@ -448,8 +455,15 @@ void f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG()
     ui_->pushButtonRearcamBack->hide();
 }
 
+void f1x::openauto::autoapp::ui::MainWindow::createDebuglog()
+{
+    system("/usr/local/bin/crankshaft debuglog &");
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
+    using namespace std::this_thread; // sleep_for
+    using namespace std::chrono; // milliseconds
 
     QTime time=QTime::currentTime();
     QString time_text=time.toString("hh : mm : ss");
@@ -470,14 +484,28 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         }
 
         QFileInfo configInProgressFile("/tmp/config_in_progress");
-        if (configInProgressFile.exists()) {
+        QFileInfo debugInProgressFile("/tmp/debug_in_progress");
+
+        if (configInProgressFile.exists() || debugInProgressFile.exists()) {
             if (ui_->systemConfigInProgress->isVisible() == false) {
-                ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
-                ui_->systemConfigInProgress->show();
+                if (configInProgressFile.exists()) {
+                    ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
+                    ui_->pushButtonSettings->hide();
+                    ui_->systemConfigInProgress->show();
+                }
+                if (debugInProgressFile.exists()) {
+                    ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
+                    ui_->systemDebugging->hide();
+                    ui_->systemConfigInProgress->show();
+                }
             }
         } else {
             if (ui_->systemConfigInProgress->isVisible() == true) {
                 ui_->systemConfigInProgress->hide();
+                ui_->pushButtonSettings->show();
+                if (this->systemDebugmode) {
+                    ui_->systemDebugging->show();
+                }
             }
         }
 
@@ -537,9 +565,6 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     }
 
     ui_->Digital_clock->setText(time_text);
-
-    using namespace std::this_thread; // sleep_for
-    using namespace std::chrono; // milliseconds
     sleep_for(milliseconds(10));
 
     /**if (configuration_->showClock()) {

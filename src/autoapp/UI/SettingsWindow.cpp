@@ -171,6 +171,12 @@ void SettingsWindow::onSave()
         params.append("0");
     }
     params.append("#");
+    if (ui_->radioButtonDebugmodeEnabled->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
@@ -520,10 +526,18 @@ void SettingsWindow::loadSystemValues()
 
         // set custom brightness command
         if (getparams[26] == "1") {
-            ui_->checkBoxCustomBrightnessCommand->setChecked(true);
+            ui_->labelCustomBrightnessCommand->setText("Enabled");
         } else {
-            ui_->checkBoxCustomBrightnessCommand->setChecked(false);
+            ui_->labelCustomBrightnessCommand->setText("Disabled");
         }
+
+        // set debug mode
+        if (getparams[27] == "1") {
+            ui_->radioButtonDebugmodeEnabled->setChecked(true);
+        } else {
+            ui_->radioButtonDebugmodeDisabled->setChecked(true);
+        }
+
     }
 }
 

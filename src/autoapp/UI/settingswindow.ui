@@ -2726,33 +2726,72 @@ subcontrol-position: center left;
       <rect>
        <x>0</x>
        <y>320</y>
-       <width>616</width>
-       <height>91</height>
+       <width>300</width>
+       <height>61</height>
       </rect>
      </property>
      <property name="title">
       <string>Custom Brightness Command</string>
      </property>
-     <widget class="QCheckBox" name="checkBoxCustomBrightnessCommand">
+     <widget class="QLabel" name="labelCustomBrightnessCommand">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
         <width>281</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>disabled</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxDebugmode">
+     <property name="geometry">
+      <rect>
+       <x>325</x>
+       <y>320</y>
+       <width>291</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Debugmode</string>
+     </property>
+     <widget class="QRadioButton" name="radioButtonDebugmodeEnabled">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>120</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
-       <string>Custom Birghtness Command activated</string>
+       <string>Enabled</string>
       </property>
-      <property name="checkable">
+     </widget>
+     <widget class="QRadioButton" name="radioButtonDebugmodeDisabled">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Disabled</string>
+      </property>
+      <property name="checked">
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="labelCustomBrightnessCommandInfoIcon">
+     <widget class="QLabel" name="labelDebugmodeInfoIcon">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>10</x>
         <y>56</y>
         <width>21</width>
         <height>31</height>
@@ -2762,12 +2801,12 @@ subcontrol-position: center left;
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelCustomBrightnessCommandNote">
+     <widget class="QLabel" name="labelDebugmodeNote">
       <property name="geometry">
        <rect>
-        <x>60</x>
+        <x>40</x>
         <y>60</y>
-        <width>551</width>
+        <width>251</width>
         <height>23</height>
        </rect>
       </property>
@@ -2777,7 +2816,7 @@ subcontrol-position: center left;
        </font>
       </property>
       <property name="text">
-       <string>Just an information - not checkable! - Can be activated in crankshaft_env.sh!</string>
+       <string>Debud Mode excludes dev mode!</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>

@@ -75,6 +75,7 @@ private slots:
     void toggleExit();
     void showRearCamBG();
     void hideRearCamBG();
+    void createDebuglog();
 
 private:
     Ui::MainWindow* ui_;
@@ -109,6 +110,7 @@ private:
     bool rearcamState = false;
 
     bool dashCamRecording = false;
+    bool systemDebugmode = false;
 };
 
 }
