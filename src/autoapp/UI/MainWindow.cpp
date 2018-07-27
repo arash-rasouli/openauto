@@ -202,6 +202,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonRearcamBack->hide();
     ui_->systemConfigInProgress->hide();
     ui_->systemDebugging->hide();
+    ui_->pushButtonLock->hide();
 
     QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
     if (DebugmodeFile.exists()) {
@@ -491,6 +492,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 if (configInProgressFile.exists()) {
                     ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
                     ui_->pushButtonSettings->hide();
+                    ui_->pushButtonLock->show();
                     ui_->systemConfigInProgress->show();
                 }
                 if (debugInProgressFile.exists()) {
@@ -503,6 +505,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             if (ui_->systemConfigInProgress->isVisible() == true) {
                 ui_->systemConfigInProgress->hide();
                 ui_->pushButtonSettings->show();
+                    ui_->pushButtonLock->hide();
                 if (this->systemDebugmode) {
                     ui_->systemDebugging->show();
                 }

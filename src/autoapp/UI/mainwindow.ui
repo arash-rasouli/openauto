@@ -725,6 +725,59 @@ QPushButton:pressed { background: orange; border: none; }</string>
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButtonLock">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>34</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/lock-hot.png</normaloff>:/lock-hot.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>64</width>
+      <height>64</height>
+     </size>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>masterButtonBG</zorder>
+   <zorder>pushButtonSettings</zorder>
+   <zorder>pushButtonLock</zorder>
+   <zorder>pushButtonWirelessConnection</zorder>
+   <zorder>pushButtonKodi</zorder>
+   <zorder>pushButtonToggleCursor</zorder>
+   <zorder>pushButtonDay</zorder>
+   <zorder>pushButtonNight</zorder>
+   <zorder>pushButtonBrightness</zorder>
+   <zorder>pushButtonCameraShow</zorder>
+   <zorder>pushButtonCameraHide</zorder>
+   <zorder>pushButtonExit</zorder>
+   <zorder>systemDebugging</zorder>
+   <zorder>horizontalSliderBrightness</zorder>
+   <zorder>Digital_clock</zorder>
+   <zorder>phoneConnected</zorder>
+   <zorder>versionString</zorder>
+   <zorder>dateString</zorder>
+   <zorder>dashcamBG</zorder>
+   <zorder>pushButtonStop</zorder>
+   <zorder>pushButtonRecord</zorder>
+   <zorder>pushButtonRecordActive</zorder>
+   <zorder>pushButtonRearcam</zorder>
+   <zorder>pushButtonSave</zorder>
+   <zorder>exitBG</zorder>
+   <zorder>pushButtonShutdown</zorder>
+   <zorder>pushButtonReboot</zorder>
+   <zorder>pushButtonCancel</zorder>
+   <zorder>systemConfigInProgress</zorder>
+   <zorder>pushButtonRearcamBack</zorder>
   </widget>
  </widget>
  <tabstops>
