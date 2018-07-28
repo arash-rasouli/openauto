@@ -675,7 +675,7 @@
    <widget class="QPushButton" name="systemDebugging">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>640</x>
       <y>368</y>
       <width>140</width>
       <height>24</height>
@@ -722,7 +722,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
      <bool>false</bool>
     </property>
     <property name="flat">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonLock">
@@ -748,6 +748,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
      <bool>true</bool>
     </property>
    </widget>
+   <zorder>dashcamBG</zorder>
    <zorder>masterButtonBG</zorder>
    <zorder>pushButtonSettings</zorder>
    <zorder>pushButtonLock</zorder>
@@ -760,13 +761,12 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonCameraShow</zorder>
    <zorder>pushButtonCameraHide</zorder>
    <zorder>pushButtonExit</zorder>
-   <zorder>systemDebugging</zorder>
    <zorder>horizontalSliderBrightness</zorder>
    <zorder>Digital_clock</zorder>
    <zorder>phoneConnected</zorder>
+   <zorder>systemDebugging</zorder>
    <zorder>versionString</zorder>
    <zorder>dateString</zorder>
-   <zorder>dashcamBG</zorder>
    <zorder>pushButtonStop</zorder>
    <zorder>pushButtonRecord</zorder>
    <zorder>pushButtonRecordActive</zorder>
@@ -786,6 +786,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
   <tabstop>pushButtonToggleCursor</tabstop>
   <tabstop>pushButtonBrightness</tabstop>
   <tabstop>pushButtonExit</tabstop>
+  <tabstop>systemDebugging</tabstop>
  </tabstops>
  <resources>
   <include location="../../../assets/resources.qrc"/>

@@ -119,6 +119,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonKodi, &QPushButton::clicked, this, &MainWindow::startKodi);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
+    connect(ui_->systemDebugging, &QPushButton::clicked, this, &MainWindow::createDebuglog);
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
@@ -172,7 +173,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCam);
         connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
         connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
-        connect(ui_->systemDebugging, &QPushButton::clicked, this, &MainWindow::createDebuglog);
         ui_->pushButtonCameraShow->show();
         ui_->pushButtonCameraHide->hide();
     } else {
