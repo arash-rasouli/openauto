@@ -390,7 +390,7 @@ void SettingsWindow::loadSystemValues()
             QStringList inputs = data_return.readAll().split("\n");
             inputsFile.close();
             int cleaner = ui_->comboBoxPulseInput->count();
-            while (cleaner > 0) {
+            while (cleaner > -1) {
                 ui_->comboBoxPulseInput->removeItem(cleaner);
                 cleaner--;
             }
@@ -410,7 +410,7 @@ void SettingsWindow::loadSystemValues()
             QStringList outputs = data_return.readAll().split("\n");
             outputsFile.close();
             int cleaner = ui_->comboBoxPulseOutput->count();
-            while (cleaner > 0) {
+            while (cleaner > -1) {
                 ui_->comboBoxPulseOutput->removeItem(cleaner);
                 cleaner--;
             }
@@ -469,10 +469,10 @@ void SettingsWindow::loadSystemValues()
 
         // set dac
         QString dac = "Custom";
-        if (getparams[23] == "allo-boss-dac-pcm512x-audio,slave") {
+        if (getparams[23] == "allo-boss-dac-pcm512x-audio") {
             dac = "Allo - Boss";
         }
-        if (getparams[23] == "allo-piano-dac-pcm512x-audio,slave") {
+        if (getparams[23] == "allo-piano-dac-pcm512x-audio") {
             dac = "Allo - Piano";
         }
         if (getparams[23] == "iqaudio-dacplus") {

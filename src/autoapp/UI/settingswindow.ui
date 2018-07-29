@@ -620,14 +620,6 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="editable">
        <bool>false</bool>
       </property>
-      <property name="currentText">
-       <string>not selected</string>
-      </property>
-      <item>
-       <property name="text">
-        <string>not selected</string>
-       </property>
-      </item>
      </widget>
      <widget class="QLabel" name="labelPulseOutput">
       <property name="geometry">

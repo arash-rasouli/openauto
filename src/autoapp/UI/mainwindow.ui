@@ -748,7 +748,6 @@ QPushButton:pressed { background: orange; border: none; }</string>
      <bool>true</bool>
     </property>
    </widget>
-   <zorder>dashcamBG</zorder>
    <zorder>masterButtonBG</zorder>
    <zorder>pushButtonSettings</zorder>
    <zorder>pushButtonLock</zorder>
@@ -767,6 +766,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>systemDebugging</zorder>
    <zorder>versionString</zorder>
    <zorder>dateString</zorder>
+   <zorder>dashcamBG</zorder>
    <zorder>pushButtonStop</zorder>
    <zorder>pushButtonRecord</zorder>
    <zorder>pushButtonRecordActive</zorder>
