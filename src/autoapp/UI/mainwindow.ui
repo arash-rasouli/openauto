@@ -675,15 +675,15 @@
    <widget class="QPushButton" name="systemDebugging">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>368</y>
-      <width>140</width>
+      <x>0</x>
+      <y>456</y>
+      <width>800</width>
       <height>24</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>140</width>
+      <width>800</width>
       <height>24</height>
      </size>
     </property>
@@ -704,7 +704,7 @@
 QPushButton:pressed { background: orange; border: none; }</string>
     </property>
     <property name="text">
-     <string>Create Log</string>
+     <string>Create Debug Log</string>
     </property>
     <property name="iconSize">
      <size>
@@ -763,7 +763,6 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>horizontalSliderBrightness</zorder>
    <zorder>Digital_clock</zorder>
    <zorder>phoneConnected</zorder>
-   <zorder>systemDebugging</zorder>
    <zorder>versionString</zorder>
    <zorder>dateString</zorder>
    <zorder>dashcamBG</zorder>
@@ -777,6 +776,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonReboot</zorder>
    <zorder>pushButtonCancel</zorder>
    <zorder>systemConfigInProgress</zorder>
+   <zorder>systemDebugging</zorder>
    <zorder>pushButtonRearcamBack</zorder>
   </widget>
  </widget>
