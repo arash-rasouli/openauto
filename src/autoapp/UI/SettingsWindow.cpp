@@ -177,6 +177,10 @@ void SettingsWindow::onSave()
         params.append("0");
     }
     params.append("#");
+    params.append( std::string(ui_->comboBoxGPIOShutdown->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::to_string(ui_->spinBoxGPIOShutdownDelay->value()) );
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
@@ -538,6 +542,9 @@ void SettingsWindow::loadSystemValues()
             ui_->radioButtonDebugmodeDisabled->setChecked(true);
         }
 
+        // GPIO based shutdown
+        ui_->comboBoxGPIOShutdown->setCurrentText(getparams[28]);
+        ui_->spinBoxGPIOShutdownDelay->setValue(getparams[29].toInt());
     }
 }
 
