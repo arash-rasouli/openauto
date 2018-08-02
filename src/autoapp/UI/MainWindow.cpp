@@ -565,6 +565,10 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 }
             }
         }
+        QFileInfo externalExitFile("/tmp/external_exit");
+        if (externalExitFile.exists()) {
+            f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
+        }
     }
 
     ui_->Digital_clock->setText(time_text);
@@ -580,5 +584,3 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         }
     }**/
 }
-
-
