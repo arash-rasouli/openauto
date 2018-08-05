@@ -181,6 +181,10 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::to_string(ui_->spinBoxGPIOShutdownDelay->value()) );
     params.append("#");
+    params.append( std::string(ui_->lineEditWifiClientSSID->text().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->lineEditWifiClientPassword->text().toStdString()) );
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
@@ -545,6 +549,10 @@ void SettingsWindow::loadSystemValues()
         // GPIO based shutdown
         ui_->comboBoxGPIOShutdown->setCurrentText(getparams[28]);
         ui_->spinBoxGPIOShutdownDelay->setValue(getparams[29].toInt());
+
+        // Wifi Credentials
+        ui_->lineEditWifiClientSSID->setText(getparams[30]);
+        ui_->lineEditWifiClientPassword->setText(getparams[31]);
     }
 }
 

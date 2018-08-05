@@ -574,13 +574,4 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     ui_->Digital_clock->setText(time_text);
     sleep_for(milliseconds(10));
 
-    /**if (configuration_->showClock()) {
-        if (ui_->Digital_clock->isVisible() == true) {
-            ui_->Digital_clock->hide();
-        }
-    } else {
-        if (ui_->Digital_clock->isVisible() == false) {
-            ui_->Digital_clock->show();
-        }
-    }**/
 }
