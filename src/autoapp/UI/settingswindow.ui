@@ -615,8 +615,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>30</y>
-        <width>471</width>
+        <y>36</y>
+        <width>531</width>
         <height>30</height>
        </rect>
       </property>
@@ -628,7 +628,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>30</y>
+        <y>36</y>
         <width>61</width>
         <height>30</height>
        </rect>
@@ -641,8 +641,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>70</y>
-        <width>471</width>
+        <y>76</y>
+        <width>531</width>
         <height>30</height>
        </rect>
       </property>
@@ -654,7 +654,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>70</y>
+        <y>76</y>
         <width>61</width>
         <height>30</height>
        </rect>
@@ -667,8 +667,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>80</x>
-        <y>106</y>
-        <width>471</width>
+        <y>114</y>
+        <width>561</width>
         <height>31</height>
        </rect>
       </property>
@@ -678,7 +678,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        </font>
       </property>
       <property name="text">
-       <string>To activate changed audio device you have to save settings and disconnect / reconnect phone!</string>
+       <string>To activate changed audio device you have to save settings and reconnect phone!</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -691,7 +691,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>108</y>
+        <y>116</y>
         <width>31</width>
         <height>31</height>
        </rect>
@@ -1094,7 +1094,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="tabBluetooth">
+   <widget class="QWidget" name="tabWireless">
     <attribute name="title">
      <string>Wireless</string>
     </attribute>
@@ -1228,6 +1228,11 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
        <string>In order to use bluetooth features please remember to pair your device.</string>
       </property>
@@ -1248,9 +1253,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLineEdit" name="lineEditWifiClientPassword">
       <property name="geometry">
        <rect>
-        <x>410</x>
+        <x>390</x>
         <y>30</y>
-        <width>231</width>
+        <width>251</width>
         <height>31</height>
        </rect>
       </property>
@@ -1267,7 +1272,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="labelWifiClientPassword">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>310</x>
         <y>30</y>
         <width>71</width>
         <height>31</height>
@@ -1299,6 +1304,11 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         <height>31</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
       <property name="text">
        <string>The wifi connection is only available in dev mode or debug mode!</string>
       </property>
@@ -1308,7 +1318,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>90</x>
         <y>30</y>
-        <width>231</width>
+        <width>200</width>
         <height>31</height>
        </rect>
       </property>
@@ -1327,8 +1337,126 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
      </widget>
     </widget>
+    <widget class="QGroupBox" name="groupBoxWifiHotspot">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>310</y>
+       <width>646</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Hotspot settings</string>
+     </property>
+     <widget class="QLineEdit" name="lineEditWifiHotspotPassword">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>60</y>
+        <width>251</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="frame">
+       <bool>true</bool>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Normal</enum>
+      </property>
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelWifiHotspotPassword">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>60</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Password:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelUseWarningIcon_2">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>100</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelUseWarning_2">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>100</y>
+        <width>481</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>The hotspot is only available in dev mode and overrides client mode!</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEditWifiHotspotSSID">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>60</y>
+        <width>200</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelWifiHotspotSSID">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SSID:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBoxHotspot">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>141</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enable Hotspot</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
-   <widget class="QWidget" name="tabCrankshaftNG">
+   <widget class="QWidget" name="tabCSBase">
     <attribute name="title">
      <string>CS Base</string>
     </attribute>
@@ -1338,7 +1466,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <x>0</x>
        <y>10</y>
        <width>646</width>
-       <height>91</height>
+       <height>111</height>
       </rect>
      </property>
      <property name="title">
@@ -1374,7 +1502,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>66</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -1387,7 +1515,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>64</y>
+        <y>70</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -1426,7 +1554,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>60</y>
+        <y>66</y>
         <width>110</width>
         <height>23</height>
        </rect>
@@ -1439,7 +1567,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>64</y>
+        <y>70</y>
         <width>80</width>
         <height>23</height>
        </rect>
@@ -1641,7 +1769,7 @@ subcontrol-position: center left;
      <widget class="QCheckBox" name="checkBoxDisableShutdown">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>550</x>
         <y>40</y>
         <width>71</width>
         <height>23</height>
@@ -1654,7 +1782,7 @@ subcontrol-position: center left;
      <widget class="QCheckBox" name="checkBoxDisableScreenOff">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>550</x>
         <y>84</y>
         <width>71</width>
         <height>23</height>
@@ -1669,9 +1797,9 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>110</y>
+       <y>130</y>
        <width>311</width>
-       <height>91</height>
+       <height>71</height>
       </rect>
      </property>
      <property name="title">
@@ -1703,82 +1831,6 @@ subcontrol-position: center left;
        <string>Normal</string>
       </property>
       <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBoxDebugmode">
-     <property name="geometry">
-      <rect>
-       <x>320</x>
-       <y>110</y>
-       <width>326</width>
-       <height>91</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Debugmode</string>
-     </property>
-     <widget class="QRadioButton" name="radioButtonDebugmodeEnabled">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>30</y>
-        <width>120</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Enabled</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radioButtonDebugmodeDisabled">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>80</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disabled</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelDebugmodeInfoIcon">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>56</y>
-        <width>21</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelDebugmodeNote">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>60</y>
-        <width>241</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>Debud Mode overrides dev mode!</string>
-      </property>
-      <property name="wordWrap">
        <bool>true</bool>
       </property>
      </widget>
@@ -1951,8 +2003,50 @@ subcontrol-position: center left;
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
+    <widget class="QGroupBox" name="groupBoxStartMode">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>130</y>
+       <width>326</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Start Mode Openauto</string>
+     </property>
+     <widget class="QRadioButton" name="radioButtonX11">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>30</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>X11</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonEGL">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>EGL</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </widget>
    </widget>
-   <widget class="QWidget" name="tabGPIO">
+   <widget class="QWidget" name="tabCSEnv">
     <attribute name="title">
      <string>CS Env</string>
     </attribute>
@@ -2675,13 +2769,13 @@ subcontrol-position: center left;
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBoxFrameRate_2">
+    <widget class="QGroupBox" name="groupBoxBrightnessCommand">
      <property name="geometry">
       <rect>
-       <x>230</x>
+       <x>325</x>
        <y>250</y>
-       <width>416</width>
-       <height>61</height>
+       <width>321</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="title">
@@ -3093,50 +3187,84 @@ subcontrol-position: center left;
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBoxStartMode">
+    <widget class="QGroupBox" name="groupBoxDebugmode">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>250</y>
-       <width>221</width>
-       <height>61</height>
+       <width>321</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="title">
-      <string>Start Mode Openauto</string>
+      <string>Debugmode</string>
      </property>
-     <widget class="QRadioButton" name="radioButtonX11">
+     <widget class="QRadioButton" name="radioButtonDebugmodeEnabled">
       <property name="geometry">
        <rect>
         <x>120</x>
         <y>30</y>
-        <width>81</width>
+        <width>120</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
-       <string>X11</string>
+       <string>Enabled</string>
       </property>
      </widget>
-     <widget class="QRadioButton" name="radioButtonEGL">
+     <widget class="QRadioButton" name="radioButtonDebugmodeDisabled">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>81</width>
+        <width>80</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
-       <string>EGL</string>
+       <string>Disabled</string>
       </property>
       <property name="checked">
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="labelDebugmodeInfoIcon">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>56</y>
+        <width>21</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelDebugmodeNote">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>60</y>
+        <width>241</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>Debud Mode overrides dev mode!</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="tabCSHW">
     <attribute name="title">
      <string>CS HW</string>
     </attribute>
@@ -3352,7 +3480,7 @@ subcontrol-position: center left;
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="labelHardwareRTC_2">
+     <widget class="QLabel" name="labelHardwareTZ">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -3403,7 +3531,7 @@ subcontrol-position: center left;
       <rect>
        <x>2</x>
        <y>425</y>
-       <width>646</width>
+       <width>644</width>
        <height>26</height>
       </rect>
      </property>

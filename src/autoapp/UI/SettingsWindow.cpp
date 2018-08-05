@@ -185,6 +185,14 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->lineEditWifiClientPassword->text().toStdString()) );
     params.append("#");
+    if (ui_->checkBoxHotspot->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    params.append( std::string(ui_->lineEditWifiHotspotPassword->text().toStdString()) );
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }
@@ -553,6 +561,16 @@ void SettingsWindow::loadSystemValues()
         // Wifi Credentials
         ui_->lineEditWifiClientSSID->setText(getparams[30]);
         ui_->lineEditWifiClientPassword->setText(getparams[31]);
+
+        // Wifi Hotspot Credentials
+        if (getparams[32] == "1") {
+            ui_->checkBoxHotspot->setChecked(true);
+        } else {
+            ui_->checkBoxHotspot->setChecked(false);
+        }
+
+        ui_->lineEditWifiHotspotSSID->setText(getparams[33]);
+        ui_->lineEditWifiHotspotPassword->setText(getparams[34]);
     }
 }
 
