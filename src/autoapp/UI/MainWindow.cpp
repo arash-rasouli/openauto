@@ -227,8 +227,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         this->customBrightnessControl = true;
     }
 
+    ui_->kodiBG->hide();
     if (!this->kodiButtonForce) {
         ui_->pushButtonKodi->hide();
+    } else {
+        system("/usr/local/bin/autoapp_helper startkodimonitor &");
     }
 
     ui_->horizontalSliderBrightness->hide();
@@ -569,9 +572,24 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         if (externalExitFile.exists()) {
             f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
         }
-    }
 
+        if (this->kodiButtonForce) {
+            QFileInfo kodiRunningFile("/tmp/kodi_running");
+            if (kodiRunningFile.exists()) {
+                if (ui_->kodiBG->isVisible() == false) {
+                    ui_->kodiBG->hide();
+                    QPixmap image;
+                    image.load(":/black.png");
+                    ui_->kodiBG->setPixmap(image);
+                    ui_->kodiBG->show();
+                }
+            } else {
+                if (ui_->kodiBG->isVisible() == true) {
+                    ui_->kodiBG->hide();
+                }
+            }
+        }
+    }
     ui_->Digital_clock->setText(time_text);
     sleep_for(milliseconds(10));
-
 }

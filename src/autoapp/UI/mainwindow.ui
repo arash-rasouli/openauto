@@ -748,6 +748,16 @@ QPushButton:pressed { background: orange; border: none; }</string>
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QLabel" name="kodiBG">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>480</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>masterButtonBG</zorder>
    <zorder>pushButtonSettings</zorder>
    <zorder>pushButtonLock</zorder>
@@ -777,6 +787,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonCancel</zorder>
    <zorder>systemConfigInProgress</zorder>
    <zorder>systemDebugging</zorder>
+   <zorder>kodiBG</zorder>
    <zorder>pushButtonRearcamBack</zorder>
   </widget>
  </widget>
