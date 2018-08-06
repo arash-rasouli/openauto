@@ -541,8 +541,8 @@ void SettingsWindow::loadSystemValues()
         }
 
         // set custom brightness command
-        if (getparams[26] == "1") {
-            ui_->labelCustomBrightnessCommand->setText("Enabled");
+        if (getparams[26] != "0") {
+            ui_->labelCustomBrightnessCommand->setText(getparams[26] + " brvalue");
         } else {
             ui_->labelCustomBrightnessCommand->setText("Disabled");
         }
