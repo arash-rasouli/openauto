@@ -770,7 +770,6 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonCameraShow</zorder>
    <zorder>pushButtonCameraHide</zorder>
    <zorder>pushButtonExit</zorder>
-   <zorder>horizontalSliderBrightness</zorder>
    <zorder>Digital_clock</zorder>
    <zorder>phoneConnected</zorder>
    <zorder>versionString</zorder>
@@ -787,6 +786,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonCancel</zorder>
    <zorder>systemConfigInProgress</zorder>
    <zorder>systemDebugging</zorder>
+   <zorder>horizontalSliderBrightness</zorder>
    <zorder>kodiBG</zorder>
    <zorder>pushButtonRearcamBack</zorder>
   </widget>

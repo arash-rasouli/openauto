@@ -509,11 +509,8 @@ void SettingsWindow::loadSystemValues()
         if (getparams[23] == "iqaudio-digi-wm8804-audio") {
             dac = "IQaudIO - Pi-Digi Plus";
         }
-        if (getparams[23] == "audioinjector-zero") {
-            dac = "Audioinjector - Zero";
-        }
-        if (getparams[23] == "audioinjector-stereo") {
-            dac = "Audioinjector - Stereo";
+        if (getparams[23] == "audioinjector-wm8731-audio") {
+            dac = "Audioinjector - Zero/Stereo";
         }
         if (getparams[23] == "hifiberry-dac") {
             dac = "Hifiberry - DAC";

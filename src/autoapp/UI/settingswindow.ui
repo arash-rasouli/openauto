@@ -3422,12 +3422,7 @@ subcontrol-position: center left;
       </item>
       <item>
        <property name="text">
-        <string>Audioinjector - Zero</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Audioinjector - Stereo</string>
+        <string>Audioinjector - Zero/Stereo</string>
        </property>
       </item>
       <item>
