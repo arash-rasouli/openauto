@@ -193,6 +193,12 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->lineEditWifiHotspotPassword->text().toStdString()) );
     params.append("#");
+    if (ui_->checkBoxHardwareSave->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
     this->close();
 }

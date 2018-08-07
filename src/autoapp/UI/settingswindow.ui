@@ -1224,7 +1224,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>90</x>
         <y>130</y>
-        <width>481</width>
+        <width>551</width>
         <height>31</height>
        </rect>
       </property>
@@ -1300,7 +1300,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>90</x>
         <y>70</y>
-        <width>481</width>
+        <width>551</width>
         <height>31</height>
        </rect>
       </property>
@@ -1399,7 +1399,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>90</x>
         <y>100</y>
-        <width>481</width>
+        <width>551</width>
         <height>31</height>
        </rect>
       </property>
@@ -1409,7 +1409,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        </font>
       </property>
       <property name="text">
-       <string>The hotspot is only available in dev mode and overrides client mode!</string>
+       <string>The hotspot is only available in dev mode and overrides client mode! SSID is fixed.</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="lineEditWifiHotspotSSID">
@@ -2056,11 +2056,11 @@ subcontrol-position: center left;
        <x>0</x>
        <y>10</y>
        <width>646</width>
-       <height>141</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="title">
-      <string>GPIO Settings</string>
+      <string>GPIO Settings (only working if enabled)</string>
      </property>
      <widget class="QCheckBox" name="checkBoxGPIO">
       <property name="geometry">
@@ -2242,7 +2242,7 @@ subcontrol-position: center left;
      <widget class="QComboBox" name="comboBoxInvert">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>320</x>
         <y>60</y>
         <width>100</width>
         <height>30</height>
@@ -2393,8 +2393,8 @@ subcontrol-position: center left;
      <widget class="QComboBox" name="comboBoxX11">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>100</y>
+        <x>530</x>
+        <y>60</y>
         <width>100</width>
         <height>30</height>
        </rect>
@@ -2544,8 +2544,8 @@ subcontrol-position: center left;
      <widget class="QLabel" name="labelX11">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>100</y>
+        <x>450</x>
+        <y>60</y>
         <width>80</width>
         <height>30</height>
        </rect>
@@ -2554,174 +2554,10 @@ subcontrol-position: center left;
        <string>X11 Pin</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelRearcam">
-      <property name="geometry">
-       <rect>
-        <x>240</x>
-        <y>100</y>
-        <width>90</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Rearcam Pin</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBoxRearcam">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>100</y>
-        <width>100</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="editable">
-       <bool>false</bool>
-      </property>
-      <property name="currentText">
-       <string>- - -</string>
-      </property>
-      <item>
-       <property name="text">
-        <string>- - -</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>2</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>3</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>4</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>5</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>6</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>7</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>8</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>9</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>10</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>11</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>12</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>13</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>14</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>15</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>16</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>17</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>18</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>19</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>20</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>21</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>22</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>23</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>24</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>25</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>26</string>
-       </property>
-      </item>
-     </widget>
      <widget class="QLabel" name="labelInvert">
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>230</x>
         <y>60</y>
         <width>90</width>
         <height>30</height>
@@ -2799,13 +2635,13 @@ subcontrol-position: center left;
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>160</y>
+       <y>120</y>
        <width>646</width>
-       <height>81</height>
+       <height>121</height>
       </rect>
      </property>
      <property name="title">
-      <string>Standalone GPIO Settings</string>
+      <string>Standalone GPIO Settings (working if set)</string>
      </property>
      <widget class="QComboBox" name="comboBoxAndroid">
       <property name="geometry">
@@ -2974,7 +2810,7 @@ subcontrol-position: center left;
      <widget class="QLabel" name="labelGPIOShutdown">
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>230</x>
         <y>34</y>
         <width>80</width>
         <height>30</height>
@@ -2987,7 +2823,7 @@ subcontrol-position: center left;
      <widget class="QComboBox" name="comboBoxGPIOShutdown">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>320</x>
         <y>34</y>
         <width>100</width>
         <height>30</height>
@@ -3138,7 +2974,7 @@ subcontrol-position: center left;
      <widget class="QSpinBox" name="spinBoxGPIOShutdownDelay">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>530</x>
         <y>30</y>
         <width>100</width>
         <height>41</height>
@@ -3176,7 +3012,7 @@ subcontrol-position: center left;
      <widget class="QLabel" name="labelGPIOShutdownDelay">
       <property name="geometry">
        <rect>
-        <x>460</x>
+        <x>450</x>
         <y>34</y>
         <width>80</width>
         <height>30</height>
@@ -3184,6 +3020,170 @@ subcontrol-position: center left;
       </property>
       <property name="text">
        <string>Delay</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxRearcam">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>80</y>
+        <width>100</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>- - -</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>- - -</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>6</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>7</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>8</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>9</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>10</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>11</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>13</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>14</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>15</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>16</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>17</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>18</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>19</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>20</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>21</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>22</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>23</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>24</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>25</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>26</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelRearcam">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>90</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Rearcam Pin</string>
       </property>
      </widget>
     </widget>
@@ -3523,6 +3523,19 @@ subcontrol-position: center left;
       <property name="text">
        <string>Timezone is needed for rtc - Sync with timeserver can be done via
 &quot;crankshaft rtc sync&quot; in shell.</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBoxHardwareSave">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>43</y>
+        <width>161</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Exec setup on save?</string>
       </property>
      </widget>
     </widget>
