@@ -641,6 +641,28 @@
      <number>25</number>
     </property>
    </widget>
+   <widget class="QLabel" name="horizontalSliderLabel">
+    <property name="geometry">
+     <rect>
+      <x>198</x>
+      <y>212</y>
+      <width>400</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>8</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <stylestrategy>PreferAntialias</stylestrategy>
+     </font>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
+    </property>
+   </widget>
    <widget class="QLabel" name="systemConfigInProgress">
     <property name="geometry">
      <rect>
@@ -787,6 +809,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>systemConfigInProgress</zorder>
    <zorder>systemDebugging</zorder>
    <zorder>horizontalSliderBrightness</zorder>
+   <zorder>horizontalSliderLabel</zorder>
    <zorder>kodiBG</zorder>
    <zorder>pushButtonRearcamBack</zorder>
   </widget>

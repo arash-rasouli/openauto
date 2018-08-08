@@ -220,13 +220,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonBrightness->hide();
     }
 
-    QFileInfo brightnessFileAlt(brightnessFilenameAlt);
-
-    if (brightnessFileAlt.exists()) {
-        ui_->pushButtonBrightness->show();
-        this->customBrightnessControl = true;
-        system("/usr/local/bin/autoapp_helper startcustombrightness &");
-    }
 
     ui_->kodiBG->hide();
     if (!this->kodiButtonForce) {
@@ -236,6 +229,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     ui_->horizontalSliderBrightness->hide();
+    ui_->horizontalSliderLabel->hide();
 
     if (!configuration->showClock()) {
         ui_->Digital_clock->hide();
@@ -283,18 +277,21 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     system("/usr/local/bin/autoapp_helper getbrightnessvalues");
 
     // read and set brightness values
-    if (this->customBrightnessControl) {
-        QFile paramFile(QString("/tmp/br_values"));
-        paramFile.open(QIODevice::ReadOnly);
-        QTextStream data_param(&paramFile);
-        QStringList getparams = data_param.readAll().split("#");
-        paramFile.close();
-        ui_->horizontalSliderBrightness->setMinimum(getparams[0].toInt());
-        ui_->horizontalSliderBrightness->setMaximum(getparams[1].toInt());
-        ui_->horizontalSliderBrightness->setSingleStep(getparams[2].toInt());
-        ui_->horizontalSliderBrightness->setTickInterval(getparams[2].toInt());
+    QFile paramFile(QString("/tmp/br_values"));
+    paramFile.open(QIODevice::ReadOnly);
+    QTextStream data_param(&paramFile);
+    QStringList getparams = data_param.readAll().split("#");
+    paramFile.close();
+    ui_->horizontalSliderBrightness->setMinimum(getparams[0].toInt());
+    ui_->horizontalSliderBrightness->setMaximum(getparams[1].toInt());
+    ui_->horizontalSliderBrightness->setSingleStep(getparams[2].toInt());
+    ui_->horizontalSliderBrightness->setTickInterval(getparams[2].toInt());
+    ui_->versionString->setText(getparams[0] + getparams[1] + getparams[2]);
+    if (getparams[3] == "1") {
+        ui_->pushButtonBrightness->show();
+        this->customBrightnessControl = true;
+        system("/usr/local/bin/autoapp_helper startcustombrightness &");
     }
-
 }
 
 MainWindow::~MainWindow()
@@ -309,6 +306,7 @@ MainWindow::~MainWindow()
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
 {
+
     this->brightnessFile = new QFile(this->brightnessFilename);
     this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
 
@@ -337,14 +335,16 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
             }
         }
         ui_->horizontalSliderBrightness->show();
+        ui_->horizontalSliderLabel->show();
     } else {
+        ui_->horizontalSliderLabel->hide();
         ui_->horizontalSliderBrightness->hide();
     }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_valueChanged(int value)
 {
-    int n = snprintf(this->brightness_str, 4, "%d", value);
+    int n = snprintf(this->brightness_str, 5, "%d", value);
 
     this->brightnessFile = new QFile(this->brightnessFilename);
     this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
@@ -364,6 +364,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
             this->brightnessFileAlt->close();
         }
     }
+    ui_->horizontalSliderLabel->setText(this->brightness_str);
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
@@ -385,6 +386,7 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
     ui_->pushButtonNight->hide();
     if (this->brightnessSliderVisible) {
         ui_->horizontalSliderBrightness->hide();
+        ui_->horizontalSliderLabel->hide();
         this->brightnessSliderVisible = false;
     }
 }
@@ -408,6 +410,7 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
     ui_->pushButtonDay->hide();
     if (this->brightnessSliderVisible) {
         ui_->horizontalSliderBrightness->hide();
+        ui_->horizontalSliderLabel->hide();
         this->brightnessSliderVisible = false;
     }
 }
@@ -443,6 +446,7 @@ void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
         ui_->pushButtonCameraHide->show();
         if (this->brightnessSliderVisible) {
             ui_->horizontalSliderBrightness->hide();
+            ui_->horizontalSliderLabel->hide();
             this->brightnessSliderVisible = false;
         }
     }
@@ -454,6 +458,7 @@ void f1x::openauto::autoapp::ui::MainWindow::toggleExit()
         f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
         if (this->brightnessSliderVisible) {
             ui_->horizontalSliderBrightness->hide();
+            ui_->horizontalSliderLabel->hide();
             this->brightnessSliderVisible = false;
         }
         ui_->pushButtonShutdown->show();
@@ -478,6 +483,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showRearCamBG()
     ui_->pushButtonRearcamBack->show();
     if (this->brightnessSliderVisible) {
         ui_->horizontalSliderBrightness->hide();
+        ui_->horizontalSliderLabel->hide();
         this->brightnessSliderVisible = false;
     }
 }

@@ -84,7 +84,7 @@ private:
     QString brightnessFilenameAlt = "/tmp/custombrightness";
     QFile *brightnessFile;
     QFile *brightnessFileAlt;
-    char brightness_str[5];
+    char brightness_str[6];
     bool customBrightnessControl = false;
 
     bool wifiButtonForce = false;
