@@ -225,6 +225,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     if (brightnessFileAlt.exists()) {
         ui_->pushButtonBrightness->show();
         this->customBrightnessControl = true;
+        system("/usr/local/bin/autoapp_helper startcustombrightness &");
     }
 
     ui_->kodiBG->hide();
@@ -277,6 +278,23 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         }
     }
     system("/usr/local/bin/autoapp_helper restorevolumes");
+
+    // Load configured brightness values
+    system("/usr/local/bin/autoapp_helper getbrightnessvalues");
+
+    // read and set brightness values
+    if (this->customBrightnessControl) {
+        QFile paramFile(QString("/tmp/br_values"));
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data_param(&paramFile);
+        QStringList getparams = data_param.readAll().split("#");
+        paramFile.close();
+        ui_->horizontalSliderBrightness->setMinimum(getparams[0].toInt());
+        ui_->horizontalSliderBrightness->setMaximum(getparams[1].toInt());
+        ui_->horizontalSliderBrightness->setSingleStep(getparams[2].toInt());
+        ui_->horizontalSliderBrightness->setTickInterval(getparams[2].toInt());
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -291,6 +309,9 @@ MainWindow::~MainWindow()
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
 {
+    this->brightnessFile = new QFile(this->brightnessFilename);
+    this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
+
     this->brightnessSliderVisible = !this->brightnessSliderVisible;
     if (this->brightnessSliderVisible) {
         if (this->cameraButtonForce) {
@@ -298,15 +319,23 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
             f1x::openauto::autoapp::ui::MainWindow::cameraHide();
         }
         // Get the current brightness value
-        this->brightnessFile = new QFile(this->brightnessFilename);
-        if (this->brightnessFile->open(QIODevice::ReadOnly)) {
-            QByteArray data = this->brightnessFile->readAll();
-            std::string::size_type sz;
-            int brightness_val = std::stoi(data.toStdString(), &sz);
-            ui_->horizontalSliderBrightness->setValue(brightness_val);
-            this->brightnessFile->close();
+        if (!this->customBrightnessControl) {
+            if (this->brightnessFile->open(QIODevice::ReadOnly)) {
+                QByteArray data = this->brightnessFile->readAll();
+                std::string::size_type sz;
+                int brightness_val = std::stoi(data.toStdString(), &sz);
+                ui_->horizontalSliderBrightness->setValue(brightness_val);
+                this->brightnessFile->close();
+            }
+        } else {
+            if (this->brightnessFileAlt->open(QIODevice::ReadOnly)) {
+                QByteArray data = this->brightnessFileAlt->readAll();
+                std::string::size_type sz;
+                int brightness_val = std::stoi(data.toStdString(), &sz);
+                ui_->horizontalSliderBrightness->setValue(brightness_val);
+                this->brightnessFileAlt->close();
+            }
         }
-
         ui_->horizontalSliderBrightness->show();
     } else {
         ui_->horizontalSliderBrightness->hide();
@@ -333,7 +362,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
             this->brightness_str[n+1] = '\0';
             this->brightnessFileAlt->write(this->brightness_str);
             this->brightnessFileAlt->close();
-            system("/usr/local/bin/autoapp_helper custombrightness &");
         }
     }
 }
