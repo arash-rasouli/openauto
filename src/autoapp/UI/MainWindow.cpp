@@ -286,7 +286,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->horizontalSliderBrightness->setMaximum(getparams[1].toInt());
     ui_->horizontalSliderBrightness->setSingleStep(getparams[2].toInt());
     ui_->horizontalSliderBrightness->setTickInterval(getparams[2].toInt());
-    ui_->versionString->setText(getparams[0] + getparams[1] + getparams[2]);
     if (getparams[3] == "1") {
         ui_->pushButtonBrightness->show();
         this->customBrightnessControl = true;
