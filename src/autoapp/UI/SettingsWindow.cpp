@@ -110,96 +110,94 @@ void SettingsWindow::onSave()
     // generate param string for autoapp_helper
     std::string params;
     params.append( std::to_string(ui_->horizontalSliderSystemVolume->value()) );
-    params.append(";");
+    params.append("#");
     params.append( std::to_string(ui_->horizontalSliderSystemCapture->value()) );
-    params.append(";");
+    params.append("#");
     params.append( std::to_string(ui_->spinBoxDisconnect->value()) );
-    params.append(";");
+    params.append("#");
     params.append( std::to_string(ui_->spinBoxShutdown->value()) );
-    params.append(";");
+    params.append("#");
     params.append( std::to_string(ui_->spinBoxDay->value()) );
-    params.append(";");
+    params.append("#");
     params.append( std::to_string(ui_->spinBoxNight->value()) );
-    params.append(";");
+    params.append("#");
     if (ui_->checkBoxGPIO->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxDevMode->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxInvert->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxX11->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxRearcam->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxAndroid->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     if (ui_->radioButtonX11->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
     if (ui_->radioButtonScreenRotated->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
     params.append( std::string("'") + std::string(ui_->comboBoxPulseOutput->currentText().toStdString()) + std::string("'") );
-    params.append(";");
+    params.append("#");
     params.append( std::string("'") + std::string(ui_->comboBoxPulseInput->currentText().toStdString()) + std::string("'") );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxHardwareRTC->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxTZ->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxHardwareDAC->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     if (ui_->checkBoxDisableShutdown->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
     if (ui_->checkBoxDisableScreenOff->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
     if (ui_->radioButtonDebugmodeEnabled->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
     params.append( std::string(ui_->comboBoxGPIOShutdown->currentText().toStdString()) );
-    params.append(";");
+    params.append("#");
     params.append( std::to_string(ui_->spinBoxGPIOShutdownDelay->value()) );
-    params.append(";");
-    params.append( std::string(ui_->lineEditWifiClientSSID->text().toStdString()) );
-    params.append(";");
-    params.append( std::string(ui_->lineEditWifiClientPassword->text().toStdString()) );
-    params.append(";");
+    params.append("#");
     if (ui_->checkBoxHotspot->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
-    params.append( std::string(ui_->lineEditWifiHotspotPassword->text().toStdString()) );
-    params.append(";");
+    params.append("#");
+    params.append( std::string(ui_->comboBoxCam->currentText().toStdString()) );
+    params.append("#");
     if (ui_->checkBoxHardwareSave->isChecked()) {
         params.append("1");
     } else {
         params.append("0");
     }
-    params.append(";");
+    params.append("#");
+
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
+
     this->close();
 }
 
@@ -353,7 +351,7 @@ void SettingsWindow::loadSystemValues()
         QFile paramFile(QString("/tmp/return_value"));
         paramFile.open(QIODevice::ReadOnly);
         QTextStream data_param(&paramFile);
-        QStringList getparams = data_param.readAll().split(";");
+        QStringList getparams = data_param.readAll().split("#");
         paramFile.close();
         // version string
         ui_->valueSystemVersion->setText(getparams[0]);
@@ -563,17 +561,18 @@ void SettingsWindow::loadSystemValues()
 
         // Wifi Credentials
         ui_->lineEditWifiClientSSID->setText(getparams[30]);
-        ui_->lineEditWifiClientPassword->setText(getparams[31]);
 
         // Wifi Hotspot Credentials
-        if (getparams[32] == "1") {
+        if (getparams[31] == "1") {
             ui_->checkBoxHotspot->setChecked(true);
         } else {
             ui_->checkBoxHotspot->setChecked(false);
         }
 
-        ui_->lineEditWifiHotspotSSID->setText(getparams[33]);
-        ui_->lineEditWifiHotspotPassword->setText(getparams[34]);
+        ui_->lineEditWifiHotspotSSID->setText(getparams[32]);
+
+        // set cam
+        ui_->comboBoxCam->setCurrentText(getparams[33]);
     }
 }
 

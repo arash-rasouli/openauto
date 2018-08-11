@@ -1250,36 +1250,17 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <property name="title">
       <string>Wifi client settings</string>
      </property>
-     <widget class="QLineEdit" name="lineEditWifiClientPassword">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>30</y>
-        <width>251</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="frame">
-       <bool>true</bool>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::PasswordEchoOnEdit</enum>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelWifiClientPassword">
+     <widget class="QLabel" name="labelWifiClientNote">
       <property name="geometry">
        <rect>
         <x>310</x>
         <y>30</y>
-        <width>71</width>
+        <width>331</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Password:</string>
+       <string>Credentials must be set in crankshaft_env.sh!</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelUseWarningIcon">
@@ -1316,7 +1297,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLineEdit" name="lineEditWifiClientSSID">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>100</x>
         <y>30</y>
         <width>200</width>
         <height>31</height>
@@ -1328,12 +1309,12 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>71</width>
+        <width>81</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>SSID:</string>
+       <string>Used SSID:</string>
       </property>
      </widget>
     </widget>
@@ -1349,36 +1330,17 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <property name="title">
       <string>Hotspot settings</string>
      </property>
-     <widget class="QLineEdit" name="lineEditWifiHotspotPassword">
-      <property name="geometry">
-       <rect>
-        <x>390</x>
-        <y>60</y>
-        <width>251</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="frame">
-       <bool>true</bool>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Normal</enum>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelWifiHotspotPassword">
+     <widget class="QLabel" name="labelWifiHotspotNote">
       <property name="geometry">
        <rect>
         <x>310</x>
         <y>60</y>
-        <width>71</width>
+        <width>331</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Password:</string>
+       <string>Credentials must be set in crankshaft_env.sh!</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelUseWarningIcon_2">
@@ -1415,7 +1377,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLineEdit" name="lineEditWifiHotspotSSID">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>100</x>
         <y>60</y>
         <width>200</width>
         <height>31</height>
@@ -1433,12 +1395,12 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>71</width>
+        <width>81</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>SSID:</string>
+       <string>Used SSID:</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBoxHotspot">
@@ -3274,7 +3236,7 @@ subcontrol-position: center left;
        <x>0</x>
        <y>10</y>
        <width>646</width>
-       <height>231</height>
+       <height>241</height>
       </rect>
      </property>
      <property name="title">
@@ -3488,26 +3450,33 @@ subcontrol-position: center left;
        <string>Timezone</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelTimeZoneIcon">
+     <widget class="QCheckBox" name="checkBoxHardwareSave">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>186</y>
-        <width>21</width>
-        <height>31</height>
+        <x>440</x>
+        <y>118</y>
+        <width>201</width>
+        <height>23</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>Exec setup on save?</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelTimeZone">
+     <widget class="QLabel" name="labelTimeZone_2">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>180</y>
-        <width>521</width>
-        <height>41</height>
+        <x>470</x>
+        <y>143</y>
+        <width>171</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="font">
@@ -3516,22 +3485,63 @@ subcontrol-position: center left;
        </font>
       </property>
       <property name="text">
-       <string>Timezone is needed for rtc - Sync with timeserver can be done via
-&quot;crankshaft rtc sync&quot; in shell.</string>
+       <string>This must be selected if any hw-setup should be done on save!</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBoxHardwareSave">
+     <widget class="QLabel" name="labelTimeZoneIcon_2">
       <property name="geometry">
        <rect>
-        <x>480</x>
-        <y>43</y>
-        <width>161</width>
-        <height>23</height>
+        <x>440</x>
+        <y>157</y>
+        <width>21</width>
+        <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Exec setup on save?</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
+     </widget>
+     <widget class="QLabel" name="labelHardwareCam">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>RPI-Cam</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxCam">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>190</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>none</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>none</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>enabled</string>
+       </property>
+      </item>
      </widget>
     </widget>
     <widget class="QLabel" name="labelSettingsInfo_3">
