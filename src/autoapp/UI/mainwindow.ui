@@ -51,6 +51,36 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="btDevice">
+    <property name="geometry">
+     <rect>
+      <x>668</x>
+      <y>52</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>120</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #00CCFF;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
    <widget class="QLabel" name="phoneConnected">
     <property name="geometry">
      <rect>
@@ -793,6 +823,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonCameraHide</zorder>
    <zorder>pushButtonExit</zorder>
    <zorder>Digital_clock</zorder>
+   <zorder>btDevice</zorder>
    <zorder>phoneConnected</zorder>
    <zorder>versionString</zorder>
    <zorder>dateString</zorder>

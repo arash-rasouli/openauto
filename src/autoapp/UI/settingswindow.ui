@@ -1104,7 +1104,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <x>0</x>
        <y>10</y>
        <width>646</width>
-       <height>171</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="title">
@@ -1126,8 +1126,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QRadioButton" name="radioButtonUseExternalBluetoothAdapter">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>60</y>
+        <x>210</x>
+        <y>30</y>
         <width>171</width>
         <height>23</height>
        </rect>
@@ -1139,8 +1139,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLineEdit" name="lineEditExternalBluetoothAdapterAddress">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>90</y>
+        <x>410</x>
+        <y>66</y>
         <width>231</width>
         <height>31</height>
        </rect>
@@ -1149,8 +1149,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="labelBluetoothAdapterAddress">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>90</y>
+        <x>340</x>
+        <y>66</y>
         <width>67</width>
         <height>31</height>
        </rect>
@@ -1162,8 +1162,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="labelBluetoothAddressFormatInfo">
       <property name="geometry">
        <rect>
-        <x>400</x>
-        <y>80</y>
+        <x>440</x>
+        <y>20</y>
         <width>181</width>
         <height>41</height>
        </rect>
@@ -1183,8 +1183,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QLabel" name="labelBluetoothAddressFormatInfoIcon">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>90</y>
+        <x>410</x>
+        <y>30</y>
         <width>21</width>
         <height>21</height>
        </rect>
@@ -1196,45 +1196,14 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <widget class="QRadioButton" name="radioButtonUseLocalBluetoothAdapter">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>30</y>
+        <x>20</x>
+        <y>60</y>
         <width>151</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
        <string>Use local adapter</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelPairWarningIcon">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>130</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelPairWarning">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>130</y>
-        <width>551</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>In order to use bluetooth features please remember to pair your device.</string>
       </property>
      </widget>
     </widget>
@@ -1261,19 +1230,6 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
       <property name="text">
        <string>Credentials must be set in crankshaft_env.sh!</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelUseWarningIcon">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>70</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelUseWarning">
@@ -1317,6 +1273,19 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <string>Used SSID:</string>
       </property>
      </widget>
+     <widget class="QLabel" name="labelWifiClientInfoIcon">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>76</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBoxWifiHotspot">
      <property name="geometry">
@@ -1341,19 +1310,6 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
       <property name="text">
        <string>Credentials must be set in crankshaft_env.sh!</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelUseWarningIcon_2">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>100</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelUseWarning_2">
@@ -1414,6 +1370,79 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
       <property name="text">
        <string>Enable Hotspot</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelWifiHotspotSSIDInfoIcon">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>106</y>
+        <width>21</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBoxBluetoothCS">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>120</y>
+       <width>646</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Bluetooth Pairing / Connect</string>
+     </property>
+     <widget class="QCheckBox" name="checkBoxBluetoothAutoPair">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>26</y>
+        <width>241</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enable Autopairing / Autoconnect</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelBluetoothAddressFormatInfo_1">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>20</y>
+        <width>281</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>Experimental and only using local adapter! Needs a reboot after changing!</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelUseWarningIcon_4">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>20</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>

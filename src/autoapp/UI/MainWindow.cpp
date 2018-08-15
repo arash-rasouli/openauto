@@ -203,6 +203,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->systemConfigInProgress->hide();
     ui_->systemDebugging->hide();
     ui_->pushButtonLock->hide();
+    ui_->btDevice->hide();
 
     QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
     if (DebugmodeFile.exists()) {
@@ -517,6 +518,23 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         } else {
             if (ui_->phoneConnected->isVisible() == true) {
                 ui_->phoneConnected->hide();
+            }
+        }
+
+        QFileInfo phoneBTConnectedFile("/tmp/btdevice");
+        if (phoneBTConnectedFile.exists()) {
+            if (ui_->btDevice->isVisible() == false) {
+                QFile phoneBTData(QString("/tmp/btdevice"));
+                phoneBTData.open(QIODevice::ReadOnly);
+                QTextStream data_date(&phoneBTData);
+                QString linedate = data_date.readAll();
+                phoneBTData.close();
+                ui_->btDevice->setText(linedate);
+                ui_->btDevice->show();
+            }
+        } else {
+            if (ui_->btDevice->isVisible() == true) {
+                ui_->btDevice->hide();
             }
         }
 

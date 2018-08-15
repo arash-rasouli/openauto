@@ -189,6 +189,12 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxCam->currentText().toStdString()) );
     params.append("#");
+    if (ui_->checkBoxBluetoothAutoPair->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
     if (ui_->checkBoxHardwareSave->isChecked()) {
         params.append("1");
     } else {
@@ -573,6 +579,13 @@ void SettingsWindow::loadSystemValues()
 
         // set cam
         ui_->comboBoxCam->setCurrentText(getparams[33]);
+
+        // set cs bluetooth
+        if (getparams[34] == "1") {
+            ui_->checkBoxBluetoothAutoPair->setChecked(true);
+        } else {
+            ui_->checkBoxBluetoothAutoPair->setChecked(false);
+        }
     }
 }
 
