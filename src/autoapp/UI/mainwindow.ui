@@ -54,15 +54,15 @@
    <widget class="QLabel" name="btDevice">
     <property name="geometry">
      <rect>
-      <x>668</x>
+      <x>608</x>
       <y>52</y>
-      <width>120</width>
+      <width>180</width>
       <height>24</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>120</width>
+      <width>180</width>
       <height>24</height>
      </size>
     </property>

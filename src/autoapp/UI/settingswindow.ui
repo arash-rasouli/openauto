@@ -1403,7 +1403,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <rect>
         <x>20</x>
         <y>26</y>
-        <width>241</width>
+        <width>250</width>
         <height>23</height>
        </rect>
       </property>
