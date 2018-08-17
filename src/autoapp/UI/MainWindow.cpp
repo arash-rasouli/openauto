@@ -47,7 +47,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);} \
         QPushButton { background: url(:/circle.png); border: 0; } \
         QPushButton:hover { background: url(:/circle.png); } \
-        QPushButton:focus { background: url(:/circle.png); } \
+        QPushButton:focus { background: url(:/circle.png); border: none; outline: none;} \
         QPushButton:pressed { background: url(:/circle-pressed.png); } \
         QSlider:horizontal { background: url(:/slider.png); border: 1px solid #ffffff; border-radius: 2px; min-height: 32px;} \
         QSlider::groove:horizontal { background: #6d6d6d; height: 32px;} \
@@ -120,10 +120,16 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonKodi, &QPushButton::clicked, this, &MainWindow::startKodi);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
     connect(ui_->systemDebugging, &QPushButton::clicked, this, &MainWindow::createDebuglog);
+    connect(ui_->pushButtonBluetooth, &QPushButton::clicked, this, &MainWindow::setPairable);
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start();
+
+    QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
+    if (! bluetoothButtonFile.exists()) {
+        ui_->pushButtonBluetooth->hide();
+    }
 
     // Get version string
     QFileInfo vFile("/etc/crankshaft.build");
@@ -498,6 +504,11 @@ void f1x::openauto::autoapp::ui::MainWindow::createDebuglog()
     system("/usr/local/bin/crankshaft debuglog &");
 }
 
+void f1x::openauto::autoapp::ui::MainWindow::setPairable()
+{
+    system("/usr/local/bin/autoapp_helper enablepairing &");
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
     using namespace std::this_thread; // sleep_for
@@ -540,8 +551,9 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
 
         QFileInfo configInProgressFile("/tmp/config_in_progress");
         QFileInfo debugInProgressFile("/tmp/debug_in_progress");
+        QFileInfo enablePairingFile("/tmp/enable_pairing");
 
-        if (configInProgressFile.exists() || debugInProgressFile.exists()) {
+        if (configInProgressFile.exists() || debugInProgressFile.exists() || enablePairingFile.exists()) {
             if (ui_->systemConfigInProgress->isVisible() == false) {
                 if (configInProgressFile.exists()) {
                     ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
@@ -551,6 +563,11 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 }
                 if (debugInProgressFile.exists()) {
                     ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
+                    ui_->systemDebugging->hide();
+                    ui_->systemConfigInProgress->show();
+                }
+                if (enablePairingFile.exists()) {
+                    ui_->systemConfigInProgress->setText("Bluetooth Pairing enabled!                ");
                     ui_->systemDebugging->hide();
                     ui_->systemConfigInProgress->show();
                 }

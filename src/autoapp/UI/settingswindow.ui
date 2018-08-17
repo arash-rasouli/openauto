@@ -1104,106 +1104,68 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <x>0</x>
        <y>10</y>
        <width>646</width>
-       <height>101</height>
+       <height>111</height>
       </rect>
      </property>
      <property name="title">
-      <string>Bluetooth adapter</string>
+      <string>Bluetooth settings</string>
      </property>
-     <widget class="QRadioButton" name="radioButtonDisableBluetooth">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>171</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disable bluetooth</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radioButtonUseExternalBluetoothAdapter">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>30</y>
-        <width>171</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Use external adapter</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="lineEditExternalBluetoothAdapterAddress">
       <property name="geometry">
        <rect>
         <x>410</x>
-        <y>66</y>
+        <y>26</y>
         <width>231</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="labelBluetoothAdapterAddress">
       <property name="geometry">
        <rect>
-        <x>340</x>
-        <y>66</y>
-        <width>67</width>
+        <x>290</x>
+        <y>26</y>
+        <width>111</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
-       <string>Address:</string>
+       <string>Used Address:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelBluetoothAddressFormatInfo">
-      <property name="geometry">
-       <rect>
-        <x>440</x>
-        <y>20</y>
-        <width>181</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>Provide address in format AA:BB:CC:DD:EE:FF.</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelBluetoothAddressFormatInfoIcon">
-      <property name="geometry">
-       <rect>
-        <x>410</x>
-        <y>30</y>
-        <width>21</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radioButtonUseLocalBluetoothAdapter">
+     <widget class="QCheckBox" name="checkBoxBluetoothAutoPair">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>60</y>
-        <width>151</width>
+        <y>30</y>
+        <width>261</width>
         <height>23</height>
        </rect>
       </property>
       <property name="text">
-       <string>Use local adapter</string>
+       <string>Set pairable on startup (120 secs)</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButtonUnpair">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>191</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Remove all paired devices</string>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>
@@ -1211,7 +1173,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>190</y>
+       <y>160</y>
        <width>646</width>
        <height>111</height>
       </rect>
@@ -1259,6 +1221,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         <height>31</height>
        </rect>
       </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QLabel" name="labelWifiClientSSID">
       <property name="geometry">
@@ -1291,7 +1256,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>310</y>
+       <y>280</y>
        <width>646</width>
        <height>141</height>
       </rect>
@@ -1386,66 +1351,93 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBoxBluetoothCS">
+    <widget class="QRadioButton" name="radioButtonUseExternalBluetoothAdapter">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>120</y>
-       <width>646</width>
-       <height>61</height>
+       <x>330</x>
+       <y>60</y>
+       <width>171</width>
+       <height>23</height>
       </rect>
      </property>
-     <property name="title">
-      <string>Bluetooth Pairing / Connect</string>
+     <property name="text">
+      <string>Use external adapter</string>
      </property>
-     <widget class="QCheckBox" name="checkBoxBluetoothAutoPair">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>26</y>
-        <width>250</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Enable Autopairing / Autoconnect</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelBluetoothAddressFormatInfo_1">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>20</y>
-        <width>281</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>Experimental and only using local adapter! Needs a reboot after changing!</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelUseWarningIcon_4">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>20</y>
-        <width>31</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
     </widget>
+    <widget class="QRadioButton" name="radioButtonUseLocalBluetoothAdapter">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>60</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Use local adapter</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButtonDisableBluetooth">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>171</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Disable bluetooth</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelSettingsInfo_Icon_5">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>422</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelSettingsInfo_5">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>425</y>
+       <width>644</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>To activate this settings you have to reboot after changing!</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <zorder>radioButtonDisableBluetooth</zorder>
+    <zorder>radioButtonUseExternalBluetoothAdapter</zorder>
+    <zorder>radioButtonUseLocalBluetoothAdapter</zorder>
+    <zorder>groupBoxWifiClient</zorder>
+    <zorder>groupBoxWifiHotspot</zorder>
+    <zorder>groupBoxBluetoothAdapter</zorder>
+    <zorder>labelSettingsInfo_5</zorder>
+    <zorder>labelSettingsInfo_Icon_5</zorder>
    </widget>
    <widget class="QWidget" name="tabCSBase">
     <attribute name="title">
@@ -3265,7 +3257,7 @@ subcontrol-position: center left;
        <x>0</x>
        <y>10</y>
        <width>646</width>
-       <height>241</height>
+       <height>291</height>
       </rect>
      </property>
      <property name="title">
@@ -3569,6 +3561,50 @@ subcontrol-position: center left;
       <item>
        <property name="text">
         <string>enabled</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelHardwareBluetooth">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>240</y>
+        <width>80</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bluetooth</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBoxBluetooth">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>240</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+      <property name="currentText">
+       <string>none</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>none</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>builtin</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>external</string>
        </property>
       </item>
      </widget>

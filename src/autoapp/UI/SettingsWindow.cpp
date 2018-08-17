@@ -41,6 +41,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->setupUi(this);
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonSave, &QPushButton::clicked, this, &SettingsWindow::onSave);
+    connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::unpairAll);
     connect(ui_->horizontalSliderScreenDPI, &QSlider::valueChanged, this, &SettingsWindow::onUpdateScreenDPI);
     connect(ui_->radioButtonUseExternalBluetoothAdapter, &QRadioButton::clicked, [&](bool checked) { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(checked); });
     connect(ui_->radioButtonDisableBluetooth, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
@@ -51,6 +52,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
+
 }
 
 SettingsWindow::~SettingsWindow()
@@ -195,6 +197,8 @@ void SettingsWindow::onSave()
         params.append("0");
     }
     params.append("#");
+    params.append( std::string(ui_->comboBoxBluetooth->currentText().toStdString()) );
+    params.append("#");
     if (ui_->checkBoxHardwareSave->isChecked()) {
         params.append("1");
     } else {
@@ -258,6 +262,8 @@ void SettingsWindow::load()
     const auto& audioOutputBackendType = configuration_->getAudioOutputBackendType();
     ui_->radioButtonRtAudio->setChecked(audioOutputBackendType == configuration::AudioOutputBackendType::RTAUDIO);
     ui_->radioButtonQtAudio->setChecked(audioOutputBackendType == configuration::AudioOutputBackendType::QT);
+
+    ui_->checkBoxHardwareSave->setChecked(false);
 }
 
 void SettingsWindow::loadButtonCheckBoxes()
@@ -344,6 +350,11 @@ void SettingsWindow::onUpdateSystemVolume(int value)
 void SettingsWindow::onUpdateSystemCapture(int value)
 {
     ui_->labelSystemCaptureValue->setText(QString::number(value));
+}
+
+void SettingsWindow::unpairAll()
+{
+    system("/usr/local/bin/crankshaft bluetooth unpair &");
 }
 
 void SettingsWindow::loadSystemValues()
@@ -580,12 +591,27 @@ void SettingsWindow::loadSystemValues()
         // set cam
         ui_->comboBoxCam->setCurrentText(getparams[33]);
 
-        // set cs bluetooth
+        // set bluetooth
         if (getparams[34] == "1") {
+            // check external bluetooth enabled
+            if (getparams[36] == "1") {
+                ui_->radioButtonUseExternalBluetoothAdapter->setChecked(true);
+            } else {
+                ui_->radioButtonUseLocalBluetoothAdapter->setChecked(true);
+            }
+            // mac
+            ui_->lineEditExternalBluetoothAdapterAddress->setText(getparams[37]);
+        } else {
+            ui_->radioButtonDisableBluetooth->setChecked(true);
+            ui_->lineEditExternalBluetoothAdapterAddress->setText("");
+        }
+        if (getparams[35] == "1") {
             ui_->checkBoxBluetoothAutoPair->setChecked(true);
         } else {
             ui_->checkBoxBluetoothAutoPair->setChecked(false);
         }
+        // set timezone
+        ui_->comboBoxBluetooth->setCurrentText(getparams[38]);
     }
 }
 

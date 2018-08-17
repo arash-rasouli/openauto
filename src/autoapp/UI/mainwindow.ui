@@ -51,6 +51,30 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButtonBluetooth">
+    <property name="geometry">
+     <rect>
+      <x>618</x>
+      <y>-8</y>
+      <width>64</width>
+      <height>64</height>
+     </rect>
+    </property>
+    <property name="icon">
+     <iconset resource="../../../assets/resources.qrc">
+      <normaloff>:/ico_bluetooth.png</normaloff>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: rgba(255,255,255,0);</string>
+    </property>
+   </widget>
    <widget class="QLabel" name="btDevice">
     <property name="geometry">
      <rect>
@@ -75,7 +99,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #00CCFF;</string>
+     <string notr="true">color: #0000FF;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -815,6 +839,7 @@ QPushButton:pressed { background: orange; border: none; }</string>
    <zorder>pushButtonLock</zorder>
    <zorder>pushButtonWirelessConnection</zorder>
    <zorder>pushButtonKodi</zorder>
+   <zorder>pushButtonBluetooth</zorder>
    <zorder>pushButtonToggleCursor</zorder>
    <zorder>pushButtonDay</zorder>
    <zorder>pushButtonNight</zorder>

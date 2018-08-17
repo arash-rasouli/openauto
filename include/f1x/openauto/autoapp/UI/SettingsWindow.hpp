@@ -47,6 +47,7 @@ public:
     void loadSystemValues();
 
 private slots:
+    void unpairAll();
     void onSave();
     void onResetToDefaults();
     void onUpdateScreenDPI(int value);

@@ -76,6 +76,7 @@ private slots:
     void showRearCamBG();
     void hideRearCamBG();
     void createDebuglog();
+    void setPairable();
 
 private:
     Ui::MainWindow* ui_;
