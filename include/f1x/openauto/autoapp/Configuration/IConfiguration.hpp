@@ -54,6 +54,12 @@ public:
     virtual HandednessOfTrafficType getHandednessOfTrafficType() const = 0;
     virtual void showClock(bool value) = 0;
     virtual bool showClock() const = 0;
+    virtual void showBigClock(bool value) = 0;
+    virtual bool showBigClock() const = 0;
+    virtual void oldGUI(bool value) = 0;
+    virtual bool oldGUI() const = 0;
+    virtual void setAlphaTrans(size_t value) = 0;
+    virtual size_t getAlphaTrans() const = 0;
 
     virtual aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const = 0;
     virtual void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) = 0;

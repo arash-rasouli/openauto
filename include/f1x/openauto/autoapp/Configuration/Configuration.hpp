@@ -46,6 +46,13 @@ public:
     void showClock(bool value) override;
     bool showClock() const override;
 
+    void showBigClock(bool value) override;
+    bool showBigClock() const override;
+    void oldGUI(bool value) override;
+    bool oldGUI() const override;
+    void setAlphaTrans(size_t value) override;
+    size_t getAlphaTrans() const override;
+
     aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const override;
     void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) override;
     aasdk::proto::enums::VideoResolution::Enum getVideoResolution() const override;
@@ -81,6 +88,11 @@ private:
 
     HandednessOfTrafficType handednessOfTrafficType_;
     bool showClock_;
+
+    bool showBigClock_;
+    bool oldGUI_;
+    size_t alphaTrans_;
+
     aasdk::proto::enums::VideoFPS::Enum videoFPS_;
     aasdk::proto::enums::VideoResolution::Enum videoResolution_;
     size_t screenDPI_;
@@ -97,6 +109,11 @@ private:
     static const std::string cConfigFileName;
 
     static const std::string cGeneralShowClockKey;
+
+    static const std::string cGeneralShowBigClockKey;
+    static const std::string cGeneralOldGUIKey;
+    static const std::string cGeneralAlphaTransKey;
+
     static const std::string cGeneralHandednessOfTrafficTypeKey;
 
     static const std::string cVideoFPSKey;

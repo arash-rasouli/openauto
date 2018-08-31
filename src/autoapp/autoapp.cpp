@@ -18,6 +18,7 @@
 
 #include <thread>
 #include <QApplication>
+#include <QDesktopWidget>
 #include <f1x/aasdk/USB/USBHub.hpp>
 #include <f1x/aasdk/USB/ConnectedAccessoriesEnumerator.hpp>
 #include <f1x/aasdk/USB/AccessoryModeQueryChain.hpp>
@@ -84,6 +85,10 @@ int main(int argc, char* argv[])
     startIOServiceWorkers(ioService, threadPool);
 
     QApplication qApplication(argc, argv);
+    const int width = QApplication::desktop()->width();
+    OPENAUTO_LOG(info) << "[OpenAuto] Display width: " << width;
+    const int height = QApplication::desktop()->height();
+    OPENAUTO_LOG(info) << "[OpenAuto] Display height: " << height;
 
     auto configuration = std::make_shared<autoapp::configuration::Configuration>();
 
@@ -100,7 +105,7 @@ int main(int argc, char* argv[])
     autoapp::ui::ConnectDialog connectDialog(ioService, tcpWrapper, recentAddressesList);
     connectDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
 
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { std::exit(0); });
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { system("touch /tmp/shutdown"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
@@ -178,7 +183,7 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptNight, [&qApplication]() {
 #ifdef RASPBERRYPI3
-        system("/opt/crankshaft/service_daynight.sh app night &");
+        system("/opt/crankshaft/service_daynight.sh app night");
         OPENAUTO_LOG(info) << "[CS] Run night script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
@@ -187,23 +192,16 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptDay, [&qApplication]() {
 #ifdef RASPBERRYPI3
-        system("/opt/crankshaft/service_daynight.sh app day &");
+        system("/opt/crankshaft/service_daynight.sh app day");
         OPENAUTO_LOG(info) << "[CS] Run day script.";
 #else
         OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
 #endif
     });
 
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::startKodi, [&qApplication]() {
-#ifdef RASPBERRYPI3
-        system("/usr/bin/kodi &");
-        OPENAUTO_LOG(info) << "[CS] Run kodi binary.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping kodi.";
-#endif
-    });
-
     mainWindow.showFullScreen();
+    mainWindow.setFixedSize(width, height);
+    //mainWindow.adjustSize();
 
     aasdk::usb::USBWrapper usbWrapper(usbContext);
     aasdk::usb::AccessoryModeQueryFactory queryFactory(usbWrapper, ioService);

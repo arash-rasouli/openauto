@@ -58,39 +58,86 @@ signals:
     void cameraRecord();
     void openConnectDialog();
     void showBrightnessSlider();
-    void startKodi();
+    void showVolumeSlider();
+    void showAlphaSlider();
     void showRearCam();
     void hideRearCam();
 
 private slots:
     void on_horizontalSliderBrightness_valueChanged(int value);
+    void on_horizontalSliderVolume_valueChanged(int value);
+    void on_horizontalSliderAlpha_valueChanged(int value);
 
 private slots:
     void on_pushButtonBrightness_clicked();
+    void on_pushButtonBrightness2_clicked();
+    void on_pushButtonVolume_clicked();
+    void on_pushButtonVolume2_clicked();
+    void on_pushButtonAlpha_clicked();
     void switchGuiToDay();
     void switchGuiToNight();
     void showTime();
     void cameraControlShow();
     void cameraControlHide();
     void toggleExit();
-    void showRearCamBG();
-    void hideRearCamBG();
     void createDebuglog();
     void setPairable();
+    void toggleMuteButton();
+    void toggleGUI();
+    void setMute();
+    void setUnMute();
+    void customButtonPressed1();
+    void customButtonPressed2();
+    void customButtonPressed3();
+    void customButtonPressed4();
+    void customButtonPressed5();
+    void customButtonPressed6();
+    void customButtonPressed7();
+    void customButtonPressed8();
 
 private:
     Ui::MainWindow* ui_;
-    bool brightnessSliderVisible = false;
     QString brightnessFilename = "/sys/class/backlight/rpi_backlight/brightness";
     QString brightnessFilenameAlt = "/tmp/custombrightness";
     QFile *brightnessFile;
     QFile *brightnessFileAlt;
     char brightness_str[6];
+    char volume_str[6];
+    char alpha_str[6];
+    QString bversion;
+    QString bdate;
+
+    QString custom_button_file_c1 = "/boot/crankshaft/button_1";
+    QString custom_button_file_c2 = "/boot/crankshaft/button_2";
+    QString custom_button_file_c3 = "/boot/crankshaft/button_3";
+    QString custom_button_file_c4 = "/boot/crankshaft/button_4";
+    QString custom_button_file_c5 = "/boot/crankshaft/button_5";
+    QString custom_button_file_c6 = "/boot/crankshaft/button_6";
+    QString custom_button_file_c7 = "/boot/crankshaft/button_7";
+    QString custom_button_file_c8 = "/boot/crankshaft/button_8";
+
+    QString custom_button_command_c1;
+    QString custom_button_command_c2;
+    QString custom_button_command_c3;
+    QString custom_button_command_c4;
+    QString custom_button_command_c5;
+    QString custom_button_command_c6;
+    QString custom_button_command_c7;
+    QString custom_button_command_c8;
+
+    QString custom_button_color_c1 = "186,189,192";
+    QString custom_button_color_c2 = "186,189,192";
+    QString custom_button_color_c3 = "186,189,192";
+    QString custom_button_color_c4 = "186,189,192";
+    QString custom_button_color_c5 = "186,189,192";
+    QString custom_button_color_c6 = "186,189,192";
+    QString custom_button_color_c7 = "186,189,192";
+    QString custom_button_color_c8 = "186,189,192";
+
     bool customBrightnessControl = false;
 
     bool wifiButtonForce = false;
     bool cameraButtonForce = false;
-    bool kodiButtonForce = false;
     bool brightnessButtonForce = false;
 
     bool nightModeEnabled = false;
@@ -100,18 +147,35 @@ private:
 
     bool wallpaperDayFileExists = false;
     bool wallpaperNightFileExists = false;
-    bool wallpaperDevFileExists = false;
-    bool wallpaperDevNightFileExists = false;
+    bool wallpaperClassicDayFileExists = false;
+    bool wallpaperClassicNightFileExists = false;
 
-    bool masterButtonBGState = false;
     bool exitMenuVisible = false;
 
     bool rearCamEnabled = false;
-    bool dashcamBGState = false;
-    bool rearcamState = false;
+    bool rearCamVisible = false;
 
     bool dashCamRecording = false;
     bool systemDebugmode = false;
+
+    bool bluetoothEnabled = false;
+
+    bool toggleMute = false;
+    bool oldGUIStyle = false;
+    bool UseBigClock = false;
+    bool NoClock = false;
+
+    bool c1ButtonForce = false;
+    bool c2ButtonForce = false;
+    bool c3ButtonForce = false;
+    bool c4ButtonForce = false;
+    bool c5ButtonForce = false;
+    bool c6ButtonForce = false;
+    bool c7ButtonForce = false;
+    bool c8ButtonForce = false;
+
+    int screen_width = 800;
+    int screen_height = 480;
 };
 
 }

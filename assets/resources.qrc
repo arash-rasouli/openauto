@@ -5,33 +5,27 @@
         <file>ico_setting.png</file>
         <file>ico_info.png</file>
         <file>ico_bluetooth.png</file>
-        <file>connect.png</file>
         <file>cursor-hot.png</file>
         <file>power-hot.png</file>
         <file>settings-hot.png</file>
-        <file>circle.png</file>
-        <file>circle-hot.png</file>
-        <file>circle-pressed.png</file>
         <file>sleep-hot.png</file>
         <file>wifi-hot.png</file>
         <file>brightness-hot.png</file>
         <file>camera-hot.png</file>
         <file>day-hot.png</file>
         <file>night-hot.png</file>
-        <file>slider.png</file>
-        <file>bg_dashcam.png</file>
-        <file>bg_buttons.png</file>
         <file>record-hot.png</file>
         <file>stop-hot.png</file>
         <file>save-hot.png</file>
         <file>reboot-hot.png</file>
         <file>back-hot.png</file>
-        <file>bg_exit.png</file>
-        <file>kodi-hot.png</file>
-        <file>bg_rearcam.png</file>
         <file>rearcam-hot.png</file>
         <file>recordactive-hot.png</file>
         <file>lock-hot.png</file>
+        <file>volume-hot.png</file>
+        <file>bug-hot.png</file>
+        <file>eye-hot.png</file>
+        <file>skin-hot.png</file>
         <file>black.png</file>
         <file>Roboto-Regular.ttf</file>
     </qresource>

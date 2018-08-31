@@ -27,6 +27,8 @@
 #include <QTextStream>
 #include <QFontDatabase>
 #include <QFont>
+#include <QScreen>
+#include <QRect>
 #include <thread>
 #include <chrono>
 #include <string>
@@ -44,16 +46,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     : QMainWindow(parent)
     , ui_(new Ui::MainWindow)
 {
-    this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);} \
-        QPushButton { background: url(:/circle.png); border: 0; } \
-        QPushButton:hover { background: url(:/circle.png); } \
-        QPushButton:focus { background: url(:/circle.png); border: none; outline: none;} \
-        QPushButton:pressed { background: url(:/circle-pressed.png); } \
-        QSlider:horizontal { background: url(:/slider.png); border: 1px solid #ffffff; border-radius: 2px; min-height: 32px;} \
-        QSlider::groove:horizontal { background: #6d6d6d; height: 32px;} \
-        QSlider::handle:horizontal { background: white; height: 52px; width: 52px; margin: 0 0;} \
-        QLabel { color: #ffffff; font-weight: bold;} \
-    ");
+    // set default bg color to black
+    this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);}");
 
     // Set default font and size
     int id = QFontDatabase::addApplicationFont(":/Roboto-Regular.ttf");
@@ -61,24 +55,64 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFont _font(family, 11);
     qApp->setFont(_font);
 
-    // inits by files
+    // trigger files
+    QFileInfo nightModeFile("/tmp/night_mode_enabled");
+    this->nightModeEnabled = nightModeFile.exists();
+
+    QFileInfo devModeFile("/tmp/dev_mode_enabled");
+    this->devModeEnabled = devModeFile.exists();
+
+    QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
+    this->bluetoothEnabled = bluetoothButtonFile.exists();
+
+    QFileInfo wifiButtonFile("/etc/button_wifi_visible");
+    this->wifiButtonForce = wifiButtonFile.exists();
+
+    QFileInfo cameraButtonFile("/etc/button_camera_visible");
+    this->cameraButtonForce = cameraButtonFile.exists();
+
+    QFileInfo brightnessButtonFile("/etc/button_brightness_visible");
+    this->brightnessButtonForce = brightnessButtonFile.exists();
+
+    QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
+    this->systemDebugmode = DebugmodeFile.exists();
+
+    QFileInfo c1ButtonFile(this->custom_button_file_c1);
+    this->c1ButtonForce = c1ButtonFile.exists();
+
+    QFileInfo c2ButtonFile(this->custom_button_file_c2);
+    this->c2ButtonForce = c2ButtonFile.exists();
+
+    QFileInfo c3ButtonFile(this->custom_button_file_c3);
+    this->c3ButtonForce = c3ButtonFile.exists();
+
+    QFileInfo c4ButtonFile(this->custom_button_file_c4);
+    this->c4ButtonForce = c4ButtonFile.exists();
+
+    QFileInfo c5ButtonFile(this->custom_button_file_c5);
+    this->c5ButtonForce = c5ButtonFile.exists();
+
+    QFileInfo c6ButtonFile(this->custom_button_file_c6);
+    this->c6ButtonForce = c6ButtonFile.exists();
+
+    QFileInfo c7ButtonFile(this->custom_button_file_c7);
+    this->c7ButtonForce = c7ButtonFile.exists();
+
+    QFileInfo c8ButtonFile(this->custom_button_file_c8);
+    this->c8ButtonForce = c8ButtonFile.exists();
+
+    // wallpaper stuff
     QFileInfo wallpaperDayFile("wallpaper.png");
     this->wallpaperDayFileExists = wallpaperDayFile.exists();
 
     QFileInfo wallpaperNightFile("wallpaper-night.png");
     this->wallpaperNightFileExists = wallpaperNightFile.exists();
 
-    QFileInfo wallpaperDevFile("wallpaper-devmode.png");
-    this->wallpaperDevFileExists = wallpaperDevFile.exists();
+    QFileInfo wallpaperClassicDayFile("wallpaper-classic.png");
+    this->wallpaperDayFileExists = wallpaperDayFile.exists();
 
-    QFileInfo wallpaperDevNightFile("wallpaper-devmode-night.png");
-    this->wallpaperDevNightFileExists = wallpaperDevNightFile.exists();
-
-    QFileInfo nightModeFile("/tmp/night_mode_enabled");
-    this->nightModeEnabled = nightModeFile.exists();
-
-    QFileInfo devModeFile("/tmp/dev_mode_enabled");
-    this->devModeEnabled = devModeFile.exists();
+    QFileInfo wallpaperClassicNightFile("wallpaper-classic-night.png");
+    this->wallpaperNightFileExists = wallpaperNightFile.exists();
 
     if (wallpaperDayFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperDayFile.symLinkTarget());
@@ -90,48 +124,56 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         this->wallpaperNightFileExists = linkTarget.exists();
     }
 
-    if (wallpaperDevFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperDevFile.symLinkTarget());
-        this->wallpaperDevFileExists = linkTarget.exists();
+    if (wallpaperClassicDayFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperClassicDayFile.symLinkTarget());
+        this->wallpaperClassicDayFileExists = linkTarget.exists();
     }
 
-    if (wallpaperDevNightFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperDevNightFile.symLinkTarget());
-        this->wallpaperDevNightFileExists = linkTarget.exists();
+    if (wallpaperClassicNightFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperClassicNightFile.symLinkTarget());
+        this->wallpaperClassicNightFileExists = linkTarget.exists();
     }
 
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
-    connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::cameraHide);
-    connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
+    connect(ui_->pushButtonSettings2, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::toggleExit);
-    connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraStop);
-    connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraHide);
-    connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
+    connect(ui_->pushButtonExit2, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::exit);
+    connect(ui_->pushButtonShutdown2, &QPushButton::clicked, this, &MainWindow::exit);
     connect(ui_->pushButtonReboot, &QPushButton::clicked, this, &MainWindow::reboot);
+    connect(ui_->pushButtonReboot2, &QPushButton::clicked, this, &MainWindow::reboot);
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &MainWindow::toggleExit);
-    connect(ui_->pushButtonToggleCursor, &QPushButton::clicked, this, &MainWindow::toggleCursor);
+    connect(ui_->pushButtonCancel2, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::TriggerScriptDay);
     connect(ui_->pushButtonDay, &QPushButton::clicked, this, &MainWindow::switchGuiToDay);
+    connect(ui_->pushButtonDay2, &QPushButton::clicked, this, &MainWindow::TriggerScriptDay);
+    connect(ui_->pushButtonDay2, &QPushButton::clicked, this, &MainWindow::switchGuiToDay);
     connect(ui_->pushButtonNight, &QPushButton::clicked, this, &MainWindow::TriggerScriptNight);
     connect(ui_->pushButtonNight, &QPushButton::clicked, this, &MainWindow::switchGuiToNight);
-    connect(ui_->pushButtonWirelessConnection, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
-    connect(ui_->pushButtonKodi, &QPushButton::clicked, this, &MainWindow::startKodi);
+    connect(ui_->pushButtonNight2, &QPushButton::clicked, this, &MainWindow::TriggerScriptNight);
+    connect(ui_->pushButtonNight2, &QPushButton::clicked, this, &MainWindow::switchGuiToNight);
     connect(ui_->pushButtonBrightness, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
-    connect(ui_->systemDebugging, &QPushButton::clicked, this, &MainWindow::createDebuglog);
+    connect(ui_->pushButtonBrightness2, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
+    connect(ui_->pushButtonVolume, &QPushButton::clicked, this, &MainWindow::showVolumeSlider);
+    connect(ui_->pushButtonVolume2, &QPushButton::clicked, this, &MainWindow::showVolumeSlider);
+    connect(ui_->pushButtonAlpha, &QPushButton::clicked, this, &MainWindow::showAlphaSlider);
+    connect(ui_->pushButtonDebug, &QPushButton::clicked, this, &MainWindow::createDebuglog);
+    connect(ui_->pushButtonDebug2, &QPushButton::clicked, this, &MainWindow::createDebuglog);
     connect(ui_->pushButtonBluetooth, &QPushButton::clicked, this, &MainWindow::setPairable);
+    connect(ui_->pushButtonMute, &QPushButton::clicked, this, &MainWindow::toggleMuteButton);
+    connect(ui_->pushButtonMute, &QPushButton::clicked, this, &MainWindow::setMute);
+    connect(ui_->pushButtonUnMute, &QPushButton::clicked, this, &MainWindow::toggleMuteButton);
+    connect(ui_->pushButtonUnMute, &QPushButton::clicked, this, &MainWindow::setUnMute);
+    connect(ui_->pushButtonToggleGUI, &QPushButton::clicked, this, &MainWindow::toggleGUI);
+    connect(ui_->pushButtonToggleGUI2, &QPushButton::clicked, this, &MainWindow::toggleGUI);
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start();
 
-    QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
-    if (! bluetoothButtonFile.exists()) {
-        ui_->pushButtonBluetooth->hide();
-    }
-
-    // Get version string
+    // Build Version string for mainscreen
+    // Get git version string
     QFileInfo vFile("/etc/crankshaft.build");
     if (vFile.exists()) {
         QFile versionFile(QString("/etc/crankshaft.build"));
@@ -139,9 +181,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QTextStream data_version(&versionFile);
         QString lineversion = data_version.readAll();
         versionFile.close();
-        ui_->versionString->setText(lineversion);
+        this->bversion=lineversion.simplified();
     } else {
-        ui_->versionString->setText("");
+        this->bversion="unknown";
     }
 
     // Get date string
@@ -152,152 +194,365 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         QTextStream data_date(&dateFile);
         QString linedate = data_date.readAll();
         dateFile.close();
-        ui_->dateString->setText(linedate);
+        this->bdate=linedate.simplified();
     } else {
-        ui_->dateString->setText("");
+        this->bdate="- - -";
     }
 
-    QFileInfo cursorButtonFile("/etc/button_cursor_visible");
-    bool cursorButtonForce = cursorButtonFile.exists();
+    QString buildid = "Build: " + this->bversion + " (" + this->bdate + ")";
+    ui_->BuildID->setText(buildid);
 
-    QFileInfo wifiButtonFile("/etc/button_wifi_visible");
-    this->wifiButtonForce = wifiButtonFile.exists();
-
-    QFileInfo cameraButtonFile("/etc/button_camera_visible");
-    this->cameraButtonForce = cameraButtonFile.exists();
-
+    // enable connects while cam is enabled
     if (this->cameraButtonForce) {
         connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraShow);
         connect(ui_->pushButtonCameraShow, &QPushButton::clicked, this, &MainWindow::cameraControlShow);
+        connect(ui_->pushButtonCameraShow2, &QPushButton::clicked, this, &MainWindow::cameraShow);
+        connect(ui_->pushButtonCameraShow2, &QPushButton::clicked, this, &MainWindow::cameraControlShow);
         connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraHide);
         connect(ui_->pushButtonCameraHide, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
         connect(ui_->pushButtonStop, &QPushButton::clicked, this, &MainWindow::cameraStop);
         connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
-        connect(ui_->pushButtonRearcam, &QPushButton::clicked, this, &MainWindow::showRearCamBG);
-        connect(ui_->pushButtonRearcam, &QPushButton::clicked, this, &MainWindow::showRearCam);
-        connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCamBG);
-        connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::hideRearCam);
-        connect(ui_->pushButtonRearcamBack, &QPushButton::clicked, this, &MainWindow::cameraControlHide);
         connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
-        ui_->pushButtonCameraShow->show();
-        ui_->pushButtonCameraHide->hide();
+        ui_->pushButtonDummyCam->hide();
+        ui_->pushButtonDummyCam2->hide();
     } else {
         ui_->pushButtonCameraShow->hide();
-        ui_->pushButtonCameraHide->hide();
-
+        ui_->pushButtonCameraShow2->hide();
+        ui_->pushButtonDummyCam->show();
+        ui_->pushButtonDummyCam2->show();
     }
 
-    QFileInfo brightnessButtonFile("/etc/button_brightness_visible");
-    this->brightnessButtonForce = brightnessButtonFile.exists();
-
-    QFileInfo kodiInstalledFile("/usr/bin/kodi");
-    this->kodiButtonForce = kodiInstalledFile.exists();
-
-    if (configuration->hasTouchScreen() && !cursorButtonForce) {
-        ui_->pushButtonToggleCursor->hide();
+    // show debug button if enabled
+    if (!this->systemDebugmode) {
+        ui_->pushButtonDebug->hide();
+        ui_->pushButtonDebug2->hide();
+    } else {
+        ui_->pushButtonDummyDebug->hide();
     }
 
-    QPixmap image;
-    image.load(":/bg_buttons.png");
-    ui_->masterButtonBG->setPixmap(image);
-    ui_->pushButtonStop->hide();
-    ui_->pushButtonRecord->hide();
-    ui_->pushButtonRecordActive->hide();
-    ui_->pushButtonSave->hide();
-    ui_->pushButtonRearcam->hide();
-    ui_->pushButtonRearcamBack->hide();
     ui_->systemConfigInProgress->hide();
-    ui_->systemDebugging->hide();
     ui_->pushButtonLock->hide();
+    ui_->pushButtonLock2->hide();
     ui_->btDevice->hide();
 
-    QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
-    if (DebugmodeFile.exists()) {
-        ui_->systemDebugging->show();
-        this->systemDebugmode = true;
-    }
-
-    if (!this->wifiButtonForce) {
-        ui_->pushButtonWirelessConnection->hide();
-    }
-
+    // hide brightness slider of control file is not existing
     QFileInfo brightnessFile(brightnessFilename);
-
     if (!brightnessFile.exists() && !this->brightnessButtonForce) {
         ui_->pushButtonBrightness->hide();
     }
 
-
-    ui_->kodiBG->hide();
-    if (!this->kodiButtonForce) {
-        ui_->pushButtonKodi->hide();
-    } else {
-        system("/usr/local/bin/autoapp_helper startkodimonitor &");
+    // hide dummy if debug is shown
+    if (this->systemDebugmode) {
+        ui_->pushButtonDummy->hide();
     }
 
+    // as default hide brightness slider
     ui_->horizontalSliderBrightness->hide();
-    ui_->horizontalSliderLabel->hide();
+    ui_->brightnessValueLabel->hide();
 
-    if (!configuration->showClock()) {
-        ui_->Digital_clock->hide();
+    // as default hide alpha slider and button
+    ui_->horizontalSliderAlpha->hide();
+    ui_->alphaValueLabel->hide();
+    ui_->pushButtonAlpha->show();
+
+
+    // hide bluetooth if not enabled
+    if (!this->bluetoothEnabled) {
+        ui_->pushButtonBluetooth->hide();
     }
 
+    // as default hide power buttons
     ui_->pushButtonShutdown->hide();
     ui_->pushButtonReboot->hide();
     ui_->pushButtonCancel->hide();
+    ui_->exitWidget->hide();
 
+    // as default hide phone connected label
     ui_->phoneConnected->hide();
 
-    // init bg's on startup
-    if (!this->nightModeEnabled) {
-        if (this->devModeEnabled) {
-            if (this->wallpaperDevFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode.png) }") );
-            } else {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-            }
+    // as default hide muted button
+    ui_->pushButtonUnMute->hide();
+
+    // set custom buttons if file enabled by trigger file
+    if (!this->c1ButtonForce) {
+        ui_->pushButton_c1->hide();
+    } else {
+        // read button config 1
+        QFile paramFile(this->custom_button_file_c1);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c1->setText(params[0].simplified());
+        this->custom_button_command_c1 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c1 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c1, &QPushButton::clicked, this, &MainWindow::customButtonPressed1);
+    }
+
+    if (!this->c2ButtonForce) {
+        ui_->pushButton_c2->hide();
+    } else {
+        // read button config 2
+        QFile paramFile(this->custom_button_file_c2);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c2->setText(params[0].simplified());
+        this->custom_button_command_c2 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c2 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c2, &QPushButton::clicked, this, &MainWindow::customButtonPressed2);
+    }
+
+    if (!this->c3ButtonForce) {
+        ui_->pushButton_c3->hide();
+    } else {
+        // read button config 3
+        QFile paramFile(this->custom_button_file_c3);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c3->setText(params[0].simplified());
+        this->custom_button_command_c3 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c3 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c3, &QPushButton::clicked, this, &MainWindow::customButtonPressed3);
+    }
+
+    if (!this->c4ButtonForce) {
+        ui_->pushButton_c4->hide();
+    } else {
+        // read button config 4
+        QFile paramFile(this->custom_button_file_c4);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c4->setText(params[0].simplified());
+        this->custom_button_command_c4 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c4 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c4, &QPushButton::clicked, this, &MainWindow::customButtonPressed4);
+    }
+
+    if (!this->c5ButtonForce) {
+        ui_->pushButton_c5->hide();
+    } else {
+        // read button config 5
+        QFile paramFile(this->custom_button_file_c5);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c5->setText(params[0].simplified());
+        this->custom_button_command_c5 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c5 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c5, &QPushButton::clicked, this, &MainWindow::customButtonPressed5);
+    }
+
+    if (!this->c6ButtonForce) {
+        ui_->pushButton_c6->hide();
+    } else {
+        // read button config 6
+        QFile paramFile(this->custom_button_file_c6);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c6->setText(params[0].simplified());
+        this->custom_button_command_c6 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c6 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c6, &QPushButton::clicked, this, &MainWindow::customButtonPressed6);
+    }
+
+    if (!this->c7ButtonForce) {
+        ui_->pushButton_c7->hide();
+    } else {
+        // read button config 7
+        QFile paramFile(this->custom_button_file_c7);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c7->setText(params[0].simplified());
+        this->custom_button_command_c7 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c7 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c7, &QPushButton::clicked, this, &MainWindow::customButtonPressed7);
+    }
+
+    if (!this->c8ButtonForce) {
+        ui_->pushButton_c8->hide();
+    } else {
+        // read button config 8
+        QFile paramFile(this->custom_button_file_c8);
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList params = data.readAll().split("#");
+        paramFile.close();
+        ui_->pushButton_c8->setText(params[0].simplified());
+        this->custom_button_command_c8 = params[1].simplified();
+        if (params[2] != "") {
+            this->custom_button_color_c8 = params[2].simplified();
+        }
+        connect(ui_->pushButton_c8, &QPushButton::clicked, this, &MainWindow::customButtonPressed8);
+    }
+
+    // as default hide camera controls
+    ui_->cameraWidget->hide();
+    ui_->pushButtonRecordActive->hide();
+
+    // fill gui with dummys if needed
+    if (this->c1ButtonForce || this->c2ButtonForce || this->c3ButtonForce || this->c4ButtonForce || this->c5ButtonForce || this->c6ButtonForce) {
+        if (!this->c1ButtonForce && !this->c2ButtonForce) {
+            ui_->pushButtonDummy1->show();
         } else {
-            if (this->wallpaperDayFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
-            } else {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-            }
+            ui_->pushButtonDummy1->hide();
+        }
+        if (!this->c3ButtonForce && !this->c4ButtonForce) {
+            ui_->pushButtonDummy2->show();
+        } else {
+            ui_->pushButtonDummy2->hide();
+        }
+        if (!this->c5ButtonForce && !this->c6ButtonForce) {
+            ui_->pushButtonDummy3->show();
+        } else {
+            ui_->pushButtonDummy3->hide();
         }
     } else {
-        if (this->devModeEnabled) {
-            if (this->wallpaperDevNightFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode-night.png) }") );
-            } else {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-            }
-        } else {
-            if (this->wallpaperNightFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
-            } else {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
-            }
-        }
+        ui_->pushButtonDummy1->hide();
+        ui_->pushButtonDummy2->hide();
+        ui_->pushButtonDummy3->hide();
     }
-    system("/usr/local/bin/autoapp_helper restorevolumes");
+
+    if (this->c8ButtonForce || this->systemDebugmode) {
+        ui_->pushButtonDummy->hide();
+    }
+    // show dev labels if dev mode activated
+    if (!this->devModeEnabled) {
+        ui_->devlabel_left->hide();
+        ui_->devlabel_right->hide();
+    }
 
     // Load configured brightness values
     system("/usr/local/bin/autoapp_helper getbrightnessvalues");
 
-    // read and set brightness values
+    // read brightness slider attribs
     QFile paramFile(QString("/tmp/br_values"));
     paramFile.open(QIODevice::ReadOnly);
     QTextStream data_param(&paramFile);
     QStringList getparams = data_param.readAll().split("#");
     paramFile.close();
+    // set brightness slider attribs
     ui_->horizontalSliderBrightness->setMinimum(getparams[0].toInt());
     ui_->horizontalSliderBrightness->setMaximum(getparams[1].toInt());
     ui_->horizontalSliderBrightness->setSingleStep(getparams[2].toInt());
     ui_->horizontalSliderBrightness->setTickInterval(getparams[2].toInt());
+
+    // run monitor for custom brightness command if enabled in crankshaft_env.sh
     if (getparams[3] == "1") {
         ui_->pushButtonBrightness->show();
         this->customBrightnessControl = true;
         system("/usr/local/bin/autoapp_helper startcustombrightness &");
     }
+
+    // read param file
+    QFileInfo audioparamFile("/boot/crankshaft/volume");
+    if (audioparamFile.exists()) {
+        QFile audioparamFile(QString("/boot/crankshaft/volume"));
+        audioparamFile.open(QIODevice::ReadOnly);
+        QTextStream data_param(&audioparamFile);
+        QString getparams = data_param.readAll();
+        audioparamFile.close();
+        // init volume
+        QString vol=QString::number(getparams.toInt());
+        ui_->volumeValueLabel->setText(vol+"%");
+        ui_->horizontalSliderVolume->setValue(vol.toInt());
+    }
+
+    // switch to old menu if set in settings
+    if (!configuration->oldGUI()) {
+        this->oldGUIStyle = false;
+        ui_->menuWidget->show();
+        ui_->oldmenuWidget->hide();
+    } else {
+        this->oldGUIStyle = true;
+        ui_->oldmenuWidget->show();
+        ui_->menuWidget->hide();
+    }
+
+    // set bg's on startup
+    if (!this->nightModeEnabled) {
+        if (this->oldGUIStyle) {
+            if (this->wallpaperClassicDayFileExists) {
+                this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
+            }
+        } else {
+            if (this->wallpaperDayFileExists) {
+                this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
+            }
+        }
+        ui_->pushButtonDay->hide();
+        ui_->pushButtonDay2->hide();
+        ui_->pushButtonNight->show();
+        ui_->pushButtonNight2->show();
+    } else {
+        if (this->oldGUIStyle) {
+            if (this->wallpaperClassicNightFileExists) {
+                this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
+            }
+        } else {
+            if (this->wallpaperNightFileExists) {
+                this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
+            }
+        }
+        ui_->pushButtonNight->hide();
+        ui_->pushButtonNight2->hide();
+        ui_->pushButtonDay->show();
+        ui_->pushButtonDay2->show();
+    }
+
+    // use big clock in classic gui?
+    if (configuration->showBigClock()) {
+        this->UseBigClock = true;
+    } else {
+        this->UseBigClock = false;
+    }
+
+    // clock viibility by settings
+    if (!configuration->showClock()) {
+        ui_->Digital_clock->hide();
+        ui_->bigClock->hide();
+        this->NoClock = true;
+    } else {
+        this->NoClock = false;
+        if (this->UseBigClock) {
+            ui_->oldmenuDummy->hide();
+            ui_->bigClock->show();
+            if (oldGUIStyle) {
+                ui_->Digital_clock->hide();
+            }
+        } else {
+            ui_->Digital_clock->show();
+            ui_->bigClock->hide();
+        }
+    }
+
+    // init alpha values
+    ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
+    MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
 }
 
 MainWindow::~MainWindow()
@@ -310,48 +565,165 @@ MainWindow::~MainWindow()
 }
 }
 
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed1()
+{
+    system(qPrintable(this->custom_button_command_c1 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed2()
+{
+    system(qPrintable(this->custom_button_command_c2 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed3()
+{
+    system(qPrintable(this->custom_button_command_c3 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed4()
+{
+    system(qPrintable(this->custom_button_command_c4 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed5()
+{
+    system(qPrintable(this->custom_button_command_c5 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed6()
+{
+    system(qPrintable(this->custom_button_command_c6 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed7()
+{
+    system(qPrintable(this->custom_button_command_c7 + " &"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed8()
+{
+    system(qPrintable(this->custom_button_command_c8 + " &"));
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
 {
-
     this->brightnessFile = new QFile(this->brightnessFilename);
     this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
 
-    this->brightnessSliderVisible = !this->brightnessSliderVisible;
-    if (this->brightnessSliderVisible) {
-        if (this->cameraButtonForce) {
-            f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
-            f1x::openauto::autoapp::ui::MainWindow::cameraHide();
+    // Get the current brightness value
+    if (!this->customBrightnessControl) {
+        if (this->brightnessFile->open(QIODevice::ReadOnly)) {
+            QByteArray data = this->brightnessFile->readAll();
+            std::string::size_type sz;
+            int brightness_val = std::stoi(data.toStdString(), &sz);
+            ui_->horizontalSliderBrightness->setValue(brightness_val);
+            QString bri=QString::number(brightness_val);
+            ui_->brightnessValueLabel->setText(bri);
+            this->brightnessFile->close();
         }
-        // Get the current brightness value
-        if (!this->customBrightnessControl) {
-            if (this->brightnessFile->open(QIODevice::ReadOnly)) {
-                QByteArray data = this->brightnessFile->readAll();
-                std::string::size_type sz;
-                int brightness_val = std::stoi(data.toStdString(), &sz);
-                ui_->horizontalSliderBrightness->setValue(brightness_val);
-                this->brightnessFile->close();
-            }
-        } else {
-            if (this->brightnessFileAlt->open(QIODevice::ReadOnly)) {
-                QByteArray data = this->brightnessFileAlt->readAll();
-                std::string::size_type sz;
-                int brightness_val = std::stoi(data.toStdString(), &sz);
-                ui_->horizontalSliderBrightness->setValue(brightness_val);
-                this->brightnessFileAlt->close();
-            }
-        }
-        ui_->horizontalSliderBrightness->show();
-        ui_->horizontalSliderLabel->show();
     } else {
-        ui_->horizontalSliderLabel->hide();
-        ui_->horizontalSliderBrightness->hide();
+        if (this->brightnessFileAlt->open(QIODevice::ReadOnly)) {
+            QByteArray data = this->brightnessFileAlt->readAll();
+            std::string::size_type sz;
+            int brightness_val = std::stoi(data.toStdString(), &sz);
+            ui_->horizontalSliderBrightness->setValue(brightness_val);
+            QString bri=QString::number(brightness_val);
+            ui_->brightnessValueLabel->setText(bri);
+            this->brightnessFileAlt->close();
+        }
     }
+    ui_->horizontalSliderBrightness->show();
+    ui_->brightnessValueLabel->show();
+    ui_->horizontalSliderVolume->hide();
+    ui_->volumeValueLabel->hide();
+    ui_->pushButtonMute->hide();
+    ui_->pushButtonUnMute->hide();
+    ui_->horizontalSliderAlpha->hide();
+    ui_->alphaValueLabel->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness2_clicked()
+{
+    this->brightnessFile = new QFile(this->brightnessFilename);
+    this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
+
+    // Get the current brightness value
+    if (!this->customBrightnessControl) {
+        if (this->brightnessFile->open(QIODevice::ReadOnly)) {
+            QByteArray data = this->brightnessFile->readAll();
+            std::string::size_type sz;
+            int brightness_val = std::stoi(data.toStdString(), &sz);
+            ui_->horizontalSliderBrightness->setValue(brightness_val);
+            QString bri=QString::number(brightness_val);
+            ui_->brightnessValueLabel->setText(bri);
+            this->brightnessFile->close();
+        }
+    } else {
+        if (this->brightnessFileAlt->open(QIODevice::ReadOnly)) {
+            QByteArray data = this->brightnessFileAlt->readAll();
+            std::string::size_type sz;
+            int brightness_val = std::stoi(data.toStdString(), &sz);
+            ui_->horizontalSliderBrightness->setValue(brightness_val);
+            QString bri=QString::number(brightness_val);
+            ui_->brightnessValueLabel->setText(bri);
+            this->brightnessFileAlt->close();
+        }
+    }
+    ui_->horizontalSliderBrightness->show();
+    ui_->brightnessValueLabel->show();
+    ui_->horizontalSliderVolume->hide();
+    ui_->volumeValueLabel->hide();
+    ui_->pushButtonMute->hide();
+    ui_->pushButtonUnMute->hide();
+    ui_->horizontalSliderAlpha->hide();
+    ui_->alphaValueLabel->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume_clicked()
+{
+    ui_->horizontalSliderVolume->show();
+    ui_->volumeValueLabel->show();
+    if (this->toggleMute) {
+        ui_->pushButtonUnMute->show();
+    } else {
+        ui_->pushButtonMute->show();
+    }
+    ui_->horizontalSliderBrightness->hide();
+    ui_->brightnessValueLabel->hide();
+    ui_->horizontalSliderAlpha->hide();
+    ui_->alphaValueLabel->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume2_clicked()
+{
+    ui_->horizontalSliderVolume->show();
+    ui_->volumeValueLabel->show();
+    if (this->toggleMute) {
+        ui_->pushButtonUnMute->show();
+    } else {
+        ui_->pushButtonMute->show();
+    }
+    ui_->horizontalSliderBrightness->hide();
+    ui_->brightnessValueLabel->hide();
+    ui_->horizontalSliderAlpha->hide();
+    ui_->alphaValueLabel->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonAlpha_clicked()
+{
+    ui_->horizontalSliderAlpha->show();
+    ui_->alphaValueLabel->show();
+    ui_->horizontalSliderVolume->hide();
+    ui_->volumeValueLabel->hide();
+    ui_->pushButtonMute->hide();
+    ui_->pushButtonUnMute->hide();
+    ui_->horizontalSliderBrightness->hide();
+    ui_->brightnessValueLabel->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_valueChanged(int value)
 {
     int n = snprintf(this->brightness_str, 5, "%d", value);
-
     this->brightnessFile = new QFile(this->brightnessFilename);
     this->brightnessFileAlt = new QFile(this->brightnessFilenameAlt);
 
@@ -370,133 +742,201 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
             this->brightnessFileAlt->close();
         }
     }
-    ui_->horizontalSliderLabel->setText(this->brightness_str);
+    QString bri=QString::number(value);
+    ui_->brightnessValueLabel->setText(bri);
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolume_valueChanged(int value)
+{
+    int n = snprintf(this->volume_str, 5, "%d", value);
+    QString vol=QString::number(value);
+    ui_->volumeValueLabel->setText(vol+"%");
+    system(("/usr/local/bin/autoapp_helper setvolume " + std::to_string(value) + "&").c_str());
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChanged(int value)
+{
+    int n = snprintf(this->alpha_str, 5, "%d", value);
+    double alpha = value/100.0;
+    QString alp=QString::number(alpha);
+    ui_->alphaValueLabel->setText(alp);
+    ui_->pushButtonAlpha->setStyleSheet( "background-color: rgba(243, 243, 243, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonExit->setStyleSheet( "background-color: rgba(164, 0, 0, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonShutdown->setStyleSheet( "background-color: rgba(239, 41, 41, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonReboot->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonCancel->setStyleSheet( "background-color: rgba(32, 74, 135, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonBrightness->setStyleSheet( "background-color: rgba(245, 121, 0, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonVolume->setStyleSheet( "background-color: rgba(64, 191, 191, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonAlpha->setStyleSheet( "background-color: rgba(173, 127, 168, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonLock->setStyleSheet( "background-color: rgba(15, 54, 5, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonSettings->setStyleSheet( "background-color: rgba(138, 226, 52, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDay->setStyleSheet( "background: rgba(252, 233, 79, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonNight->setStyleSheet( "background-color: rgba(114, 159, 207, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonCameraShow->setStyleSheet( "background-color: rgba(100, 62, 4, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDummyCam->setStyleSheet( "background-color: rgba(117, 80, 123, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonToggleGUI->setStyleSheet( "background-color: rgba(237, 164, 255, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButton_c1->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c1 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c2->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c2 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c3->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c3 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c4->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c4 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c5->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c5 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c6->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c6 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c7->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c7 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButton_c8->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c8 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButtonDummy->setStyleSheet( "background-color: rgba(52, 101, 164, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDummy1->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDummy2->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDebug->setStyleSheet( "background-color: rgba(85, 87, 83, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
 {
-    if (this->devModeEnabled) {
-        if (this->wallpaperDevNightFileExists) {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode-night.png) }") );
+    MainWindow::on_pushButtonVolume_clicked();
+    if (this->oldGUIStyle) {
+        if (this->wallpaperClassicNightFileExists) {
+            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
         } else {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
         }
     } else {
         if (this->wallpaperNightFileExists) {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png) }") );
+            this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
         } else {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
         }
     }
     ui_->pushButtonDay->show();
+    ui_->pushButtonDay2->show();
     ui_->pushButtonNight->hide();
-    if (this->brightnessSliderVisible) {
-        ui_->horizontalSliderBrightness->hide();
-        ui_->horizontalSliderLabel->hide();
-        this->brightnessSliderVisible = false;
-    }
+    ui_->pushButtonNight2->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
 {
-    if (this->devModeEnabled) {
-        if (this->wallpaperDevFileExists) {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-devmode.png) }") );
+    MainWindow::on_pushButtonVolume_clicked();
+    if (this->oldGUIStyle) {
+        if (this->wallpaperClassicDayFileExists) {
+            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
         } else {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
         }
     } else {
         if (this->wallpaperDayFileExists) {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png) }") );
+            this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
         } else {
-            this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(:/connect.png) }") );
+            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
         }
     }
     ui_->pushButtonNight->show();
+    ui_->pushButtonNight2->show();
     ui_->pushButtonDay->hide();
-    if (this->brightnessSliderVisible) {
-        ui_->horizontalSliderBrightness->hide();
-        ui_->horizontalSliderLabel->hide();
-        this->brightnessSliderVisible = false;
-    }
+    ui_->pushButtonDay2->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::cameraControlHide()
 {
     if (this->cameraButtonForce) {
-        ui_->pushButtonCameraHide->hide();
-        ui_->pushButtonStop->hide();
-        ui_->pushButtonRecord->hide();
-        ui_->pushButtonRecordActive->hide();
-        ui_->pushButtonRearcam->hide();
-        ui_->pushButtonSave->hide();
-        ui_->dashcamBG->hide();
-        this->dashcamBGState = false;
-        ui_->pushButtonCameraShow->show();
+        ui_->cameraWidget->hide();
+        if (!this->oldGUIStyle) {
+            ui_->menuWidget->show();
+        } else {
+            ui_->oldmenuWidget->show();
+        }
     }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
 {
     if (this->cameraButtonForce) {
-        ui_->pushButtonCameraShow->hide();
-        QPixmap image;
-        image.load(":/bg_dashcam.png");
-        ui_->dashcamBG->setPixmap(image);
-        ui_->dashcamBG->show();
-        ui_->pushButtonStop->show();
-        ui_->pushButtonRecord->show();
-        ui_->pushButtonRearcam->show();
-        ui_->pushButtonSave->show();
-        this->dashcamBGState = true;
-        ui_->pushButtonCameraHide->show();
-        if (this->brightnessSliderVisible) {
-            ui_->horizontalSliderBrightness->hide();
-            ui_->horizontalSliderLabel->hide();
-            this->brightnessSliderVisible = false;
+        if (!this->oldGUIStyle) {
+            ui_->menuWidget->hide();
+        } else {
+            ui_->oldmenuWidget->hide();
         }
+        ui_->cameraWidget->show();
     }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::toggleExit()
 {
     if (!this->exitMenuVisible) {
-        f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
-        if (this->brightnessSliderVisible) {
-            ui_->horizontalSliderBrightness->hide();
-            ui_->horizontalSliderLabel->hide();
-            this->brightnessSliderVisible = false;
-        }
+        ui_->pushButtonExit->hide();
         ui_->pushButtonShutdown->show();
         ui_->pushButtonReboot->show();
         ui_->pushButtonCancel->show();
-        QPixmap image;
-        image.load(":/bg_exit.png");
-        ui_->exitBG->setPixmap(image);
-        ui_->exitBG->show();
+        ui_->exitWidget->show();
+        ui_->buttonWidget->hide();
         this->exitMenuVisible = true;
     } else {
         ui_->pushButtonShutdown->hide();
         ui_->pushButtonReboot->hide();
         ui_->pushButtonCancel->hide();
-        ui_->exitBG->hide();
+        ui_->pushButtonExit->show();
+        ui_->buttonWidget->show();
+        ui_->exitWidget->hide();
         this->exitMenuVisible = false;
     }
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::showRearCamBG()
+void f1x::openauto::autoapp::ui::MainWindow::toggleMuteButton()
 {
-    ui_->pushButtonRearcamBack->show();
-    if (this->brightnessSliderVisible) {
-        ui_->horizontalSliderBrightness->hide();
-        ui_->horizontalSliderLabel->hide();
-        this->brightnessSliderVisible = false;
+    if (!this->toggleMute) {
+        ui_->pushButtonMute->hide();
+        ui_->pushButtonUnMute->show();
+        this->toggleMute = true;
+    } else {
+        ui_->pushButtonUnMute->hide();
+        ui_->pushButtonMute->show();
+        this->toggleMute = false;
     }
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG()
+void f1x::openauto::autoapp::ui::MainWindow::toggleGUI()
 {
-    ui_->pushButtonRearcamBack->hide();
+    if (!this->oldGUIStyle) {
+        ui_->oldmenuWidget->show();
+        ui_->menuWidget->hide();
+        this->oldGUIStyle = true;
+        if (!this->NoClock) {
+            if (UseBigClock) {
+                ui_->Digital_clock->hide();
+                ui_->bigClock->show();
+            } else {
+                ui_->Digital_clock->show();
+                ui_->bigClock->hide();
+            }
+        }
+        MainWindow::on_pushButtonVolume_clicked();
+    } else {
+        ui_->menuWidget->show();
+        ui_->oldmenuWidget->hide();
+        this->oldGUIStyle = false;
+        if (!this->NoClock) {
+            ui_->Digital_clock->show();
+        }
+    }
+    if (!this->nightModeEnabled) {
+        if (this->oldGUIStyle) {
+            if (this->wallpaperClassicDayFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }") );
+            }
+        } else {
+            if (this->wallpaperDayFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }") );
+            }
+        }
+    } else {
+        if (this->oldGUIStyle) {
+            if (this->wallpaperClassicNightFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }") );
+            }
+        } else {
+            if (this->wallpaperNightFileExists) {
+                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }") );
+            }
+        }
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::createDebuglog()
@@ -509,6 +949,16 @@ void f1x::openauto::autoapp::ui::MainWindow::setPairable()
     system("/usr/local/bin/autoapp_helper enablepairing &");
 }
 
+void f1x::openauto::autoapp::ui::MainWindow::setMute()
+{
+    system("/usr/local/bin/autoapp_helper setmute &");
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::setUnMute()
+{
+    system("/usr/local/bin/autoapp_helper setunmute &");
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
     using namespace std::this_thread; // sleep_for
@@ -519,11 +969,12 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     if ((time.second() % 2) == 0) {
         time_text[3] = ' ';
         time_text[8] = ' ';
-
+	this->update();
+        // check if phone is conencted to usb
         QFileInfo phoneConnectedFile("/tmp/android_device");
         if (phoneConnectedFile.exists()) {
             if (ui_->phoneConnected->isVisible() == false) {
-                ui_->phoneConnected->setText("Phone connected");
+                ui_->phoneConnected->setText("USB connected");
                 ui_->phoneConnected->show();
             }
         } else {
@@ -532,6 +983,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             }
         }
 
+        // check if a device is connected via bluetooth
         QFileInfo phoneBTConnectedFile("/tmp/btdevice");
         if (phoneBTConnectedFile.exists()) {
             if (ui_->btDevice->isVisible() == false) {
@@ -540,7 +992,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 QTextStream data_date(&phoneBTData);
                 QString linedate = data_date.readAll();
                 phoneBTData.close();
-                ui_->btDevice->setText(linedate);
+                ui_->btDevice->setText(linedate.simplified());
                 ui_->btDevice->show();
             }
         } else {
@@ -549,6 +1001,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             }
         }
 
+        // check the need for system messages
         QFileInfo configInProgressFile("/tmp/config_in_progress");
         QFileInfo debugInProgressFile("/tmp/debug_in_progress");
         QFileInfo enablePairingFile("/tmp/enable_pairing");
@@ -558,17 +1011,26 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 if (configInProgressFile.exists()) {
                     ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
                     ui_->pushButtonSettings->hide();
+                    ui_->pushButtonSettings2->hide();
                     ui_->pushButtonLock->show();
+                    ui_->pushButtonLock2->show();
                     ui_->systemConfigInProgress->show();
                 }
                 if (debugInProgressFile.exists()) {
                     ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
-                    ui_->systemDebugging->hide();
+                    ui_->pushButtonSettings->hide();
+                    ui_->pushButtonSettings2->hide();
+                    ui_->pushButtonDebug->hide();
+                    ui_->pushButtonDebug2->hide();
+                    ui_->pushButtonLock->show();
+                    ui_->pushButtonLock2->show();
+                    ui_->pushButtonDummyDebug->show();
                     ui_->systemConfigInProgress->show();
                 }
                 if (enablePairingFile.exists()) {
-                    ui_->systemConfigInProgress->setText("Bluetooth Pairing enabled!                ");
-                    ui_->systemDebugging->hide();
+                    ui_->systemConfigInProgress->setText("Bluetooth Pairing enabled!");
+                    ui_->pushButtonDebug->hide();
+                    ui_->pushButtonDebug2->hide();
                     ui_->systemConfigInProgress->show();
                 }
             }
@@ -576,37 +1038,20 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             if (ui_->systemConfigInProgress->isVisible() == true) {
                 ui_->systemConfigInProgress->hide();
                 ui_->pushButtonSettings->show();
-                    ui_->pushButtonLock->hide();
+                ui_->pushButtonSettings2->show();
+                ui_->pushButtonLock->hide();
+                ui_->pushButtonLock2->hide();
                 if (this->systemDebugmode) {
-                    ui_->systemDebugging->show();
+                    ui_->pushButtonDebug->show();
+                    ui_->pushButtonDebug2->show();
+                    ui_->pushButtonDummyDebug->hide();
                 }
             }
         }
 
+        // update day/night state
         QFileInfo nightModeFile("/tmp/night_mode_enabled");
         this->nightModeEnabled = nightModeFile.exists();
-
-        if (this->cameraButtonForce) {
-            QFileInfo rearCamFile("/tmp/rearcam_enabled");
-            this->rearCamEnabled = rearCamFile.exists();
-
-            QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
-            this->dashCamRecording = dashCamRecordingFile.exists();
-
-            if (this->dashcamBGState) {
-                if (this->dashCamRecording) {
-                    if (ui_->pushButtonRecord->isVisible() == true) {
-                        ui_->pushButtonRecordActive->show();
-                        ui_->pushButtonRecord->hide();
-                    }
-                } else {
-                    if (ui_->pushButtonRecordActive->isVisible() == true) {
-                        ui_->pushButtonRecord->show();
-                        ui_->pushButtonRecordActive->hide();
-                    }
-                }
-            }
-        }
 
         if (this->nightModeEnabled) {
             if (!this->DayNightModeState) {
@@ -620,44 +1065,52 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             }
         }
 
+        // camera stuff
         if (this->cameraButtonForce) {
+
+            // check if dashcam is recording
+            QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
+            this->dashCamRecording = dashCamRecordingFile.exists();
+
+            // show recording state if dashcam is visible
+            if (ui_->cameraWidget->isVisible() == true) {
+                if (this->dashCamRecording) {
+                    if (ui_->pushButtonRecord->isVisible() == true) {
+                        ui_->pushButtonRecordActive->show();
+                        ui_->pushButtonRecord->hide();
+                    }
+                } else {
+                    if (ui_->pushButtonRecordActive->isVisible() == true) {
+                        ui_->pushButtonRecord->show();
+                        ui_->pushButtonRecordActive->hide();
+                    }
+                }
+            }
+
+            // check if rearcam is eanbled
+            QFileInfo rearCamFile("/tmp/rearcam_enabled");
+            this->rearCamEnabled = rearCamFile.exists();
+
             if (this->rearCamEnabled) {
-                if (!this->rearcamState) {
-                    this->rearcamState = true;
-                    f1x::openauto::autoapp::ui::MainWindow::cameraControlHide();
-                    f1x::openauto::autoapp::ui::MainWindow::showRearCamBG();
-                    f1x::openauto::autoapp::ui::MainWindow::showRearCam();
+                if (!this->rearCamVisible) {
+                    this->rearCamVisible = true;
+                    f1x::openauto::autoapp::ui::MainWindow::MainWindow::showRearCam();
                 }
             } else {
-                if (this->rearcamState) {
-                    this->rearcamState = false;
-                    f1x::openauto::autoapp::ui::MainWindow::hideRearCamBG();
-                    f1x::openauto::autoapp::ui::MainWindow::hideRearCam();
+                if (this->rearCamVisible) {
+                    this->rearCamVisible = false;
+                    f1x::openauto::autoapp::ui::MainWindow::MainWindow::hideRearCam();
                 }
             }
         }
+
+        // check if sutdown is external triggered and init clean app exit
         QFileInfo externalExitFile("/tmp/external_exit");
         if (externalExitFile.exists()) {
             f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
         }
-
-        if (this->kodiButtonForce) {
-            QFileInfo kodiRunningFile("/tmp/kodi_running");
-            if (kodiRunningFile.exists()) {
-                if (ui_->kodiBG->isVisible() == false) {
-                    ui_->kodiBG->hide();
-                    QPixmap image;
-                    image.load(":/black.png");
-                    ui_->kodiBG->setPixmap(image);
-                    ui_->kodiBG->show();
-                }
-            } else {
-                if (ui_->kodiBG->isVisible() == true) {
-                    ui_->kodiBG->hide();
-                }
-            }
-        }
     }
     ui_->Digital_clock->setText(time_text);
+    ui_->bigClock->setText(time_text);
     sleep_for(milliseconds(10));
 }

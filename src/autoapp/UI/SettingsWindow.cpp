@@ -43,6 +43,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonSave, &QPushButton::clicked, this, &SettingsWindow::onSave);
     connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::unpairAll);
     connect(ui_->horizontalSliderScreenDPI, &QSlider::valueChanged, this, &SettingsWindow::onUpdateScreenDPI);
+    connect(ui_->horizontalSliderAlphaTrans, &QSlider::valueChanged, this, &SettingsWindow::onUpdateAlphaTrans);
     connect(ui_->radioButtonUseExternalBluetoothAdapter, &QRadioButton::clicked, [&](bool checked) { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(checked); });
     connect(ui_->radioButtonDisableBluetooth, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
     connect(ui_->radioButtonUseLocalBluetoothAdapter, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
@@ -63,7 +64,12 @@ SettingsWindow::~SettingsWindow()
 void SettingsWindow::onSave()
 {
     configuration_->setHandednessOfTrafficType(ui_->radioButtonLeftHandDrive->isChecked() ? configuration::HandednessOfTrafficType::LEFT_HAND_DRIVE : configuration::HandednessOfTrafficType::RIGHT_HAND_DRIVE);
+
     configuration_->showClock(ui_->checkBoxShowClock->isChecked());
+    configuration_->showBigClock(ui_->checkBoxShowBigClock->isChecked());
+    configuration_->oldGUI(ui_->checkBoxOldGUI->isChecked());
+    configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
+
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
 
     if(ui_->radioButton480p->isChecked())
@@ -233,6 +239,10 @@ void SettingsWindow::load()
     ui_->radioButtonLeftHandDrive->setChecked(configuration_->getHandednessOfTrafficType() == configuration::HandednessOfTrafficType::LEFT_HAND_DRIVE);
     ui_->radioButtonRightHandDrive->setChecked(configuration_->getHandednessOfTrafficType() == configuration::HandednessOfTrafficType::RIGHT_HAND_DRIVE);
     ui_->checkBoxShowClock->setChecked(configuration_->showClock());
+    ui_->horizontalSliderAlphaTrans->setValue(static_cast<int>(configuration_->getAlphaTrans()));
+
+    ui_->checkBoxShowBigClock->setChecked(configuration_->showBigClock());
+    ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
     ui_->radioButton60FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_60);
@@ -340,6 +350,12 @@ void SettingsWindow::saveButtonCheckBox(const QCheckBox* checkBox, configuration
 void SettingsWindow::onUpdateScreenDPI(int value)
 {
     ui_->labelScreenDPIValue->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateAlphaTrans(int value)
+{
+    double alpha = value/100.0;
+    ui_->labelAlphaTransValue->setText(QString::number(alpha));
 }
 
 void SettingsWindow::onUpdateSystemVolume(int value)

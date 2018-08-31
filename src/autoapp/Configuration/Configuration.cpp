@@ -32,6 +32,11 @@ namespace configuration
 const std::string Configuration::cConfigFileName = "openauto.ini";
 
 const std::string Configuration::cGeneralShowClockKey = "General.ShowClock";
+
+const std::string Configuration::cGeneralShowBigClockKey = "General.ShowBigClock";
+const std::string Configuration::cGeneralOldGUIKey = "General.OldGUI";
+const std::string Configuration::cGeneralAlphaTransKey = "General.AlphaTrans";
+
 const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.HandednessOfTrafficType";
 
 const std::string Configuration::cVideoFPSKey = "Video.FPS";
@@ -83,6 +88,10 @@ void Configuration::load()
                                                                                                 static_cast<uint32_t>(HandednessOfTrafficType::LEFT_HAND_DRIVE)));
         showClock_ = iniConfig.get<bool>(cGeneralShowClockKey, true);
 
+        showBigClock_ = iniConfig.get<bool>(cGeneralShowBigClockKey, false);
+        oldGUI_ = iniConfig.get<bool>(cGeneralOldGUIKey, false);
+        alphaTrans_ = iniConfig.get<size_t>(cGeneralAlphaTransKey, 50);
+
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
                                                                                              aasdk::proto::enums::VideoFPS::_60));
 
@@ -118,6 +127,9 @@ void Configuration::reset()
 {
     handednessOfTrafficType_ = HandednessOfTrafficType::LEFT_HAND_DRIVE;
     showClock_ = true;
+    showBigClock_ = false;
+    oldGUI_ = false;
+    alphaTrans_ = 50;
     videoFPS_ = aasdk::proto::enums::VideoFPS::_60;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
     screenDPI_ = 140;
@@ -136,7 +148,11 @@ void Configuration::save()
 {
     boost::property_tree::ptree iniConfig;
     iniConfig.put<uint32_t>(cGeneralHandednessOfTrafficTypeKey, static_cast<uint32_t>(handednessOfTrafficType_));
+
     iniConfig.put<bool>(cGeneralShowClockKey, showClock_);
+    iniConfig.put<bool>(cGeneralShowBigClockKey, showBigClock_);
+    iniConfig.put<bool>(cGeneralOldGUIKey, oldGUI_);
+    iniConfig.put<size_t>(cGeneralAlphaTransKey, alphaTrans_);
 
     iniConfig.put<uint32_t>(cVideoFPSKey, static_cast<uint32_t>(videoFPS_));
     iniConfig.put<uint32_t>(cVideoResolutionKey, static_cast<uint32_t>(videoResolution_));
@@ -194,6 +210,36 @@ void Configuration::showClock(bool value)
 bool Configuration::showClock() const
 {
     return showClock_;
+}
+
+void Configuration::showBigClock(bool value)
+{
+    showBigClock_ = value;
+}
+
+bool Configuration::showBigClock() const
+{
+    return showBigClock_;
+}
+
+void Configuration::oldGUI(bool value)
+{
+    oldGUI_ = value;
+}
+
+bool Configuration::oldGUI() const
+{
+    return oldGUI_;
+}
+
+size_t Configuration::getAlphaTrans() const
+{
+    return alphaTrans_;
+}
+
+void Configuration::setAlphaTrans(size_t value)
+{
+    alphaTrans_ = value;
 }
 
 aasdk::proto::enums::VideoFPS::Enum Configuration::getVideoFPS() const
