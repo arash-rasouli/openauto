@@ -62,9 +62,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFileInfo devModeFile("/tmp/dev_mode_enabled");
     this->devModeEnabled = devModeFile.exists();
 
-    QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
-    this->bluetoothEnabled = bluetoothButtonFile.exists();
-
     QFileInfo wifiButtonFile("/etc/button_wifi_visible");
     this->wifiButtonForce = wifiButtonFile.exists();
 
@@ -256,10 +253,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonAlpha->show();
 
 
-    // hide bluetooth if not enabled
-    if (!this->bluetoothEnabled) {
-        ui_->pushButtonBluetooth->hide();
-    }
 
     // as default hide power buttons
     ui_->pushButtonShutdown->hide();
@@ -969,7 +962,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     if ((time.second() % 2) == 0) {
         time_text[3] = ' ';
         time_text[8] = ' ';
-	this->update();
+
         // check if phone is conencted to usb
         QFileInfo phoneConnectedFile("/tmp/android_device");
         if (phoneConnectedFile.exists()) {
@@ -980,6 +973,20 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         } else {
             if (ui_->phoneConnected->isVisible() == true) {
                 ui_->phoneConnected->hide();
+            }
+        }
+
+        // check if bluetooth available
+        QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
+        this->bluetoothEnabled = bluetoothButtonFile.exists();
+
+        if (this->bluetoothEnabled) {
+            if (ui_->pushButtonBluetooth->isVisible() == false) {
+                ui_->pushButtonBluetooth->show();
+            }
+        } else {
+            if (ui_->pushButtonBluetooth->isVisible() == true) {
+                ui_->pushButtonBluetooth->hide();
             }
         }
 
