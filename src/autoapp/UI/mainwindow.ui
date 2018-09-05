@@ -458,7 +458,37 @@ border: 2px solid rgba(255,255,255,0.5);</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonDummyCam">
+          <widget class="QPushButton" name="pushButtonWifi">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(252, 175, 62, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/wifi-hot.png</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonDummyCamWifi">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -1562,6 +1592,33 @@ border: 2px solid rgba(255,255,255,0.5);</string>
                </widget>
               </item>
               <item>
+               <widget class="QPushButton" name="pushButtonWifi2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgba(136, 138, 133, 0.5);</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normalon>:/wifi-hot.png</normalon>
+                 </iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>50</width>
+                  <height>50</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QPushButton" name="pushButtonDebug2">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
@@ -1589,7 +1646,7 @@ border: 2px solid rgba(255,255,255,0.5);</string>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButtonDummyCam2">
+               <widget class="QPushButton" name="pushButtonDummyCamWifi2">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
                   <horstretch>0</horstretch>

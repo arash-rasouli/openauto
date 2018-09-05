@@ -164,6 +164,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonUnMute, &QPushButton::clicked, this, &MainWindow::setUnMute);
     connect(ui_->pushButtonToggleGUI, &QPushButton::clicked, this, &MainWindow::toggleGUI);
     connect(ui_->pushButtonToggleGUI2, &QPushButton::clicked, this, &MainWindow::toggleGUI);
+    connect(ui_->pushButtonWifi, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
+    connect(ui_->pushButtonWifi2, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
@@ -210,19 +212,23 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         connect(ui_->pushButtonStop, &QPushButton::clicked, this, &MainWindow::cameraStop);
         connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
         connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
-        ui_->pushButtonDummyCam->hide();
-        ui_->pushButtonDummyCam2->hide();
+        ui_->pushButtonDummyCamWifi->hide();
+        ui_->pushButtonDummyCamWifi2->hide();
     } else {
         ui_->pushButtonCameraShow->hide();
         ui_->pushButtonCameraShow2->hide();
-        ui_->pushButtonDummyCam->show();
-        ui_->pushButtonDummyCam2->show();
+        if (this->wifiButtonForce) {
+            ui_->pushButtonDummyCamWifi2->hide();
+        }
     }
 
     // show debug button if enabled
     if (!this->systemDebugmode) {
         ui_->pushButtonDebug->hide();
         ui_->pushButtonDebug2->hide();
+        if (this->cameraButtonForce && this->wifiButtonForce) {
+            ui_->pushButtonDummyDebug->hide();
+        }
     } else {
         ui_->pushButtonDummyDebug->hide();
     }
@@ -252,8 +258,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->alphaValueLabel->hide();
     ui_->pushButtonAlpha->show();
 
-
-
     // as default hide power buttons
     ui_->pushButtonShutdown->hide();
     ui_->pushButtonReboot->hide();
@@ -265,6 +269,14 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // as default hide muted button
     ui_->pushButtonUnMute->hide();
+
+    // hide wifi if not forced
+    if (!this->wifiButtonForce) {
+        ui_->pushButtonWifi->hide();
+        ui_->pushButtonWifi2->hide();
+    } else {
+        ui_->pushButtonDummyCamWifi->hide();
+    }
 
     // set custom buttons if file enabled by trigger file
     if (!this->c1ButtonForce) {
@@ -766,7 +778,8 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChang
     ui_->pushButtonDay->setStyleSheet( "background: rgba(252, 233, 79, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonNight->setStyleSheet( "background-color: rgba(114, 159, 207, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonCameraShow->setStyleSheet( "background-color: rgba(100, 62, 4, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonDummyCam->setStyleSheet( "background-color: rgba(117, 80, 123, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonDummyCamWifi->setStyleSheet( "background-color: rgba(117, 80, 123, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonWifi->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonToggleGUI->setStyleSheet( "background-color: rgba(237, 164, 255, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButton_c1->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c1 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
     ui_->pushButton_c2->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c2 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
