@@ -53,7 +53,24 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
-
+    // menu
+    ui_->tab1->show();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->horizontalGroupBox->hide();
+    connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
+    connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
+    connect(ui_->pushButtonTab3, &QPushButton::clicked, this, &SettingsWindow::show_tab3);
+    connect(ui_->pushButtonTab4, &QPushButton::clicked, this, &SettingsWindow::show_tab4);
+    connect(ui_->pushButtonTab5, &QPushButton::clicked, this, &SettingsWindow::show_tab5);
+    connect(ui_->pushButtonTab6, &QPushButton::clicked, this, &SettingsWindow::show_tab6);
+    connect(ui_->pushButtonTab7, &QPushButton::clicked, this, &SettingsWindow::show_tab7);
+    connect(ui_->pushButtonTab8, &QPushButton::clicked, this, &SettingsWindow::show_tab8);
 }
 
 SettingsWindow::~SettingsWindow()
@@ -69,6 +86,8 @@ void SettingsWindow::onSave()
     configuration_->showBigClock(ui_->checkBoxShowBigClock->isChecked());
     configuration_->oldGUI(ui_->checkBoxOldGUI->isChecked());
     configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
+    configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
+    configuration_->hideAlpha(ui_->checkBoxHideAlpha->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
 
@@ -243,6 +262,8 @@ void SettingsWindow::load()
 
     ui_->checkBoxShowBigClock->setChecked(configuration_->showBigClock());
     ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
+    ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
+    ui_->checkBoxHideAlpha->setChecked(configuration_->hideAlpha());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
     ui_->radioButton60FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_60);
@@ -654,6 +675,102 @@ void SettingsWindow::onShowBindings()
     QMessageBox confirmationMessage(QMessageBox::Information, "Information", message, QMessageBox::Ok);
     confirmationMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
     confirmationMessage.exec();
+}
+
+void SettingsWindow::show_tab1()
+{
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab1->show();
+}
+
+void SettingsWindow::show_tab2()
+{
+    ui_->tab1->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab2->show();
+}
+
+void SettingsWindow::show_tab3()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab3->show();
+}
+
+void SettingsWindow::show_tab4()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab4->show();
+}
+
+void SettingsWindow::show_tab5()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab5->show();
+}
+
+void SettingsWindow::show_tab6()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab6->show();
+}
+
+void SettingsWindow::show_tab7()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab8->hide();
+    ui_->tab7->show();
+}
+
+void SettingsWindow::show_tab8()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->show();
 }
 
 }

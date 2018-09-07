@@ -96,7 +96,9 @@ int main(int argc, char* argv[])
     mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     autoapp::ui::SettingsWindow settingsWindow(configuration);
+    settingsWindow.setFixedSize(width, height);
     settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
+    settingsWindow.adjustSize();
 
     autoapp::configuration::RecentAddressesList recentAddressesList(7);
     recentAddressesList.read();

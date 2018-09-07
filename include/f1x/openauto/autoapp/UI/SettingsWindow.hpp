@@ -56,6 +56,16 @@ private slots:
     void onUpdateSystemVolume(int value);
     void onUpdateSystemCapture(int value);
 
+private slots:
+    void show_tab1();
+    void show_tab2();
+    void show_tab3();
+    void show_tab4();
+    void show_tab5();
+    void show_tab6();
+    void show_tab7();
+    void show_tab8();
+
 private:
     void showEvent(QShowEvent* event);
     void load();

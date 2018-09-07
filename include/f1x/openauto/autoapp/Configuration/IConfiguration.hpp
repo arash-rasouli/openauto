@@ -60,6 +60,10 @@ public:
     virtual bool oldGUI() const = 0;
     virtual void setAlphaTrans(size_t value) = 0;
     virtual size_t getAlphaTrans() const = 0;
+    virtual void hideMenuToggle(bool value) = 0;
+    virtual bool hideMenuToggle() const = 0;
+    virtual void hideAlpha(bool value) = 0;
+    virtual bool hideAlpha() const = 0;
 
     virtual aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const = 0;
     virtual void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) = 0;

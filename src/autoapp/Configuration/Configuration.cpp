@@ -36,6 +36,8 @@ const std::string Configuration::cGeneralShowClockKey = "General.ShowClock";
 const std::string Configuration::cGeneralShowBigClockKey = "General.ShowBigClock";
 const std::string Configuration::cGeneralOldGUIKey = "General.OldGUI";
 const std::string Configuration::cGeneralAlphaTransKey = "General.AlphaTrans";
+const std::string Configuration::cGeneralHideMenuToggleKey = "General.HideMenuToggle";
+const std::string Configuration::cGeneralHideAlphaKey = "General.HideAlpha";
 
 const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.HandednessOfTrafficType";
 
@@ -91,6 +93,8 @@ void Configuration::load()
         showBigClock_ = iniConfig.get<bool>(cGeneralShowBigClockKey, false);
         oldGUI_ = iniConfig.get<bool>(cGeneralOldGUIKey, false);
         alphaTrans_ = iniConfig.get<size_t>(cGeneralAlphaTransKey, 50);
+        hideMenuToggle_ = iniConfig.get<bool>(cGeneralHideMenuToggleKey, false);
+        hideAlpha_ = iniConfig.get<bool>(cGeneralHideAlphaKey, false);
 
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
                                                                                              aasdk::proto::enums::VideoFPS::_60));
@@ -130,6 +134,8 @@ void Configuration::reset()
     showBigClock_ = false;
     oldGUI_ = false;
     alphaTrans_ = 50;
+    hideMenuToggle_ = false;
+    hideAlpha_ = false;
     videoFPS_ = aasdk::proto::enums::VideoFPS::_60;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
     screenDPI_ = 140;
@@ -153,6 +159,8 @@ void Configuration::save()
     iniConfig.put<bool>(cGeneralShowBigClockKey, showBigClock_);
     iniConfig.put<bool>(cGeneralOldGUIKey, oldGUI_);
     iniConfig.put<size_t>(cGeneralAlphaTransKey, alphaTrans_);
+    iniConfig.put<bool>(cGeneralHideMenuToggleKey, hideMenuToggle_);
+    iniConfig.put<bool>(cGeneralHideAlphaKey, hideAlpha_);
 
     iniConfig.put<uint32_t>(cVideoFPSKey, static_cast<uint32_t>(videoFPS_));
     iniConfig.put<uint32_t>(cVideoResolutionKey, static_cast<uint32_t>(videoResolution_));
@@ -240,6 +248,26 @@ size_t Configuration::getAlphaTrans() const
 void Configuration::setAlphaTrans(size_t value)
 {
     alphaTrans_ = value;
+}
+
+void Configuration::hideMenuToggle(bool value)
+{
+    hideMenuToggle_ = value;
+}
+
+bool Configuration::hideMenuToggle() const
+{
+    return hideMenuToggle_;
+}
+
+void Configuration::hideAlpha(bool value)
+{
+    hideAlpha_ = value;
+}
+
+bool Configuration::hideAlpha() const
+{
+    return hideAlpha_;
 }
 
 aasdk::proto::enums::VideoFPS::Enum Configuration::getVideoFPS() const

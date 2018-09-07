@@ -555,6 +555,17 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         }
     }
 
+    // hide gui toggle if enabled in settings
+    if (configuration->hideMenuToggle()) {
+        ui_->pushButtonToggleGUI->hide();
+        ui_->pushButtonToggleGUI2->hide();
+    }
+
+    // hide alpha controls if enabled in settings
+    if (configuration->hideAlpha()) {
+        ui_->pushButtonAlpha->hide();
+    }
+
     // init alpha values
     ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
     MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));

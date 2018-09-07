@@ -52,6 +52,10 @@ public:
     bool oldGUI() const override;
     void setAlphaTrans(size_t value) override;
     size_t getAlphaTrans() const override;
+    void hideMenuToggle(bool value) override;
+    bool hideMenuToggle() const override;
+    void hideAlpha(bool value) override;
+    bool hideAlpha() const override;
 
     aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const override;
     void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) override;
@@ -92,6 +96,8 @@ private:
     bool showBigClock_;
     bool oldGUI_;
     size_t alphaTrans_;
+    bool hideMenuToggle_;
+    bool hideAlpha_;
 
     aasdk::proto::enums::VideoFPS::Enum videoFPS_;
     aasdk::proto::enums::VideoResolution::Enum videoResolution_;
@@ -113,6 +119,8 @@ private:
     static const std::string cGeneralShowBigClockKey;
     static const std::string cGeneralOldGUIKey;
     static const std::string cGeneralAlphaTransKey;
+    static const std::string cGeneralHideMenuToggleKey;
+    static const std::string cGeneralHideAlphaKey;
 
     static const std::string cGeneralHandednessOfTrafficTypeKey;
 
