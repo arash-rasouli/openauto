@@ -55,6 +55,7 @@ private slots:
     void onShowBindings();
     void onUpdateSystemVolume(int value);
     void onUpdateSystemCapture(int value);
+    void setTime();
 
 private slots:
     void show_tab1();

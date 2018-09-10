@@ -569,6 +569,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     // init alpha values
     ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
     MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
+
+    // bt media controls
+    ui_->btControlWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -1059,7 +1062,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                     ui_->systemConfigInProgress->show();
                 }
                 if (enablePairingFile.exists()) {
-                    ui_->systemConfigInProgress->setText("Bluetooth Pairing enabled!");
+                    ui_->systemConfigInProgress->setText("Auto Bluetooth Pairing enabled for 120 seconds!");
                     ui_->pushButtonDebug->hide();
                     ui_->pushButtonDebug2->hide();
                     ui_->systemConfigInProgress->show();

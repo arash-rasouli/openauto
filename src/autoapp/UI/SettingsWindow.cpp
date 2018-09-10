@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  This file is part of openauto project.
 *  Copyright (C) 2018 f1x.studio (Michal Szwaj)
 *
@@ -23,6 +23,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <string>
+#include <QDateTime>
 
 namespace f1x
 {
@@ -42,6 +43,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonSave, &QPushButton::clicked, this, &SettingsWindow::onSave);
     connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::unpairAll);
+    connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->horizontalSliderScreenDPI, &QSlider::valueChanged, this, &SettingsWindow::onUpdateScreenDPI);
     connect(ui_->horizontalSliderAlphaTrans, &QSlider::valueChanged, this, &SettingsWindow::onUpdateAlphaTrans);
     connect(ui_->radioButtonUseExternalBluetoothAdapter, &QRadioButton::clicked, [&](bool checked) { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(checked); });
@@ -53,6 +55,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
+    connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
     // menu
     ui_->tab1->show();
     ui_->tab2->hide();
@@ -71,6 +74,12 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonTab6, &QPushButton::clicked, this, &SettingsWindow::show_tab6);
     connect(ui_->pushButtonTab7, &QPushButton::clicked, this, &SettingsWindow::show_tab7);
     connect(ui_->pushButtonTab8, &QPushButton::clicked, this, &SettingsWindow::show_tab8);
+
+    QTime time=QTime::currentTime();
+    QString time_text_hour=time.toString("hh");
+    QString time_text_minute=time.toString("mm");
+    ui_->spinBoxHour->setValue((time_text_hour).toInt());
+    ui_->spinBoxMinute->setValue((time_text_minute).toInt());
 }
 
 SettingsWindow::~SettingsWindow()
@@ -392,6 +401,17 @@ void SettingsWindow::onUpdateSystemCapture(int value)
 void SettingsWindow::unpairAll()
 {
     system("/usr/local/bin/crankshaft bluetooth unpair &");
+}
+
+void SettingsWindow::setTime()
+{ 
+    // generate param string for autoapp_helper
+    std::string params;
+    params.append( std::to_string(ui_->spinBoxHour->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->spinBoxMinute->value()) );
+    params.append("#");
+    system((std::string("/usr/local/bin/autoapp_helper settime#") + std::string(params) + std::string(" &") ).c_str());
 }
 
 void SettingsWindow::loadSystemValues()
