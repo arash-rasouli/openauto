@@ -106,6 +106,8 @@ int main(int argc, char* argv[])
     aasdk::tcp::TCPWrapper tcpWrapper;
     autoapp::ui::ConnectDialog connectDialog(ioService, tcpWrapper, recentAddressesList);
     connectDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    // center dialog
+    connectDialog.move((width - 500)/2,(height-440)/2);
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { system("touch /tmp/shutdown"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
@@ -203,7 +205,7 @@ int main(int argc, char* argv[])
 
     mainWindow.showFullScreen();
     mainWindow.setFixedSize(width, height);
-    //mainWindow.adjustSize();
+    mainWindow.adjustSize();
 
     aasdk::usb::USBWrapper usbWrapper(usbContext);
     aasdk::usb::AccessoryModeQueryFactory queryFactory(usbWrapper, ioService);

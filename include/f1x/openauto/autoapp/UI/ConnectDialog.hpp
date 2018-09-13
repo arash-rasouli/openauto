@@ -37,10 +37,12 @@ private slots:
     void onConnectionFailed(const QString& message);
     void onConnectionSucceed(aasdk::tcp::ITCPEndpoint::SocketPointer socket, const std::string& ipAddress);
     void onRecentAddressClicked(const QModelIndex& index);
+    void onUpdateButtonClicked();
 
 private:
     void insertIpAddress(const std::string& ipAddress);
     void loadRecentList();
+    void loadTempRecentList();
     void setControlsEnabledStatus(bool status);
     void connectHandler(const boost::system::error_code& ec, const std::string& ipAddress, aasdk::tcp::ITCPEndpoint::SocketPointer socket);
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>2925</height>
+    <height>2976</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1896,7 +1896,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
               <string notr="true">background-color: rgb(164, 0, 0);</string>
              </property>
              <property name="text">
-              <string>Remove all paired devices</string>
+              <string>Remove all paired devices now!</string>
              </property>
             </widget>
            </item>
@@ -2115,7 +2115,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
             <item row="0" column="0">
              <widget class="QCheckBox" name="checkBoxHotspot">
               <property name="text">
-               <string>Enable</string>
+               <string>Enabled</string>
               </property>
              </widget>
             </item>
@@ -2128,6 +2128,9 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                </sizepolicy>
               </property>
               <layout class="QFormLayout" name="formLayout_5">
+               <property name="topMargin">
+                <number>2</number>
+               </property>
                <item row="0" column="0">
                 <widget class="QLabel" name="label_16">
                  <property name="text">
@@ -2144,11 +2147,69 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                   </font>
                  </property>
                  <property name="text">
-                  <string>The Hotspot is only available in dev mode and overrides client mode! SSID is fixed.</string>
+                  <string>If enabled Hotspot will start on boot and Start/Stop buttons will work.</string>
                  </property>
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="pushButtonHotspotStart">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(78, 154, 6);</string>
+              </property>
+              <property name="text">
+               <string>Start</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QPushButton" name="pushButtonHotspotStop">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(164, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>Stop</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="labelHotspotStart">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Start hotspot mode now. This will exit client mode.</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLabel" name="labelHotspotStop">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Stop hotspot mode now. This will exit hotspot and reenable wifi client mode.</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -2926,6 +2987,12 @@ subcontrol-position: center left;
            </item>
            <item>
             <widget class="QCheckBox" name="checkBoxDisableShutdown">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>32</height>
+              </size>
+             </property>
              <property name="text">
               <string>Disable</string>
              </property>
@@ -3053,6 +3120,12 @@ subcontrol-position: center left;
            </item>
            <item>
             <widget class="QCheckBox" name="checkBoxDisableScreenOff">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>32</height>
+              </size>
+             </property>
              <property name="text">
               <string>Disable</string>
              </property>
@@ -4659,8 +4732,14 @@ subcontrol-origin: margin;
 subcontrol-position: center left;
 }</string>
               </property>
+              <property name="showGroupSeparator" stdset="0">
+               <bool>false</bool>
+              </property>
               <property name="maximum">
                <number>23</number>
+              </property>
+              <property name="displayIntegerBase">
+               <number>10</number>
               </property>
              </widget>
             </item>

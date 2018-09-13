@@ -56,6 +56,8 @@ private slots:
     void onUpdateSystemVolume(int value);
     void onUpdateSystemCapture(int value);
     void setTime();
+    void onStartHotspot();
+    void onStopHotspot();
 
 private slots:
     void show_tab1();

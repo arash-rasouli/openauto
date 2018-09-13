@@ -167,6 +167,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonWifi, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonWifi2, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
 
+    // by default hide bluetooth button on init
+    ui_->pushButtonBluetooth->hide();
+    
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start();
@@ -213,24 +216,15 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
         connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
         ui_->pushButtonDummyCamWifi->hide();
-        ui_->pushButtonDummyCamWifi2->hide();
     } else {
         ui_->pushButtonCameraShow->hide();
         ui_->pushButtonCameraShow2->hide();
-        if (this->wifiButtonForce) {
-            ui_->pushButtonDummyCamWifi2->hide();
-        }
     }
 
     // show debug button if enabled
     if (!this->systemDebugmode) {
         ui_->pushButtonDebug->hide();
         ui_->pushButtonDebug2->hide();
-        if (this->cameraButtonForce && this->wifiButtonForce) {
-            ui_->pushButtonDummyDebug->hide();
-        }
-    } else {
-        ui_->pushButtonDummyDebug->hide();
     }
 
     ui_->systemConfigInProgress->hide();
@@ -569,9 +563,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     // init alpha values
     ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
     MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
-
-    // bt media controls
-    ui_->btControlWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -1058,7 +1049,6 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                     ui_->pushButtonDebug2->hide();
                     ui_->pushButtonLock->show();
                     ui_->pushButtonLock2->show();
-                    ui_->pushButtonDummyDebug->show();
                     ui_->systemConfigInProgress->show();
                 }
                 if (enablePairingFile.exists()) {
@@ -1078,7 +1068,6 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 if (this->systemDebugmode) {
                     ui_->pushButtonDebug->show();
                     ui_->pushButtonDebug2->show();
-                    ui_->pushButtonDummyDebug->hide();
                 }
             }
         }
@@ -1142,6 +1131,61 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         QFileInfo externalExitFile("/tmp/external_exit");
         if (externalExitFile.exists()) {
             f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
+        }
+
+        QFileInfo hotspotFile("/tmp/hotspot_active");
+        this->hotspotActive = hotspotFile.exists();
+
+        // hide wifi if not forced
+        if (!this->hotspotActive) {
+            if ((ui_->pushButtonWifi->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
+                ui_->pushButtonWifi->hide();
+                ui_->pushButtonWifi2->hide();
+                if (!this->cameraButtonForce) {
+                    ui_->pushButtonDummyCamWifi->show();
+                }
+            }
+        } else {
+            if ((ui_->pushButtonWifi->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
+                ui_->pushButtonWifi->show();
+                ui_->pushButtonWifi2->show();
+                ui_->pushButtonDummyCamWifi->hide();
+            }
+        }
+
+        // handle dummys in classic menu
+        int button_count = 0;
+        if (ui_->pushButtonCameraShow2->isVisible() == true) {
+            button_count = button_count + 1;
+        }
+        if (ui_->pushButtonToggleGUI2->isVisible() == true) {
+            button_count = button_count + 1;
+        }
+        if (ui_->pushButtonWifi2->isVisible() == true) {
+            button_count = button_count + 1;
+        }
+        if (ui_->pushButtonDebug2->isVisible() == true) {
+            button_count = button_count + 1;
+        }
+        if (button_count >= 3) {
+            ui_->pushButtonDummyClassic1->hide();
+            ui_->pushButtonDummyClassic2->hide();
+            ui_->pushButtonDummyClassic3->hide();
+        }
+        if (button_count == 2) {
+            ui_->pushButtonDummyClassic1->show();
+            ui_->pushButtonDummyClassic2->hide();
+            ui_->pushButtonDummyClassic3->hide();
+        }
+        if (button_count == 1) {
+            ui_->pushButtonDummyClassic1->show();
+            ui_->pushButtonDummyClassic2->show();
+            ui_->pushButtonDummyClassic3->hide();
+        }
+        if (button_count == 0) {
+            ui_->pushButtonDummyClassic1->show();
+            ui_->pushButtonDummyClassic2->show();
+            ui_->pushButtonDummyClassic3->show();
         }
     }
     ui_->Digital_clock->setText(time_text);

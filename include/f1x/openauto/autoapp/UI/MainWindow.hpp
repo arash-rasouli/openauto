@@ -174,8 +174,7 @@ private:
     bool c7ButtonForce = false;
     bool c8ButtonForce = false;
 
-    //int screen_width = 800;
-    //int screen_height = 480;
+    bool hotspotActive = false;
 };
 
 }

@@ -55,6 +55,10 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
+    connect(ui_->pushButtonHotspotStart, &QPushButton::clicked, this, &SettingsWindow::onStartHotspot);
+    connect(ui_->pushButtonHotspotStart , &QPushButton::clicked, this, &SettingsWindow::close);
+    connect(ui_->pushButtonHotspotStop, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
+    connect(ui_->pushButtonHotspotStop , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
     // menu
     ui_->tab1->show();
@@ -695,6 +699,16 @@ void SettingsWindow::onShowBindings()
     QMessageBox confirmationMessage(QMessageBox::Information, "Information", message, QMessageBox::Ok);
     confirmationMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
     confirmationMessage.exec();
+}
+
+void SettingsWindow::onStartHotspot()
+{
+    system("sudo systemctl start hotspot &");
+}
+
+void SettingsWindow::onStopHotspot()
+{
+    system("sudo systemctl stop hotspot &");
 }
 
 void SettingsWindow::show_tab1()

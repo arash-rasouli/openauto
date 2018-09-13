@@ -1,6 +1,8 @@
 #include <QMessageBox>
 #include <f1x/openauto/autoapp/UI/ConnectDialog.hpp>
 #include "ui_connectdialog.h"
+#include <QFileInfo>
+#include <QTextStream>
 
 namespace f1x
 {
@@ -27,9 +29,14 @@ ConnectDialog::ConnectDialog(boost::asio::io_service& ioService, aasdk::tcp::ITC
     connect(ui_->listViewRecent, &QListView::clicked, this, &ConnectDialog::onRecentAddressClicked);
     connect(this, &ConnectDialog::connectionSucceed, this, &ConnectDialog::onConnectionSucceed);
     connect(this, &ConnectDialog::connectionFailed, this, &ConnectDialog::onConnectionFailed);
+    connect(ui_->pushButtonUpdate, &QPushButton::clicked, this, &ConnectDialog::onUpdateButtonClicked);
 
     ui_->listViewRecent->setModel(&recentAddressesModel_);
     this->loadRecentList();
+    loadTempRecentList();
+
+    ui_->progressBarConnect->hide();
+    ui_->lineEditIPAddress->setFocus();
 }
 
 ConnectDialog::~ConnectDialog()
@@ -43,7 +50,7 @@ void ConnectDialog::onConnectButtonClicked()
 
     const auto& ipAddress = ui_->lineEditIPAddress->text().toStdString();
     auto socket = std::make_shared<boost::asio::ip::tcp::socket>(ioService_);
-
+    ui_->progressBarConnect->show();
     try
     {
         tcpWrapper_.asyncConnect(*socket, ipAddress, 5277, std::bind(&ConnectDialog::connectHandler, this, std::placeholders::_1, ipAddress, socket));
@@ -52,6 +59,13 @@ void ConnectDialog::onConnectButtonClicked()
     {
         emit connectionFailed(QString(se.what()));
     }
+    loadTempRecentList();
+}
+
+void ConnectDialog::onUpdateButtonClicked()
+{
+    system("/usr/local/bin/autoapp_helper updaterecent");
+    loadTempRecentList();
 }
 
 void ConnectDialog::connectHandler(const boost::system::error_code& ec, const std::string& ipAddress, aasdk::tcp::ITCPEndpoint::SocketPointer socket)
@@ -69,6 +83,7 @@ void ConnectDialog::connectHandler(const boost::system::error_code& ec, const st
 
 void ConnectDialog::onConnectionSucceed(aasdk::tcp::ITCPEndpoint::SocketPointer, const std::string& ipAddress)
 {
+    ui_->progressBarConnect->hide();
     this->insertIpAddress(ipAddress);
     this->setControlsEnabledStatus(true);
 }
@@ -77,6 +92,7 @@ void ConnectDialog::onConnectionFailed(const QString& message)
 {
     this->setControlsEnabledStatus(true);
 
+    ui_->progressBarConnect->hide();
     QMessageBox errorMessage(QMessageBox::Critical, "Connect error", message, QMessageBox::Ok);
     errorMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
     errorMessage.exec();
@@ -111,6 +127,22 @@ void ConnectDialog::loadRecentList()
     }
 
     recentAddressesModel_.setStringList(stringList);
+}
+
+void ConnectDialog::loadTempRecentList()
+{
+    QFileInfo recentFile("/tmp/temp_recent_list");
+    if (recentFile.exists()) {
+        QFile versionFile(QString("/tmp/temp_recent_list"));
+        versionFile.open(QIODevice::ReadOnly);
+        QTextStream data(&versionFile);
+        while (!data.atEnd())
+        {
+            QString ip = data.readLine();
+            ConnectDialog::insertIpAddress(ip.toStdString());
+        }
+        versionFile.close();
+    }
 }
 
 void ConnectDialog::insertIpAddress(const std::string& ipAddress)
