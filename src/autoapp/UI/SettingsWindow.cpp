@@ -60,6 +60,9 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonHotspotStop, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
     connect(ui_->pushButtonHotspotStop , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
+    connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::close);
+    connect(ui_->pushButtonNTP , &QPushButton::clicked, this, &SettingsWindow::close);
+
     // menu
     ui_->tab1->show();
     ui_->tab2->hide();
@@ -70,6 +73,14 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->tab7->hide();
     ui_->tab8->hide();
     ui_->horizontalGroupBox->hide();
+
+    QFileInfo devModeFile("/tmp/dev_mode_enabled");
+    QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
+
+    if (!devModeFile.exists() && !DebugmodeFile.exists()) {
+        ui_->pushButtonNTP->hide();
+    }
+
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
     connect(ui_->pushButtonTab3, &QPushButton::clicked, this, &SettingsWindow::show_tab3);
@@ -416,6 +427,11 @@ void SettingsWindow::setTime()
     params.append( std::to_string(ui_->spinBoxMinute->value()) );
     params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper settime#") + std::string(params) + std::string(" &") ).c_str());
+}
+
+void SettingsWindow::syncNTPTime()
+{
+    system("/usr/local/bin/crankshaft rtc sync &");
 }
 
 void SettingsWindow::loadSystemValues()

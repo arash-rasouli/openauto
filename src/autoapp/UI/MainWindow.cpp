@@ -29,8 +29,6 @@
 #include <QFont>
 #include <QScreen>
 #include <QRect>
-#include <thread>
-#include <chrono>
 #include <string>
 
 namespace f1x
@@ -172,7 +170,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
-    timer->start();
+    timer->start(1000);
 
     // Build Version string for mainscreen
     // Get git version string
@@ -972,9 +970,6 @@ void f1x::openauto::autoapp::ui::MainWindow::setUnMute()
 
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
-    using namespace std::this_thread; // sleep_for
-    using namespace std::chrono; // milliseconds
-
     QTime time=QTime::currentTime();
     QString time_text=time.toString("hh : mm : ss");
     if ((time.second() % 2) == 0) {
@@ -1190,5 +1185,4 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     }
     ui_->Digital_clock->setText(time_text);
     ui_->bigClock->setText(time_text);
-    sleep_for(milliseconds(10));
 }

@@ -58,6 +58,7 @@ private slots:
     void setTime();
     void onStartHotspot();
     void onStopHotspot();
+    void syncNTPTime();
 
 private slots:
     void show_tab1();
