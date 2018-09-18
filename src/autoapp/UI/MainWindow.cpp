@@ -164,9 +164,14 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonToggleGUI2, &QPushButton::clicked, this, &MainWindow::toggleGUI);
     connect(ui_->pushButtonWifi, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonWifi2, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
+    connect(ui_->pushButtonMusic, &QPushButton::clicked, this, &MainWindow::playerShow);
+    connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
 
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
+
+    // by default hide media player
+    ui_->mediaWidget->hide();
     
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
@@ -561,6 +566,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     // init alpha values
     ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
     MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
+
+    player = new QMediaPlayer(this);
+    connect(player, &QMediaPlayer::positionChanged, this, &MainWindow::on_positionChanged);
+    connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::on_durationChanged);
+    connect(player, &QMediaPlayer::metaDataAvailableChanged, this, &MainWindow::metaDataChanged);
 }
 
 MainWindow::~MainWindow()
@@ -797,6 +807,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChang
     ui_->pushButtonDummy2->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDebug->setStyleSheet( "background-color: rgba(85, 87, 83, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+    ui_->pushButtonMusic->setStyleSheet( "background-color: rgba(78, 154, 6, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
@@ -865,6 +876,26 @@ void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
         }
         ui_->cameraWidget->show();
     }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::playerShow()
+{
+    if (!this->oldGUIStyle) {
+        ui_->menuWidget->hide();
+    } else {
+        ui_->oldmenuWidget->hide();
+    }
+    ui_->mediaWidget->show();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::playerHide()
+{
+    if (!this->oldGUIStyle) {
+        ui_->menuWidget->show();
+    } else {
+        ui_->oldmenuWidget->show();
+    }
+    ui_->mediaWidget->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::toggleExit()
@@ -1185,4 +1216,56 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     }
     ui_->Digital_clock->setText(time_text);
     ui_->bigClock->setText(time_text);
+}
+
+
+void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderProgressPlayer_sliderMoved(int position)
+{
+    player->setPosition(position);
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolumePlayer_sliderMoved(int position)
+{
+    player->setVolume(position);
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlay_clicked()
+{
+    player->setMedia(QMediaContent(QUrl::fromLocalFile(this->folderMp3 + "/" + this->selectedMp3file)));
+    player->play();
+    //qDebug() << player->errorString();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
+{
+    player->stop();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_positionChanged(qint64 position)
+{
+    ui_->horizontalSliderProgressPlayer->setValue(position);
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_durationChanged(qint64 position)
+{
+    ui_->horizontalSliderProgressPlayer->setMaximum(position);
+    ui_->valueId3length->setText(QString::number(position));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_itemClicked(QListWidgetItem *item)
+{
+    this->selectedMp3file = item->text();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
+{
+    ui_->valueId3Title->setText(player->metaData(QMediaMetaData::Title).toString());
+    ui_->valueId3Artist->setText(player->metaData(QMediaMetaData::Author).toString());
+    ui_->valueId3Album->setText(player->metaData(QMediaMetaData::AlbumTitle).toString());
+    ui_->valueId3Track->setText(player->metaData(QMediaMetaData::TrackNumber).toString());
+    ui_->valueId3Genre->setText(player->metaData(QMediaMetaData::Genre).toString());
+    ui_->valueId3Year->setText(player->metaData(QMediaMetaData::Year).toString());
+    QImage img = player->metaData(QMediaMetaData::CoverArtImage).value<QImage>();
+    QImage imgscaled = img.scaled(300,300);
+    ui_->labelCover->setPixmap(QPixmap::fromImage(imgscaled));
 }

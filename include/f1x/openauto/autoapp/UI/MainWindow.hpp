@@ -23,6 +23,15 @@
 #include <QFile>
 #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 
+#include <QMediaPlayer>
+#include <QListWidgetItem>
+#include <QMediaMetaData>
+
+#include <QMediaService>
+#include <QMediaPlaylist>
+#include <QVideoProbe>
+#include <QAudioProbe>
+
 namespace Ui
 {
 class MainWindow;
@@ -43,6 +52,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(configuration::IConfiguration::Pointer configuration, QWidget *parent = nullptr);
     ~MainWindow() override;
+    QMediaPlayer* player;
 
 signals:
     void exit();
@@ -94,6 +104,17 @@ private slots:
     void customButtonPressed6();
     void customButtonPressed7();
     void customButtonPressed8();
+    void playerShow();
+    void playerHide();
+
+    void on_horizontalSliderProgressPlayer_sliderMoved(int position);
+    void on_horizontalSliderVolumePlayer_sliderMoved(int position);
+    void on_pushButtonPlayerPlay_clicked();
+    void on_pushButtonPlayerStop_clicked();
+    void on_positionChanged(qint64 position);
+    void on_durationChanged(qint64 position);
+    void on_mp3List_itemClicked(QListWidgetItem *item);
+    void metaDataChanged();
 
 private:
     Ui::MainWindow* ui_;
@@ -133,6 +154,9 @@ private:
     QString custom_button_color_c6 = "186,189,192";
     QString custom_button_color_c7 = "186,189,192";
     QString custom_button_color_c8 = "186,189,192";
+
+    QString selectedMp3file;
+    QString folderMp3 = "/media/CSSTORAGE/Music";
 
     bool customBrightnessControl = false;
 
