@@ -26,6 +26,8 @@
         <file>bug-hot.png</file>
         <file>eye-hot.png</file>
         <file>skin-hot.png</file>
+        <file>mp3-hot.png</file>
+        <file>coverlogo.png</file>
         <file>black.png</file>
         <file>Roboto-Regular.ttf</file>
     </qresource>

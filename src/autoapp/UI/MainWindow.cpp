@@ -165,6 +165,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonWifi, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonWifi2, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonMusic, &QPushButton::clicked, this, &MainWindow::playerShow);
+    connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
 
     // by default hide bluetooth button on init
@@ -247,13 +248,14 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // as default hide brightness slider
-    ui_->horizontalSliderBrightness->hide();
-    ui_->brightnessValueLabel->hide();
+    ui_->BrightnessSliderControl->hide();
 
     // as default hide alpha slider and button
-    ui_->horizontalSliderAlpha->hide();
-    ui_->alphaValueLabel->hide();
-    ui_->pushButtonAlpha->show();
+    ui_->pushButtonAlpha->hide();
+    ui_->AlphaSliderControl->hide();
+
+    // as default hide volume slider player
+    ui_->VolumeSliderControlPlayer->hide();
 
     // as default hide power buttons
     ui_->pushButtonShutdown->hide();
@@ -559,8 +561,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // hide alpha controls if enabled in settings
-    if (configuration->hideAlpha()) {
-        ui_->pushButtonAlpha->hide();
+    if (!configuration->hideAlpha()) {
+        ui_->pushButtonAlpha->show();
     }
 
     // init alpha values
@@ -568,9 +570,14 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
 
     player = new QMediaPlayer(this);
+    playlist = new QMediaPlaylist(this);
     connect(player, &QMediaPlayer::positionChanged, this, &MainWindow::on_positionChanged);
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(player, &QMediaPlayer::metaDataAvailableChanged, this, &MainWindow::metaDataChanged);
+    connect(player, &QMediaPlayer::stateChanged, this, &MainWindow::stateChanged);
+    ui_->id3TagInfo->hide();
+
+    MainWindow::on_pushButtonScanFolder_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -650,14 +657,9 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
             this->brightnessFileAlt->close();
         }
     }
-    ui_->horizontalSliderBrightness->show();
-    ui_->brightnessValueLabel->show();
-    ui_->horizontalSliderVolume->hide();
-    ui_->volumeValueLabel->hide();
-    ui_->pushButtonMute->hide();
-    ui_->pushButtonUnMute->hide();
-    ui_->horizontalSliderAlpha->hide();
-    ui_->alphaValueLabel->hide();
+    ui_->BrightnessSliderControl->show();
+    ui_->VolumeSliderControl->hide();
+    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness2_clicked()
@@ -687,14 +689,9 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness2_clicked()
             this->brightnessFileAlt->close();
         }
     }
-    ui_->horizontalSliderBrightness->show();
-    ui_->brightnessValueLabel->show();
-    ui_->horizontalSliderVolume->hide();
-    ui_->volumeValueLabel->hide();
-    ui_->pushButtonMute->hide();
-    ui_->pushButtonUnMute->hide();
-    ui_->horizontalSliderAlpha->hide();
-    ui_->alphaValueLabel->hide();
+    ui_->BrightnessSliderControl->show();
+    ui_->VolumeSliderControl->hide();
+    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume_clicked()
@@ -706,10 +703,10 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume_clicked()
     } else {
         ui_->pushButtonMute->show();
     }
-    ui_->horizontalSliderBrightness->hide();
-    ui_->brightnessValueLabel->hide();
-    ui_->horizontalSliderAlpha->hide();
-    ui_->alphaValueLabel->hide();
+    ui_->VolumeSliderControl->show();
+    ui_->BrightnessSliderControl->hide();
+    ui_->AlphaSliderControl->hide();
+
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume2_clicked()
@@ -721,22 +718,16 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume2_clicked()
     } else {
         ui_->pushButtonMute->show();
     }
-    ui_->horizontalSliderBrightness->hide();
-    ui_->brightnessValueLabel->hide();
-    ui_->horizontalSliderAlpha->hide();
-    ui_->alphaValueLabel->hide();
+    ui_->VolumeSliderControl->show();
+    ui_->BrightnessSliderControl->hide();
+    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonAlpha_clicked()
 {
-    ui_->horizontalSliderAlpha->show();
-    ui_->alphaValueLabel->show();
-    ui_->horizontalSliderVolume->hide();
-    ui_->volumeValueLabel->hide();
-    ui_->pushButtonMute->hide();
-    ui_->pushButtonUnMute->hide();
-    ui_->horizontalSliderBrightness->hide();
-    ui_->brightnessValueLabel->hide();
+    ui_->AlphaSliderControl->show();
+    ui_->VolumeSliderControl->hide();
+    ui_->BrightnessSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_valueChanged(int value)
@@ -886,6 +877,10 @@ void f1x::openauto::autoapp::ui::MainWindow::playerShow()
         ui_->oldmenuWidget->hide();
     }
     ui_->mediaWidget->show();
+    ui_->VolumeSliderControlPlayer->show();
+    ui_->VolumeSliderControl->hide();
+    ui_->BrightnessSliderControl->hide();
+    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::playerHide()
@@ -896,6 +891,10 @@ void f1x::openauto::autoapp::ui::MainWindow::playerHide()
         ui_->oldmenuWidget->show();
     }
     ui_->mediaWidget->hide();
+    ui_->VolumeSliderControl->show();
+    ui_->VolumeSliderControlPlayer->hide();
+    ui_->BrightnessSliderControl->hide();
+    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::toggleExit()
@@ -1178,42 +1177,39 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
                 ui_->pushButtonDummyCamWifi->hide();
             }
         }
-
-        // handle dummys in classic menu
-        int button_count = 0;
-        if (ui_->pushButtonCameraShow2->isVisible() == true) {
-            button_count = button_count + 1;
-        }
-        if (ui_->pushButtonToggleGUI2->isVisible() == true) {
-            button_count = button_count + 1;
-        }
-        if (ui_->pushButtonWifi2->isVisible() == true) {
-            button_count = button_count + 1;
-        }
-        if (ui_->pushButtonDebug2->isVisible() == true) {
-            button_count = button_count + 1;
-        }
-        if (button_count >= 3) {
-            ui_->pushButtonDummyClassic1->hide();
-            ui_->pushButtonDummyClassic2->hide();
-            ui_->pushButtonDummyClassic3->hide();
-        }
-        if (button_count == 2) {
-            ui_->pushButtonDummyClassic1->show();
-            ui_->pushButtonDummyClassic2->hide();
-            ui_->pushButtonDummyClassic3->hide();
-        }
-        if (button_count == 1) {
-            ui_->pushButtonDummyClassic1->show();
-            ui_->pushButtonDummyClassic2->show();
-            ui_->pushButtonDummyClassic3->hide();
-        }
-        if (button_count == 0) {
-            ui_->pushButtonDummyClassic1->show();
-            ui_->pushButtonDummyClassic2->show();
-            ui_->pushButtonDummyClassic3->show();
-        }
     }
+
+    // handle dummys in classic menu
+    int button_count = 0;
+    if (ui_->pushButtonCameraShow2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (ui_->pushButtonToggleGUI2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (ui_->pushButtonWifi2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (ui_->pushButtonDebug2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (button_count >= 3) {
+        ui_->pushButtonDummyClassic1->hide();
+        ui_->pushButtonDummyClassic2->hide();
+    }
+    if (button_count == 2) {
+        ui_->pushButtonDummyClassic1->hide();
+        ui_->pushButtonDummyClassic2->hide();
+    }
+    if (button_count == 1) {
+        ui_->pushButtonDummyClassic1->show();
+        ui_->pushButtonDummyClassic2->hide();
+    }
+    if (button_count == 0) {
+        ui_->pushButtonDummyClassic1->show();
+        ui_->pushButtonDummyClassic2->show();
+    }
+
     ui_->Digital_clock->setText(time_text);
     ui_->bigClock->setText(time_text);
 }
@@ -1227,11 +1223,14 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderProgressPlayer_s
 void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolumePlayer_sliderMoved(int position)
 {
     player->setVolume(position);
+    ui_->volumeValueLabelPlayer->setText(QString::number(position) + "%");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlay_clicked()
 {
-    player->setMedia(QMediaContent(QUrl::fromLocalFile(this->folderMp3 + "/" + this->selectedMp3file)));
+    QString path = this->musicfolder + "/" + this->selectedMp3file;
+    ui_->labelFolderpath->setText(path);
+    player->setMedia(QMediaContent(QUrl::fromLocalFile(path)));
     player->play();
     //qDebug() << player->errorString();
 }
@@ -1239,17 +1238,66 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlay_clicked()
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
 {
     player->stop();
+    ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
+{
+    {
+        if(player->state() == QMediaPlayer::PlayingState){
+            player->pause();
+            ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(218, 143, 143); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+        }else{
+            ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(186, 189, 182); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+            player->play();
+            player->setPosition(player->position());
+        }
+
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_positionChanged(qint64 position)
 {
     ui_->horizontalSliderProgressPlayer->setValue(position);
+
+    //Setting the time
+    QString time_elapsed, time_total;
+
+    int total_seconds, total_minutes;
+
+    total_seconds = (player->duration()/1000) % 60;
+    total_minutes = (player->duration()/1000) / 60;
+
+    if(total_minutes >= 60){
+        int total_hours = (total_minutes/60);
+        total_minutes = total_minutes - (total_hours*60);
+        time_total = QString("%1").arg(total_hours, 2,10,QChar('0')) + ':' + QString("%1").arg(total_minutes, 2,10,QChar('0')) + ':' + QString("%1").arg(total_seconds, 2,10,QChar('0'));
+
+    }else{
+        time_total = QString("%1").arg(total_minutes, 2,10,QChar('0')) + ':' + QString("%1").arg(total_seconds, 2,10,QChar('0'));
+
+    }
+
+    //calculate time elapsed
+    int seconds, minutes;
+
+    seconds = (position/1000) % 60;
+    minutes = (position/1000) / 60;
+
+    //if minutes is over 60 then we should really display hours
+    if(minutes >= 60){
+        int hours = (minutes/60);
+        minutes = minutes - (hours*60);
+        time_elapsed = QString("%1").arg(hours, 2,10,QChar('0')) + ':' + QString("%1").arg(minutes, 2,10,QChar('0')) + ':' + QString("%1").arg(seconds, 2,10,QChar('0'));
+    }else{
+        time_elapsed = QString("%1").arg(minutes, 2,10,QChar('0')) + ':' + QString("%1").arg(seconds, 2,10,QChar('0'));
+    }
+    ui_->playerPositionTime->setText(time_elapsed + " / " + time_total);
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_durationChanged(qint64 position)
 {
     ui_->horizontalSliderProgressPlayer->setMaximum(position);
-    ui_->valueId3length->setText(QString::number(position));
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_itemClicked(QListWidgetItem *item)
@@ -1266,6 +1314,60 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     ui_->valueId3Genre->setText(player->metaData(QMediaMetaData::Genre).toString());
     ui_->valueId3Year->setText(player->metaData(QMediaMetaData::Year).toString());
     QImage img = player->metaData(QMediaMetaData::CoverArtImage).value<QImage>();
-    QImage imgscaled = img.scaled(300,300);
-    ui_->labelCover->setPixmap(QPixmap::fromImage(imgscaled));
+    QImage imgscaled = img.scaled(270,270,Qt::IgnoreAspectRatio);
+    ui_->pushButtonBack->setIcon(QPixmap::fromImage(imgscaled));
+    ui_->labelCurrentPlaying->setText(player->metaData(QMediaMetaData::Title).toString() + " - " + player->metaData(QMediaMetaData::AlbumArtist).toString());
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::stateChanged()
+{
+    if (player->StoppedState) {
+        ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+    }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonScanFolder_clicked()
+{
+    int cleaner = ui_->mp3List->count();
+    while (cleaner > -1) {
+        ui_->mp3List->takeItem(cleaner);
+        cleaner--;
+    }
+    this->playlist->clear();
+
+    QDirIterator dir(this->musicfolder, QStringList() << "*.mp3", QDir::NoFilter, QDirIterator::Subdirectories);
+    QList<QMediaContent> content;
+
+    while (dir.hasNext()) {
+        QFile f(dir.next());
+        QString filename = f.fileName();
+        // make path relative to musicfolder
+        ui_->mp3List->addItem(filename.replace(this->musicfolder + "/",""));
+        content.push_back(QMediaContent(QUrl::fromLocalFile(f.fileName())));
+    }
+    this->playlist->addMedia(content);
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonSelectFolder_clicked()
+{
+    this->musicfolder = QFileDialog::getExistingDirectory(this, tr("Select Album"), this->musicfolder, QFileDialog::ShowDirsOnly);
+    f1x::openauto::autoapp::ui::MainWindow::on_pushButtonScanFolder_clicked();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
+{
+    QString path = this->musicfolder + "/" + this->selectedMp3file;
+    ui_->labelFolderpath->setText(path);
+    player->setPlaylist(this->playlist);
+    player->play();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPrev_clicked()
+{
+    playlist->previous();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerNext_clicked()
+{
+    playlist->next();
 }

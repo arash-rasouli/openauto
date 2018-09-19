@@ -25,12 +25,17 @@
 
 #include <QMediaPlayer>
 #include <QListWidgetItem>
+#include <QListWidget>
 #include <QMediaMetaData>
+#include <QDir>
+#include <QDirIterator>
 
 #include <QMediaService>
 #include <QMediaPlaylist>
 #include <QVideoProbe>
 #include <QAudioProbe>
+
+#include <QFileDialog>
 
 namespace Ui
 {
@@ -111,10 +116,17 @@ private slots:
     void on_horizontalSliderVolumePlayer_sliderMoved(int position);
     void on_pushButtonPlayerPlay_clicked();
     void on_pushButtonPlayerStop_clicked();
+    void on_pushButtonPlayerPause_clicked();
     void on_positionChanged(qint64 position);
     void on_durationChanged(qint64 position);
     void on_mp3List_itemClicked(QListWidgetItem *item);
     void metaDataChanged();
+    void stateChanged();
+    void on_pushButtonScanFolder_clicked();
+    void on_pushButtonSelectFolder_clicked();
+    void on_pushButtonPlayerPlayList_clicked();
+    void on_pushButtonPlayerPrev_clicked();
+    void on_pushButtonPlayerNext_clicked();
 
 private:
     Ui::MainWindow* ui_;
@@ -156,7 +168,8 @@ private:
     QString custom_button_color_c8 = "186,189,192";
 
     QString selectedMp3file;
-    QString folderMp3 = "/media/CSSTORAGE/Music";
+    QString musicfolder = "/media/CSSTORAGE/Music";
+    QMediaPlaylist *playlist;
 
     bool customBrightnessControl = false;
 
