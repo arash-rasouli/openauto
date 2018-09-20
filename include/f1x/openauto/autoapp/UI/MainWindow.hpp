@@ -108,7 +108,6 @@ private slots:
     void customButtonPressed5();
     void customButtonPressed6();
     void customButtonPressed7();
-    void customButtonPressed8();
     void playerShow();
     void playerHide();
 
@@ -121,12 +120,13 @@ private slots:
     void on_durationChanged(qint64 position);
     void on_mp3List_itemClicked(QListWidgetItem *item);
     void metaDataChanged();
-    void stateChanged();
-    void on_pushButtonScanFolder_clicked();
-    void on_pushButtonSelectFolder_clicked();
     void on_pushButtonPlayerPlayList_clicked();
-    void on_pushButtonPlayerPrev_clicked();
-    void on_pushButtonPlayerNext_clicked();
+    void on_pushButtonNextBig_clicked();
+    void on_pushButtonPrevBig_clicked();
+    void on_comboBoxAlbum_currentIndexChanged(const QString &arg1);
+    void on_mp3List_currentRowChanged(int currentRow);
+    void scanFolders();
+    void scanFiles();
 
 private:
     Ui::MainWindow* ui_;
@@ -147,7 +147,6 @@ private:
     QString custom_button_file_c5 = "/boot/crankshaft/button_5";
     QString custom_button_file_c6 = "/boot/crankshaft/button_6";
     QString custom_button_file_c7 = "/boot/crankshaft/button_7";
-    QString custom_button_file_c8 = "/boot/crankshaft/button_8";
 
     QString custom_button_command_c1;
     QString custom_button_command_c2;
@@ -156,7 +155,6 @@ private:
     QString custom_button_command_c5;
     QString custom_button_command_c6;
     QString custom_button_command_c7;
-    QString custom_button_command_c8;
 
     QString custom_button_color_c1 = "186,189,192";
     QString custom_button_color_c2 = "186,189,192";
@@ -165,10 +163,10 @@ private:
     QString custom_button_color_c5 = "186,189,192";
     QString custom_button_color_c6 = "186,189,192";
     QString custom_button_color_c7 = "186,189,192";
-    QString custom_button_color_c8 = "186,189,192";
 
     QString selectedMp3file;
     QString musicfolder = "/media/CSSTORAGE/Music";
+    QString albumfolder = "/";
     QMediaPlaylist *playlist;
 
     bool customBrightnessControl = false;
@@ -209,9 +207,10 @@ private:
     bool c5ButtonForce = false;
     bool c6ButtonForce = false;
     bool c7ButtonForce = false;
-    bool c8ButtonForce = false;
 
     bool hotspotActive = false;
+
+    int currentPlaylistIndex = 0;
 };
 
 }

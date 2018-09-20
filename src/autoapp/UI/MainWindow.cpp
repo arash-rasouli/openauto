@@ -30,6 +30,7 @@
 #include <QScreen>
 #include <QRect>
 #include <string>
+#include <qmediaplayer.h>
 
 namespace f1x
 {
@@ -92,9 +93,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     QFileInfo c7ButtonFile(this->custom_button_file_c7);
     this->c7ButtonForce = c7ButtonFile.exists();
-
-    QFileInfo c8ButtonFile(this->custom_button_file_c8);
-    this->c8ButtonForce = c8ButtonFile.exists();
 
     // wallpaper stuff
     QFileInfo wallpaperDayFile("wallpaper.png");
@@ -167,6 +165,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonMusic, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
+    connect(ui_->pushButtonPlayerBack, &QPushButton::clicked, this, &MainWindow::playerHide);
 
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
@@ -240,11 +239,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFileInfo brightnessFile(brightnessFilename);
     if (!brightnessFile.exists() && !this->brightnessButtonForce) {
         ui_->pushButtonBrightness->hide();
-    }
-
-    // hide dummy if debug is shown
-    if (this->systemDebugmode) {
-        ui_->pushButtonDummy->hide();
     }
 
     // as default hide brightness slider
@@ -397,23 +391,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         connect(ui_->pushButton_c7, &QPushButton::clicked, this, &MainWindow::customButtonPressed7);
     }
 
-    if (!this->c8ButtonForce) {
-        ui_->pushButton_c8->hide();
-    } else {
-        // read button config 8
-        QFile paramFile(this->custom_button_file_c8);
-        paramFile.open(QIODevice::ReadOnly);
-        QTextStream data(&paramFile);
-        QStringList params = data.readAll().split("#");
-        paramFile.close();
-        ui_->pushButton_c8->setText(params[0].simplified());
-        this->custom_button_command_c8 = params[1].simplified();
-        if (params[2] != "") {
-            this->custom_button_color_c8 = params[2].simplified();
-        }
-        connect(ui_->pushButton_c8, &QPushButton::clicked, this, &MainWindow::customButtonPressed8);
-    }
-
     // as default hide camera controls
     ui_->cameraWidget->hide();
     ui_->pushButtonRecordActive->hide();
@@ -441,9 +418,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonDummy3->hide();
     }
 
-    if (this->c8ButtonForce || this->systemDebugmode) {
-        ui_->pushButtonDummy->hide();
-    }
     // show dev labels if dev mode activated
     if (!this->devModeEnabled) {
         ui_->devlabel_left->hide();
@@ -574,10 +548,12 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(player, &QMediaPlayer::positionChanged, this, &MainWindow::on_positionChanged);
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(player, &QMediaPlayer::metaDataAvailableChanged, this, &MainWindow::metaDataChanged);
-    connect(player, &QMediaPlayer::stateChanged, this, &MainWindow::stateChanged);
-    ui_->id3TagInfo->hide();
 
-    MainWindow::on_pushButtonScanFolder_clicked();
+    MainWindow::scanFolders();
+    MainWindow::scanFiles();
+    ui_->labelFolderpath->hide();
+    ui_->pushButtonPlayerPlay->hide();
+    ui_->PlayerPlayingWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -623,11 +599,6 @@ void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed6()
 void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed7()
 {
     system(qPrintable(this->custom_button_command_c7 + " &"));
-}
-
-void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed8()
-{
-    system(qPrintable(this->custom_button_command_c8 + " &"));
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
@@ -792,8 +763,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChang
     ui_->pushButton_c5->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c5 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
     ui_->pushButton_c6->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c6 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
     ui_->pushButton_c7->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c7 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c8->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c8 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButtonDummy->setStyleSheet( "background-color: rgba(52, 101, 164, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDummy1->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDummy2->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
@@ -1228,17 +1197,24 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolumePlayer_sli
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlay_clicked()
 {
-    QString path = this->musicfolder + "/" + this->selectedMp3file;
-    ui_->labelFolderpath->setText(path);
+    QString path = this->musicfolder + "/" + this->albumfolder + "/" + this->selectedMp3file;
     player->setMedia(QMediaContent(QUrl::fromLocalFile(path)));
     player->play();
     //qDebug() << player->errorString();
+    ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+    ui_->mp3selectWidget->hide();
+    ui_->PlayerPlayingWidget->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
 {
     player->stop();
     ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+    ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+    ui_->mp3selectWidget->show();
+    ui_->PlayerPlayingWidget->hide();
+    ui_->playerPositionTime->setText("00:00 / 00:00");
+    ui_->labelCurrentPlaying->setText("");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
@@ -1247,10 +1223,14 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
         if(player->state() == QMediaPlayer::PlayingState){
             player->pause();
             ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(218, 143, 143); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+            ui_->mp3selectWidget->show();
+            ui_->PlayerPlayingWidget->hide();
         }else{
-            ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(186, 189, 182); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+            ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
             player->play();
             player->setPosition(player->position());
+            ui_->mp3selectWidget->hide();
+            ui_->PlayerPlayingWidget->show();
         }
 
     }
@@ -1307,26 +1287,64 @@ void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_itemClicked(QListWidgetI
 
 void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
 {
-    ui_->valueId3Title->setText(player->metaData(QMediaMetaData::Title).toString());
-    ui_->valueId3Artist->setText(player->metaData(QMediaMetaData::Author).toString());
-    ui_->valueId3Album->setText(player->metaData(QMediaMetaData::AlbumTitle).toString());
-    ui_->valueId3Track->setText(player->metaData(QMediaMetaData::TrackNumber).toString());
-    ui_->valueId3Genre->setText(player->metaData(QMediaMetaData::Genre).toString());
-    ui_->valueId3Year->setText(player->metaData(QMediaMetaData::Year).toString());
     QImage img = player->metaData(QMediaMetaData::CoverArtImage).value<QImage>();
     QImage imgscaled = img.scaled(270,270,Qt::IgnoreAspectRatio);
+    if (!imgscaled.isNull()) {
     ui_->pushButtonBack->setIcon(QPixmap::fromImage(imgscaled));
-    ui_->labelCurrentPlaying->setText(player->metaData(QMediaMetaData::Title).toString() + " - " + player->metaData(QMediaMetaData::AlbumArtist).toString());
-}
-
-void f1x::openauto::autoapp::ui::MainWindow::stateChanged()
-{
-    if (player->StoppedState) {
-        ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+    } else {
+     ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
     }
+    QString Title = player->metaData(QMediaMetaData::Title).toString();
+    QString AlbumInterpret = player->metaData(QMediaMetaData::AlbumArtist).toString();
+    QString currentPlaying = "";
+    if (AlbumInterpret != "") {
+        currentPlaying.append(AlbumInterpret);
+    }
+    if (Title != "" && AlbumInterpret != "") {
+        currentPlaying.append(" - ");
+    }
+    if (Title != "") {
+        currentPlaying.append(Title);
+    }
+    ui_->labelCurrentPlaying->setText(currentPlaying);
+    QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
+    QString filename = QFileInfo(fullpathplaying).fileName();
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonScanFolder_clicked()
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
+{
+    player->setPlaylist(this->playlist);
+    playlist->setCurrentIndex(this->currentPlaylistIndex);
+    player->play();
+    ui_->mp3selectWidget->hide();
+    ui_->PlayerPlayingWidget->show();
+    ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_comboBoxAlbum_currentIndexChanged(const QString &arg1)
+{
+    this->albumfolder = arg1;
+    f1x::openauto::autoapp::ui::MainWindow::scanFiles();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::scanFolders()
+{
+    int cleaner = ui_->comboBoxAlbum->count();
+    while (cleaner > -1) {
+        ui_->comboBoxAlbum->removeItem(cleaner);
+        cleaner--;
+    }
+    QDir directory(this->musicfolder);
+    QStringList folders = directory.entryList(QStringList() << "*", QDir::AllDirs, QDir::Name);
+    foreach (QString foldername, folders) {
+        if (foldername != "..") {
+            ui_->comboBoxAlbum->addItem(foldername);
+        }
+    }
+    this->currentPlaylistIndex = 0;
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
 {
     int cleaner = ui_->mp3List->count();
     while (cleaner > -1) {
@@ -1335,39 +1353,31 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonScanFolder_clicked()
     }
     this->playlist->clear();
 
-    QDirIterator dir(this->musicfolder, QStringList() << "*.mp3", QDir::NoFilter, QDirIterator::Subdirectories);
     QList<QMediaContent> content;
-
-    while (dir.hasNext()) {
-        QFile f(dir.next());
-        QString filename = f.fileName();
-        // make path relative to musicfolder
-        ui_->mp3List->addItem(filename.replace(this->musicfolder + "/",""));
-        content.push_back(QMediaContent(QUrl::fromLocalFile(f.fileName())));
+    QDir directory(this->musicfolder + "/" + this->albumfolder);
+    QStringList mp3s = directory.entryList(QStringList() << "*.mp3",QDir::Files, QDir::Name);
+    foreach (QString filename, mp3s) {
+        // add to mediacontent
+        content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
+        // add items to gui
+        ui_->mp3List->addItem(filename);
     }
+    // set playlist
     this->playlist->addMedia(content);
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonSelectFolder_clicked()
+void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_currentRowChanged(int currentRow)
 {
-    this->musicfolder = QFileDialog::getExistingDirectory(this, tr("Select Album"), this->musicfolder, QFileDialog::ShowDirsOnly);
-    f1x::openauto::autoapp::ui::MainWindow::on_pushButtonScanFolder_clicked();
+    ui_->labelFolderpath->setText(QString::number(currentRow));
+    this->currentPlaylistIndex = currentRow;
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
-{
-    QString path = this->musicfolder + "/" + this->selectedMp3file;
-    ui_->labelFolderpath->setText(path);
-    player->setPlaylist(this->playlist);
-    player->play();
-}
-
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPrev_clicked()
-{
-    playlist->previous();
-}
-
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerNext_clicked()
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonNextBig_clicked()
 {
     playlist->next();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPrevBig_clicked()
+{
+    playlist->previous();
 }
