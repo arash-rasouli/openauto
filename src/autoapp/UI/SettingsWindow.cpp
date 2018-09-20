@@ -1,4 +1,4 @@
-﻿/*
+﻿/*subfolder
 *  This file is part of openauto project.
 *  Copyright (C) 2018 f1x.studio (Michal Szwaj)
 *
@@ -95,6 +95,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     QString time_text_minute=time.toString("mm");
     ui_->spinBoxHour->setValue((time_text_hour).toInt());
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
+    SettingsWindow::scanSubFolders();
 }
 
 SettingsWindow::~SettingsWindow()
@@ -112,6 +113,8 @@ void SettingsWindow::onSave()
     configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
     configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
     configuration_->hideAlpha(ui_->checkBoxHideAlpha->isChecked());
+    configuration_->setMp3MasterPath(ui_->pathMusicFolder->text().toStdString());
+    configuration_->setMp3SubFolder(ui_->comboBoxSubFolder->currentText().toStdString());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
 
@@ -288,6 +291,8 @@ void SettingsWindow::load()
     ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
     ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
     ui_->checkBoxHideAlpha->setChecked(configuration_->hideAlpha());
+    ui_->pathMusicFolder->setText(QString::fromStdString(configuration_->getMp3MasterPath()));
+    ui_->comboBoxSubFolder->setCurrentText(QString::fromStdString(configuration_->getMp3SubFolder()));
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
     ui_->radioButton60FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_60);
@@ -826,4 +831,44 @@ void SettingsWindow::show_tab8()
 }
 }
 }
+}
+
+void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButton_clicked()
+{
+    QString folder = QFileDialog::getExistingDirectory(this, tr("Select Music Path"), "/media/CSSTORAGE/Music", QFileDialog::ShowDirsOnly);
+    if (folder != "") {
+        ui_->pathMusicFolder->setText(folder);
+        int cleaner = ui_->comboBoxSubFolder->count();
+        // clean and rebuild subfolder box
+        while (cleaner > -1) {
+            ui_->comboBoxSubFolder->removeItem(cleaner);
+            cleaner--;
+        }
+        ui_->comboBoxSubFolder->addItem("/");
+        QDir directory(ui_->pathMusicFolder->text());
+        QStringList folders = directory.entryList(QStringList() << "*", QDir::AllDirs, QDir::Name);
+        foreach (QString foldername, folders) {
+            if (foldername != ".." && foldername != ".") {
+                ui_->comboBoxSubFolder->addItem(foldername);
+            }
+        }
+    }
+}
+
+void f1x::openauto::autoapp::ui::SettingsWindow::scanSubFolders()
+{
+    int cleaner = ui_->comboBoxSubFolder->count();
+    // clean and rebuild subfolder box
+    while (cleaner > -1) {
+        ui_->comboBoxSubFolder->removeItem(cleaner);
+        cleaner--;
+    }
+    ui_->comboBoxSubFolder->addItem("/");
+    QDir directory(ui_->pathMusicFolder->text());
+    QStringList folders = directory.entryList(QStringList() << "*", QDir::AllDirs, QDir::Name);
+    foreach (QString foldername, folders) {
+        if (foldername != ".." && foldername != ".") {
+            ui_->comboBoxSubFolder->addItem(foldername);
+        }
+    }
 }

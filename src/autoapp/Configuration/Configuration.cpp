@@ -41,6 +41,9 @@ const std::string Configuration::cGeneralHideAlphaKey = "General.HideAlpha";
 
 const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.HandednessOfTrafficType";
 
+const std::string Configuration::cGeneralMp3MasterPathKey = "General.Mp3MasterPath";
+const std::string Configuration::cGeneralMp3SubFolderKey = "General.Mp3SubFolder";
+
 const std::string Configuration::cVideoFPSKey = "Video.FPS";
 const std::string Configuration::cVideoResolutionKey = "Video.Resolution";
 const std::string Configuration::cVideoScreenDPIKey = "Video.ScreenDPI";
@@ -87,17 +90,18 @@ void Configuration::load()
         boost::property_tree::ini_parser::read_ini(cConfigFileName, iniConfig);
 
         handednessOfTrafficType_ = static_cast<HandednessOfTrafficType>(iniConfig.get<uint32_t>(cGeneralHandednessOfTrafficTypeKey,
-                                                                                                static_cast<uint32_t>(HandednessOfTrafficType::LEFT_HAND_DRIVE)));
+                                                                                              static_cast<uint32_t>(HandednessOfTrafficType::LEFT_HAND_DRIVE)));
         showClock_ = iniConfig.get<bool>(cGeneralShowClockKey, true);
-
         showBigClock_ = iniConfig.get<bool>(cGeneralShowBigClockKey, false);
         oldGUI_ = iniConfig.get<bool>(cGeneralOldGUIKey, false);
         alphaTrans_ = iniConfig.get<size_t>(cGeneralAlphaTransKey, 50);
         hideMenuToggle_ = iniConfig.get<bool>(cGeneralHideMenuToggleKey, false);
         hideAlpha_ = iniConfig.get<bool>(cGeneralHideAlphaKey, false);
+        mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/CSSTORAGE/Music");
+        mp3SubFolder_ = iniConfig.get<std::string>(cGeneralMp3SubFolderKey, "/");
 
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
-                                                                                             aasdk::proto::enums::VideoFPS::_60));
+                                                                                             aasdk::proto::enums::VideoFPS::_30));
 
         videoResolution_ = static_cast<aasdk::proto::enums::VideoResolution::Enum>(iniConfig.get<uint32_t>(cVideoResolutionKey,
                                                                                                            aasdk::proto::enums::VideoResolution::_480p));
@@ -113,10 +117,9 @@ void Configuration::load()
                                                                                           static_cast<uint32_t>(BluetoothAdapterType::NONE)));
 
         bluetoothRemoteAdapterAddress_ = iniConfig.get<std::string>(cBluetoothRemoteAdapterAddressKey, "");
-
         musicAudioChannelEnabled_ = iniConfig.get<bool>(cAudioMusicAudioChannelEnabled, true);
         speechAudiochannelEnabled_ = iniConfig.get<bool>(cAudioSpeechAudioChannelEnabled, true);
-        audioOutputBackendType_ = static_cast<AudioOutputBackendType>(iniConfig.get<uint32_t>(cAudioOutputBackendType, static_cast<uint32_t>(AudioOutputBackendType::QT)));
+        audioOutputBackendType_ = static_cast<AudioOutputBackendType>(iniConfig.get<uint32_t>(cAudioOutputBackendType, static_cast<uint32_t>(AudioOutputBackendType::RTAUDIO)));
     }
     catch(const boost::property_tree::ini_parser_error& e)
     {
@@ -136,7 +139,9 @@ void Configuration::reset()
     alphaTrans_ = 50;
     hideMenuToggle_ = false;
     hideAlpha_ = false;
-    videoFPS_ = aasdk::proto::enums::VideoFPS::_60;
+    mp3MasterPath_ = "/media/CSSTORAGE/Music";
+    mp3SubFolder_ = "/";
+    videoFPS_ = aasdk::proto::enums::VideoFPS::_30;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
     screenDPI_ = 140;
     omxLayerIndex_ = 1;
@@ -161,6 +166,8 @@ void Configuration::save()
     iniConfig.put<size_t>(cGeneralAlphaTransKey, alphaTrans_);
     iniConfig.put<bool>(cGeneralHideMenuToggleKey, hideMenuToggle_);
     iniConfig.put<bool>(cGeneralHideAlphaKey, hideAlpha_);
+    iniConfig.put<std::string>(cGeneralMp3MasterPathKey, mp3MasterPath_);
+    iniConfig.put<std::string>(cGeneralMp3SubFolderKey, mp3SubFolder_);
 
     iniConfig.put<uint32_t>(cVideoFPSKey, static_cast<uint32_t>(videoFPS_));
     iniConfig.put<uint32_t>(cVideoResolutionKey, static_cast<uint32_t>(videoResolution_));
@@ -268,6 +275,26 @@ void Configuration::hideAlpha(bool value)
 bool Configuration::hideAlpha() const
 {
     return hideAlpha_;
+}
+
+std::string Configuration::getMp3MasterPath() const
+{
+    return mp3MasterPath_;
+}
+
+void Configuration::setMp3MasterPath(const std::string& value)
+{
+    mp3MasterPath_ = value;
+}
+
+std::string Configuration::getMp3SubFolder() const
+{
+    return mp3SubFolder_;
+}
+
+void Configuration::setMp3SubFolder(const std::string& value)
+{
+    mp3SubFolder_ = value;
 }
 
 aasdk::proto::enums::VideoFPS::Enum Configuration::getVideoFPS() const

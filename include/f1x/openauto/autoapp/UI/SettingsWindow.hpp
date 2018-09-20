@@ -21,6 +21,7 @@
 #include <memory>
 #include <QWidget>
 #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
+#include <QFileDialog>
 
 class QCheckBox;
 
@@ -69,6 +70,9 @@ private slots:
     void show_tab6();
     void show_tab7();
     void show_tab8();
+
+    void on_pushButton_clicked();
+    void scanSubFolders();
 
 private:
     void showEvent(QShowEvent* event);

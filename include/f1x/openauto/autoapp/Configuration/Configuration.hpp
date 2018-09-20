@@ -57,6 +57,12 @@ public:
     void hideAlpha(bool value) override;
     bool hideAlpha() const override;
 
+    std::string getMp3MasterPath() const override;
+    void setMp3MasterPath(const std::string& value) override;
+
+    std::string getMp3SubFolder() const override;
+    void setMp3SubFolder(const std::string& value) override;
+
     aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const override;
     void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) override;
     aasdk::proto::enums::VideoResolution::Enum getVideoResolution() const override;
@@ -98,6 +104,8 @@ private:
     size_t alphaTrans_;
     bool hideMenuToggle_;
     bool hideAlpha_;
+    std::string mp3MasterPath_;
+    std::string mp3SubFolder_;
 
     aasdk::proto::enums::VideoFPS::Enum videoFPS_;
     aasdk::proto::enums::VideoResolution::Enum videoResolution_;
@@ -123,6 +131,9 @@ private:
     static const std::string cGeneralHideAlphaKey;
 
     static const std::string cGeneralHandednessOfTrafficTypeKey;
+
+    static const std::string cGeneralMp3MasterPathKey;
+    static const std::string cGeneralMp3SubFolderKey;
 
     static const std::string cVideoFPSKey;
     static const std::string cVideoResolutionKey;

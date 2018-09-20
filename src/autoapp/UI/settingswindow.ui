@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>2976</height>
+    <height>3106</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,7 +58,9 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
-}</string>
+outline: none;
+}
+</string>
        </property>
        <property name="text">
         <string>General</string>
@@ -82,6 +84,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -106,6 +109,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -130,6 +134,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -154,6 +159,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -178,6 +184,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -202,6 +209,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -226,6 +234,7 @@ background-color: rgb(114, 159, 207);
 }
 QPushButton:focus {
 background-color: rgb(114, 159, 207);
+outline: none;
 }</string>
        </property>
        <property name="text">
@@ -392,6 +401,193 @@ background-color: rgb(114, 159, 207);
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxMP3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>MP3 Player defaults </string>
+        </property>
+        <layout class="QFormLayout" name="formLayout_6">
+         <property name="horizontalSpacing">
+          <number>9</number>
+         </property>
+         <property name="leftMargin">
+          <number>2</number>
+         </property>
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>140</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(85, 87, 83);
+outline: none;</string>
+           </property>
+           <property name="text">
+            <string>Master music path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="pathMusicFolder">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(85, 87, 83);</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="text">
+            <string>/media/CSSTORAGE/Music</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelSubfolder">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>140</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>  Subfolder (Album)</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBoxSubFolder">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout_8">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>2</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_18">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>If you select a subfolder the player will start with listing the files inside this folder (on system start)</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -1893,7 +2089,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">background-color: rgb(164, 0, 0);</string>
+              <string notr="true">background-color: rgb(164, 0, 0);
+outline: none;</string>
              </property>
              <property name="text">
               <string>Remove all paired devices now!</string>
@@ -2163,7 +2360,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(78, 154, 6);</string>
+               <string notr="true">background-color: rgb(78, 154, 6);
+outline: none;</string>
               </property>
               <property name="text">
                <string>Start</string>
@@ -2179,7 +2377,8 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(164, 0, 0);</string>
+               <string notr="true">background-color: rgb(164, 0, 0);
+outline: none;</string>
               </property>
               <property name="text">
                <string>Stop</string>
@@ -4812,7 +5011,8 @@ subcontrol-position: center left;
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(78, 154, 6);</string>
+               <string notr="true">background-color: rgb(78, 154, 6);
+outline: none;</string>
               </property>
               <property name="text">
                <string>Set current time now!</string>
@@ -4854,7 +5054,8 @@ subcontrol-position: center left;
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: rgb(114, 159, 207);
-color: rgb(85, 87, 83);</string>
+color: rgb(85, 87, 83);
+outline: none;</string>
               </property>
               <property name="text">
                <string>NTP-Sync</string>
@@ -5296,7 +5497,8 @@ color: rgb(85, 87, 83);</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(7, 123, 123);</string>
+        <string notr="true">background-color: rgb(7, 123, 123);
+outline: none;</string>
        </property>
        <property name="text">
         <string>Save</string>
@@ -5324,7 +5526,8 @@ color: rgb(85, 87, 83);</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(206, 92, 0);</string>
+        <string notr="true">background-color: rgb(206, 92, 0);
+outline: none;</string>
        </property>
        <property name="text">
         <string>Reset to default</string>
@@ -5352,7 +5555,8 @@ color: rgb(85, 87, 83);</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(85, 87, 83);</string>
+        <string notr="true">background-color: rgb(85, 87, 83);
+outline: none;</string>
        </property>
        <property name="text">
         <string>Cancel</string>

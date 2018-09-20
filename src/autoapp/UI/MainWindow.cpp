@@ -549,11 +549,20 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(player, &QMediaPlayer::metaDataAvailableChanged, this, &MainWindow::metaDataChanged);
 
-    MainWindow::scanFolders();
-    MainWindow::scanFiles();
-    ui_->labelFolderpath->hide();
+    //ui_->labelFolderpath->hide();
     ui_->pushButtonPlayerPlay->hide();
     ui_->PlayerPlayingWidget->hide();
+
+    //this->musicfolder = QString::fromStdString(configuration->getMp3MasterPath());
+    //this->albumfolder = QString::fromStdString(configuration->getMp3SubFolder());
+    //ui_->labelFolderpath->setText(this->musicfolder);
+    //ui_->labelAlbumpath->setText(this->albumfolder);
+    ui_->labelFolderpath->hide();
+    ui_->labelAlbumpath->hide();
+
+    MainWindow::scanFolders();
+    ui_->comboBoxAlbum->setCurrentText(QString::fromStdString(configuration->getMp3SubFolder()));
+    MainWindow::scanFiles();
 }
 
 MainWindow::~MainWindow()
