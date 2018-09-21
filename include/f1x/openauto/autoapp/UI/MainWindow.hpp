@@ -121,12 +121,15 @@ private slots:
     void on_mp3List_itemClicked(QListWidgetItem *item);
     void metaDataChanged();
     void on_pushButtonPlayerPlayList_clicked();
-    void on_pushButtonNextBig_clicked();
-    void on_pushButtonPrevBig_clicked();
+    void on_pushButtonPlayerNextBig_clicked();
+    void on_pushButtonPlayerPrevBig_clicked();
+    void on_pushButtonPlayerPrevAlbum_clicked();
+    void on_pushButtonPlayerNextAlbum_clicked();
     void on_comboBoxAlbum_currentIndexChanged(const QString &arg1);
     void on_mp3List_currentRowChanged(int currentRow);
     void scanFolders();
     void scanFiles();
+
 
 private:
     Ui::MainWindow* ui_;

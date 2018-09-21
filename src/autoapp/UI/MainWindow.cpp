@@ -1224,6 +1224,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
     ui_->PlayerPlayingWidget->hide();
     ui_->playerPositionTime->setText("00:00 / 00:00");
     ui_->labelCurrentPlaying->setText("");
+    ui_->labelTrack->setText("");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
@@ -1305,6 +1306,9 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     }
     QString Title = player->metaData(QMediaMetaData::Title).toString();
     QString AlbumInterpret = player->metaData(QMediaMetaData::AlbumArtist).toString();
+    if (AlbumInterpret == "" && ui_->comboBoxAlbum->currentText() != ".") {
+        AlbumInterpret = ui_->comboBoxAlbum->currentText();
+    }
     QString currentPlaying = "";
     if (AlbumInterpret != "") {
         currentPlaying.append(AlbumInterpret);
@@ -1318,6 +1322,8 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     ui_->labelCurrentPlaying->setText(currentPlaying);
     QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
     QString filename = QFileInfo(fullpathplaying).fileName();
+    ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
+    ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
@@ -1328,6 +1334,8 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked
     ui_->mp3selectWidget->hide();
     ui_->PlayerPlayingWidget->show();
     ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+    int currentalbum = ui_->comboBoxAlbum->currentIndex();
+    ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_comboBoxAlbum_currentIndexChanged(const QString &arg1)
@@ -1348,6 +1356,7 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFolders()
     foreach (QString foldername, folders) {
         if (foldername != "..") {
             ui_->comboBoxAlbum->addItem(foldername);
+            ui_->labelAlbumCount->setText(QString::number(ui_->comboBoxAlbum->count()));
         }
     }
     this->currentPlaylistIndex = 0;
@@ -1381,12 +1390,46 @@ void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_currentRowChanged(int cu
     this->currentPlaylistIndex = currentRow;
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonNextBig_clicked()
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerNextBig_clicked()
 {
     playlist->next();
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPrevBig_clicked()
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPrevBig_clicked()
 {
     playlist->previous();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPrevAlbum_clicked()
+{
+    int albumcount = ui_->comboBoxAlbum->count();
+    int currentalbum = ui_->comboBoxAlbum->currentIndex();
+    if (currentalbum >= 1) {
+        currentalbum = currentalbum-1;
+        ui_->comboBoxAlbum->setCurrentIndex(currentalbum);
+        ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
+        player->play();
+    } else {
+        currentalbum = albumcount-1;
+        ui_->comboBoxAlbum->setCurrentIndex(currentalbum);
+        ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
+        player->play();
+    }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerNextAlbum_clicked()
+{
+    int albumcount = ui_->comboBoxAlbum->count();
+    int currentalbum = ui_->comboBoxAlbum->currentIndex();
+    if (currentalbum < albumcount-1) {
+        currentalbum = currentalbum + 1;
+        ui_->comboBoxAlbum->setCurrentIndex(currentalbum);
+        ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
+        player->play();
+    } else {
+        currentalbum = 0;
+        ui_->comboBoxAlbum->setCurrentIndex(currentalbum);
+        ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
+        player->play();
+    }
 }
