@@ -2254,7 +2254,7 @@ border: 2px solid rgba(255,255,255,0.5);</string>
                 <enum>Qt::DefaultContextMenu</enum>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgba(85, 87, 83, 0.9);
+                <string notr="true">background-color: rgba(117, 80, 123, 0.9);
 color: rgb(255, 255, 255);
 border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
@@ -2262,16 +2262,6 @@ outline: none;</string>
                <property name="frame">
                 <bool>true</bool>
                </property>
-               <item>
-                <property name="text">
-                 <string>Folder 1</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Folder 2</string>
-                </property>
-               </item>
               </widget>
              </item>
              <item>
@@ -2311,6 +2301,9 @@ outline: none;
                <property name="alternatingRowColors">
                 <bool>false</bool>
                </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SingleSelection</enum>
+               </property>
                <property name="movement">
                 <enum>QListView::Static</enum>
                </property>
@@ -2335,86 +2328,6 @@ outline: none;
                <property name="sortingEnabled">
                 <bool>false</bool>
                </property>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Neues Element</string>
-                </property>
-               </item>
               </widget>
              </item>
             </layout>

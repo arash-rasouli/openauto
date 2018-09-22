@@ -1324,6 +1324,7 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     QString filename = QFileInfo(fullpathplaying).fileName();
     ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
     ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
+    ui_->mp3List->setCurrentRow(playlist->currentIndex());
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
