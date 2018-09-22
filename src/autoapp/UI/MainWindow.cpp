@@ -549,10 +549,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(player, &QMediaPlayer::metaDataAvailableChanged, this, &MainWindow::metaDataChanged);
 
-    //ui_->labelFolderpath->hide();
-    ui_->pushButtonPlayerPlay->hide();
+    ui_->pushButtonList->hide();
+    ui_->pushButtonBackToPlayer->hide();
     ui_->PlayerPlayingWidget->hide();
-
+    ui_->pushButtonPlayerStop->hide();
+    ui_->pushButtonPlayerPause->hide();
     //this->musicfolder = QString::fromStdString(configuration->getMp3MasterPath());
     //this->albumfolder = QString::fromStdString(configuration->getMp3SubFolder());
     //ui_->labelFolderpath->setText(this->musicfolder);
@@ -1204,15 +1205,13 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolumePlayer_sli
     ui_->volumeValueLabelPlayer->setText(QString::number(position) + "%");
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlay_clicked()
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonList_clicked()
 {
-    QString path = this->musicfolder + "/" + this->albumfolder + "/" + this->selectedMp3file;
-    player->setMedia(QMediaContent(QUrl::fromLocalFile(path)));
-    player->play();
-    //qDebug() << player->errorString();
-    ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
-    ui_->mp3selectWidget->hide();
-    ui_->PlayerPlayingWidget->show();
+    ui_->mp3selectWidget->show();
+    ui_->PlayerPlayingWidget->hide();
+    ui_->pushButtonList->hide();
+    ui_->pushButtonPlayerPlayList->show();
+    ui_->pushButtonBackToPlayer->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
@@ -1222,6 +1221,11 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
     ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
     ui_->mp3selectWidget->show();
     ui_->PlayerPlayingWidget->hide();
+    ui_->pushButtonBackToPlayer->hide();
+    ui_->pushButtonPlayerPlayList->show();
+    ui_->pushButtonPlayerStop->hide();
+    ui_->pushButtonList->hide();
+    ui_->pushButtonPlayerPause->hide();
     ui_->playerPositionTime->setText("00:00 / 00:00");
     ui_->labelCurrentPlaying->setText("");
     ui_->labelTrack->setText("");
@@ -1233,14 +1237,10 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
         if(player->state() == QMediaPlayer::PlayingState){
             player->pause();
             ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(218, 143, 143); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
-            ui_->mp3selectWidget->show();
-            ui_->PlayerPlayingWidget->hide();
         }else{
             ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
             player->play();
             player->setPosition(player->position());
-            ui_->mp3selectWidget->hide();
-            ui_->PlayerPlayingWidget->show();
         }
 
     }
@@ -1333,7 +1333,12 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked
     player->play();
     ui_->mp3selectWidget->hide();
     ui_->PlayerPlayingWidget->show();
+    ui_->pushButtonPlayerPlayList->hide();
+    ui_->pushButtonList->show();
+    ui_->pushButtonBackToPlayer->hide();
+    ui_->pushButtonPlayerStop->show();
     ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
+    ui_->pushButtonPlayerPause->show();
     int currentalbum = ui_->comboBoxAlbum->currentIndex();
     ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
 }
@@ -1432,4 +1437,13 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerNextAlbum_clicke
         ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
         player->play();
     }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBackToPlayer_clicked()
+{
+    ui_->PlayerPlayingWidget->show();
+    ui_->mp3selectWidget->hide();
+    ui_->pushButtonBackToPlayer->hide();
+    ui_->pushButtonPlayerPlayList->hide();
+    ui_->pushButtonList->show();
 }

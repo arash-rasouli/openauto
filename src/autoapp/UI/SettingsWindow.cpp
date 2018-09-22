@@ -616,7 +616,10 @@ void SettingsWindow::loadSystemValues()
             dac = "Hifiberry - DAC Plus";
         }
         if (getparams[23] == "hifiberry-digi") {
-            dac = "Hifiberry - DAC Digi";
+            dac = "Hifiberry - Digi";
+        }
+        if (getparams[23] == "hifiberry-digi-pro") {
+            dac = "Hifiberry - Digi Pro";
         }
         if (getparams[23] == "hifiberry-amp") {
             dac = "Hifiberry - DAC Amp";

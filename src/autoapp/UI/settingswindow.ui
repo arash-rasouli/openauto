@@ -5172,12 +5172,17 @@ outline: none;</string>
              </item>
              <item>
               <property name="text">
-               <string>Hifiberry - DAC Digi</string>
+               <string>Hifiberry - DAC Amp</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Hifiberry - DAC Amp</string>
+               <string>Hifiberry - Digi</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Hifiberry - Digi Pro</string>
               </property>
              </item>
             </widget>

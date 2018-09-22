@@ -113,7 +113,7 @@ private slots:
 
     void on_horizontalSliderProgressPlayer_sliderMoved(int position);
     void on_horizontalSliderVolumePlayer_sliderMoved(int position);
-    void on_pushButtonPlayerPlay_clicked();
+    void on_pushButtonList_clicked();
     void on_pushButtonPlayerStop_clicked();
     void on_pushButtonPlayerPause_clicked();
     void on_positionChanged(qint64 position);
@@ -125,11 +125,11 @@ private slots:
     void on_pushButtonPlayerPrevBig_clicked();
     void on_pushButtonPlayerPrevAlbum_clicked();
     void on_pushButtonPlayerNextAlbum_clicked();
+    void on_pushButtonBackToPlayer_clicked();
     void on_comboBoxAlbum_currentIndexChanged(const QString &arg1);
     void on_mp3List_currentRowChanged(int currentRow);
     void scanFolders();
     void scanFiles();
-
 
 private:
     Ui::MainWindow* ui_;
