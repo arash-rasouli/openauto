@@ -1216,6 +1216,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonList_clicked()
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
 {
+    ui_->mp3List->setCurrentRow(playlist->currentIndex());
     player->stop();
     ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
     ui_->pushButtonPlayerPause->setStyleSheet( "background-color: rgb(233, 185, 110); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(0,0,0);");
@@ -1324,7 +1325,6 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     QString filename = QFileInfo(fullpathplaying).fileName();
     ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
     ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
-    ui_->mp3List->setCurrentRow(playlist->currentIndex());
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
