@@ -534,6 +534,12 @@ outline: none;</string>
              <height>24</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -1510,6 +1516,12 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+           </property>
           </widget>
          </item>
          <item row="1" column="0">
@@ -1526,6 +1538,12 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
            </property>
           </widget>
          </item>
@@ -3508,6 +3526,12 @@ subcontrol-position: center left;
                   <height>30</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                </property>
                 <property name="currentText">
                  <string>- - -</string>
                 </property>
@@ -3691,6 +3715,12 @@ subcontrol-position: center left;
                   <height>30</height>
                  </size>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                </property>
                 <item>
                  <property name="text">
                   <string>- - -</string>
@@ -3864,6 +3894,12 @@ subcontrol-position: center left;
                   <width>100</width>
                   <height>30</height>
                  </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
                 </property>
                 <item>
                  <property name="text">
@@ -4083,6 +4119,12 @@ subcontrol-position: center left;
                     <height>30</height>
                    </size>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                  </property>
                   <item>
                    <property name="text">
                     <string>- - -</string>
@@ -4256,6 +4298,12 @@ subcontrol-position: center left;
                     <width>100</width>
                     <height>30</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
                   </property>
                   <item>
                    <property name="text">
@@ -4492,6 +4540,9 @@ subcontrol-position: center left;
                     <width>100</width>
                     <height>30</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <item>
                    <property name="text">
@@ -5115,6 +5166,12 @@ outline: none;</string>
                <height>30</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+             </property>
              <item>
               <property name="text">
                <string>Custom</string>
@@ -5220,6 +5277,12 @@ outline: none;</string>
                <height>30</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+             </property>
              <item>
               <property name="text">
                <string>none</string>
@@ -5305,6 +5368,12 @@ outline: none;</string>
                <height>30</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+             </property>
             </widget>
            </item>
            <item row="3" column="0">
@@ -5339,6 +5408,12 @@ outline: none;</string>
                <width>0</width>
                <height>30</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
              </property>
              <item>
               <property name="text">
@@ -5384,6 +5459,12 @@ outline: none;</string>
                <width>0</width>
                <height>30</height>
               </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
              </property>
              <item>
               <property name="text">

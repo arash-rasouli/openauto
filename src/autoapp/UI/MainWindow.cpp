@@ -1379,7 +1379,7 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
 
     QList<QMediaContent> content;
     QDir directory(this->musicfolder + "/" + this->albumfolder);
-    QStringList mp3s = directory.entryList(QStringList() << "*.mp3",QDir::Files, QDir::Name);
+    QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg",QDir::Files, QDir::Name);
     foreach (QString filename, mp3s) {
         // add to mediacontent
         content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
