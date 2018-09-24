@@ -37,6 +37,11 @@
 
 #include <QFileDialog>
 
+#include <qmediaplayer.h>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
+
+
 namespace Ui
 {
 class MainWindow;

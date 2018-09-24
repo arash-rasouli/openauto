@@ -29,8 +29,6 @@
 #include <QFont>
 #include <QScreen>
 #include <QRect>
-#include <string>
-#include <qmediaplayer.h>
 
 namespace f1x
 {
@@ -1305,24 +1303,37 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     } else {
      ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
     }
-    QString Title = player->metaData(QMediaMetaData::Title).toString();
-    QString AlbumInterpret = player->metaData(QMediaMetaData::AlbumArtist).toString();
-    if (AlbumInterpret == "" && ui_->comboBoxAlbum->currentText() != ".") {
-        AlbumInterpret = ui_->comboBoxAlbum->currentText();
-    }
-    QString currentPlaying = "";
-    if (AlbumInterpret != "") {
-        currentPlaying.append(AlbumInterpret);
-    }
-    if (Title != "" && AlbumInterpret != "") {
-        currentPlaying.append(" - ");
-    }
-    if (Title != "") {
-        currentPlaying.append(Title);
-    }
-    ui_->labelCurrentPlaying->setText(currentPlaying);
+
     QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
     QString filename = QFileInfo(fullpathplaying).fileName();
+
+    try {
+        // use metadata from mp3list widget (prescanned id3 by taglib)
+        if (playlist->currentIndex() != -1 && fullpathplaying != "") {
+            QString currentsong = ui_->mp3List->item(playlist->currentIndex())->text();
+            ui_->labelCurrentPlaying->setText(currentsong);
+        }
+    } catch (...) {
+        // use metadata from player
+        QString AlbumInterpret = player->metaData(QMediaMetaData::AlbumArtist).toString();
+        QString Title = player->metaData(QMediaMetaData::Title).toString();
+
+        if (AlbumInterpret == "" && ui_->comboBoxAlbum->currentText() != ".") {
+            AlbumInterpret = ui_->comboBoxAlbum->currentText();
+        }
+        QString currentPlaying;
+
+        if (AlbumInterpret != "") {
+            currentPlaying.append(AlbumInterpret);
+        }
+        if (Title != "" && AlbumInterpret != "") {
+            currentPlaying.append(" - ");
+        }
+        if (Title != "") {
+            currentPlaying.append(Title);
+        }
+        ui_->labelCurrentPlaying->setText(currentPlaying);
+    }
     ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
     ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
 }
@@ -1379,12 +1390,30 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
 
     QList<QMediaContent> content;
     QDir directory(this->musicfolder + "/" + this->albumfolder);
-    QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg",QDir::Files, QDir::Name);
+    QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg" << "*.mp4",QDir::Files, QDir::Name);
     foreach (QString filename, mp3s) {
         // add to mediacontent
         content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
         // add items to gui
-        ui_->mp3List->addItem(filename);
+        // read metadata using taglib
+        try {
+            TagLib::FileRef file((this->musicfolder + "/" + this->albumfolder + "/" + filename).toUtf8(),true);
+            TagLib::String artist_string = file.tag()->artist();
+            TagLib::String title_string = file.tag()->title();
+            TagLib::uint track_string = file.tag()->track();
+            QString artistid3 = QString::fromStdWString(artist_string.toCWString());
+            QString titleid3 = QString::fromStdWString(title_string.toCWString());
+            QString trackid3 = QString::number(track_string);
+            int tracklength = trackid3.length();
+            if (tracklength < 2) {
+                trackid3 = "0" + trackid3;
+            }
+            QString ID3Entry = trackid3 + ": " + artistid3 + " - " + titleid3;
+            ui_->mp3List->addItem(ID3Entry);
+        } catch (...) {
+            // old way only adding filename to list
+            ui_->mp3List->addItem(filename);
+        }
     }
     // set playlist
     this->playlist->addMedia(content);
