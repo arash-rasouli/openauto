@@ -60,6 +60,7 @@ private slots:
     void onStartHotspot();
     void onStopHotspot();
     void syncNTPTime();
+    void on_pushButtonRescan_clicked();
 
 private slots:
     void show_tab1();
@@ -70,9 +71,6 @@ private slots:
     void show_tab6();
     void show_tab7();
     void show_tab8();
-
-    void on_pushButton_clicked();
-    void scanSubFolders();
 
 private:
     void showEvent(QShowEvent* event);

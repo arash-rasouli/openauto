@@ -34,6 +34,7 @@ find_package(Protobuf REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(rtaudio REQUIRED)
 find_package(taglib REQUIRED)
+find_package(blkid REQUIRED)
 
 if(WIN32)
     set(WINSOCK2_LIBRARIES "ws2_32")
@@ -58,6 +59,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
                     ${OPENSSL_INCLUDE_DIR}
                     ${RTAUDIO_INCLUDE_DIRS}
                     ${TAGLIB_INCLUDE_DIRS}
+                    ${BLKID_INCLUDE_DIRS}
                     ${AASDK_PROTO_INCLUDE_DIRS}
                     ${AASDK_INCLUDE_DIRS}
                     ${BCM_HOST_INCLUDE_DIRS}
@@ -86,6 +88,7 @@ target_link_libraries(autoapp
                         ${WINSOCK2_LIBRARIES}
                         ${RTAUDIO_LIBRARIES}
                         ${TAGLIB_LIBRARIES}
+                        ${BLKID_LIBRARIES}
                         ${AASDK_PROTO_LIBRARIES}
                         ${AASDK_LIBRARIES})
 

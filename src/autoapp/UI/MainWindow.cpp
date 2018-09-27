@@ -164,6 +164,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
     connect(ui_->pushButtonPlayerBack, &QPushButton::clicked, this, &MainWindow::playerHide);
+    connect(ui_->pushButtonUSB, &QPushButton::clicked, this, &MainWindow::openUSBDialog);
+    connect(ui_->pushButtonRescan, &QPushButton::clicked, this, &MainWindow::scanFolders);
 
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
@@ -552,12 +554,18 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->PlayerPlayingWidget->hide();
     ui_->pushButtonPlayerStop->hide();
     ui_->pushButtonPlayerPause->hide();
-    //this->musicfolder = QString::fromStdString(configuration->getMp3MasterPath());
-    //this->albumfolder = QString::fromStdString(configuration->getMp3SubFolder());
-    //ui_->labelFolderpath->setText(this->musicfolder);
-    //ui_->labelAlbumpath->setText(this->albumfolder);
+
+    this->musicfolder = QString::fromStdString(configuration->getMp3MasterPath());
+    this->albumfolder = QString::fromStdString(configuration->getMp3SubFolder());
+    ui_->labelFolderpath->setText(this->musicfolder);
+    ui_->labelAlbumpath->setText(this->albumfolder);
+
     ui_->labelFolderpath->hide();
     ui_->labelAlbumpath->hide();
+
+    // link possible existing media
+    system(qPrintable("ln -s /media/CSSTORAGE/Music/* /media/MYMEDIA"));
+    system(qPrintable("/usr/local/bin/autoapp_helper cleansymlinks"));
 
     MainWindow::scanFolders();
     ui_->comboBoxAlbum->setCurrentText(QString::fromStdString(configuration->getMp3SubFolder()));
@@ -1210,6 +1218,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonList_clicked()
     ui_->pushButtonList->hide();
     ui_->pushButtonPlayerPlayList->show();
     ui_->pushButtonBackToPlayer->show();
+    ui_->pushButtonUSB->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
@@ -1228,6 +1237,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
     ui_->playerPositionTime->setText("00:00 / 00:00");
     ui_->labelCurrentPlaying->setText("");
     ui_->labelTrack->setText("");
+    ui_->pushButtonUSB->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
@@ -1353,6 +1363,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked
     ui_->pushButtonPlayerPause->show();
     int currentalbum = ui_->comboBoxAlbum->currentIndex();
     ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
+    ui_->pushButtonUSB->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_comboBoxAlbum_currentIndexChanged(const QString &arg1)
@@ -1476,4 +1487,5 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBackToPlayer_clicked()
     ui_->pushButtonBackToPlayer->hide();
     ui_->pushButtonPlayerPlayList->hide();
     ui_->pushButtonList->show();
+    ui_->pushButtonUSB->hide();
 }

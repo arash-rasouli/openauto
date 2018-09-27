@@ -97,7 +97,7 @@ void Configuration::load()
         alphaTrans_ = iniConfig.get<size_t>(cGeneralAlphaTransKey, 50);
         hideMenuToggle_ = iniConfig.get<bool>(cGeneralHideMenuToggleKey, false);
         hideAlpha_ = iniConfig.get<bool>(cGeneralHideAlphaKey, false);
-        mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/CSSTORAGE/Music");
+        mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/MYMEDIA");
         mp3SubFolder_ = iniConfig.get<std::string>(cGeneralMp3SubFolderKey, "/");
 
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
@@ -139,7 +139,7 @@ void Configuration::reset()
     alphaTrans_ = 50;
     hideMenuToggle_ = false;
     hideAlpha_ = false;
-    mp3MasterPath_ = "/media/CSSTORAGE/Music";
+    mp3MasterPath_ = "/media/MYMEDIA";
     mp3SubFolder_ = "/";
     videoFPS_ = aasdk::proto::enums::VideoFPS::_30;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;

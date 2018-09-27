@@ -77,6 +77,7 @@ signals:
     void cameraSave();
     void cameraRecord();
     void openConnectDialog();
+    void openUSBDialog();
     void showBrightnessSlider();
     void showVolumeSlider();
     void showAlphaSlider();
