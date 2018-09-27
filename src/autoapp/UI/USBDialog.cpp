@@ -105,12 +105,10 @@ void f1x::openauto::autoapp::ui::USBDialog::on_pushButtonMount_clicked()
     QString mountfulldevicepath = selected.split(" ")[0];
     QString mountdevice = mountfulldevicepath.split("/")[2];
     system(qPrintable("sudo umount " + mountfulldevicepath));
-    system(qPrintable("sudo mkdir -p /media/MYMEDIA"));
-    system(qPrintable("sudo chmod 777 /media/MYMEDIA"));
-    system(qPrintable("sudo mkdir -p /media/" + mountdevice));
-    system(qPrintable("sudo chmod 777 /media/" + mountdevice));
-    system(qPrintable("sudo mount " + mountfulldevicepath + " /media/" + mountdevice));
-    system(qPrintable("ln -s /media/" + mountdevice + "/Music/* /media/MYMEDIA"));
+    system(qPrintable("sudo mkdir -p /media/USBDRIVES/" + mountdevice));
+    system(qPrintable("sudo chmod 777 /media/USBDRIVES/" + mountdevice));
+    system(qPrintable("sudo mount " + mountfulldevicepath + " /media/USBDRIVES/" + mountdevice));
+    system(qPrintable("ln -s /media/USBDRIVES/" + mountdevice + "/Music/* /media/MYMEDIA"));
     scanDrives();
 }
 
