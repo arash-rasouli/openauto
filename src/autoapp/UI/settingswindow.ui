@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>3076</height>
+    <height>3096</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -2233,41 +2233,6 @@ outline: none;</string>
             <property name="bottomMargin">
              <number>2</number>
             </property>
-            <item row="2" column="0">
-             <widget class="QLabel" name="labelWifiHotspotSSID">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Used SSID:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="lineEditWifiHotspotSSID">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QCheckBox" name="checkBoxHotspot">
               <property name="text">
@@ -2311,6 +2276,31 @@ outline: none;</string>
              </widget>
             </item>
             <item row="3" column="0">
+             <widget class="QLabel" name="labelWifiHotspotSSID">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>35</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Used SSID:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
              <widget class="QPushButton" name="pushButtonHotspotStart">
               <property name="minimumSize">
                <size>
@@ -2327,7 +2317,20 @@ outline: none;</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
+            <item row="4" column="1">
+             <widget class="QLabel" name="labelHotspotStart">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Start hotspot mode now. This will exit client mode.</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
              <widget class="QPushButton" name="pushButtonHotspotStop">
               <property name="minimumSize">
                <size>
@@ -2344,20 +2347,7 @@ outline: none;</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
-             <widget class="QLabel" name="labelHotspotStart">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Start hotspot mode now. This will exit client mode.</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="1">
+            <item row="5" column="1">
              <widget class="QLabel" name="labelHotspotStop">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -2369,6 +2359,72 @@ outline: none;</string>
                <string>Stop hotspot mode now. This will exit hotspot and reenable wifi client mode.</string>
               </property>
              </widget>
+            </item>
+            <item row="3" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLineEdit" name="lineEditWifiHotspotSSID">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_20">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_19">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <italic>true</italic>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>The default password is 1234567890 - Change it in /boot/crankshaft/crankshaft_env.sh!</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -4434,7 +4490,7 @@ subcontrol-position: center left;
                    <number>5</number>
                   </property>
                   <property name="maximum">
-                   <number>60</number>
+                   <number>600</number>
                   </property>
                   <property name="value">
                    <number>30</number>
