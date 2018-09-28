@@ -991,6 +991,18 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
         time_text[3] = ' ';
         time_text[8] = ' ';
 
+        // check if system is in display off mode (tap2wake)
+        QFileInfo blankFile("/tmp/blankscreen");
+        if (blankFile.exists()) {
+            if (ui_->centralWidget->isVisible() == true) {
+                ui_->centralWidget->hide();
+            }
+        } else {
+            if (ui_->centralWidget->isVisible() == false) {
+                ui_->centralWidget->show();
+            }
+        }
+
         // check if phone is conencted to usb
         QFileInfo phoneConnectedFile("/tmp/android_device");
         if (phoneConnectedFile.exists()) {
