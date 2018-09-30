@@ -93,6 +93,7 @@ void App::stop()
             androidAutoEntity_.reset();
         }
     });
+
 }
 
 void App::aoapDeviceHandler(aasdk::usb::DeviceHandle deviceHandle)
