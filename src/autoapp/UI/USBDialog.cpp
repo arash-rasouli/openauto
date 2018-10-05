@@ -104,7 +104,8 @@ void f1x::openauto::autoapp::ui::USBDialog::on_pushButtonMount_clicked()
     QString selected = ui_->listWidgetUSB->item(ui_->listWidgetUSB->currentRow())->text();
     QString mountfulldevicepath = selected.split(" ")[0];
     QString mountdevice = mountfulldevicepath.split("/")[2];
-    system(qPrintable("sudo umount " + mountfulldevicepath));
+    system(qPrintable("sudo umount -f " + mountfulldevicepath));
+    //system(qPrintable("sudo fuser -km /media/USBDRIVES/" + mountdevice));
     system(qPrintable("sudo mkdir -p /media/USBDRIVES/" + mountdevice));
     system(qPrintable("sudo chmod 777 /media/USBDRIVES/" + mountdevice));
     system(qPrintable("sudo mount " + mountfulldevicepath + " /media/USBDRIVES/" + mountdevice));
@@ -116,6 +117,8 @@ void f1x::openauto::autoapp::ui::USBDialog::on_pushButtonRemove_clicked()
 {
     QString selected = ui_->listWidgetUSB->item(ui_->listWidgetUSB->currentRow())->text();
     QString mountfulldevicepath = selected.split(" ")[0];
-    system(qPrintable("sudo umount " + mountfulldevicepath));
+    QString mountdevice = mountfulldevicepath.split("/")[2];
+    system(qPrintable("sudo umount -f " + mountfulldevicepath));
+    system(qPrintable("sudo fuser -km /media/USBDRIVES/" + mountdevice));
     scanDrives();
 }
