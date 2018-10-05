@@ -61,6 +61,7 @@ private slots:
     void onStopHotspot();
     void syncNTPTime();
     void on_pushButtonRescan_clicked();
+    void on_pushButtonAudioTest_clicked();
 
 private slots:
     void show_tab1();

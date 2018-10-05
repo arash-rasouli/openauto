@@ -96,6 +96,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->spinBoxHour->setValue((time_text_hour).toInt());
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
     SettingsWindow::on_pushButtonRescan_clicked();
+    ui_->labelTestInProgress->hide();
 }
 
 SettingsWindow::~SettingsWindow()
@@ -850,4 +851,14 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonRescan_clicked()
             ui_->comboBoxSubFolder->addItem(foldername);
         }
     }
+}
+
+void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonAudioTest_clicked()
+{
+    ui_->labelTestInProgress->show();
+    ui_->pushButtonAudioTest->hide();
+    qApp->processEvents();
+    system("/usr/local/bin/crankshaft audio test");
+    ui_->pushButtonAudioTest->show();
+    ui_->labelTestInProgress->hide();
 }
