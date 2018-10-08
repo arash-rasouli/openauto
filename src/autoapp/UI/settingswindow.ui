@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>3156</height>
+    <height>3120</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -434,13 +434,13 @@ outline: none;
            <property name="minimumSize">
             <size>
              <width>140</width>
-             <height>24</height>
+             <height>32</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>140</width>
-             <height>24</height>
+             <height>32</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -463,13 +463,13 @@ outline: none;</string>
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>24</height>
+             <height>32</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>24</height>
+             <height>32</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -1247,10 +1247,13 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
          <property name="rightMargin">
           <number>0</number>
          </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
          <item>
           <widget class="QGroupBox" name="groupBoxAudioChannels">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -1263,7 +1266,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
              <number>2</number>
             </property>
             <property name="bottomMargin">
-             <number>2</number>
+             <number>0</number>
             </property>
             <item>
              <widget class="QWidget" name="channels" native="true">
@@ -1322,7 +1325,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                 <number>2</number>
                </property>
                <property name="bottomMargin">
-                <number>2</number>
+                <number>0</number>
                </property>
                <item row="0" column="0">
                 <widget class="QLabel" name="label_11">
@@ -1349,7 +1352,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                <item row="0" column="1">
                 <widget class="QLabel" name="label_12">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -1357,6 +1360,12 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -1383,10 +1392,22 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
          <item>
           <widget class="QGroupBox" name="groupBoxAudioOutputBackend">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>180</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>180</height>
+            </size>
            </property>
            <property name="title">
             <string>Output backend</string>
@@ -1396,7 +1417,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
              <number>2</number>
             </property>
             <property name="bottomMargin">
-             <number>2</number>
+             <number>0</number>
             </property>
             <item>
              <widget class="QRadioButton" name="radioButtonRtAudio">
@@ -1424,7 +1445,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
       <item>
        <widget class="QGroupBox" name="groupBoxPulse">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -1434,16 +1455,34 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
         </property>
         <layout class="QFormLayout" name="formLayout_16">
          <property name="verticalSpacing">
-          <number>6</number>
+          <number>10</number>
          </property>
          <property name="topMargin">
           <number>2</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>4</number>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="labelPulseOutput">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
            <property name="text">
             <string>Output</string>
            </property>
@@ -1452,21 +1491,94 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
          <item row="0" column="1">
           <widget class="QComboBox" name="comboBoxPulseOutput">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="styleSheet">
             <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
 }</string>
            </property>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="labelPulseInput">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
            <property name="text">
             <string>Input</string>
            </property>
@@ -1475,17 +1587,67 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
          <item row="1" column="1">
           <widget class="QComboBox" name="comboBoxPulseInput">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="styleSheet">
             <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
 }</string>
            </property>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Neues Element</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item row="2" column="1">
@@ -1615,7 +1777,7 @@ color: rgb(255, 255, 255);</string>
           <number>2</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>4</number>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="labelSystemVolumeValue">
@@ -1675,7 +1837,7 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
           <number>2</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>4</number>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="labelSystemCaptureValue">
@@ -1720,17 +1882,17 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="autofill_space_tab3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-        <property name="text">
-         <string/>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>4</height>
+         </size>
         </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <layout class="QFormLayout" name="formLayout_4">
@@ -2111,6 +2273,18 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
              <property name="text">
               <string>Set pairable for 120 seconds after startup</string>
              </property>
@@ -2140,7 +2314,13 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
              <property name="minimumSize">
               <size>
                <width>200</width>
-               <height>20</height>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
               </size>
              </property>
              <property name="font">
@@ -2407,7 +2587,13 @@ outline: none;</string>
               <property name="minimumSize">
                <size>
                 <width>100</width>
-                <height>20</height>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>32</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -2422,10 +2608,22 @@ outline: none;</string>
             <item row="4" column="1">
              <widget class="QLabel" name="labelHotspotStart">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>32</height>
+               </size>
               </property>
               <property name="text">
                <string>Start hotspot mode now. This will exit client mode.</string>
@@ -2437,7 +2635,13 @@ outline: none;</string>
               <property name="minimumSize">
                <size>
                 <width>100</width>
-                <height>20</height>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>32</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -2452,10 +2656,22 @@ outline: none;</string>
             <item row="5" column="1">
              <widget class="QLabel" name="labelHotspotStop">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>32</height>
+               </size>
               </property>
               <property name="text">
                <string>Stop hotspot mode now. This will exit hotspot and reenable wifi client mode.</string>
@@ -2535,17 +2751,17 @@ outline: none;</string>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="autofill_space_tab5">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-        <property name="text">
-         <string/>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>4</height>
+         </size>
         </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <widget class="QWidget" name="formWidget" native="true">
@@ -3453,23 +3669,17 @@ subcontrol-position: center left;
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="autofill_space_tab6">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-        <property name="minimumSize">
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>0</width>
-          <height>0</height>
+          <width>20</width>
+          <height>4</height>
          </size>
         </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <widget class="QWidget" name="formWidget" native="true">
@@ -3603,7 +3813,13 @@ subcontrol-position: center left;
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>30</height>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="text">
@@ -3622,7 +3838,13 @@ subcontrol-position: center left;
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>30</height>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -3792,7 +4014,13 @@ subcontrol-position: center left;
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>30</height>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="text">
@@ -3811,7 +4039,13 @@ subcontrol-position: center left;
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>30</height>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -3972,7 +4206,13 @@ subcontrol-position: center left;
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>30</height>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="text">
@@ -3991,7 +4231,13 @@ subcontrol-position: center left;
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>30</height>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -4196,7 +4442,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="text">
@@ -4215,7 +4467,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -4376,7 +4634,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="text">
@@ -4395,7 +4659,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -4556,7 +4826,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="text">
@@ -4618,7 +4894,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="text">
@@ -4637,7 +4919,13 @@ subcontrol-position: center left;
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
-                    <height>30</height>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -4914,17 +5202,17 @@ subcontrol-position: center left;
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="autofill_space_tab7">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="verticalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-        <property name="text">
-         <string/>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>4</height>
+         </size>
         </property>
-       </widget>
+       </spacer>
       </item>
       <item>
        <widget class="QWidget" name="formWidget" native="true">
@@ -5151,7 +5439,13 @@ subcontrol-position: center left;
               <property name="minimumSize">
                <size>
                 <width>200</width>
-                <height>20</height>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>32</height>
                </size>
               </property>
               <property name="font">
@@ -5193,7 +5487,13 @@ outline: none;</string>
               <property name="minimumSize">
                <size>
                 <width>120</width>
-                <height>20</height>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>32</height>
                </size>
               </property>
               <property name="font">
@@ -5262,14 +5562,43 @@ outline: none;</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>30</height>
+               <height>32</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
 }</string>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QComboBox::AdjustToContents</enum>
              </property>
              <item>
               <property name="text">
@@ -5373,13 +5702,37 @@ outline: none;</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>30</height>
+               <height>32</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
 }</string>
              </property>
              <item>
@@ -5464,13 +5817,37 @@ outline: none;</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>30</height>
+               <height>32</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
 }</string>
              </property>
             </widget>
@@ -5505,13 +5882,37 @@ outline: none;</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>30</height>
+               <height>32</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
 }</string>
              </property>
              <item>
@@ -5556,13 +5957,37 @@ outline: none;</string>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>30</height>
+               <height>32</height>
               </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
 }</string>
              </property>
              <item>
@@ -5644,17 +6069,17 @@ outline: none;</string>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="autofill_space_tab8">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <spacer name="verticalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-        <property name="text">
-         <string/>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>4</height>
+         </size>
         </property>
-       </widget>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -5672,7 +6097,13 @@ outline: none;</string>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>32</height>
         </size>
        </property>
        <property name="font">
@@ -5701,7 +6132,13 @@ outline: none;</string>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>32</height>
         </size>
        </property>
        <property name="font">
@@ -5730,7 +6167,13 @@ outline: none;</string>
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>32</height>
         </size>
        </property>
        <property name="font">
