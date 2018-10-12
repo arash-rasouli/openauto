@@ -29,6 +29,7 @@
 #include <QFont>
 #include <QScreen>
 #include <QRect>
+#include <QProcess>
 
 namespace f1x
 {
@@ -424,23 +425,22 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->devlabel_right->hide();
     }
 
-    // Load configured brightness values
-    system("/usr/local/bin/autoapp_helper getbrightnessvalues");
+    // Load configured brightness values  
+    QProcess processbrigthness;
+    processbrigthness.start("/usr/local/bin/autoapp_helper getbrightnessvalues");
+    processbrigthness.waitForFinished();
+    QString brigthness = processbrigthness.readAllStandardOutput();
+    brigthness.resize(brigthness.size()-1); // remove last line break
+    QStringList brigthnessvalues = brigthness.split("#");
 
-    // read brightness slider attribs
-    QFile paramFile(QString("/tmp/br_values"));
-    paramFile.open(QIODevice::ReadOnly);
-    QTextStream data_param(&paramFile);
-    QStringList getparams = data_param.readAll().split("#");
-    paramFile.close();
     // set brightness slider attribs
-    ui_->horizontalSliderBrightness->setMinimum(getparams[0].toInt());
-    ui_->horizontalSliderBrightness->setMaximum(getparams[1].toInt());
-    ui_->horizontalSliderBrightness->setSingleStep(getparams[2].toInt());
-    ui_->horizontalSliderBrightness->setTickInterval(getparams[2].toInt());
+    ui_->horizontalSliderBrightness->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderBrightness->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderBrightness->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness->setTickInterval(brigthnessvalues[2].toInt());
 
     // run monitor for custom brightness command if enabled in crankshaft_env.sh
-    if (getparams[3] == "1") {
+    if (brigthnessvalues[3] == "1") {
         ui_->pushButtonBrightness->show();
         this->customBrightnessControl = true;
         system("/usr/local/bin/autoapp_helper startcustombrightness &");
