@@ -5155,7 +5155,7 @@ subcontrol-position: center left;
          </sizepolicy>
         </property>
         <property name="title">
-         <string>USB Detect during boot</string>
+         <string>Skip USB Detect during boot</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <property name="topMargin">
@@ -5220,7 +5220,7 @@ subcontrol-position: center left;
                </font>
               </property>
               <property name="text">
-               <string>If disabled the checks for flash files (system updates), dev mode trigger file and debug mode trigger file will complete disabled. This allows a faster boot.</string>
+               <string>If enabled the checks for flash files (system updates), dev mode trigger file and debug mode trigger file will complete disabled. This allows a faster boot.</string>
               </property>
               <property name="wordWrap">
                <bool>true</bool>
