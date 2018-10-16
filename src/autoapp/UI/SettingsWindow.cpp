@@ -74,6 +74,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->tab7->hide();
     ui_->tab8->hide();
     ui_->horizontalGroupBox->hide();
+    ui_->groupBoxNetworking->hide();
 
     QFileInfo devModeFile("/tmp/dev_mode_enabled");
     QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
@@ -263,6 +264,8 @@ void SettingsWindow::onSave()
     } else {
         params.append("0");
     }
+    params.append("#");
+    params.append( std::string(ui_->comboBoxSDOC->currentText().split(" ")[0].toStdString()) );
     params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
@@ -692,6 +695,12 @@ void SettingsWindow::loadSystemValues()
         ui_->radioButtonUSBDetectEnabled->setChecked(true);
     } else {
         ui_->radioButtonUSBDetectDisabled->setChecked(true);
+    }
+    // set sdoc
+    if (getparams[40] == "enabled") {
+        ui_->comboBoxSDOC->setCurrentIndex(1);
+    } else {
+        ui_->comboBoxSDOC->setCurrentIndex(0);
     }
 }
 

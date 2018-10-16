@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>3192</height>
+    <height>3243</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -2422,6 +2422,36 @@ outline: none;</string>
        </widget>
       </item>
       <item>
+       <widget class="QGroupBox" name="groupBoxNetworking">
+        <property name="title">
+         <string>Networking</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QRadioButton" name="radioButton_3">
+           <property name="text">
+            <string>No wifi network</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioButton_2">
+           <property name="text">
+            <string>wifi client</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioButton">
+           <property name="text">
+            <string>wifi hotspot</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="groupBoxWifiHotspot">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -3715,7 +3745,7 @@ subcontrol-position: center left;
           <number>2</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>2</number>
          </property>
          <item>
           <widget class="QCheckBox" name="checkBoxGPIO">
@@ -4355,7 +4385,7 @@ subcontrol-position: center left;
           <number>2</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>2</number>
          </property>
          <item>
           <widget class="QWidget" name="widget" native="true">
@@ -4874,7 +4904,10 @@ subcontrol-position: center left;
                    </size>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true"/>
+                   <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
                   </property>
                   <item>
                    <property name="text">
@@ -5562,6 +5595,12 @@ outline: none;</string>
          <string>Hardware Setup</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_37">
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
          <item>
           <layout class="QFormLayout" name="hardware">
            <item row="0" column="0">
@@ -6035,6 +6074,81 @@ QComboBox::item:selected {
              <item>
               <property name="text">
                <string>external</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="labelHardwareSDOC">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>SDCard OC</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="comboBoxSDOC">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+}</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>disabled</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>enabled (This can cause demaged sdcard - use at your own risk!)</string>
               </property>
              </item>
             </widget>

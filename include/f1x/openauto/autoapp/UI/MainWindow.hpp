@@ -134,6 +134,7 @@ private slots:
     void on_pushButtonBackToPlayer_clicked();
     void on_comboBoxAlbum_currentIndexChanged(const QString &arg1);
     void on_mp3List_currentRowChanged(int currentRow);
+    void on_StateChanged(QMediaPlayer::State state);
     void scanFolders();
     void scanFiles();
 

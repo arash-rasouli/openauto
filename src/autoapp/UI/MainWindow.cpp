@@ -556,6 +556,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(player, &QMediaPlayer::positionChanged, this, &MainWindow::on_positionChanged);
     connect(player, &QMediaPlayer::durationChanged, this, &MainWindow::on_durationChanged);
     connect(player, &QMediaPlayer::metaDataAvailableChanged, this, &MainWindow::metaDataChanged);
+    connect(player, &QMediaPlayer::stateChanged, this, &MainWindow::on_StateChanged);
 
     ui_->pushButtonList->hide();
     ui_->pushButtonBackToPlayer->hide();
@@ -1555,4 +1556,13 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBackToPlayer_clicked()
     ui_->pushButtonPlayerPlayList->hide();
     ui_->pushButtonList->show();
     ui_->pushButtonUSB->hide();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::on_StateChanged(QMediaPlayer::State state)
+{
+    if (state == QMediaPlayer::StoppedState || state == QMediaPlayer::PausedState) {
+        system("rm -f /tmp/media_playing");
+    } else {
+        system("touch /tmp/media_playing");
+    }
 }
