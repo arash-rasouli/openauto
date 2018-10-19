@@ -243,7 +243,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
             </property>
             <property name="text">
-             <string>BuildID</string>
+             <string/>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

@@ -221,6 +221,8 @@ private:
     bool hotspotActive = false;
 
     int currentPlaylistIndex = 0;
+
+    bool background_set = false;
 };
 
 }

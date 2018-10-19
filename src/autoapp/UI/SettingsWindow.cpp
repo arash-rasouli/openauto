@@ -76,13 +76,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->horizontalGroupBox->hide();
     ui_->groupBoxNetworking->hide();
 
-    QFileInfo devModeFile("/tmp/dev_mode_enabled");
-    QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
-
-    if (!devModeFile.exists() && !DebugmodeFile.exists()) {
-        ui_->pushButtonNTP->hide();
-    }
-
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
     connect(ui_->pushButtonTab3, &QPushButton::clicked, this, &SettingsWindow::show_tab3);

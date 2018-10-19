@@ -180,33 +180,33 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // Build Version string for mainscreen
     // Get git version string
-    QFileInfo vFile("/etc/crankshaft.build");
-    if (vFile.exists()) {
-        QFile versionFile(QString("/etc/crankshaft.build"));
-        versionFile.open(QIODevice::ReadOnly);
-        QTextStream data_version(&versionFile);
-        QString lineversion = data_version.readAll();
-        versionFile.close();
-        this->bversion=lineversion.simplified();
-    } else {
-        this->bversion="unknown";
-    }
+    //QFileInfo vFile("/etc/crankshaft.build");
+    //if (vFile.exists()) {
+    //    QFile versionFile(QString("/etc/crankshaft.build"));
+    //    versionFile.open(QIODevice::ReadOnly);
+    //    QTextStream data_version(&versionFile);
+    //    QString lineversion = data_version.readAll();
+    //    versionFile.close();
+    //    this->bversion=lineversion.simplified();
+    //} else {
+    //    this->bversion="unknown";
+    //}
 
     // Get date string
-    QFileInfo dFile("/etc/crankshaft.build");
-    if (dFile.exists()) {
-        QFile dateFile(QString("/etc/crankshaft.date"));
-        dateFile.open(QIODevice::ReadOnly);
-        QTextStream data_date(&dateFile);
-        QString linedate = data_date.readAll();
-        dateFile.close();
-        this->bdate=linedate.simplified();
-    } else {
-        this->bdate="- - -";
-    }
+    //QFileInfo dFile("/etc/crankshaft.build");
+    //if (dFile.exists()) {
+    //    QFile dateFile(QString("/etc/crankshaft.date"));
+    //    dateFile.open(QIODevice::ReadOnly);
+    //    QTextStream data_date(&dateFile);
+    //    QString linedate = data_date.readAll();
+    //    dateFile.close();
+    //    this->bdate=linedate.simplified();
+    //} else {
+    //    this->bdate="- - -";
+    //}
 
-    QString buildid = "Build: " + this->bversion + " (" + this->bdate + ")";
-    ui_->BuildID->setText(buildid);
+    //QString buildid = "Build: " + this->bversion + " (" + this->bdate + ")";
+    //ui_->BuildID->setText(buildid);
 
     // enable connects while cam is enabled
     if (this->cameraButtonForce) {
@@ -1026,36 +1026,40 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             if (ui_->centralWidget->isVisible() == true) {
                 ui_->centralWidget->hide();
                 this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);}");
+                this->background_set = false;
             }
         } else {
-            if (!this->nightModeEnabled) {
-                if (this->oldGUIStyle) {
-                    if (this->wallpaperClassicDayFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
+            if (this->background_set == false) {
+                if (!this->nightModeEnabled) {
+                    if (this->oldGUIStyle) {
+                        if (this->wallpaperClassicDayFileExists) {
+                            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
+                        } else {
+                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                        }
                     } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                        if (this->wallpaperDayFileExists) {
+                            this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
+                        } else {
+                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                        }
                     }
                 } else {
-                    if (this->wallpaperDayFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
+                    if (this->oldGUIStyle) {
+                        if (this->wallpaperClassicNightFileExists) {
+                            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
+                        } else {
+                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                        }
                     } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                        if (this->wallpaperNightFileExists) {
+                            this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
+                        } else {
+                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                        }
                     }
                 }
-            } else {
-                if (this->oldGUIStyle) {
-                    if (this->wallpaperClassicNightFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
-                    } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                    }
-                } else {
-                    if (this->wallpaperNightFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
-                    } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                    }
-                }
+                this->background_set = true;
             }
         }
 
