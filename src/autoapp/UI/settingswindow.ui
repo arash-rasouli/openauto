@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>3243</height>
+    <height>3271</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -5798,12 +5798,14 @@ QComboBox::item {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }
 QComboBox::item:selected {
 	background-color: rgb(78, 154, 6);
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }</string>
              </property>
              <item>
@@ -5913,12 +5915,14 @@ QComboBox::item {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }
 QComboBox::item:selected {
 	background-color: rgb(78, 154, 6);
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }</string>
              </property>
             </widget>
@@ -5978,12 +5982,14 @@ QComboBox::item {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }
 QComboBox::item:selected {
 	background-color: rgb(78, 154, 6);
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }</string>
              </property>
              <item>
@@ -6053,12 +6059,14 @@ QComboBox::item {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }
 QComboBox::item:selected {
 	background-color: rgb(78, 154, 6);
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }</string>
              </property>
              <item>
@@ -6133,12 +6141,14 @@ QComboBox::item {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }
 QComboBox::item:selected {
 	background-color: rgb(78, 154, 6);
 	padding-top: 6px;
 	padding-bottom: 6px;
 	height: 32px;
+	min-height: 32px;
 }</string>
              </property>
              <item>
