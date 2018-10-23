@@ -29,7 +29,6 @@
 #include <QFont>
 #include <QScreen>
 #include <QRect>
-#include <QProcess>
 
 namespace f1x
 {
@@ -426,12 +425,12 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // Load configured brightness values  
-    QProcess processbrigthness;
-    processbrigthness.start("/usr/local/bin/autoapp_helper getbrightnessvalues");
-    processbrigthness.waitForFinished();
-    QString brigthness = processbrigthness.readAllStandardOutput();
-    brigthness.resize(brigthness.size()-1); // remove last line break
-    QStringList brigthnessvalues = brigthness.split("#");
+    system("/usr/local/bin/autoapp_helper getbrightnessvalues");
+    QFile paramFile(QString("/tmp/br_values"));
+    paramFile.open(QIODevice::ReadOnly);
+    QTextStream data_param(&paramFile);
+    QStringList brigthnessvalues = data_param.readAll().split("#");
+    paramFile.close();
 
     // set brightness slider attribs
     ui_->horizontalSliderBrightness->setMinimum(brigthnessvalues[0].toInt());
