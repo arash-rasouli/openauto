@@ -29,6 +29,7 @@
 #include <QFont>
 #include <QScreen>
 #include <QRect>
+#include <QFileSystemWatcher>
 
 namespace f1x
 {
@@ -164,48 +165,20 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
     connect(ui_->pushButtonPlayerBack, &QPushButton::clicked, this, &MainWindow::playerHide);
-    connect(ui_->pushButtonUSB, &QPushButton::clicked, this, &MainWindow::openUSBDialog);
-    connect(ui_->pushButtonRescan, &QPushButton::clicked, this, &MainWindow::scanFolders);
+    //connect(ui_->pushButtonUSB, &QPushButton::clicked, this, &MainWindow::openUSBDialog);
 
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
 
     // by default hide media player
     ui_->mediaWidget->hide();
+    ui_->pushButtonUSB->hide();
+
+    ui_->SysinfoTopLeft->hide();
     
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start(1000);
-
-    // Build Version string for mainscreen
-    // Get git version string
-    //QFileInfo vFile("/etc/crankshaft.build");
-    //if (vFile.exists()) {
-    //    QFile versionFile(QString("/etc/crankshaft.build"));
-    //    versionFile.open(QIODevice::ReadOnly);
-    //    QTextStream data_version(&versionFile);
-    //    QString lineversion = data_version.readAll();
-    //    versionFile.close();
-    //    this->bversion=lineversion.simplified();
-    //} else {
-    //    this->bversion="unknown";
-    //}
-
-    // Get date string
-    //QFileInfo dFile("/etc/crankshaft.build");
-    //if (dFile.exists()) {
-    //    QFile dateFile(QString("/etc/crankshaft.date"));
-    //    dateFile.open(QIODevice::ReadOnly);
-    //    QTextStream data_date(&dateFile);
-    //    QString linedate = data_date.readAll();
-    //    dateFile.close();
-    //    this->bdate=linedate.simplified();
-    //} else {
-    //    this->bdate="- - -";
-    //}
-
-    //QString buildid = "Build: " + this->bversion + " (" + this->bdate + ")";
-    //ui_->BuildID->setText(buildid);
 
     // enable connects while cam is enabled
     if (this->cameraButtonForce) {
@@ -571,13 +544,17 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->labelFolderpath->hide();
     ui_->labelAlbumpath->hide();
 
-    // link possible existing media
-    system(qPrintable("ln -s /media/CSSTORAGE/Music/* /media/MYMEDIA"));
-    system(qPrintable("/usr/local/bin/autoapp_helper cleansymlinks"));
-
     MainWindow::scanFolders();
     ui_->comboBoxAlbum->setCurrentText(QString::fromStdString(configuration->getMp3SubFolder()));
     MainWindow::scanFiles();
+
+    watcher = new QFileSystemWatcher(this);
+    watcher->addPath("/media/USBDRIVES");
+    connect(watcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::setTrigger);
+
+    watcher_tmp = new QFileSystemWatcher(this);
+    watcher_tmp->addPath("/tmp");
+    connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
 }
 
 MainWindow::~MainWindow()
@@ -977,6 +954,7 @@ void f1x::openauto::autoapp::ui::MainWindow::toggleGUI()
             }
         }
     }
+    f1x::openauto::autoapp::ui::MainWindow::tmpChanged();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::createDebuglog()
@@ -1006,266 +984,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
     if ((time.second() % 2) == 0) {
         time_text[3] = ' ';
         time_text[8] = ' ';
-
-        // check if system is in display off mode (tap2wake)
-        QFileInfo blankFile("/tmp/blankscreen");
-        if (blankFile.exists()) {
-            if (ui_->centralWidget->isVisible() == true) {
-                ui_->centralWidget->hide();
-            }
-        } else {
-            if (ui_->centralWidget->isVisible() == false) {
-                ui_->centralWidget->show();
-            }
-        }
-
-        // check if custom command needs black background
-        QFileInfo blackFile("/tmp/blackscreen");
-        if (blackFile.exists()) {
-            if (ui_->centralWidget->isVisible() == true) {
-                ui_->centralWidget->hide();
-                this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);}");
-                this->background_set = false;
-            }
-        } else {
-            if (this->background_set == false) {
-                if (!this->nightModeEnabled) {
-                    if (this->oldGUIStyle) {
-                        if (this->wallpaperClassicDayFileExists) {
-                            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
-                        } else {
-                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                        }
-                    } else {
-                        if (this->wallpaperDayFileExists) {
-                            this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
-                        } else {
-                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                        }
-                    }
-                } else {
-                    if (this->oldGUIStyle) {
-                        if (this->wallpaperClassicNightFileExists) {
-                            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
-                        } else {
-                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                        }
-                    } else {
-                        if (this->wallpaperNightFileExists) {
-                            this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
-                        } else {
-                            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                        }
-                    }
-                }
-                this->background_set = true;
-            }
-        }
-
-        // check if phone is conencted to usb
-        QFileInfo phoneConnectedFile("/tmp/android_device");
-        if (phoneConnectedFile.exists()) {
-            if (ui_->phoneConnected->isVisible() == false) {
-                ui_->phoneConnected->setText("USB connected");
-                ui_->phoneConnected->show();
-            }
-        } else {
-            if (ui_->phoneConnected->isVisible() == true) {
-                ui_->phoneConnected->hide();
-            }
-        }
-
-        // check if bluetooth available
-        QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
-        this->bluetoothEnabled = bluetoothButtonFile.exists();
-
-        if (this->bluetoothEnabled) {
-            if (ui_->pushButtonBluetooth->isVisible() == false) {
-                ui_->pushButtonBluetooth->show();
-            }
-        } else {
-            if (ui_->pushButtonBluetooth->isVisible() == true) {
-                ui_->pushButtonBluetooth->hide();
-            }
-        }
-
-        // check if a device is connected via bluetooth
-        QFileInfo phoneBTConnectedFile("/tmp/btdevice");
-        if (phoneBTConnectedFile.exists()) {
-            if (ui_->btDevice->isVisible() == false) {
-                QFile phoneBTData(QString("/tmp/btdevice"));
-                phoneBTData.open(QIODevice::ReadOnly);
-                QTextStream data_date(&phoneBTData);
-                QString linedate = data_date.readAll();
-                phoneBTData.close();
-                ui_->btDevice->setText(linedate.simplified());
-                ui_->btDevice->show();
-            }
-        } else {
-            if (ui_->btDevice->isVisible() == true) {
-                ui_->btDevice->hide();
-            }
-        }
-
-        // check the need for system messages
-        QFileInfo configInProgressFile("/tmp/config_in_progress");
-        QFileInfo debugInProgressFile("/tmp/debug_in_progress");
-        QFileInfo enablePairingFile("/tmp/enable_pairing");
-
-        if (configInProgressFile.exists() || debugInProgressFile.exists() || enablePairingFile.exists()) {
-            if (ui_->systemConfigInProgress->isVisible() == false) {
-                if (configInProgressFile.exists()) {
-                    ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
-                    ui_->pushButtonSettings->hide();
-                    ui_->pushButtonSettings2->hide();
-                    ui_->pushButtonLock->show();
-                    ui_->pushButtonLock2->show();
-                    ui_->systemConfigInProgress->show();
-                }
-                if (debugInProgressFile.exists()) {
-                    ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
-                    ui_->pushButtonSettings->hide();
-                    ui_->pushButtonSettings2->hide();
-                    ui_->pushButtonDebug->hide();
-                    ui_->pushButtonDebug2->hide();
-                    ui_->pushButtonLock->show();
-                    ui_->pushButtonLock2->show();
-                    ui_->systemConfigInProgress->show();
-                }
-                if (enablePairingFile.exists()) {
-                    ui_->systemConfigInProgress->setText("Auto Bluetooth Pairing enabled for 120 seconds!");
-                    ui_->pushButtonDebug->hide();
-                    ui_->pushButtonDebug2->hide();
-                    ui_->systemConfigInProgress->show();
-                }
-            }
-        } else {
-            if (ui_->systemConfigInProgress->isVisible() == true) {
-                ui_->systemConfigInProgress->hide();
-                ui_->pushButtonSettings->show();
-                ui_->pushButtonSettings2->show();
-                ui_->pushButtonLock->hide();
-                ui_->pushButtonLock2->hide();
-                if (this->systemDebugmode) {
-                    ui_->pushButtonDebug->show();
-                    ui_->pushButtonDebug2->show();
-                }
-            }
-        }
-
-        // update day/night state
-        QFileInfo nightModeFile("/tmp/night_mode_enabled");
-        this->nightModeEnabled = nightModeFile.exists();
-
-        if (this->nightModeEnabled) {
-            if (!this->DayNightModeState) {
-                this->DayNightModeState = true;
-                f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight();
-            }
-        } else {
-            if (this->DayNightModeState) {
-                this->DayNightModeState = false;
-                f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay();
-            }
-        }
-
-        // camera stuff
-        if (this->cameraButtonForce) {
-
-            // check if dashcam is recording
-            QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
-            this->dashCamRecording = dashCamRecordingFile.exists();
-
-            // show recording state if dashcam is visible
-            if (ui_->cameraWidget->isVisible() == true) {
-                if (this->dashCamRecording) {
-                    if (ui_->pushButtonRecord->isVisible() == true) {
-                        ui_->pushButtonRecordActive->show();
-                        ui_->pushButtonRecord->hide();
-                    }
-                } else {
-                    if (ui_->pushButtonRecordActive->isVisible() == true) {
-                        ui_->pushButtonRecord->show();
-                        ui_->pushButtonRecordActive->hide();
-                    }
-                }
-            }
-
-            // check if rearcam is eanbled
-            QFileInfo rearCamFile("/tmp/rearcam_enabled");
-            this->rearCamEnabled = rearCamFile.exists();
-
-            if (this->rearCamEnabled) {
-                if (!this->rearCamVisible) {
-                    this->rearCamVisible = true;
-                    f1x::openauto::autoapp::ui::MainWindow::MainWindow::showRearCam();
-                }
-            } else {
-                if (this->rearCamVisible) {
-                    this->rearCamVisible = false;
-                    f1x::openauto::autoapp::ui::MainWindow::MainWindow::hideRearCam();
-                }
-            }
-        }
-
-        // check if sutdown is external triggered and init clean app exit
-        QFileInfo externalExitFile("/tmp/external_exit");
-        if (externalExitFile.exists()) {
-            f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
-        }
-
-        QFileInfo hotspotFile("/tmp/hotspot_active");
-        this->hotspotActive = hotspotFile.exists();
-
-        // hide wifi if not forced
-        if (!this->hotspotActive) {
-            if ((ui_->pushButtonWifi->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
-                ui_->pushButtonWifi->hide();
-                ui_->pushButtonWifi2->hide();
-                if (!this->cameraButtonForce) {
-                    ui_->pushButtonDummyCamWifi->show();
-                }
-            }
-        } else {
-            if ((ui_->pushButtonWifi->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
-                ui_->pushButtonWifi->show();
-                ui_->pushButtonWifi2->show();
-                ui_->pushButtonDummyCamWifi->hide();
-            }
-        }
     }
-
-    // handle dummys in classic menu
-    int button_count = 0;
-    if (ui_->pushButtonCameraShow2->isVisible() == true) {
-        button_count = button_count + 1;
-    }
-    if (ui_->pushButtonToggleGUI2->isVisible() == true) {
-        button_count = button_count + 1;
-    }
-    if (ui_->pushButtonWifi2->isVisible() == true) {
-        button_count = button_count + 1;
-    }
-    if (ui_->pushButtonDebug2->isVisible() == true) {
-        button_count = button_count + 1;
-    }
-    if (button_count >= 3) {
-        ui_->pushButtonDummyClassic1->hide();
-        ui_->pushButtonDummyClassic2->hide();
-    }
-    if (button_count == 2) {
-        ui_->pushButtonDummyClassic1->hide();
-        ui_->pushButtonDummyClassic2->hide();
-    }
-    if (button_count == 1) {
-        ui_->pushButtonDummyClassic1->show();
-        ui_->pushButtonDummyClassic2->hide();
-    }
-    if (button_count == 0) {
-        ui_->pushButtonDummyClassic1->show();
-        ui_->pushButtonDummyClassic2->show();
-    }
-
     ui_->Digital_clock->setText(time_text);
     ui_->bigClock->setText(time_text);
 }
@@ -1289,7 +1008,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonList_clicked()
     ui_->pushButtonList->hide();
     ui_->pushButtonPlayerPlayList->show();
     ui_->pushButtonBackToPlayer->show();
-    ui_->pushButtonUSB->show();
+    //ui_->pushButtonUSB->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
@@ -1308,7 +1027,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
     ui_->playerPositionTime->setText("00:00 / 00:00");
     ui_->labelCurrentPlaying->setText("");
     ui_->labelTrack->setText("");
-    ui_->pushButtonUSB->show();
+    //ui_->pushButtonUSB->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
@@ -1434,71 +1153,100 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked
     ui_->pushButtonPlayerPause->show();
     int currentalbum = ui_->comboBoxAlbum->currentIndex();
     ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
-    ui_->pushButtonUSB->hide();
+    //ui_->pushButtonUSB->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_comboBoxAlbum_currentIndexChanged(const QString &arg1)
 {
     this->albumfolder = arg1;
-    f1x::openauto::autoapp::ui::MainWindow::scanFiles();
+    MainWindow::scanFiles();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::setTrigger()
+{
+    this->mediacontentchanged = true;
+
+    ui_->SysinfoTopLeft->setText("Media changed - Scanning ...");
+    ui_->SysinfoTopLeft->show();
+
+    //QTimer *timerscan=new QTimer(this);
+    //connect(timerscan, SIGNAL(timeout()),this,SLOT(scanFolders()));
+    //timerscan->start(10000);
+    // Start delayed folderscan after usb event
+    QTimer::singleShot(10000, this, SLOT(scanFolders()));
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::scanFolders()
 {
-    int cleaner = ui_->comboBoxAlbum->count();
-    while (cleaner > -1) {
-        ui_->comboBoxAlbum->removeItem(cleaner);
-        cleaner--;
-    }
-    QDir directory(this->musicfolder);
-    QStringList folders = directory.entryList(QStringList() << "*", QDir::AllDirs, QDir::Name);
-    foreach (QString foldername, folders) {
-        if (foldername != "..") {
-            ui_->comboBoxAlbum->addItem(foldername);
-            ui_->labelAlbumCount->setText(QString::number(ui_->comboBoxAlbum->count()));
+    try {
+        if (this->mediacontentchanged == true) {
+            this->mediacontentchanged = false;
+            int cleaner = ui_->comboBoxAlbum->count();
+            while (cleaner > -1) {
+                ui_->comboBoxAlbum->removeItem(cleaner);
+                cleaner--;
+            }
+            QDir directory(this->musicfolder);
+            QStringList folders = directory.entryList(QStringList() << "*", QDir::AllDirs, QDir::Name);
+            foreach (QString foldername, folders) {
+                if (foldername != "..") {
+                    ui_->comboBoxAlbum->addItem(foldername);
+                    ui_->labelAlbumCount->setText(QString::number(ui_->comboBoxAlbum->count()));
+                }
+            }
+            this->currentPlaylistIndex = 0;
+            ui_->SysinfoTopLeft->hide();
+            //timerscan->stop();
         }
     }
-    this->currentPlaylistIndex = 0;
+    catch(...) {
+        ui_->SysinfoTopLeft->hide();
+        //timerscan->stop();
+        qDebug() << "Fail in Folderscan";
+    }
+
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
 {
-    int cleaner = ui_->mp3List->count();
-    while (cleaner > -1) {
-        ui_->mp3List->takeItem(cleaner);
-        cleaner--;
-    }
-    this->playlist->clear();
-
-    QList<QMediaContent> content;
-    QDir directory(this->musicfolder + "/" + this->albumfolder);
-    QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg" << "*.mp4" << "*.mp4a" << "*.wma",QDir::Files, QDir::Name);
-    foreach (QString filename, mp3s) {
-        // add to mediacontent
-        content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
-        // add items to gui
-        // read metadata using taglib
-        try {
-            TagLib::FileRef file((this->musicfolder + "/" + this->albumfolder + "/" + filename).toUtf8(),true);
-            TagLib::String artist_string = file.tag()->artist();
-            TagLib::String title_string = file.tag()->title();
-            TagLib::uint track_string = file.tag()->track();
-            QString artistid3 = QString::fromStdWString(artist_string.toCWString());
-            QString titleid3 = QString::fromStdWString(title_string.toCWString());
-            QString trackid3 = QString::number(track_string);
-            int tracklength = trackid3.length();
-            if (tracklength < 2) {
-                trackid3 = "0" + trackid3;
-            }
-            QString ID3Entry = trackid3 + ": " + artistid3 + " - " + titleid3;
-            ui_->mp3List->addItem(ID3Entry);
-        } catch (...) {
-            // old way only adding filename to list
-            ui_->mp3List->addItem(filename);
+    if (this->mediacontentchanged == false) {
+        int cleaner = ui_->mp3List->count();
+        while (cleaner > -1) {
+            ui_->mp3List->takeItem(cleaner);
+            cleaner--;
         }
+        this->playlist->clear();
+
+        QList<QMediaContent> content;
+        QDir directory(this->musicfolder + "/" + this->albumfolder);
+        QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg" << "*.mp4" << "*.mp4a" << "*.wma",QDir::Files, QDir::Name);
+        foreach (QString filename, mp3s) {
+            // add to mediacontent
+            content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
+            // add items to gui
+            // read metadata using taglib
+            try {
+                TagLib::FileRef file((this->musicfolder + "/" + this->albumfolder + "/" + filename).toUtf8(),true);
+                TagLib::String artist_string = file.tag()->artist();
+                TagLib::String title_string = file.tag()->title();
+                TagLib::uint track_string = file.tag()->track();
+                QString artistid3 = QString::fromStdWString(artist_string.toCWString());
+                QString titleid3 = QString::fromStdWString(title_string.toCWString());
+                QString trackid3 = QString::number(track_string);
+                int tracklength = trackid3.length();
+                if (tracklength < 2) {
+                    trackid3 = "0" + trackid3;
+                }
+                QString ID3Entry = trackid3 + ": " + artistid3 + " - " + titleid3;
+                ui_->mp3List->addItem(ID3Entry);
+            } catch (...) {
+                // old way only adding filename to list
+                ui_->mp3List->addItem(filename);
+            }
+        }
+        // set playlist
+        this->playlist->addMedia(content);
     }
-    // set playlist
-    this->playlist->addMedia(content);
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_currentRowChanged(int currentRow)
@@ -1558,7 +1306,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBackToPlayer_clicked()
     ui_->pushButtonBackToPlayer->hide();
     ui_->pushButtonPlayerPlayList->hide();
     ui_->pushButtonList->show();
-    ui_->pushButtonUSB->hide();
+    //ui_->pushButtonUSB->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_StateChanged(QMediaPlayer::State state)
@@ -1568,4 +1316,266 @@ void f1x::openauto::autoapp::ui::MainWindow::on_StateChanged(QMediaPlayer::State
     } else {
         system("touch /tmp/media_playing");
     }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
+{
+    // check if system is in display off mode (tap2wake)
+    QFileInfo blankFile("/tmp/blankscreen");
+    if (blankFile.exists()) {
+        if (ui_->centralWidget->isVisible() == true) {
+            ui_->centralWidget->hide();
+        }
+    } else {
+        if (ui_->centralWidget->isVisible() == false) {
+            ui_->centralWidget->show();
+        }
+    }
+
+    // check if custom command needs black background
+    QFileInfo blackFile("/tmp/blackscreen");
+    if (blackFile.exists()) {
+        if (ui_->centralWidget->isVisible() == true) {
+            ui_->centralWidget->hide();
+            this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);}");
+            this->background_set = false;
+        }
+    } else {
+        if (this->background_set == false) {
+            if (!this->nightModeEnabled) {
+                if (this->oldGUIStyle) {
+                    if (this->wallpaperClassicDayFileExists) {
+                        this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
+                    } else {
+                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                    }
+                } else {
+                    if (this->wallpaperDayFileExists) {
+                        this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
+                    } else {
+                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                    }
+                }
+            } else {
+                if (this->oldGUIStyle) {
+                    if (this->wallpaperClassicNightFileExists) {
+                        this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
+                    } else {
+                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                    }
+                } else {
+                    if (this->wallpaperNightFileExists) {
+                        this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
+                    } else {
+                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                    }
+                }
+            }
+            this->background_set = true;
+        }
+    }
+
+    // check if phone is conencted to usb
+    QFileInfo phoneConnectedFile("/tmp/android_device");
+    if (phoneConnectedFile.exists()) {
+        if (ui_->phoneConnected->isVisible() == false) {
+            ui_->phoneConnected->setText("USB connected");
+            ui_->phoneConnected->show();
+        }
+    } else {
+        if (ui_->phoneConnected->isVisible() == true) {
+            ui_->phoneConnected->hide();
+        }
+    }
+
+    // check if bluetooth available
+    QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
+    this->bluetoothEnabled = bluetoothButtonFile.exists();
+
+    if (this->bluetoothEnabled) {
+        if (ui_->pushButtonBluetooth->isVisible() == false) {
+            ui_->pushButtonBluetooth->show();
+        }
+    } else {
+        if (ui_->pushButtonBluetooth->isVisible() == true) {
+            ui_->pushButtonBluetooth->hide();
+        }
+    }
+
+    // check if a device is connected via bluetooth
+    QFileInfo phoneBTConnectedFile("/tmp/btdevice");
+    if (phoneBTConnectedFile.exists()) {
+        if (ui_->btDevice->isVisible() == false) {
+            QFile phoneBTData(QString("/tmp/btdevice"));
+            phoneBTData.open(QIODevice::ReadOnly);
+            QTextStream data_date(&phoneBTData);
+            QString linedate = data_date.readAll();
+            phoneBTData.close();
+            ui_->btDevice->setText(linedate.simplified());
+            ui_->btDevice->show();
+        }
+    } else {
+        if (ui_->btDevice->isVisible() == true) {
+            ui_->btDevice->hide();
+        }
+    }
+
+    // check the need for system messages
+    QFileInfo configInProgressFile("/tmp/config_in_progress");
+    QFileInfo debugInProgressFile("/tmp/debug_in_progress");
+    QFileInfo enablePairingFile("/tmp/enable_pairing");
+
+    if (configInProgressFile.exists() || debugInProgressFile.exists() || enablePairingFile.exists()) {
+        if (ui_->systemConfigInProgress->isVisible() == false) {
+            if (configInProgressFile.exists()) {
+                ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
+                ui_->pushButtonSettings->hide();
+                ui_->pushButtonSettings2->hide();
+                ui_->pushButtonLock->show();
+                ui_->pushButtonLock2->show();
+                ui_->systemConfigInProgress->show();
+            }
+            if (debugInProgressFile.exists()) {
+                ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
+                ui_->pushButtonSettings->hide();
+                ui_->pushButtonSettings2->hide();
+                ui_->pushButtonDebug->hide();
+                ui_->pushButtonDebug2->hide();
+                ui_->pushButtonLock->show();
+                ui_->pushButtonLock2->show();
+                ui_->systemConfigInProgress->show();
+            }
+            if (enablePairingFile.exists()) {
+                ui_->systemConfigInProgress->setText("Auto Bluetooth Pairing enabled for 120 seconds!");
+                ui_->pushButtonDebug->hide();
+                ui_->pushButtonDebug2->hide();
+                ui_->systemConfigInProgress->show();
+            }
+        }
+    } else {
+        if (ui_->systemConfigInProgress->isVisible() == true) {
+            ui_->systemConfigInProgress->hide();
+            ui_->pushButtonSettings->show();
+            ui_->pushButtonSettings2->show();
+            ui_->pushButtonLock->hide();
+            ui_->pushButtonLock2->hide();
+            if (this->systemDebugmode) {
+                ui_->pushButtonDebug->show();
+                ui_->pushButtonDebug2->show();
+            }
+        }
+    }
+
+    // update day/night state
+    QFileInfo nightModeFile("/tmp/night_mode_enabled");
+    this->nightModeEnabled = nightModeFile.exists();
+
+    if (this->nightModeEnabled) {
+        if (!this->DayNightModeState) {
+            this->DayNightModeState = true;
+            f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight();
+        }
+    } else {
+        if (this->DayNightModeState) {
+            this->DayNightModeState = false;
+            f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay();
+        }
+    }
+
+    // camera stuff
+    if (this->cameraButtonForce) {
+
+        // check if dashcam is recording
+        QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
+        this->dashCamRecording = dashCamRecordingFile.exists();
+
+        // show recording state if dashcam is visible
+        if (ui_->cameraWidget->isVisible() == true) {
+            if (this->dashCamRecording) {
+                if (ui_->pushButtonRecord->isVisible() == true) {
+                    ui_->pushButtonRecordActive->show();
+                    ui_->pushButtonRecord->hide();
+                }
+            } else {
+                if (ui_->pushButtonRecordActive->isVisible() == true) {
+                    ui_->pushButtonRecord->show();
+                    ui_->pushButtonRecordActive->hide();
+                }
+            }
+        }
+
+        // check if rearcam is eanbled
+        QFileInfo rearCamFile("/tmp/rearcam_enabled");
+        this->rearCamEnabled = rearCamFile.exists();
+
+        if (this->rearCamEnabled) {
+            if (!this->rearCamVisible) {
+                this->rearCamVisible = true;
+                f1x::openauto::autoapp::ui::MainWindow::MainWindow::showRearCam();
+            }
+        } else {
+            if (this->rearCamVisible) {
+                this->rearCamVisible = false;
+                f1x::openauto::autoapp::ui::MainWindow::MainWindow::hideRearCam();
+            }
+        }
+    }
+
+    // check if sutdown is external triggered and init clean app exit
+    QFileInfo externalExitFile("/tmp/external_exit");
+    if (externalExitFile.exists()) {
+        f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
+    }
+
+    QFileInfo hotspotFile("/tmp/hotspot_active");
+    this->hotspotActive = hotspotFile.exists();
+
+    // hide wifi if not forced
+    if (!this->hotspotActive) {
+        if ((ui_->pushButtonWifi->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
+            ui_->pushButtonWifi->hide();
+            ui_->pushButtonWifi2->hide();
+            if (!this->cameraButtonForce) {
+                ui_->pushButtonDummyCamWifi->show();
+            }
+        }
+    } else {
+        if ((ui_->pushButtonWifi->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
+            ui_->pushButtonWifi->show();
+            ui_->pushButtonWifi2->show();
+            ui_->pushButtonDummyCamWifi->hide();
+        }
+    }
+
+    // handle dummys in classic menu
+    int button_count = 0;
+    if (ui_->pushButtonCameraShow2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (ui_->pushButtonToggleGUI2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (ui_->pushButtonWifi2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (ui_->pushButtonDebug2->isVisible() == true) {
+        button_count = button_count + 1;
+    }
+    if (button_count >= 3) {
+        ui_->pushButtonDummyClassic1->hide();
+        ui_->pushButtonDummyClassic2->hide();
+    }
+    if (button_count == 2) {
+        ui_->pushButtonDummyClassic1->hide();
+        ui_->pushButtonDummyClassic2->hide();
+    }
+    if (button_count == 1) {
+        ui_->pushButtonDummyClassic1->show();
+        ui_->pushButtonDummyClassic2->hide();
+    }
+    if (button_count == 0) {
+        ui_->pushButtonDummyClassic1->show();
+        ui_->pushButtonDummyClassic2->show();
+    }
+    //qDebug() << "/tmp changed";
 }

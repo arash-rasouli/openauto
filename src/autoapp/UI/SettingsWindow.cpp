@@ -23,8 +23,11 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <string>
+#include <QTimer>
 #include <QDateTime>
 #include <QProcess>
+#include <QNetworkInterface>
+#include <QNetworkConfigurationManager>
 
 namespace f1x
 {
@@ -57,12 +60,11 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
     connect(ui_->pushButtonHotspotStart, &QPushButton::clicked, this, &SettingsWindow::onStartHotspot);
-    connect(ui_->pushButtonHotspotStart , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonHotspotStop, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
-    connect(ui_->pushButtonHotspotStop , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::close);
-    connect(ui_->pushButtonNTP , &QPushButton::clicked, this, &SettingsWindow::close);
+    //connect(ui_->pushButtonSetTime, &QPushButton::clicked, [&]() { &SettingsWindow::setTime; &SettingsWindow::close; });
+    connect(ui_->pushButtonNTP, &QPushButton::clicked, this, &SettingsWindow::close);
 
     // menu
     ui_->tab1->show();
@@ -73,14 +75,18 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+
     ui_->horizontalGroupBox->hide();
-    ui_->groupBoxNetworking->hide();
+    ui_->labelBluetoothAdapterAddress->hide();
+    ui_->lineEditExternalBluetoothAdapterAddress->hide();
+    ui_->labelTestInProgress->hide();
 
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
     connect(ui_->pushButtonTab3, &QPushButton::clicked, this, &SettingsWindow::show_tab3);
     connect(ui_->pushButtonTab4, &QPushButton::clicked, this, &SettingsWindow::show_tab4);
     connect(ui_->pushButtonTab5, &QPushButton::clicked, this, &SettingsWindow::show_tab5);
+    connect(ui_->pushButtonTab5, &QPushButton::clicked, this, &SettingsWindow::updateNetworkInfo);
     connect(ui_->pushButtonTab6, &QPushButton::clicked, this, &SettingsWindow::show_tab6);
     connect(ui_->pushButtonTab7, &QPushButton::clicked, this, &SettingsWindow::show_tab7);
     connect(ui_->pushButtonTab8, &QPushButton::clicked, this, &SettingsWindow::show_tab8);
@@ -90,8 +96,22 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     QString time_text_minute=time.toString("mm");
     ui_->spinBoxHour->setValue((time_text_hour).toInt());
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
+
     SettingsWindow::on_pushButtonRescan_clicked();
-    ui_->labelTestInProgress->hide();
+    ui_->label_modeswitchprogress->hide();
+
+    QFileInfo hotspotFile("/tmp/hotspot_active");
+    if (hotspotFile.exists()) {
+        ui_->pushButtonHotspotStop->show();
+        ui_->pushButtonHotspotStart->hide();
+        ui_->lineEdit_wifimode->setText("Hotspot");
+        ui_->lineEditWifiSSID->setText(this->hotspotssid);
+    } else {
+        ui_->pushButtonHotspotStart->show();
+        ui_->pushButtonHotspotStop->hide();
+        ui_->lineEdit_wifimode->setText("Client");
+        ui_->lineEditWifiSSID->setText(this->wifissid);
+    }
 }
 
 SettingsWindow::~SettingsWindow()
@@ -648,7 +668,8 @@ void SettingsWindow::loadSystemValues()
     ui_->spinBoxGPIOShutdownDelay->setValue(getparams[29].toInt());
 
     // Wifi Credentials
-    ui_->lineEditWifiClientSSID->setText(getparams[30]);
+    //ui_->lineEditWifiSSID->setText(getparams[30]);
+    this->wifissid = getparams[30];
 
     // Wifi Hotspot Credentials
     if (getparams[31] == "1") {
@@ -657,7 +678,7 @@ void SettingsWindow::loadSystemValues()
         ui_->checkBoxHotspot->setChecked(false);
     }
 
-    ui_->lineEditWifiHotspotSSID->setText(getparams[32]);
+    this->hotspotssid = getparams[32];
 
     // set cam
     ui_->comboBoxCam->setCurrentText(getparams[33]);
@@ -724,12 +745,26 @@ void SettingsWindow::onShowBindings()
 
 void SettingsWindow::onStartHotspot()
 {
+    ui_->label_modeswitchprogress->show();
+    ui_->pushButtonHotspotStart->hide();
+    ui_->pushButtonHotspotStop->hide();
+    ui_->lineEdit_wifimode->setText("");
+    ui_->lineEdit_wlan0->setText("");
+    ui_->lineEditWifiSSID->setText("");
     system("sudo systemctl start hotspot &");
+    QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
 
 void SettingsWindow::onStopHotspot()
 {
+    ui_->label_modeswitchprogress->show();
+    ui_->pushButtonHotspotStart->hide();
+    ui_->pushButtonHotspotStop->hide();
+    ui_->lineEdit_wifimode->setText("");
+    ui_->lineEdit_wlan0->setText("");
+    ui_->lineEditWifiSSID->setText("");
     system("sudo systemctl stop hotspot &");
+    QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
 
 void SettingsWindow::show_tab1()
@@ -859,4 +894,48 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonAudioTest_clicked(
     system("/usr/local/bin/crankshaft audio test");
     ui_->pushButtonAudioTest->show();
     ui_->labelTestInProgress->hide();
+}
+
+void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
+{
+    QNetworkInterface eth0if = QNetworkInterface::interfaceFromName("eth0");
+    if (eth0if.flags().testFlag(QNetworkInterface::IsUp)) {
+        QList<QNetworkAddressEntry> entrieseth0 = eth0if.addressEntries();
+        if (!entrieseth0.isEmpty()) {
+            QNetworkAddressEntry eth0 = entrieseth0.first();
+            //qDebug() << "eth0: " << eth0.ip();
+            ui_->lineEdit_eth0->setText(eth0.ip().toString());
+        }
+    } else {
+        //qDebug() << "eth0: down";
+        ui_->lineEdit_eth0->setText("interface down");
+    }
+
+    QNetworkInterface wlan0if = QNetworkInterface::interfaceFromName("wlan0");
+    if (wlan0if.flags().testFlag(QNetworkInterface::IsUp)) {
+        QList<QNetworkAddressEntry> entrieswlan0 = wlan0if.addressEntries();
+        if (!entrieswlan0.isEmpty()) {
+            QNetworkAddressEntry wlan0 = entrieswlan0.first();
+            //qDebug() << "wlan0: " << wlan0.ip();
+            ui_->lineEdit_wlan0->setText(wlan0.ip().toString());
+        }
+    } else {
+        //qDebug() << "wlan0: down";
+        ui_->lineEdit_wlan0->setText("interface down");
+    }
+
+    QFileInfo hotspotFile("/tmp/hotspot_active");
+    if (hotspotFile.exists()) {
+        ui_->pushButtonHotspotStop->show();
+        ui_->pushButtonHotspotStart->hide();
+        ui_->label_modeswitchprogress->hide();
+        ui_->lineEdit_wifimode->setText("Hotspot");
+        ui_->lineEditWifiSSID->setText(this->hotspotssid);
+    } else {
+        ui_->pushButtonHotspotStart->show();
+        ui_->pushButtonHotspotStop->hide();
+        ui_->label_modeswitchprogress->hide();
+        ui_->lineEdit_wifimode->setText("Client");
+        ui_->lineEditWifiSSID->setText(this->wifissid);
+    }
 }

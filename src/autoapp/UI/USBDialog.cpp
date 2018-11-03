@@ -5,6 +5,7 @@
 #include <ui_usbdialog.h>
 #include <libusb.h>
 #include <blkid/blkid.h>
+#include <exception>
 
 namespace f1x
 {
@@ -23,6 +24,7 @@ USBDialog::USBDialog(QWidget *parent)
     connect(ui_->pushButtonClose, &QPushButton::clicked, this, &USBDialog::close);
     connect(ui_->pushButtonUpdate, &QPushButton::clicked, this, &USBDialog::scanDrives);
     scanDrives();
+    ui_->listWidgetUSB->setCurrentRow(0);
 }
 
 USBDialog::~USBDialog()
@@ -97,28 +99,45 @@ void f1x::openauto::autoapp::ui::USBDialog::scanDrives()
         currentdevice++;
     }
     system("/usr/local/bin/autoapp_helper cleansymlinks &");
+    ui_->listWidgetUSB->setCurrentRow(0);
 }
 
 void f1x::openauto::autoapp::ui::USBDialog::on_pushButtonMount_clicked()
 {
     QString selected = ui_->listWidgetUSB->item(ui_->listWidgetUSB->currentRow())->text();
-    QString mountfulldevicepath = selected.split(" ")[0];
-    QString mountdevice = mountfulldevicepath.split("/")[2];
-    system(qPrintable("sudo umount -f " + mountfulldevicepath));
-    system(qPrintable("sudo fuser -km /media/USBDRIVES/" + mountdevice));
-    system(qPrintable("sudo mkdir -p /media/USBDRIVES/" + mountdevice));
-    system(qPrintable("sudo chmod 777 /media/USBDRIVES/" + mountdevice));
-    system(qPrintable("sudo mount " + mountfulldevicepath + " /media/USBDRIVES/" + mountdevice));
-    system(qPrintable("ln -s /media/USBDRIVES/" + mountdevice + "/Music/* /media/MYMEDIA"));
-    scanDrives();
+    if (ui_->listWidgetUSB->count() > 0 && selected.contains("/dev/")) {
+        QString mountfulldevicepath = selected.split(" ")[0];
+        QString mountdevice = mountfulldevicepath.split("/")[2];
+
+        system(qPrintable("sudo umount -f " + mountfulldevicepath + " >/dev/null"));
+        system(qPrintable("sudo fuser -km /media/USBDRIVES/" + mountdevice + " >/dev/null"));
+        system(qPrintable("sudo mkdir -p /media/USBDRIVES/" + mountdevice + " >/dev/null"));
+        system(qPrintable("sudo chmod 777 /media/USBDRIVES/" + mountdevice + " >/dev/null"));
+        system(qPrintable("sudo mount " + mountfulldevicepath + " /media/USBDRIVES/" + mountdevice + " >/dev/null"));
+        system(qPrintable("ln -s /media/USBDRIVES/" + mountdevice + "/Music/* /media/MYMEDIA >/dev/null"));
+        scanDrives();
+    } else {
+        QMessageBox errorMessage(QMessageBox::Critical, "Select error", "Nothing selected!", QMessageBox::Ok);
+        errorMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
+        errorMessage.exec();
+    }
+    ui_->listWidgetUSB->setCurrentRow(0);
 }
 
 void f1x::openauto::autoapp::ui::USBDialog::on_pushButtonRemove_clicked()
 {
     QString selected = ui_->listWidgetUSB->item(ui_->listWidgetUSB->currentRow())->text();
-    QString mountfulldevicepath = selected.split(" ")[0];
-    QString mountdevice = mountfulldevicepath.split("/")[2];
-    system(qPrintable("sudo umount -f " + mountfulldevicepath));
-    system(qPrintable("sudo fuser -km /media/USBDRIVES/" + mountdevice));
-    scanDrives();
+    if (ui_->listWidgetUSB->count() > 0 && selected.contains("/dev/")) {
+        QString mountfulldevicepath = selected.split(" ")[0];
+        QString mountdevice = mountfulldevicepath.split("/")[2];
+
+        system(qPrintable("sudo umount -f " + mountfulldevicepath + " >/dev/null" + " && sudo rmdir /media/USBDRIVES/" + mountdevice + " >/dev/null"));
+        system(qPrintable("sudo fuser -km /media/USBDRIVES/" + mountdevice + " >/dev/null" + " && sudo rmdir /media/USBDRIVES/" + mountdevice + " >/dev/null"));
+        scanDrives();
+    } else {
+        QMessageBox errorMessage(QMessageBox::Critical, "Select error", "Nothing selected!", QMessageBox::Ok);
+        errorMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
+        errorMessage.exec();
+    }
+    ui_->listWidgetUSB->setCurrentRow(0);
 }

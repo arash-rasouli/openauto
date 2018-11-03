@@ -41,6 +41,7 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
+#include <QFileSystemWatcher>
 
 namespace Ui
 {
@@ -63,6 +64,8 @@ public:
     explicit MainWindow(configuration::IConfiguration::Pointer configuration, QWidget *parent = nullptr);
     ~MainWindow() override;
     QMediaPlayer* player;
+    QFileSystemWatcher* watcher;
+    QFileSystemWatcher* watcher_tmp;
 
 signals:
     void exit();
@@ -137,6 +140,8 @@ private slots:
     void on_StateChanged(QMediaPlayer::State state);
     void scanFolders();
     void scanFiles();
+    void tmpChanged();
+    void setTrigger();
 
 private:
     Ui::MainWindow* ui_;
@@ -223,6 +228,8 @@ private:
     int currentPlaylistIndex = 0;
 
     bool background_set = false;
+
+    bool mediacontentchanged = true;
 };
 
 }

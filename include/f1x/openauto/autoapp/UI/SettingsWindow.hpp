@@ -24,6 +24,7 @@
 #include <QFileDialog>
 
 class QCheckBox;
+class QTimer;
 
 namespace Ui
 {
@@ -62,6 +63,7 @@ private slots:
     void syncNTPTime();
     void on_pushButtonRescan_clicked();
     void on_pushButtonAudioTest_clicked();
+    void updateNetworkInfo();
 
 private slots:
     void show_tab1();
@@ -83,6 +85,9 @@ private:
 
     Ui::SettingsWindow* ui_;
     configuration::IConfiguration::Pointer configuration_;
+
+    QString hotspotssid;
+    QString wifissid;
 };
 
 }
