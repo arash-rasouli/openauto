@@ -166,7 +166,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
     connect(ui_->pushButtonPlayerBack, &QPushButton::clicked, this, &MainWindow::playerHide);
-    //connect(ui_->pushButtonUSB, &QPushButton::clicked, this, &MainWindow::openUSBDialog);
 
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
