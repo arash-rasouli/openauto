@@ -81,6 +81,7 @@ signals:
     void cameraRecord();
     void openConnectDialog();
     void openUSBDialog();
+    void openWifiDialog();
     void showBrightnessSlider();
     void showVolumeSlider();
     void showAlphaSlider();

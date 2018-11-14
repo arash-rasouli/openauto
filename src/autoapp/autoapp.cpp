@@ -35,6 +35,7 @@
 #include <f1x/openauto/autoapp/UI/SettingsWindow.hpp>
 #include <f1x/openauto/autoapp/UI/ConnectDialog.hpp>
 #include <f1x/openauto/autoapp/UI/USBDialog.hpp>
+#include <f1x/openauto/autoapp/UI/WifiDialog.hpp>
 #include <f1x/openauto/Common/Log.hpp>
 
 namespace aasdk = f1x::aasdk;
@@ -110,6 +111,11 @@ int main(int argc, char* argv[])
     // center dialog
     usbDialog.move((width - 500)/2,(height-306)/2);
 
+    autoapp::ui::WifiDialog wifiDialog;
+    wifiDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    // center dialog
+    wifiDialog.move((width - 540)/2,(height-340)/2);
+
     aasdk::tcp::TCPWrapper tcpWrapper;
     autoapp::ui::ConnectDialog connectDialog(ioService, tcpWrapper, recentAddressesList);
     connectDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -122,6 +128,7 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::exec);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openUSBDialog, &usbDialog, &autoapp::ui::USBDialog::exec);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openWifiDialog, &wifiDialog, &autoapp::ui::WifiDialog::exec);
 
     qApplication.setOverrideCursor(Qt::BlankCursor);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCursor, [&qApplication]() {

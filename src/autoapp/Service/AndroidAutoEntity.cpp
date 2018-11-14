@@ -67,7 +67,6 @@ void AndroidAutoEntity::start(IAndroidAutoEntityEventHandler& eventHandler)
         controlServiceChannel_->sendVersionRequest(std::move(versionRequestPromise));
         controlServiceChannel_->receive(this->shared_from_this());
     });
-    system("/opt/crankshaft/aa_device_state.sh connected &");
 }
 
 void AndroidAutoEntity::stop()
@@ -82,7 +81,6 @@ void AndroidAutoEntity::stop()
         transport_->stop();
         cryptor_->deinit();
     });
-    system("/opt/crankshaft/aa_device_state.sh disconnected &");
 }
 
 void AndroidAutoEntity::onVersionResponse(uint16_t majorCode, uint16_t minorCode, aasdk::proto::enums::VersionResponseStatus::Enum status)

@@ -2670,7 +2670,7 @@ outline: none;</string>
               </size>
              </property>
              <property name="text">
-              <string>Enable Hotspot</string>
+              <string>Enable Hotspot at system startup</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>

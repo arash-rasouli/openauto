@@ -129,6 +129,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonSettings2, &QPushButton::clicked, this, &MainWindow::openSettings);
+    connect(ui_->pushButtonWifiSetup, &QPushButton::clicked, this, &MainWindow::openWifiDialog);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonExit2, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::exit);
@@ -175,7 +176,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonUSB->hide();
 
     ui_->SysinfoTopLeft->hide();
-    
+    ui_->pushButtonWifiSetup->hide();
+
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start(1000);

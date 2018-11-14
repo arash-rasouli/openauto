@@ -751,7 +751,7 @@ void SettingsWindow::onStartHotspot()
     ui_->lineEdit_wifimode->setText("");
     ui_->lineEdit_wlan0->setText("");
     ui_->lineEditWifiSSID->setText("");
-    system("sudo systemctl start hotspot &");
+    system("touch /tmp/manual_hotspot_control && sudo systemctl start hotspot &");
     QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
 

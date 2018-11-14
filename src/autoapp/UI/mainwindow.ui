@@ -758,6 +758,25 @@ outline: none;</string>
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pushButtonWifiSetup">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(100, 62, 4, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+outline: none;</string>
+           </property>
+           <property name="text">
+            <string>Setup</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButton_c7">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
