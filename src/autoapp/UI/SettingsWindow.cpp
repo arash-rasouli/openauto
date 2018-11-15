@@ -25,7 +25,6 @@
 #include <string>
 #include <QTimer>
 #include <QDateTime>
-#include <QProcess>
 #include <QNetworkInterface>
 #include <QNetworkConfigurationManager>
 
@@ -463,258 +462,276 @@ void SettingsWindow::syncNTPTime()
 
 void SettingsWindow::loadSystemValues()
 {
-    QProcess process;
-    process.start("/usr/local/bin/autoapp_helper getparams");
-    process.waitForFinished();
-    QString output = process.readAllStandardOutput();
-    output.resize(output.size()-1); // remove last line break
-    QStringList getparams = output.split("#");
+    system("/usr/local/bin/autoapp_helper getoutputs");
+    system("/usr/local/bin/autoapp_helper getinputs");
+    system("/usr/local/bin/autoapp_helper getparams");
 
-    // version string
-    ui_->valueSystemVersion->setText(getparams[0]);
-    // date string
-    ui_->valueSystemBuildDate->setText(getparams[1]);
-    // set volume
-    ui_->labelSystemVolumeValue->setText(getparams[2]);
-    ui_->horizontalSliderSystemVolume->setValue(getparams[2].toInt());
-    // set cap volume
-    ui_->labelSystemCaptureValue->setText(getparams[3]);
-    ui_->horizontalSliderSystemCapture->setValue(getparams[3].toInt());
-    // set shutdown
-    ui_->valueShutdownTimer->setText(getparams[4]);
-    ui_->spinBoxShutdown->setValue(getparams[5].toInt());
-    // set disconnect
-    ui_->valueDisconnectTimer->setText(getparams[6]);
-    ui_->spinBoxDisconnect->setValue(getparams[7].toInt());
-    // set day/night
-    ui_->spinBoxDay->setValue(getparams[8].toInt());
-    ui_->spinBoxNight->setValue(getparams[9].toInt());
-    // set gpios
-    if (getparams[10] == "1") {
-       ui_->checkBoxGPIO->setChecked(true);
-    } else {
-        ui_->checkBoxGPIO->setChecked(false);
-    }
-    ui_->comboBoxDevMode->setCurrentText(getparams[11]);
-    ui_->comboBoxInvert->setCurrentText(getparams[12]);
-    ui_->comboBoxX11->setCurrentText(getparams[13]);
-    ui_->comboBoxRearcam->setCurrentText(getparams[14]);
-    ui_->comboBoxAndroid->setCurrentText(getparams[15]);
-    // set mode
-    if (getparams[16] == "0") {
-        ui_->radioButtonEGL->setChecked(true);
-    } else {
-        ui_->radioButtonX11->setChecked(true);
-    }
-    // set rotation
-    if (getparams[17] == "0") {
-        ui_->radioButtonScreenNormal->setChecked(true);
-    } else {
-        ui_->radioButtonScreenRotated->setChecked(true);
-    }
-    // set free mem
-    ui_->valueSystemFreeMem->setText(getparams[18]);
-    // set cpu freq
-    ui_->valueSystemCPUFreq->setText(getparams[19] + "MHz");
-    // set cpu temp
-    ui_->valueSystemCPUTemp->setText(getparams[20]);
+    QFileInfo paramFile("/tmp/return_value");
+    if (paramFile.exists()) {
 
-    QProcess processinput;
-    processinput.start("/usr/local/bin/autoapp_helper getinputs");
-    processinput.waitForFinished();
-    QString inputs = processinput.readAllStandardOutput();
-    inputs.resize(inputs.size()-1); // remove last line break
-    QStringList inputdevices = inputs.split("\n");
+        QFile paramFile(QString("/tmp/return_value"));
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data_param(&paramFile);
+        QStringList getparams = data_param.readAll().split("#");
+        paramFile.close();
 
-    int cleanerin = ui_->comboBoxPulseInput->count();
-    while (cleanerin > -1) {
-        ui_->comboBoxPulseInput->removeItem(cleanerin);
-        cleanerin--;
-    }
-    ui_->comboBoxPulseInput->addItems(inputdevices);
-
-    QProcess processoutput;
-    processoutput.start("/usr/local/bin/autoapp_helper getoutputs");
-    processoutput.waitForFinished();
-    QString outputs = processoutput.readAllStandardOutput();
-    outputs.resize(outputs.size()-1); // remove last line break
-    QStringList outputdevices = outputs.split("\n");
-
-    int cleanerout = ui_->comboBoxPulseOutput->count();
-    while (cleanerout > -1) {
-        ui_->comboBoxPulseOutput->removeItem(cleanerout);
-        cleanerout--;
-    }
-    ui_->comboBoxPulseOutput->addItems(outputdevices);
-
-    QFileInfo defaultoutputFile("/tmp/get_default_output");
-    if (defaultoutputFile.exists()) {
-        QFile defaultoutputFile(QString("/tmp/get_default_output"));
-        defaultoutputFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&defaultoutputFile);
-        QStringList defoutput = data_return.readAll().split("\n");
-        defaultoutputFile.close();
-        ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
-    }
-
-    QFileInfo defaultinputFile("/tmp/get_default_input");
-    if (defaultinputFile.exists()) {
-        QFile defaultinputFile(QString("/tmp/get_default_input"));
-        defaultinputFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&defaultinputFile);
-        QStringList definput = data_return.readAll().split("\n");
-        defaultinputFile.close();
-        ui_->comboBoxPulseInput->setCurrentText(definput[0]);
-    }
-
-    QFileInfo zoneFile("/tmp/timezone_listing");
-    if (zoneFile.exists()) {
-        QFile zoneFile(QString("/tmp/timezone_listing"));
-        zoneFile.open(QIODevice::ReadOnly);
-        QTextStream data_return(&zoneFile);
-        QStringList zones = data_return.readAll().split("\n");
-        zoneFile.close();
-        int cleaner = ui_->comboBoxTZ->count();
-        while (cleaner > 0) {
-            ui_->comboBoxTZ->removeItem(cleaner);
-            cleaner--;
-        }
-        int indexout = zones.count();
-        int countzone = 0;
-        while (countzone < indexout-1) {
-            ui_->comboBoxTZ->addItem(zones[countzone]);
-            countzone++;
-        }
-    }
-
-    // set rtc
-    ui_->comboBoxHardwareRTC->setCurrentText(getparams[21]);
-    // set timezone
-    ui_->comboBoxTZ->setCurrentText(getparams[22]);
-
-    // set dac
-    QString dac = "Custom";
-    if (getparams[23] == "allo-boss-dac-pcm512x-audio") {
-        dac = "Allo - Boss";
-    }
-    if (getparams[23] == "allo-piano-dac-pcm512x-audio") {
-        dac = "Allo - Piano";
-    }
-    if (getparams[23] == "iqaudio-dacplus") {
-        dac = "IQaudIO - Pi-DAC Plus/Pro/Zero";
-    }
-    if (getparams[23] == "iqaudio-dacplus,unmute_amp") {
-        dac = "IQaudIO - Pi-Digi Amp Plus";
-    }
-    if (getparams[23] == "iqaudio-dacplus,auto_mute_amp") {
-        dac = "IQaudIO - Pi-Digi Amp Plus - Automute";
-    }
-    if (getparams[23] == "iqaudio-digi-wm8804-audio") {
-        dac = "IQaudIO - Pi-Digi Plus";
-    }
-    if (getparams[23] == "audioinjector-wm8731-audio") {
-        dac = "Audioinjector - Zero/Stereo";
-    }
-    if (getparams[23] == "hifiberry-dac") {
-        dac = "Hifiberry - DAC";
-    }
-    if (getparams[23] == "hifiberry-dacplus") {
-        dac = "Hifiberry - DAC Plus";
-    }
-    if (getparams[23] == "hifiberry-digi") {
-        dac = "Hifiberry - Digi";
-    }
-    if (getparams[23] == "hifiberry-digi-pro") {
-        dac = "Hifiberry - Digi Pro";
-    }
-    if (getparams[23] == "hifiberry-amp") {
-        dac = "Hifiberry - DAC Amp";
-    }
-    if (getparams[23] == "audio") {
-        dac = "Raspberry Pi - Onboard";
-    }
-    ui_->comboBoxHardwareDAC->setCurrentText(dac);
-
-    // set shutdown disable
-    if (getparams[24] == "1") {
-        ui_->checkBoxDisableShutdown->setChecked(true);
-    } else {
-        ui_->checkBoxDisableShutdown->setChecked(false);
-    }
-
-    // set screen off disable
-    if (getparams[25] == "1") {
-        ui_->checkBoxDisableScreenOff->setChecked(true);
-    } else {
-        ui_->checkBoxDisableScreenOff->setChecked(false);
-    }
-
-    // set custom brightness command
-    if (getparams[26] != "0") {
-        ui_->labelCustomBrightnessCommand->setText(getparams[26] + " brvalue");
-    } else {
-        ui_->labelCustomBrightnessCommand->setText("Disabled");
-    }
-
-    // set debug mode
-    if (getparams[27] == "1") {
-        ui_->radioButtonDebugmodeEnabled->setChecked(true);
-    } else {
-        ui_->radioButtonDebugmodeDisabled->setChecked(true);
-    }
-
-    // GPIO based shutdown
-    ui_->comboBoxGPIOShutdown->setCurrentText(getparams[28]);
-    ui_->spinBoxGPIOShutdownDelay->setValue(getparams[29].toInt());
-
-    // Wifi Credentials
-    //ui_->lineEditWifiSSID->setText(getparams[30]);
-    this->wifissid = getparams[30];
-
-    // Wifi Hotspot Credentials
-    if (getparams[31] == "1") {
-        ui_->checkBoxHotspot->setChecked(true);
-    } else {
-        ui_->checkBoxHotspot->setChecked(false);
-    }
-
-    this->hotspotssid = getparams[32];
-
-    // set cam
-    ui_->comboBoxCam->setCurrentText(getparams[33]);
-
-    // set bluetooth
-    if (getparams[34] == "1") {
-        // check external bluetooth enabled
-        if (getparams[36] == "1") {
-            ui_->radioButtonUseExternalBluetoothAdapter->setChecked(true);
+        // version string
+        ui_->valueSystemVersion->setText(getparams[0]);
+        // date string
+        ui_->valueSystemBuildDate->setText(getparams[1]);
+        // set volume
+        ui_->labelSystemVolumeValue->setText(getparams[2]);
+        ui_->horizontalSliderSystemVolume->setValue(getparams[2].toInt());
+        // set cap volume
+        ui_->labelSystemCaptureValue->setText(getparams[3]);
+        ui_->horizontalSliderSystemCapture->setValue(getparams[3].toInt());
+        // set shutdown
+        ui_->valueShutdownTimer->setText(getparams[4]);
+        ui_->spinBoxShutdown->setValue(getparams[5].toInt());
+        // set disconnect
+        ui_->valueDisconnectTimer->setText(getparams[6]);
+        ui_->spinBoxDisconnect->setValue(getparams[7].toInt());
+        // set day/night
+        ui_->spinBoxDay->setValue(getparams[8].toInt());
+        ui_->spinBoxNight->setValue(getparams[9].toInt());
+        // set gpios
+        if (getparams[10] == "1") {
+           ui_->checkBoxGPIO->setChecked(true);
         } else {
-            ui_->radioButtonUseLocalBluetoothAdapter->setChecked(true);
+            ui_->checkBoxGPIO->setChecked(false);
         }
-        // mac
-        ui_->lineEditExternalBluetoothAdapterAddress->setText(getparams[37]);
-    } else {
-        ui_->radioButtonDisableBluetooth->setChecked(true);
-        ui_->lineEditExternalBluetoothAdapterAddress->setText("");
-    }
-    if (getparams[35] == "1") {
-        ui_->checkBoxBluetoothAutoPair->setChecked(true);
-    } else {
-        ui_->checkBoxBluetoothAutoPair->setChecked(false);
-    }
-    // set bluetooth type
-    ui_->comboBoxBluetooth->setCurrentText(getparams[38]);
-    // set usb detect
-    if (getparams[39] == "1") {
-        ui_->radioButtonUSBDetectEnabled->setChecked(true);
-    } else {
-        ui_->radioButtonUSBDetectDisabled->setChecked(true);
-    }
-    // set sdoc
-    if (getparams[40] == "enabled") {
-        ui_->comboBoxSDOC->setCurrentIndex(1);
-    } else {
-        ui_->comboBoxSDOC->setCurrentIndex(0);
+        ui_->comboBoxDevMode->setCurrentText(getparams[11]);
+        ui_->comboBoxInvert->setCurrentText(getparams[12]);
+        ui_->comboBoxX11->setCurrentText(getparams[13]);
+        ui_->comboBoxRearcam->setCurrentText(getparams[14]);
+        ui_->comboBoxAndroid->setCurrentText(getparams[15]);
+        // set mode
+        if (getparams[16] == "0") {
+            ui_->radioButtonEGL->setChecked(true);
+        } else {
+            ui_->radioButtonX11->setChecked(true);
+        }
+        // set rotation
+        if (getparams[17] == "0") {
+            ui_->radioButtonScreenNormal->setChecked(true);
+        } else {
+            ui_->radioButtonScreenRotated->setChecked(true);
+        }
+        // set free mem
+        ui_->valueSystemFreeMem->setText(getparams[18]);
+        // set cpu freq
+        ui_->valueSystemCPUFreq->setText(getparams[19] + "MHz");
+        // set cpu temp
+        ui_->valueSystemCPUTemp->setText(getparams[20]);
+
+        QFileInfo inputsFile("/tmp/get_inputs");
+        if (inputsFile.exists()) {
+            QFile inputsFile(QString("/tmp/get_inputs"));
+            inputsFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&inputsFile);
+            QStringList inputs = data_return.readAll().split("\n");
+            inputsFile.close();
+            int cleaner = ui_->comboBoxPulseInput->count();
+            while (cleaner > -1) {
+                ui_->comboBoxPulseInput->removeItem(cleaner);
+                cleaner--;
+            }
+            int indexin = inputs.count();
+            int countin = 0;
+            while (countin < indexin-1) {
+                ui_->comboBoxPulseInput->addItem(inputs[countin]);
+                countin++;
+            }
+        }
+
+        QFileInfo outputsFile("/tmp/get_outputs");
+        if (outputsFile.exists()) {
+            QFile outputsFile(QString("/tmp/get_outputs"));
+            outputsFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&outputsFile);
+            QStringList outputs = data_return.readAll().split("\n");
+            outputsFile.close();
+            int cleaner = ui_->comboBoxPulseOutput->count();
+            while (cleaner > -1) {
+                ui_->comboBoxPulseOutput->removeItem(cleaner);
+                cleaner--;
+            }
+            int indexout = outputs.count();
+            int countout = 0;
+            while (countout < indexout-1) {
+                ui_->comboBoxPulseOutput->addItem(outputs[countout]);
+                countout++;
+            }
+        }
+
+        QFileInfo defaultoutputFile("/tmp/get_default_output");
+        if (defaultoutputFile.exists()) {
+            QFile defaultoutputFile(QString("/tmp/get_default_output"));
+            defaultoutputFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&defaultoutputFile);
+            QStringList defoutput = data_return.readAll().split("\n");
+            defaultoutputFile.close();
+            ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
+        }
+
+        QFileInfo defaultinputFile("/tmp/get_default_input");
+        if (defaultinputFile.exists()) {
+            QFile defaultinputFile(QString("/tmp/get_default_input"));
+            defaultinputFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&defaultinputFile);
+            QStringList definput = data_return.readAll().split("\n");
+            defaultinputFile.close();
+            ui_->comboBoxPulseInput->setCurrentText(definput[0]);
+        }
+
+        QFileInfo zoneFile("/tmp/timezone_listing");
+        if (zoneFile.exists()) {
+            QFile zoneFile(QString("/tmp/timezone_listing"));
+            zoneFile.open(QIODevice::ReadOnly);
+            QTextStream data_return(&zoneFile);
+            QStringList zones = data_return.readAll().split("\n");
+            zoneFile.close();
+            int cleaner = ui_->comboBoxTZ->count();
+            while (cleaner > 0) {
+                ui_->comboBoxTZ->removeItem(cleaner);
+                cleaner--;
+            }
+            int indexout = zones.count();
+            int countzone = 0;
+            while (countzone < indexout-1) {
+                ui_->comboBoxTZ->addItem(zones[countzone]);
+                countzone++;
+            }
+        }
+
+        // set rtc
+        ui_->comboBoxHardwareRTC->setCurrentText(getparams[21]);
+        // set timezone
+        ui_->comboBoxTZ->setCurrentText(getparams[22]);
+
+        // set dac
+        QString dac = "Custom";
+        if (getparams[23] == "allo-boss-dac-pcm512x-audio") {
+            dac = "Allo - Boss";
+        }
+        if (getparams[23] == "allo-piano-dac-pcm512x-audio") {
+            dac = "Allo - Piano";
+        }
+        if (getparams[23] == "iqaudio-dacplus") {
+            dac = "IQaudIO - Pi-DAC Plus/Pro/Zero";
+        }
+        if (getparams[23] == "iqaudio-dacplus,unmute_amp") {
+            dac = "IQaudIO - Pi-Digi Amp Plus";
+        }
+        if (getparams[23] == "iqaudio-dacplus,auto_mute_amp") {
+            dac = "IQaudIO - Pi-Digi Amp Plus - Automute";
+        }
+        if (getparams[23] == "iqaudio-digi-wm8804-audio") {
+            dac = "IQaudIO - Pi-Digi Plus";
+        }
+        if (getparams[23] == "audioinjector-wm8731-audio") {
+            dac = "Audioinjector - Zero/Stereo";
+        }
+        if (getparams[23] == "hifiberry-dac") {
+            dac = "Hifiberry - DAC";
+        }
+        if (getparams[23] == "hifiberry-dacplus") {
+            dac = "Hifiberry - DAC Plus";
+        }
+        if (getparams[23] == "hifiberry-digi") {
+            dac = "Hifiberry - Digi";
+        }
+        if (getparams[23] == "hifiberry-digi-pro") {
+            dac = "Hifiberry - Digi Pro";
+        }
+        if (getparams[23] == "hifiberry-amp") {
+            dac = "Hifiberry - DAC Amp";
+        }
+        if (getparams[23] == "audio") {
+            dac = "Raspberry Pi - Onboard";
+        }
+        ui_->comboBoxHardwareDAC->setCurrentText(dac);
+
+        // set shutdown disable
+        if (getparams[24] == "1") {
+            ui_->checkBoxDisableShutdown->setChecked(true);
+        } else {
+            ui_->checkBoxDisableShutdown->setChecked(false);
+        }
+
+        // set screen off disable
+        if (getparams[25] == "1") {
+            ui_->checkBoxDisableScreenOff->setChecked(true);
+        } else {
+            ui_->checkBoxDisableScreenOff->setChecked(false);
+        }
+
+        // set custom brightness command
+        if (getparams[26] != "0") {
+            ui_->labelCustomBrightnessCommand->setText(getparams[26] + " brvalue");
+        } else {
+            ui_->labelCustomBrightnessCommand->setText("Disabled");
+        }
+
+        // set debug mode
+        if (getparams[27] == "1") {
+            ui_->radioButtonDebugmodeEnabled->setChecked(true);
+        } else {
+            ui_->radioButtonDebugmodeDisabled->setChecked(true);
+        }
+
+        // GPIO based shutdown
+        ui_->comboBoxGPIOShutdown->setCurrentText(getparams[28]);
+        ui_->spinBoxGPIOShutdownDelay->setValue(getparams[29].toInt());
+
+        // Wifi Credentials
+        this->wifissid = getparams[30];
+
+        // Wifi Hotspot Credentials
+        if (getparams[31] == "1") {
+            ui_->checkBoxHotspot->setChecked(true);
+        } else {
+            ui_->checkBoxHotspot->setChecked(false);
+        }
+
+        this->hotspotssid = getparams[32];
+
+        // set cam
+        ui_->comboBoxCam->setCurrentText(getparams[33]);
+
+        // set bluetooth
+        if (getparams[34] == "1") {
+            // check external bluetooth enabled
+            if (getparams[36] == "1") {
+                ui_->radioButtonUseExternalBluetoothAdapter->setChecked(true);
+            } else {
+                ui_->radioButtonUseLocalBluetoothAdapter->setChecked(true);
+            }
+            // mac
+            ui_->lineEditExternalBluetoothAdapterAddress->setText(getparams[37]);
+        } else {
+            ui_->radioButtonDisableBluetooth->setChecked(true);
+            ui_->lineEditExternalBluetoothAdapterAddress->setText("");
+        }
+        if (getparams[35] == "1") {
+            ui_->checkBoxBluetoothAutoPair->setChecked(true);
+        } else {
+            ui_->checkBoxBluetoothAutoPair->setChecked(false);
+        }
+        // set bluetooth type
+        ui_->comboBoxBluetooth->setCurrentText(getparams[38]);
+        // set usb detect
+        if (getparams[39] == "1") {
+            ui_->radioButtonUSBDetectEnabled->setChecked(true);
+        } else {
+            ui_->radioButtonUSBDetectDisabled->setChecked(true);
+        }
+        // set sdoc
+        if (getparams[40] == "enabled") {
+            ui_->comboBoxSDOC->setCurrentIndex(1);
+        } else {
+            ui_->comboBoxSDOC->setCurrentIndex(0);
+        }
     }
 }
 
