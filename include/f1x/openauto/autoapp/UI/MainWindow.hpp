@@ -119,6 +119,7 @@ private slots:
     void customButtonPressed7();
     void playerShow();
     void playerHide();
+    void updateBG();
 
     void on_horizontalSliderProgressPlayer_sliderMoved(int position);
     void on_horizontalSliderVolumePlayer_sliderMoved(int position);
@@ -182,6 +183,7 @@ private:
     QString selectedMp3file;
     QString musicfolder = "/media/CSSTORAGE/Music";
     QString albumfolder = "/";
+
     QMediaPlaylist *playlist;
 
     bool customBrightnessControl = false;

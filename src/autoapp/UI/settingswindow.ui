@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>963</width>
-    <height>3125</height>
+    <height>3152</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -429,7 +429,7 @@ outline: none;
          <property name="bottomMargin">
           <number>2</number>
          </property>
-         <item row="0" column="0">
+         <item row="2" column="0">
           <widget class="QPushButton" name="pushButtonRescan">
            <property name="minimumSize">
             <size>
@@ -452,7 +452,7 @@ outline: none;</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="2" column="1">
           <widget class="QComboBox" name="comboBoxSubFolder">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -480,7 +480,7 @@ outline: none;</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
+         <item row="8" column="0" colspan="2">
           <layout class="QFormLayout" name="formLayout_8">
            <property name="leftMargin">
             <number>9</number>
@@ -527,7 +527,7 @@ outline: none;</string>
               </font>
              </property>
              <property name="text">
-              <string>If you select a subfolder the player will start with listing the files inside this folder (on system start). By default folders inside CSSTORAGE/Music are listed. You can mount removable devices inside player dialog!</string>
+              <string>If you select a subfolder the player will start with listing the files inside this folder (on system start).</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -535,6 +535,46 @@ outline: none;</string>
             </widget>
            </item>
           </layout>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>Last Played Index</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLabel" name="mp3track">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="checkBoxAutoPlay">
+           <property name="text">
+            <string>auto play</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="label_16">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Auto playback last played song on startup if available</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -5134,93 +5174,6 @@ subcontrol-position: center left;
               </property>
               <property name="text">
                <string>TextLabel</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBoxUSBDetect">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="title">
-         <string>Skip USB Detect during boot</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
-         <property name="topMargin">
-          <number>2</number>
-         </property>
-         <property name="bottomMargin">
-          <number>2</number>
-         </property>
-         <item>
-          <widget class="QRadioButton" name="radioButtonUSBDetectDisabled">
-           <property name="text">
-            <string>Disabled</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButtonUSBDetectEnabled">
-           <property name="text">
-            <string>Enabled</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="formWidget" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <layout class="QFormLayout" name="formLayout_7">
-            <property name="topMargin">
-             <number>2</number>
-            </property>
-            <property name="bottomMargin">
-             <number>2</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_21">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_info.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="label_22">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <italic>true</italic>
-               </font>
-              </property>
-              <property name="text">
-               <string>If enabled the checks for flash files (system updates), dev mode trigger file and debug mode trigger file will complete disabled. This allows a faster boot.</string>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
               </property>
              </widget>
             </item>

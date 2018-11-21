@@ -38,6 +38,7 @@
         <file>player-hot.png</file>
         <file>coverlogo.png</file>
         <file>black.png</file>
+        <file>bg-equilizer.png</file>
         <file>Roboto-Regular.ttf</file>
     </qresource>
 </RCC>

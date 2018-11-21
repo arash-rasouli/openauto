@@ -43,6 +43,8 @@ const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.H
 
 const std::string Configuration::cGeneralMp3MasterPathKey = "General.Mp3MasterPath";
 const std::string Configuration::cGeneralMp3SubFolderKey = "General.Mp3SubFolder";
+const std::string Configuration::cGeneralMp3TrackKey = "General.Mp3Track";
+const std::string Configuration::cGeneralMp3AutoPlayKey = "General.Mp3AutoPlay";
 
 const std::string Configuration::cVideoFPSKey = "Video.FPS";
 const std::string Configuration::cVideoResolutionKey = "Video.Resolution";
@@ -99,6 +101,8 @@ void Configuration::load()
         hideAlpha_ = iniConfig.get<bool>(cGeneralHideAlphaKey, false);
         mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/MYMEDIA");
         mp3SubFolder_ = iniConfig.get<std::string>(cGeneralMp3SubFolderKey, "/");
+        mp3Track_ = iniConfig.get<size_t>(cGeneralMp3TrackKey, 0);
+        mp3AutoPlay_ = iniConfig.get<bool>(cGeneralMp3AutoPlayKey, false);
 
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
                                                                                              aasdk::proto::enums::VideoFPS::_30));
@@ -141,6 +145,8 @@ void Configuration::reset()
     hideAlpha_ = false;
     mp3MasterPath_ = "/media/MYMEDIA";
     mp3SubFolder_ = "/";
+    mp3Track_ = 0;
+    mp3AutoPlay_ = false;
     videoFPS_ = aasdk::proto::enums::VideoFPS::_30;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
     screenDPI_ = 140;
@@ -168,6 +174,8 @@ void Configuration::save()
     iniConfig.put<bool>(cGeneralHideAlphaKey, hideAlpha_);
     iniConfig.put<std::string>(cGeneralMp3MasterPathKey, mp3MasterPath_);
     iniConfig.put<std::string>(cGeneralMp3SubFolderKey, mp3SubFolder_);
+    iniConfig.put<int32_t>(cGeneralMp3TrackKey, mp3Track_);
+    iniConfig.put<bool>(cGeneralMp3AutoPlayKey, mp3AutoPlay_);
 
     iniConfig.put<uint32_t>(cVideoFPSKey, static_cast<uint32_t>(videoFPS_));
     iniConfig.put<uint32_t>(cVideoResolutionKey, static_cast<uint32_t>(videoResolution_));
@@ -292,9 +300,29 @@ std::string Configuration::getMp3SubFolder() const
     return mp3SubFolder_;
 }
 
+void Configuration::setMp3Track(int32_t value)
+{
+    mp3Track_ = value;
+}
+
 void Configuration::setMp3SubFolder(const std::string& value)
 {
     mp3SubFolder_ = value;
+}
+
+int32_t Configuration::getMp3Track() const
+{
+    return mp3Track_;
+}
+
+void Configuration::mp3AutoPlay(bool value)
+{
+    mp3AutoPlay_ = value;
+}
+
+bool Configuration::mp3AutoPlay() const
+{
+    return mp3AutoPlay_;
 }
 
 aasdk::proto::enums::VideoFPS::Enum Configuration::getVideoFPS() const

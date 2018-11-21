@@ -67,9 +67,12 @@ public:
 
     virtual std::string getMp3MasterPath() const = 0;
     virtual void setMp3MasterPath(const std::string& value) = 0;
-
     virtual std::string getMp3SubFolder() const = 0;
     virtual void setMp3SubFolder(const std::string& value) = 0;
+    virtual int32_t getMp3Track() const = 0;
+    virtual void setMp3Track(int32_t value) = 0;
+    virtual bool mp3AutoPlay() const = 0;
+    virtual void mp3AutoPlay(bool value) = 0;
 
     virtual aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const = 0;
     virtual void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) = 0;

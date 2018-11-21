@@ -62,7 +62,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonHotspotStop, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::close);
-    //connect(ui_->pushButtonSetTime, &QPushButton::clicked, [&]() { &SettingsWindow::setTime; &SettingsWindow::close; });
     connect(ui_->pushButtonNTP, &QPushButton::clicked, this, &SettingsWindow::close);
 
     // menu
@@ -129,6 +128,7 @@ void SettingsWindow::onSave()
     configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
     configuration_->hideAlpha(ui_->checkBoxHideAlpha->isChecked());
     configuration_->setMp3SubFolder(ui_->comboBoxSubFolder->currentText().toStdString());
+    configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
 
@@ -271,12 +271,6 @@ void SettingsWindow::onSave()
         params.append("0");
     }
     params.append("#");
-    if (ui_->radioButtonUSBDetectEnabled->isChecked()) {
-        params.append("1");
-    } else {
-        params.append("0");
-    }
-    params.append("#");
     params.append( std::string(ui_->comboBoxSDOC->currentText().split(" ")[0].toStdString()) );
     params.append("#");
 
@@ -314,6 +308,8 @@ void SettingsWindow::load()
     ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
     ui_->checkBoxHideAlpha->setChecked(configuration_->hideAlpha());
     ui_->comboBoxSubFolder->setCurrentText(QString::fromStdString(configuration_->getMp3SubFolder()));
+    ui_->mp3track->setText(QString::number(configuration_->getMp3Track()));
+    ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
     ui_->radioButton60FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_60);
@@ -720,14 +716,8 @@ void SettingsWindow::loadSystemValues()
         }
         // set bluetooth type
         ui_->comboBoxBluetooth->setCurrentText(getparams[38]);
-        // set usb detect
-        if (getparams[39] == "1") {
-            ui_->radioButtonUSBDetectEnabled->setChecked(true);
-        } else {
-            ui_->radioButtonUSBDetectDisabled->setChecked(true);
-        }
         // set sdoc
-        if (getparams[40] == "enabled") {
+        if (getparams[39] == "enabled") {
             ui_->comboBoxSDOC->setCurrentIndex(1);
         } else {
             ui_->comboBoxSDOC->setCurrentIndex(0);

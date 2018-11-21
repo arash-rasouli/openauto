@@ -539,6 +539,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     this->musicfolder = QString::fromStdString(configuration->getMp3MasterPath());
     this->albumfolder = QString::fromStdString(configuration->getMp3SubFolder());
+
     ui_->labelFolderpath->setText(this->musicfolder);
     ui_->labelAlbumpath->setText(this->albumfolder);
 
@@ -548,6 +549,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     MainWindow::scanFolders();
     ui_->comboBoxAlbum->setCurrentText(QString::fromStdString(configuration->getMp3SubFolder()));
     MainWindow::scanFiles();
+    ui_->mp3List->setCurrentRow(configuration->getMp3Track());
 
     watcher = new QFileSystemWatcher(this);
     watcher->addPath("/media/USBDRIVES");
@@ -842,6 +844,7 @@ void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
 
 void f1x::openauto::autoapp::ui::MainWindow::playerShow()
 {
+    this->setStyleSheet("QMainWindow { background: url(:/bg-equilizer.png); background-repeat: no-repeat; background-position: center; }");
     if (!this->oldGUIStyle) {
         ui_->menuWidget->hide();
     } else {
@@ -866,6 +869,8 @@ void f1x::openauto::autoapp::ui::MainWindow::playerHide()
     ui_->VolumeSliderControlPlayer->hide();
     ui_->BrightnessSliderControl->hide();
     ui_->AlphaSliderControl->hide();
+    f1x::openauto::autoapp::ui::MainWindow::updateBG();
+    f1x::openauto::autoapp::ui::MainWindow::tmpChanged();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::toggleExit()
@@ -926,6 +931,12 @@ void f1x::openauto::autoapp::ui::MainWindow::toggleGUI()
             ui_->Digital_clock->show();
         }
     }
+    f1x::openauto::autoapp::ui::MainWindow::updateBG();
+    f1x::openauto::autoapp::ui::MainWindow::tmpChanged();
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::updateBG()
+{
     if (!this->nightModeEnabled) {
         if (this->oldGUIStyle) {
             if (this->wallpaperClassicDayFileExists) {
@@ -955,7 +966,6 @@ void f1x::openauto::autoapp::ui::MainWindow::toggleGUI()
             }
         }
     }
-    f1x::openauto::autoapp::ui::MainWindow::tmpChanged();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::createDebuglog()
@@ -1009,7 +1019,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonList_clicked()
     ui_->pushButtonList->hide();
     ui_->pushButtonPlayerPlayList->show();
     ui_->pushButtonBackToPlayer->show();
-    //ui_->pushButtonUSB->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
@@ -1028,7 +1037,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
     ui_->playerPositionTime->setText("00:00 / 00:00");
     ui_->labelCurrentPlaying->setText("");
     ui_->labelTrack->setText("");
-    //ui_->pushButtonUSB->show();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPause_clicked()
@@ -1137,6 +1145,11 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     }
     ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
     ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
+
+    // Here a write to config is needed to keep playlist index
+    //
+    //configuration->setMp3Track(ui_->mp3List->currentRow());
+    //
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
@@ -1154,7 +1167,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked
     ui_->pushButtonPlayerPause->show();
     int currentalbum = ui_->comboBoxAlbum->currentIndex();
     ui_->labelCurrentAlbumIndex->setText(QString::number(currentalbum+1));
-    //ui_->pushButtonUSB->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_comboBoxAlbum_currentIndexChanged(const QString &arg1)
@@ -1170,10 +1182,6 @@ void f1x::openauto::autoapp::ui::MainWindow::setTrigger()
     ui_->SysinfoTopLeft->setText("Media changed - Scanning ...");
     ui_->SysinfoTopLeft->show();
 
-    //QTimer *timerscan=new QTimer(this);
-    //connect(timerscan, SIGNAL(timeout()),this,SLOT(scanFolders()));
-    //timerscan->start(10000);
-    // Start delayed folderscan after usb event
     QTimer::singleShot(10000, this, SLOT(scanFolders()));
 }
 
@@ -1307,7 +1315,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBackToPlayer_clicked()
     ui_->pushButtonBackToPlayer->hide();
     ui_->pushButtonPlayerPlayList->hide();
     ui_->pushButtonList->show();
-    //ui_->pushButtonUSB->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_StateChanged(QMediaPlayer::State state)
@@ -1343,35 +1350,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     } else {
         if (this->background_set == false) {
-            if (!this->nightModeEnabled) {
-                if (this->oldGUIStyle) {
-                    if (this->wallpaperClassicDayFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
-                    } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                    }
-                } else {
-                    if (this->wallpaperDayFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
-                    } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                    }
-                }
-            } else {
-                if (this->oldGUIStyle) {
-                    if (this->wallpaperClassicNightFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
-                    } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                    }
-                } else {
-                    if (this->wallpaperNightFileExists) {
-                        this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
-                    } else {
-                        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-                    }
-                }
-            }
+            f1x::openauto::autoapp::ui::MainWindow::updateBG();
             this->background_set = true;
         }
     }
@@ -1578,5 +1557,4 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         ui_->pushButtonDummyClassic1->show();
         ui_->pushButtonDummyClassic2->show();
     }
-    //qDebug() << "/tmp changed";
 }

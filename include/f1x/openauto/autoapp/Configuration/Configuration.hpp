@@ -59,9 +59,12 @@ public:
 
     std::string getMp3MasterPath() const override;
     void setMp3MasterPath(const std::string& value) override;
-
     std::string getMp3SubFolder() const override;
     void setMp3SubFolder(const std::string& value) override;
+    int32_t getMp3Track() const override;
+    void setMp3Track(int32_t value) override;
+    bool mp3AutoPlay() const override;
+    void mp3AutoPlay(bool value) override;
 
     aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const override;
     void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) override;
@@ -106,6 +109,8 @@ private:
     bool hideAlpha_;
     std::string mp3MasterPath_;
     std::string mp3SubFolder_;
+    int32_t mp3Track_;
+    bool mp3AutoPlay_;
 
     aasdk::proto::enums::VideoFPS::Enum videoFPS_;
     aasdk::proto::enums::VideoResolution::Enum videoResolution_;
@@ -134,6 +139,8 @@ private:
 
     static const std::string cGeneralMp3MasterPathKey;
     static const std::string cGeneralMp3SubFolderKey;
+    static const std::string cGeneralMp3TrackKey;
+    static const std::string cGeneralMp3AutoPlayKey;
 
     static const std::string cVideoFPSKey;
     static const std::string cVideoResolutionKey;
