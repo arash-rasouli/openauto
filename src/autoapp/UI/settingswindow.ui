@@ -458,7 +458,7 @@ outline: none;
          </sizepolicy>
         </property>
         <property name="title">
-         <string>Transparency Tile GUI on Startup</string>
+         <string>Transparency Tile GUI</string>
         </property>
         <layout class="QFormLayout" name="formLayout_15">
          <property name="topMargin">
