@@ -146,6 +146,8 @@ private slots:
 
 private:
     Ui::MainWindow* ui_;
+    configuration::IConfiguration::Pointer configuration_;
+
     QString brightnessFilename = "/sys/class/backlight/rpi_backlight/brightness";
     QString brightnessFilenameAlt = "/tmp/custombrightness";
     QFile *brightnessFile;
@@ -226,12 +228,11 @@ private:
     bool c7ButtonForce = false;
 
     bool hotspotActive = false;
-
     int currentPlaylistIndex = 0;
-
     bool background_set = false;
-
     bool mediacontentchanged = true;
+
+    bool lightsensor = false;
 };
 
 }

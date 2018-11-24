@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>963</width>
-    <height>3152</height>
+    <height>3006</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -253,6 +253,9 @@ outline: none;
       </sizepolicy>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_19">
+      <property name="spacing">
+       <number>6</number>
+      </property>
       <property name="topMargin">
        <number>2</number>
       </property>
@@ -406,165 +409,32 @@ outline: none;
        </layout>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBoxMP3">
+       <widget class="QGroupBox" name="groupBoxMediaPlayer">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="title">
-         <string>MP3 Player defaults </string>
+         <string>Media player defaults</string>
         </property>
-        <layout class="QFormLayout" name="formLayout_6">
-         <property name="horizontalSpacing">
-          <number>9</number>
-         </property>
-         <property name="leftMargin">
-          <number>2</number>
-         </property>
+        <layout class="QFormLayout" name="formLayout_5">
          <property name="topMargin">
           <number>2</number>
          </property>
          <property name="bottomMargin">
           <number>2</number>
          </property>
-         <item row="2" column="0">
-          <widget class="QPushButton" name="pushButtonRescan">
-           <property name="minimumSize">
-            <size>
-             <width>140</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>140</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgb(85, 87, 83);
-outline: none;</string>
-           </property>
-           <property name="text">
-            <string>Rescan Folders</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QComboBox" name="comboBoxSubFolder">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>32</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QScrollBar { 
-	width: 40px;
-	background-color: rgba(85, 87, 83, 0.7);
-}</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0" colspan="2">
-          <layout class="QFormLayout" name="formLayout_8">
-           <property name="leftMargin">
-            <number>9</number>
-           </property>
-           <property name="topMargin">
-            <number>2</number>
-           </property>
-           <property name="rightMargin">
-            <number>9</number>
-           </property>
-           <property name="bottomMargin">
-            <number>2</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/ico_warning.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_18">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="text">
-              <string>If you select a subfolder the player will start with listing the files inside this folder (on system start).</string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_19">
-           <property name="text">
-            <string>Last Played Index</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLabel" name="mp3track">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
+         <item row="0" column="0">
           <widget class="QCheckBox" name="checkBoxAutoPlay">
            <property name="text">
             <string>auto play</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QLabel" name="label_16">
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_AutoPlay">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -5660,6 +5530,205 @@ QComboBox::item:selected {
              </item>
             </widget>
            </item>
+           <item row="1" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QComboBox" name="comboBoxHardwareRTC">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>200</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>none</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>abx80x</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ds1307</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ds1339</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ds3231</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>mcp7940x</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>mcp7941x</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>pcf2127</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>pcf8523</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>pcf8563</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="formWidget" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <layout class="QFormLayout" name="formLayout_7">
+                <property name="horizontalSpacing">
+                 <number>0</number>
+                </property>
+                <property name="verticalSpacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="labelHardwareTZ">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Timezone</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="comboBoxTZ">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="labelHardwareRTC">
              <property name="sizePolicy">
@@ -5679,172 +5748,7 @@ QComboBox::item:selected {
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="comboBoxHardwareRTC">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QScrollBar { 
-	width: 40px;
-	background-color: rgba(85, 87, 83, 0.7);
-}
-QComboBox::item {
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}
-QComboBox::item:selected {
-	background-color: rgb(78, 154, 6);
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>none</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>abx80x</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ds1307</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ds1339</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ds3231</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>mcp7940x</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>mcp7941x</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>pcf2127</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>pcf8523</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>pcf8563</string>
-              </property>
-             </item>
-            </widget>
-           </item>
            <item row="2" column="0">
-            <widget class="QLabel" name="labelHardwareTZ">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Timezone</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QComboBox" name="comboBoxTZ">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QScrollBar { 
-	width: 40px;
-	background-color: rgba(85, 87, 83, 0.7);
-}
-QComboBox::item {
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}
-QComboBox::item:selected {
-	background-color: rgb(78, 154, 6);
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
             <widget class="QLabel" name="labelHardwareCam">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5863,7 +5767,7 @@ QComboBox::item:selected {
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="2" column="1">
             <widget class="QComboBox" name="comboBoxCam">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -5921,7 +5825,7 @@ QComboBox::item:selected {
              </item>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="labelHardwareBluetooth">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5940,7 +5844,7 @@ QComboBox::item:selected {
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QComboBox" name="comboBoxBluetooth">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -6003,7 +5907,7 @@ QComboBox::item:selected {
              </item>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="labelHardwareSDOC">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6022,7 +5926,7 @@ QComboBox::item:selected {
              </property>
             </widget>
            </item>
-           <item row="5" column="1">
+           <item row="4" column="1">
             <widget class="QComboBox" name="comboBoxSDOC">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -6076,6 +5980,71 @@ QComboBox::item:selected {
              <item>
               <property name="text">
                <string>enabled (This can cause demaged sdcard - use at your own risk!)</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="labelHardwareLS">
+             <property name="text">
+              <string>Lightsensor</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="comboBoxLS">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>none</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>enabled (tsl2561)</string>
               </property>
              </item>
             </widget>

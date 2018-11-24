@@ -61,7 +61,6 @@ private slots:
     void onStartHotspot();
     void onStopHotspot();
     void syncNTPTime();
-    void on_pushButtonRescan_clicked();
     void on_pushButtonAudioTest_clicked();
     void updateNetworkInfo();
 

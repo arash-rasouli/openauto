@@ -94,8 +94,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     QString time_text_minute=time.toString("mm");
     ui_->spinBoxHour->setValue((time_text_hour).toInt());
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
-
-    SettingsWindow::on_pushButtonRescan_clicked();
     ui_->label_modeswitchprogress->hide();
 
     QFileInfo hotspotFile("/tmp/hotspot_active");
@@ -127,7 +125,6 @@ void SettingsWindow::onSave()
     configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
     configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
     configuration_->hideAlpha(ui_->checkBoxHideAlpha->isChecked());
-    configuration_->setMp3SubFolder(ui_->comboBoxSubFolder->currentText().toStdString());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
@@ -273,6 +270,8 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxSDOC->currentText().split(" ")[0].toStdString()) );
     params.append("#");
+    params.append( std::string(ui_->comboBoxLS->currentText().split(" ")[0].toStdString()) );
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -307,8 +306,6 @@ void SettingsWindow::load()
     ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
     ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
     ui_->checkBoxHideAlpha->setChecked(configuration_->hideAlpha());
-    ui_->comboBoxSubFolder->setCurrentText(QString::fromStdString(configuration_->getMp3SubFolder()));
-    ui_->mp3track->setText(QString::number(configuration_->getMp3Track()));
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
@@ -722,6 +719,12 @@ void SettingsWindow::loadSystemValues()
         } else {
             ui_->comboBoxSDOC->setCurrentIndex(0);
         }
+        // set lightsensor
+        if (getparams[40] == "enabled") {
+            ui_->comboBoxLS->setCurrentIndex(1);
+        } else {
+            ui_->comboBoxLS->setCurrentIndex(0);
+        }
     }
 }
 
@@ -873,24 +876,6 @@ void SettingsWindow::show_tab8()
 }
 }
 }
-}
-
-void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonRescan_clicked()
-{
-    int cleaner = ui_->comboBoxSubFolder->count();
-    // clean and rebuild subfolder box
-    while (cleaner > -1) {
-        ui_->comboBoxSubFolder->removeItem(cleaner);
-        cleaner--;
-    }
-    ui_->comboBoxSubFolder->addItem("/");
-    QDir directory("/media/MYMEDIA");
-    QStringList folders = directory.entryList(QStringList() << "*", QDir::AllDirs, QDir::Name);
-    foreach (QString foldername, folders) {
-        if (foldername != ".." && foldername != ".") {
-            ui_->comboBoxSubFolder->addItem(foldername);
-        }
-    }
 }
 
 void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonAudioTest_clicked()

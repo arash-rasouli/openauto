@@ -53,6 +53,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFont _font(family, 11);
     qApp->setFont(_font);
 
+    this->configuration_ = configuration;
+
     // trigger files
     QFileInfo nightModeFile("/tmp/night_mode_enabled");
     this->nightModeEnabled = nightModeFile.exists();
@@ -71,6 +73,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
     this->systemDebugmode = DebugmodeFile.exists();
+
+    QFileInfo lightsensorFile("/etc/cs_lightsensor");
+    this->lightsensor = lightsensorFile.exists();
 
     QFileInfo c1ButtonFile(this->custom_button_file_c1);
     this->c1ButtonForce = c1ButtonFile.exists();
@@ -192,7 +197,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         connect(ui_->pushButtonStop, &QPushButton::clicked, this, &MainWindow::cameraStop);
         connect(ui_->pushButtonRecord, &QPushButton::clicked, this, &MainWindow::cameraRecord);
         connect(ui_->pushButtonSave, &QPushButton::clicked, this, &MainWindow::cameraSave);
-        ui_->pushButtonDummyCamWifi->hide();
     } else {
         ui_->pushButtonCameraShow->hide();
         ui_->pushButtonCameraShow2->hide();
@@ -226,10 +230,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->VolumeSliderControlPlayer->hide();
 
     // as default hide power buttons
-    ui_->pushButtonShutdown->hide();
-    ui_->pushButtonReboot->hide();
-    ui_->pushButtonCancel->hide();
     ui_->exitWidget->hide();
+    ui_->horizontalWidgetPower->hide();
 
     // as default hide phone connected label
     ui_->phoneConnected->hide();
@@ -241,8 +243,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     if (!this->wifiButtonForce) {
         ui_->pushButtonWifi->hide();
         ui_->pushButtonWifi2->hide();
-    } else {
-        ui_->pushButtonDummyCamWifi->hide();
     }
 
     // set custom buttons if file enabled by trigger file
@@ -346,23 +346,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
             this->custom_button_color_c6 = params[2].simplified();
         }
         connect(ui_->pushButton_c6, &QPushButton::clicked, this, &MainWindow::customButtonPressed6);
-    }
-
-    if (!this->c7ButtonForce) {
-        ui_->pushButton_c7->hide();
-    } else {
-        // read button config 7
-        QFile paramFile(this->custom_button_file_c7);
-        paramFile.open(QIODevice::ReadOnly);
-        QTextStream data(&paramFile);
-        QStringList params = data.readAll().split("#");
-        paramFile.close();
-        ui_->pushButton_c7->setText(params[0].simplified());
-        this->custom_button_command_c7 = params[1].simplified();
-        if (params[2] != "") {
-            this->custom_button_color_c7 = params[2].simplified();
-        }
-        connect(ui_->pushButton_c7, &QPushButton::clicked, this, &MainWindow::customButtonPressed7);
     }
 
     // as default hide camera controls
@@ -504,6 +487,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
                 ui_->Digital_clock->hide();
             }
         } else {
+            ui_->oldmenuDummy->show();
             ui_->Digital_clock->show();
             ui_->bigClock->hide();
         }
@@ -523,6 +507,16 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     // init alpha values
     ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
     MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
+
+    // Hide auto day/night if needed
+    if (this->lightsensor) {
+        ui_->pushButtonDay->hide();
+        ui_->pushButtonNight->hide();
+        ui_->pushButtonDay2->hide();
+        ui_->pushButtonNight2->hide();
+        ui_->pushButtonBrightness->hide();
+        ui_->pushButtonBrightness2->hide();
+    }
 
     player = new QMediaPlayer(this);
     playlist = new QMediaPlaylist(this);
@@ -549,7 +543,16 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     MainWindow::scanFolders();
     ui_->comboBoxAlbum->setCurrentText(QString::fromStdString(configuration->getMp3SubFolder()));
     MainWindow::scanFiles();
+    player->setPlaylist(this->playlist);
     ui_->mp3List->setCurrentRow(configuration->getMp3Track());
+    this->currentPlaylistIndex = configuration->getMp3Track();
+
+    if (configuration->mp3AutoPlay()) {
+        MainWindow::playerShow();
+        MainWindow::playerHide();
+        MainWindow::on_pushButtonPlayerPlayList_clicked();
+        MainWindow::playerShow();
+    }
 
     watcher = new QFileSystemWatcher(this);
     watcher->addPath("/media/USBDRIVES");
@@ -757,7 +760,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChang
     ui_->pushButtonDay->setStyleSheet( "background: rgba(252, 233, 79, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonNight->setStyleSheet( "background-color: rgba(114, 159, 207, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonCameraShow->setStyleSheet( "background-color: rgba(100, 62, 4, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonDummyCamWifi->setStyleSheet( "background-color: rgba(117, 80, 123, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonWifi->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonToggleGUI->setStyleSheet( "background-color: rgba(237, 164, 255, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButton_c1->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c1 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
@@ -766,7 +768,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChang
     ui_->pushButton_c4->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c4 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
     ui_->pushButton_c5->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c5 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
     ui_->pushButton_c6->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c6 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c7->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c7 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
     ui_->pushButtonDummy1->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDummy2->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
@@ -876,20 +877,16 @@ void f1x::openauto::autoapp::ui::MainWindow::playerHide()
 void f1x::openauto::autoapp::ui::MainWindow::toggleExit()
 {
     if (!this->exitMenuVisible) {
-        ui_->pushButtonExit->hide();
-        ui_->pushButtonShutdown->show();
-        ui_->pushButtonReboot->show();
-        ui_->pushButtonCancel->show();
         ui_->exitWidget->show();
         ui_->buttonWidget->hide();
+        ui_->horizontalWidgetButtons->hide();
+        ui_->horizontalWidgetPower->show();
         this->exitMenuVisible = true;
     } else {
-        ui_->pushButtonShutdown->hide();
-        ui_->pushButtonReboot->hide();
-        ui_->pushButtonCancel->hide();
-        ui_->pushButtonExit->show();
         ui_->buttonWidget->show();
         ui_->exitWidget->hide();
+        ui_->horizontalWidgetButtons->show();
+        ui_->horizontalWidgetPower->hide();
         this->exitMenuVisible = false;
     }
 }
@@ -1146,10 +1143,10 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
     ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
 
-    // Here a write to config is needed to keep playlist index
-    //
-    //configuration->setMp3Track(ui_->mp3List->currentRow());
-    //
+    // Write current playing album and track to config
+    this->configuration_->setMp3Track(playlist->currentIndex());
+    this->configuration_->setMp3SubFolder(ui_->comboBoxAlbum->currentText().toStdString());
+    this->configuration_->save();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked()
@@ -1205,13 +1202,10 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFolders()
             }
             this->currentPlaylistIndex = 0;
             ui_->SysinfoTopLeft->hide();
-            //timerscan->stop();
         }
     }
     catch(...) {
         ui_->SysinfoTopLeft->hide();
-        //timerscan->stop();
-        qDebug() << "Fail in Folderscan";
     }
 
 }
@@ -1515,15 +1509,11 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         if ((ui_->pushButtonWifi->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
             ui_->pushButtonWifi->hide();
             ui_->pushButtonWifi2->hide();
-            if (!this->cameraButtonForce) {
-                ui_->pushButtonDummyCamWifi->show();
-            }
         }
     } else {
         if ((ui_->pushButtonWifi->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
             ui_->pushButtonWifi->show();
             ui_->pushButtonWifi2->show();
-            ui_->pushButtonDummyCamWifi->hide();
         }
     }
 
@@ -1556,5 +1546,61 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     if (button_count == 0) {
         ui_->pushButtonDummyClassic1->show();
         ui_->pushButtonDummyClassic2->show();
+    }
+
+    // Hide auto day/night if needed
+    if (this->lightsensor) {
+        ui_->pushButtonDay->hide();
+        ui_->pushButtonNight->hide();
+        ui_->pushButtonDay2->hide();
+        ui_->pushButtonNight2->hide();
+        ui_->pushButtonBrightness->hide();
+        ui_->pushButtonBrightness2->hide();
+    }
+
+    // use big clock in classic gui?
+    if (this->configuration_->showBigClock()) {
+        this->UseBigClock = true;
+    } else {
+        this->UseBigClock = false;
+    }
+
+    // clock viibility by settings
+    if (!this->configuration_->showClock()) {
+        ui_->Digital_clock->hide();
+        ui_->bigClock->hide();
+        this->NoClock = true;
+    } else {
+        this->NoClock = false;
+        if (this->UseBigClock) {
+            ui_->oldmenuDummy->hide();
+            ui_->bigClock->show();
+            if (oldGUIStyle) {
+                ui_->Digital_clock->hide();
+            }
+        } else {
+            ui_->oldmenuDummy->show();
+            ui_->Digital_clock->show();
+            ui_->bigClock->hide();
+        }
+    }
+
+    // hide gui toggle if enabled in settings
+    if (this->configuration_->hideMenuToggle()) {
+        ui_->pushButtonToggleGUI->hide();
+        ui_->pushButtonToggleGUI2->hide();
+    } else {
+        ui_->pushButtonToggleGUI->show();
+        ui_->pushButtonToggleGUI2->show();
+    }
+
+    // hide alpha controls if enabled in settings
+    if (!this->configuration_->hideAlpha()) {
+        ui_->pushButtonAlpha->show();
+    } else {
+        ui_->pushButtonAlpha->hide();
+    }
+    if (QString::number(this->configuration_->getAlphaTrans()) != QString::number(ui_->horizontalSliderAlpha->value())) {
+        ui_->horizontalSliderAlpha->setValue(static_cast<int>(this->configuration_->getAlphaTrans()));
     }
 }
