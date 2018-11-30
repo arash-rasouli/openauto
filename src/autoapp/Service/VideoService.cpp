@@ -159,6 +159,12 @@ void VideoService::onVideoFocusRequest(const aasdk::proto::messages::VideoFocusR
 
     this->sendVideoFocusIndication();
     channel_->receive(this->shared_from_this());
+
+    // stop video service on go back to openauto
+    if (request.focus_mode() == 2) {
+        OPENAUTO_LOG(info) << "[VideoService] Stop video service...";
+        VideoService::stop();
+    }
 }
 
 void VideoService::sendVideoFocusIndication()

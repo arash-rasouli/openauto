@@ -229,6 +229,14 @@ int main(int argc, char* argv[])
         app->start(std::move(socket));
     });
 
+    //QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAAStart, [&qApplication]() {
+    //    OPENAUTO_LOG(info) << "[CS] Manual start android auto entity.";
+    //});
+
+    //QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAAStop, [&qApplication]() {
+    //    OPENAUTO_LOG(info) << "[CS] Manual stop android auto entity.";
+    //});
+
     app->waitForUSBDevice();
 
     auto result = qApplication.exec();

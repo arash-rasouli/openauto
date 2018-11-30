@@ -409,47 +409,6 @@ outline: none;
        </layout>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBoxMediaPlayer">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="title">
-         <string>Media player defaults</string>
-        </property>
-        <layout class="QFormLayout" name="formLayout_5">
-         <property name="topMargin">
-          <number>2</number>
-         </property>
-         <property name="bottomMargin">
-          <number>2</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="checkBoxAutoPlay">
-           <property name="text">
-            <string>auto play</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="label_AutoPlay">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Auto playback last played song on startup if available</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
        <widget class="QGroupBox" name="groupBoxAlpha">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -515,6 +474,47 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
            </property>
            <property name="text">
             <string>0.5</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxMediaPlayer">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Media player defaults</string>
+        </property>
+        <layout class="QFormLayout" name="formLayout_5">
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBoxAutoPlay">
+           <property name="text">
+            <string>auto play</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_AutoPlay">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Auto playback last played song on startup if available</string>
            </property>
           </widget>
          </item>
@@ -4918,6 +4918,255 @@ subcontrol-position: center left;
                     <string>26</string>
                    </property>
                   </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QFormLayout" name="daynightpin">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_16">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>DayNight-Pin</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="comboBoxDayNight">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>- - -</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>1</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>2</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>3</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>4</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>5</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>6</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>7</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>8</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>9</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>10</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>11</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>12</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>13</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>14</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>15</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>16</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>17</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>18</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>19</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>20</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>21</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>22</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>23</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>24</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>25</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>26</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QFormLayout" name="formLayout_6">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_17">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Unused</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QComboBox" name="comboBox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>100</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                  </property>
                  </widget>
                 </item>
                </layout>

@@ -272,6 +272,8 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxLS->currentText().split(" ")[0].toStdString()) );
     params.append("#");
+    params.append( std::string(ui_->comboBoxDayNight->currentText().toStdString()) );
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -725,6 +727,7 @@ void SettingsWindow::loadSystemValues()
         } else {
             ui_->comboBoxLS->setCurrentIndex(0);
         }
+        ui_->comboBoxDayNight->setCurrentText(getparams[41]);
     }
 }
 

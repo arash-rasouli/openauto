@@ -175,6 +175,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
 
+    // by default hide bluetooth button on init
+    ui_->pushButtonAndroidAuto->hide();
+
     // by default hide media player
     ui_->mediaWidget->hide();
     ui_->pushButtonUSB->hide();
@@ -1568,11 +1571,12 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     // clock viibility by settings
     if (!this->configuration_->showClock()) {
         ui_->Digital_clock->hide();
+        ui_->oldmenuDummy->show();
         ui_->bigClock->hide();
         this->NoClock = true;
     } else {
         this->NoClock = false;
-        if (this->UseBigClock) {
+        if (this->UseBigClock && ui_->oldmenuWidget->isVisible() == true) {
             ui_->oldmenuDummy->hide();
             ui_->bigClock->show();
             if (oldGUIStyle) {
@@ -1602,5 +1606,24 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
     if (QString::number(this->configuration_->getAlphaTrans()) != QString::number(ui_->horizontalSliderAlpha->value())) {
         ui_->horizontalSliderAlpha->setValue(static_cast<int>(this->configuration_->getAlphaTrans()));
+    }
+
+    // read value from tsl2561
+    QFileInfo lightsensorFile("/tmp/tsl2561");
+    if (lightsensorFile.exists()) {
+        QFile paramFile("/tmp/tsl2561");
+        paramFile.open(QIODevice::ReadOnly);
+        QTextStream data(&paramFile);
+        QStringList value = data.readAll().split("\n");
+        paramFile.close();
+        if (ui_->label_left->isVisible() == false) {
+            ui_->label_left->show();
+        }
+        ui_->label_left->setText("Lux: " + value[0]);
+    } else {
+        if (ui_->label_left->isVisible() == true) {
+            ui_->label_left->hide();
+            ui_->label_left->setText("");
+        }
     }
 }
