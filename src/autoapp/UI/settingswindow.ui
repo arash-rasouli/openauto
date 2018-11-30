@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>963</width>
-    <height>3006</height>
+    <height>3033</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -400,6 +400,13 @@ outline: none;
              </property>
              <property name="text">
               <string>Hide transparency controls on tile menu</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkBoxShowLux">
+             <property name="text">
+              <string>Show Lux value from tls2561</string>
              </property>
             </widget>
            </item>

@@ -56,6 +56,8 @@ public:
     bool hideMenuToggle() const override;
     void hideAlpha(bool value) override;
     bool hideAlpha() const override;
+    void showLux(bool value) override;
+    bool showLux() const override;
 
     std::string getMp3MasterPath() const override;
     void setMp3MasterPath(const std::string& value) override;
@@ -107,6 +109,7 @@ private:
     size_t alphaTrans_;
     bool hideMenuToggle_;
     bool hideAlpha_;
+    bool showLux_;
     std::string mp3MasterPath_;
     std::string mp3SubFolder_;
     int32_t mp3Track_;
@@ -134,6 +137,7 @@ private:
     static const std::string cGeneralAlphaTransKey;
     static const std::string cGeneralHideMenuToggleKey;
     static const std::string cGeneralHideAlphaKey;
+    static const std::string cGeneralShowLuxKey;
 
     static const std::string cGeneralHandednessOfTrafficTypeKey;
 

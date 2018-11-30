@@ -125,6 +125,7 @@ void SettingsWindow::onSave()
     configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
     configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
     configuration_->hideAlpha(ui_->checkBoxHideAlpha->isChecked());
+    configuration_->showLux(ui_->checkBoxShowLux->isChecked());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
@@ -308,6 +309,7 @@ void SettingsWindow::load()
     ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
     ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
     ui_->checkBoxHideAlpha->setChecked(configuration_->hideAlpha());
+    ui_->checkBoxShowLux->setChecked(configuration_->showLux());
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);

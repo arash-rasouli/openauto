@@ -64,6 +64,8 @@ public:
     virtual bool hideMenuToggle() const = 0;
     virtual void hideAlpha(bool value) = 0;
     virtual bool hideAlpha() const = 0;
+    virtual void showLux(bool value) = 0;
+    virtual bool showLux() const = 0;
 
     virtual std::string getMp3MasterPath() const = 0;
     virtual void setMp3MasterPath(const std::string& value) = 0;

@@ -38,6 +38,7 @@ const std::string Configuration::cGeneralOldGUIKey = "General.OldGUI";
 const std::string Configuration::cGeneralAlphaTransKey = "General.AlphaTrans";
 const std::string Configuration::cGeneralHideMenuToggleKey = "General.HideMenuToggle";
 const std::string Configuration::cGeneralHideAlphaKey = "General.HideAlpha";
+const std::string Configuration::cGeneralShowLuxKey = "General.ShowLux";
 
 const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.HandednessOfTrafficType";
 
@@ -99,6 +100,7 @@ void Configuration::load()
         alphaTrans_ = iniConfig.get<size_t>(cGeneralAlphaTransKey, 50);
         hideMenuToggle_ = iniConfig.get<bool>(cGeneralHideMenuToggleKey, false);
         hideAlpha_ = iniConfig.get<bool>(cGeneralHideAlphaKey, false);
+        showLux_ = iniConfig.get<bool>(cGeneralShowLuxKey, false);
         mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/MYMEDIA");
         mp3SubFolder_ = iniConfig.get<std::string>(cGeneralMp3SubFolderKey, "/");
         mp3Track_ = iniConfig.get<size_t>(cGeneralMp3TrackKey, 0);
@@ -143,6 +145,7 @@ void Configuration::reset()
     alphaTrans_ = 50;
     hideMenuToggle_ = false;
     hideAlpha_ = false;
+    showLux_ = false;
     mp3MasterPath_ = "/media/MYMEDIA";
     mp3SubFolder_ = "/";
     mp3Track_ = 0;
@@ -172,6 +175,7 @@ void Configuration::save()
     iniConfig.put<size_t>(cGeneralAlphaTransKey, alphaTrans_);
     iniConfig.put<bool>(cGeneralHideMenuToggleKey, hideMenuToggle_);
     iniConfig.put<bool>(cGeneralHideAlphaKey, hideAlpha_);
+    iniConfig.put<bool>(cGeneralShowLuxKey, showLux_);
     iniConfig.put<std::string>(cGeneralMp3MasterPathKey, mp3MasterPath_);
     iniConfig.put<std::string>(cGeneralMp3SubFolderKey, mp3SubFolder_);
     iniConfig.put<int32_t>(cGeneralMp3TrackKey, mp3Track_);
@@ -283,6 +287,16 @@ void Configuration::hideAlpha(bool value)
 bool Configuration::hideAlpha() const
 {
     return hideAlpha_;
+}
+
+void Configuration::showLux(bool value)
+{
+    showLux_ = value;
+}
+
+bool Configuration::showLux() const
+{
+    return showLux_;
 }
 
 std::string Configuration::getMp3MasterPath() const

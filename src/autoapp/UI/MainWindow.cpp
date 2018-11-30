@@ -1610,7 +1610,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 
     // read value from tsl2561
     QFileInfo lightsensorFile("/tmp/tsl2561");
-    if (lightsensorFile.exists()) {
+    if (lightsensorFile.exists() && this->configuration_->showLux()) {
         QFile paramFile("/tmp/tsl2561");
         paramFile.open(QIODevice::ReadOnly);
         QTextStream data(&paramFile);
