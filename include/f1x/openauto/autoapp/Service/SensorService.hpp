@@ -34,6 +34,8 @@ class SensorService: public aasdk::channel::sensor::ISensorServiceChannelEventHa
 {
 public:
     SensorService(boost::asio::io_service& ioService, aasdk::messenger::IMessenger::Pointer messenger);
+    bool isNight = false;
+    bool previous = false;
 
     void start() override;
     void stop() override;
@@ -46,7 +48,10 @@ private:
     using std::enable_shared_from_this<SensorService>::shared_from_this;
     void sendDrivingStatusUnrestricted();
     void sendNightData();
+    bool is_file_exist(const char *filename);
+    void nightSensorPolling();
 
+    boost::asio::deadline_timer timer_;
     boost::asio::io_service::strand strand_;
     aasdk::channel::sensor::SensorServiceChannel::Pointer channel_;
 };
