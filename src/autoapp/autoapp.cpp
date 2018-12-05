@@ -35,6 +35,7 @@
 #include <f1x/openauto/autoapp/UI/SettingsWindow.hpp>
 #include <f1x/openauto/autoapp/UI/ConnectDialog.hpp>
 #include <f1x/openauto/autoapp/UI/WifiDialog.hpp>
+#include <f1x/openauto/autoapp/UI/Warning.hpp>
 #include <f1x/openauto/Common/Log.hpp>
 
 namespace aasdk = f1x::aasdk;
@@ -98,7 +99,7 @@ int main(int argc, char* argv[])
 
     autoapp::ui::SettingsWindow settingsWindow(configuration);
     settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
-    //settingsWindow.showFullScreen();
+
     settingsWindow.setFixedSize(width, height);
     settingsWindow.adjustSize();
 
@@ -114,7 +115,12 @@ int main(int argc, char* argv[])
     autoapp::ui::ConnectDialog connectDialog(ioService, tcpWrapper, recentAddressesList);
     connectDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     // center dialog
-    connectDialog.move((width - 500)/2,(height-440)/2);
+    connectDialog.move((width - 500)/2,(height-360)/2);
+
+    autoapp::ui::Warning warning;
+    warning.setWindowFlags(Qt::WindowStaysOnTopHint);
+    // center dialog
+    warning.move((width - 500)/2,(height-300)/2);
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { system("touch /tmp/shutdown"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
@@ -229,13 +235,27 @@ int main(int argc, char* argv[])
         app->start(std::move(socket));
     });
 
-    //QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAAStart, [&qApplication]() {
-    //    OPENAUTO_LOG(info) << "[CS] Manual start android auto entity.";
-    //});
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
+        OPENAUTO_LOG(info) << "[CS] Manual start android auto entity by reset usb.";
+        if (std::ifstream("/tmp/android_device")) {
+            system("/usr/local/bin/autoapp_helper usbreset &");
+            app->waitForUSBDevice();
+        }
+    });
 
-    //QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAAStop, [&qApplication]() {
-    //    OPENAUTO_LOG(info) << "[CS] Manual stop android auto entity.";
-    //});
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStop, [&app]() {
+        OPENAUTO_LOG(info) << "[CS] Manual stop android auto entity.";
+        if (std::ifstream("/tmp/android_device")) {
+            system("/usr/local/bin/autoapp_helper usbreset");
+            usleep(500000);
+            app->stop();
+        } else {
+            //app->onAndroidAutoQuit();
+            app->stop();
+        }
+    });
+
+    warning.show();
 
     app->waitForUSBDevice();
 

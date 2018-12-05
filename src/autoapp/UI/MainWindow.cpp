@@ -30,6 +30,11 @@
 #include <QScreen>
 #include <QRect>
 #include <QFileSystemWatcher>
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+#include <unistd.h>
+#include <f1x/openauto/Common/Log.hpp>
 
 namespace f1x
 {
@@ -171,12 +176,13 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);
     connect(ui_->pushButtonPlayerBack, &QPushButton::clicked, this, &MainWindow::playerHide);
+    connect(ui_->pushButtonAndroidAuto, &QPushButton::clicked, this, &MainWindow::TriggerAppStart);
+    connect(ui_->pushButtonAndroidAuto, &QPushButton::clicked, this, &MainWindow::setRetryUSBConnect);
+    connect(ui_->pushButtonAndroidAuto2, &QPushButton::clicked, this, &MainWindow::TriggerAppStart);
+    connect(ui_->pushButtonAndroidAuto2, &QPushButton::clicked, this, &MainWindow::setRetryUSBConnect);
 
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
-
-    // by default hide bluetooth button on init
-    ui_->pushButtonAndroidAuto->hide();
 
     // by default hide media player
     ui_->mediaWidget->hide();
@@ -184,6 +190,10 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     ui_->SysinfoTopLeft->hide();
     ui_->pushButtonWifiSetup->hide();
+
+    //ui_->pushButtonNoDevice->hide();
+    ui_->pushButtonAndroidAuto->hide();
+    ui_->pushButtonAndroidAuto2->hide();
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
@@ -236,16 +246,16 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->exitWidget->hide();
     ui_->horizontalWidgetPower->hide();
 
-    // as default hide phone connected label
-    ui_->phoneConnected->hide();
-
     // as default hide muted button
     ui_->pushButtonUnMute->hide();
 
     // hide wifi if not forced
     if (!this->wifiButtonForce) {
-        ui_->pushButtonWifi->hide();
+        //ui_->pushButtonWifi->hide();
         ui_->pushButtonWifi2->hide();
+        ui_->AAWIFIWidget->hide();
+    } else {
+        ui_->AAUSBWidget->hide();
     }
 
     // set custom buttons if file enabled by trigger file
@@ -406,8 +416,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // read param file
-    QFileInfo audioparamFile("/boot/crankshaft/volume");
-    if (audioparamFile.exists()) {
+    if (std::ifstream("/boot/crankshaft/volume")) {
         QFile audioparamFile(QString("/boot/crankshaft/volume"));
         audioparamFile.open(QIODevice::ReadOnly);
         QTextStream data_param(&audioparamFile);
@@ -503,9 +512,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // hide alpha controls if enabled in settings
-    if (!configuration->hideAlpha()) {
-        ui_->pushButtonAlpha->show();
-    }
+    //if (!configuration->hideAlpha()) {
+    //    ui_->pushButtonAlpha->show();
+    //}
 
     // init alpha values
     ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
@@ -776,6 +785,9 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChang
     ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonDebug->setStyleSheet( "background-color: rgba(85, 87, 83, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
     ui_->pushButtonMusic->setStyleSheet( "background-color: rgba(78, 154, 6, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButtonAndroidAuto->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButtonNoDevice->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    ui_->pushButtonNoWiFiDevice->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
@@ -1185,6 +1197,20 @@ void f1x::openauto::autoapp::ui::MainWindow::setTrigger()
     QTimer::singleShot(10000, this, SLOT(scanFolders()));
 }
 
+void f1x::openauto::autoapp::ui::MainWindow::setRetryUSBConnect()
+{
+    ui_->SysinfoTopLeft->setText("Trying USB reconnect ...");
+    ui_->SysinfoTopLeft->show();
+
+    QTimer::singleShot(10000, this, SLOT(resetRetryUSBMessage()));
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::resetRetryUSBMessage()
+{
+    ui_->SysinfoTopLeft->setText("");
+    ui_->SysinfoTopLeft->hide();
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::scanFolders()
 {
     try {
@@ -1317,17 +1343,26 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBackToPlayer_clicked()
 void f1x::openauto::autoapp::ui::MainWindow::on_StateChanged(QMediaPlayer::State state)
 {
     if (state == QMediaPlayer::StoppedState || state == QMediaPlayer::PausedState) {
-        system("rm -f /tmp/media_playing");
+        std::remove("/tmp/media_playing");
     } else {
-        system("touch /tmp/media_playing");
+        std::ofstream("/tmp/media_playing");
     }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 {
+    try {
+        if (std::ifstream("/tmp/entityexit")) {
+            MainWindow::TriggerAppStop();
+            usleep(1000000);
+            std::remove("/tmp/entityexit");
+        }
+    } catch (...) {
+        OPENAUTO_LOG(error) << "[OpenAuto] Error in entityexit";
+    }
+
     // check if system is in display off mode (tap2wake)
-    QFileInfo blankFile("/tmp/blankscreen");
-    if (blankFile.exists()) {
+    if (std::ifstream("/tmp/blankscreen")) {
         if (ui_->centralWidget->isVisible() == true) {
             ui_->centralWidget->hide();
         }
@@ -1338,8 +1373,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // check if custom command needs black background
-    QFileInfo blackFile("/tmp/blackscreen");
-    if (blackFile.exists()) {
+    if (std::ifstream("/tmp/blackscreen")) {
         if (ui_->centralWidget->isVisible() == true) {
             ui_->centralWidget->hide();
             this->setStyleSheet("QMainWindow {background-color: rgb(0,0,0);}");
@@ -1353,15 +1387,18 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // check if phone is conencted to usb
-    QFileInfo phoneConnectedFile("/tmp/android_device");
-    if (phoneConnectedFile.exists()) {
-        if (ui_->phoneConnected->isVisible() == false) {
-            ui_->phoneConnected->setText("USB connected");
-            ui_->phoneConnected->show();
+
+    if (std::ifstream("/tmp/android_device")) {
+        if (ui_->pushButtonAndroidAuto->isVisible() == false) {
+            ui_->pushButtonAndroidAuto->show();
+            ui_->pushButtonAndroidAuto2->show();
+            ui_->pushButtonNoDevice->hide();
         }
     } else {
-        if (ui_->phoneConnected->isVisible() == true) {
-            ui_->phoneConnected->hide();
+        if (ui_->pushButtonAndroidAuto->isVisible() == true) {
+            ui_->pushButtonAndroidAuto->hide();
+            ui_->pushButtonAndroidAuto2->hide();
+            ui_->pushButtonNoDevice->show();
         }
     }
 
@@ -1380,8 +1417,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // check if a device is connected via bluetooth
-    QFileInfo phoneBTConnectedFile("/tmp/btdevice");
-    if (phoneBTConnectedFile.exists()) {
+    if (std::ifstream("/tmp/btdevice")) {
         if (ui_->btDevice->isVisible() == false) {
             QFile phoneBTData(QString("/tmp/btdevice"));
             phoneBTData.open(QIODevice::ReadOnly);
@@ -1402,9 +1438,9 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     QFileInfo debugInProgressFile("/tmp/debug_in_progress");
     QFileInfo enablePairingFile("/tmp/enable_pairing");
 
-    if (configInProgressFile.exists() || debugInProgressFile.exists() || enablePairingFile.exists()) {
+    if (std::ifstream("/tmp/config_in_progress") || std::ifstream("/tmp/debug_in_progress") || std::ifstream("/tmp/enable_pairing")) {
         if (ui_->systemConfigInProgress->isVisible() == false) {
-            if (configInProgressFile.exists()) {
+            if (std::ifstream("/tmp/config_in_progress")) {
                 ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
                 ui_->pushButtonSettings->hide();
                 ui_->pushButtonSettings2->hide();
@@ -1412,7 +1448,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
                 ui_->pushButtonLock2->show();
                 ui_->systemConfigInProgress->show();
             }
-            if (debugInProgressFile.exists()) {
+            if (std::ifstream("/tmp/debug_in_progress")) {
                 ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
                 ui_->pushButtonSettings->hide();
                 ui_->pushButtonSettings2->hide();
@@ -1422,7 +1458,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
                 ui_->pushButtonLock2->show();
                 ui_->systemConfigInProgress->show();
             }
-            if (enablePairingFile.exists()) {
+            if (std::ifstream("/tmp/enable_pairing")) {
                 ui_->systemConfigInProgress->setText("Auto Bluetooth Pairing enabled for 120 seconds!");
                 ui_->pushButtonDebug->hide();
                 ui_->pushButtonDebug2->hide();
@@ -1499,8 +1535,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // check if sutdown is external triggered and init clean app exit
-    QFileInfo externalExitFile("/tmp/external_exit");
-    if (externalExitFile.exists()) {
+    if (std::ifstream("/tmp/external_exit")) {
         f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
     }
 
@@ -1509,14 +1544,30 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 
     // hide wifi if not forced
     if (!this->hotspotActive) {
-        if ((ui_->pushButtonWifi->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
-            ui_->pushButtonWifi->hide();
+        if ((ui_->AAWIFIWidget->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
+            //ui_->pushButtonWifi->hide();
+            ui_->AAWIFIWidget->hide();
             ui_->pushButtonWifi2->hide();
+            ui_->AAUSBWidget->show();
         }
     } else {
-        if ((ui_->pushButtonWifi->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
-            ui_->pushButtonWifi->show();
+        if ((ui_->AAWIFIWidget->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
+            //ui_->pushButtonWifi->show();
+            ui_->AAWIFIWidget->show();
             ui_->pushButtonWifi2->show();
+            ui_->AAUSBWidget->hide();
+        }
+    }
+
+    if (std::ifstream("/tmp/temp_recent_list")) {
+        if (ui_->pushButtonWifi->isVisible() == false) {
+            ui_->pushButtonWifi->show();
+            ui_->pushButtonNoWiFiDevice->hide();
+        }
+    } else {
+        if (ui_->pushButtonWifi->isVisible() == true) {
+            ui_->pushButtonNoWiFiDevice->show();
+            ui_->pushButtonWifi->hide();
         }
     }
 
@@ -1525,30 +1576,14 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     if (ui_->pushButtonCameraShow2->isVisible() == true) {
         button_count = button_count + 1;
     }
-    if (ui_->pushButtonToggleGUI2->isVisible() == true) {
-        button_count = button_count + 1;
-    }
     if (ui_->pushButtonWifi2->isVisible() == true) {
         button_count = button_count + 1;
     }
     if (ui_->pushButtonDebug2->isVisible() == true) {
         button_count = button_count + 1;
     }
-    if (button_count >= 3) {
-        ui_->pushButtonDummyClassic1->hide();
-        ui_->pushButtonDummyClassic2->hide();
-    }
-    if (button_count == 2) {
-        ui_->pushButtonDummyClassic1->hide();
-        ui_->pushButtonDummyClassic2->hide();
-    }
-    if (button_count == 1) {
-        ui_->pushButtonDummyClassic1->show();
-        ui_->pushButtonDummyClassic2->hide();
-    }
-    if (button_count == 0) {
-        ui_->pushButtonDummyClassic1->show();
-        ui_->pushButtonDummyClassic2->show();
+    if (ui_->pushButtonVolume2->isVisible() == true) {
+        button_count = button_count + 1;
     }
 
     // Hide auto day/night if needed
@@ -1609,8 +1644,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // read value from tsl2561
-    QFileInfo lightsensorFile("/tmp/tsl2561");
-    if (lightsensorFile.exists() && this->configuration_->showLux()) {
+    if (std::ifstream("/tmp/tsl2561") && this->configuration_->showLux()) {
         QFile paramFile("/tmp/tsl2561");
         paramFile.open(QIODevice::ReadOnly);
         QTextStream data(&paramFile);
@@ -1618,12 +1652,15 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         paramFile.close();
         if (ui_->label_left->isVisible() == false) {
             ui_->label_left->show();
+            ui_->label_right->show();
         }
         ui_->label_left->setText("Lux: " + value[0]);
     } else {
         if (ui_->label_left->isVisible() == true) {
             ui_->label_left->hide();
+            ui_->label_right->hide();
             ui_->label_left->setText("");
+            ui_->label_right->setText("");
         }
     }
 }

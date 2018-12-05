@@ -27,6 +27,7 @@
 #include <QDateTime>
 #include <QNetworkInterface>
 #include <QNetworkConfigurationManager>
+#include <fstream>
 
 namespace f1x
 {
@@ -78,6 +79,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->labelBluetoothAdapterAddress->hide();
     ui_->lineEditExternalBluetoothAdapterAddress->hide();
     ui_->labelTestInProgress->hide();
+    ui_->checkBoxHideAlpha->hide();
 
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
@@ -96,17 +98,22 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
     ui_->label_modeswitchprogress->hide();
 
-    QFileInfo hotspotFile("/tmp/hotspot_active");
-    if (hotspotFile.exists()) {
+    if (std::ifstream("/tmp/hotspot_active")) {
         ui_->pushButtonHotspotStop->show();
         ui_->pushButtonHotspotStart->hide();
         ui_->lineEdit_wifimode->setText("Hotspot");
         ui_->lineEditWifiSSID->setText(this->hotspotssid);
+        ui_->lineEditPassword->show();
+        ui_->label_password->show();
+        ui_->lineEditPassword->setText("1234567890");
     } else {
         ui_->pushButtonHotspotStart->show();
         ui_->pushButtonHotspotStop->hide();
         ui_->lineEdit_wifimode->setText("Client");
         ui_->lineEditWifiSSID->setText(this->wifissid);
+        ui_->lineEditPassword->hide();
+        ui_->label_password->hide();
+        ui_->lineEditPassword->setText("");
     }
 }
 
@@ -463,9 +470,7 @@ void SettingsWindow::loadSystemValues()
     system("/usr/local/bin/autoapp_helper getinputs");
     system("/usr/local/bin/autoapp_helper getparams");
 
-    QFileInfo paramFile("/tmp/return_value");
-    if (paramFile.exists()) {
-
+    if (std::ifstream("/tmp/return_value")) {
         QFile paramFile(QString("/tmp/return_value"));
         paramFile.open(QIODevice::ReadOnly);
         QTextStream data_param(&paramFile);
@@ -521,8 +526,7 @@ void SettingsWindow::loadSystemValues()
         // set cpu temp
         ui_->valueSystemCPUTemp->setText(getparams[20]);
 
-        QFileInfo inputsFile("/tmp/get_inputs");
-        if (inputsFile.exists()) {
+        if (std::ifstream("/tmp/get_inputs")) {
             QFile inputsFile(QString("/tmp/get_inputs"));
             inputsFile.open(QIODevice::ReadOnly);
             QTextStream data_return(&inputsFile);
@@ -541,8 +545,7 @@ void SettingsWindow::loadSystemValues()
             }
         }
 
-        QFileInfo outputsFile("/tmp/get_outputs");
-        if (outputsFile.exists()) {
+        if (std::ifstream("/tmp/get_outputs")) {
             QFile outputsFile(QString("/tmp/get_outputs"));
             outputsFile.open(QIODevice::ReadOnly);
             QTextStream data_return(&outputsFile);
@@ -561,8 +564,7 @@ void SettingsWindow::loadSystemValues()
             }
         }
 
-        QFileInfo defaultoutputFile("/tmp/get_default_output");
-        if (defaultoutputFile.exists()) {
+        if (std::ifstream("/tmp/get_default_output")) {
             QFile defaultoutputFile(QString("/tmp/get_default_output"));
             defaultoutputFile.open(QIODevice::ReadOnly);
             QTextStream data_return(&defaultoutputFile);
@@ -571,8 +573,7 @@ void SettingsWindow::loadSystemValues()
             ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
         }
 
-        QFileInfo defaultinputFile("/tmp/get_default_input");
-        if (defaultinputFile.exists()) {
+        if (std::ifstream("/tmp/get_default_input")) {
             QFile defaultinputFile(QString("/tmp/get_default_input"));
             defaultinputFile.open(QIODevice::ReadOnly);
             QTextStream data_return(&defaultinputFile);
@@ -581,8 +582,7 @@ void SettingsWindow::loadSystemValues()
             ui_->comboBoxPulseInput->setCurrentText(definput[0]);
         }
 
-        QFileInfo zoneFile("/tmp/timezone_listing");
-        if (zoneFile.exists()) {
+        if (std::ifstream("/tmp/timezone_listing")) {
             QFile zoneFile(QString("/tmp/timezone_listing"));
             zoneFile.open(QIODevice::ReadOnly);
             QTextStream data_return(&zoneFile);
@@ -778,6 +778,7 @@ void SettingsWindow::onStopHotspot()
     ui_->lineEdit_wifimode->setText("");
     ui_->lineEdit_wlan0->setText("");
     ui_->lineEditWifiSSID->setText("");
+    ui_->lineEditPassword->setText("");
     system("sudo systemctl stop hotspot &");
     QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
@@ -921,18 +922,23 @@ void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
         ui_->lineEdit_wlan0->setText("interface down");
     }
 
-    QFileInfo hotspotFile("/tmp/hotspot_active");
-    if (hotspotFile.exists()) {
+    if (std::ifstream("/tmp/hotspot_active")) {
         ui_->pushButtonHotspotStop->show();
         ui_->pushButtonHotspotStart->hide();
         ui_->label_modeswitchprogress->hide();
         ui_->lineEdit_wifimode->setText("Hotspot");
         ui_->lineEditWifiSSID->setText(this->hotspotssid);
+        ui_->lineEditPassword->show();
+        ui_->label_password->show();
+        ui_->lineEditPassword->setText("1234567890");
     } else {
         ui_->pushButtonHotspotStart->show();
         ui_->pushButtonHotspotStop->hide();
         ui_->label_modeswitchprogress->hide();
         ui_->lineEdit_wifimode->setText("Client");
         ui_->lineEditWifiSSID->setText(this->wifissid);
+        ui_->lineEditPassword->hide();
+        ui_->label_password->hide();
+        ui_->lineEditPassword->setText("");
     }
 }

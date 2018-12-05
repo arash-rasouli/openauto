@@ -19,8 +19,7 @@
 #include <aasdk_proto/DrivingStatusEnum.pb.h>
 #include <f1x/openauto/Common/Log.hpp>
 #include <f1x/openauto/autoapp/Service/SensorService.hpp>
-#include <QFile>
-#include <QFileInfo>
+#include <fstream>
 
 namespace f1x
 {
@@ -123,16 +122,12 @@ void SensorService::sendDrivingStatusUnrestricted()
 void SensorService::sendNightData()
 {
     aasdk::proto::messages::SensorEventIndication indication;
-
-    QFileInfo nightSwitchFile("/tmp/night_mode_enabled");
-    bool nightSwitchExists = nightSwitchFile.exists();
-
-    if (!nightSwitchExists) {
-	OPENAUTO_LOG(error) << "[CS] [SensorService] Mode day triggered";
-	indication.add_night_mode()->set_is_night(false);
+    if (!std::ifstream("/tmp/night_mode_enabled")) {
+        OPENAUTO_LOG(error) << "[CS] [SensorService] Mode day triggered";
+        indication.add_night_mode()->set_is_night(false);
     } else {
-	indication.add_night_mode()->set_is_night(true);
-	OPENAUTO_LOG(error) << "[CS] [SensorService] Mode night triggered";
+        indication.add_night_mode()->set_is_night(true);
+        OPENAUTO_LOG(error) << "[CS] [SensorService] Mode night triggered";
     }
 
     auto promise = aasdk::channel::SendPromise::defer(strand_);

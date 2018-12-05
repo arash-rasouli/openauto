@@ -86,6 +86,8 @@ signals:
     void showAlphaSlider();
     void showRearCam();
     void hideRearCam();
+    void TriggerAppStart();
+    void TriggerAppStop();
 
 private slots:
     void on_horizontalSliderBrightness_valueChanged(int value);
@@ -143,6 +145,8 @@ private slots:
     void scanFiles();
     void tmpChanged();
     void setTrigger();
+    void setRetryUSBConnect();
+    void resetRetryUSBMessage();
 
 private:
     Ui::MainWindow* ui_;

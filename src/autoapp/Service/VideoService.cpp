@@ -18,6 +18,7 @@
 
 #include <f1x/openauto/Common/Log.hpp>
 #include <f1x/openauto/autoapp/Service/VideoService.hpp>
+#include <fstream>
 
 namespace f1x
 {
@@ -162,8 +163,14 @@ void VideoService::onVideoFocusRequest(const aasdk::proto::messages::VideoFocusR
 
     // stop video service on go back to openauto
     if (request.focus_mode() == 2) {
-        OPENAUTO_LOG(info) << "[VideoService] Stop video service...";
-        VideoService::stop();
+        OPENAUTO_LOG(info) << "[VideoService] Exit entity...";
+        try {
+            if (!std::ifstream("/tmp/entityexit")) {
+                std::ofstream("/tmp/entityexit");
+            }
+        } catch (...) {
+            OPENAUTO_LOG(error) << "[VideoService] Error in creating entityexit";
+        }
     }
 }
 
