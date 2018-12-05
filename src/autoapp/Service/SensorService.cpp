@@ -41,6 +41,7 @@ SensorService::SensorService(boost::asio::io_service& ioService, aasdk::messenge
 void SensorService::start()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
+        this->nightSensorPolling();
         OPENAUTO_LOG(info) << "[SensorService] start.";
         channel_->receive(this->shared_from_this());
     });
@@ -129,15 +130,8 @@ void SensorService::sendNightData()
         indication.add_night_mode()->set_is_night(true);
     } else {
         OPENAUTO_LOG(info) << "[SensorService] Mode day triggered";
+        indication.add_night_mode()->set_is_night(false);
     }
-
-    //if (!std::ifstream("/tmp/night_mode_enabled")) {
-    //    OPENAUTO_LOG(error) << "[CS] [SensorService] Mode day triggered";
-    //    indication.add_night_mode()->set_is_night(false);
-    //} else {
-    //    indication.add_night_mode()->set_is_night(true);
-    //    OPENAUTO_LOG(error) << "[CS] [SensorService] Mode night triggered";
-    //}
 
     auto promise = aasdk::channel::SendPromise::defer(strand_);
     promise->then([]() {}, std::bind(&SensorService::onChannelError, this->shared_from_this(), std::placeholders::_1));
@@ -152,7 +146,6 @@ void SensorService::nightSensorPolling()
             this->previous = this->isNight;
             this->sendNightData();
         }
-
         timer_.expires_from_now(boost::posix_time::seconds(5));
         timer_.async_wait(strand_.wrap(std::bind(&SensorService::nightSensorPolling, this->shared_from_this())));
     });
