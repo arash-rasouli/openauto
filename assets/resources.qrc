@@ -1,10 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>ico_androidauto.png</file>
         <file>ico_warning.png</file>
-        <file>ico_setting.png</file>
         <file>ico_info.png</file>
-        <file>ico_bluetooth.png</file>
         <file>aausb-hot.png</file>
         <file>aawifi-hot.png</file>
         <file>cursor-hot.png</file>
