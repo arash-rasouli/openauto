@@ -36,6 +36,7 @@ public:
     SensorService(boost::asio::io_service& ioService, aasdk::messenger::IMessenger::Pointer messenger);
     bool isNight = false;
     bool previous = false;
+    bool stopPolling = false;
 
     void start() override;
     void stop() override;
@@ -50,6 +51,7 @@ private:
     void sendNightData();
     bool is_file_exist(const char *filename);
     void nightSensorPolling();
+    bool firstRun = true;
 
     boost::asio::deadline_timer timer_;
     boost::asio::io_service::strand strand_;

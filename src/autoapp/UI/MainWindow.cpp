@@ -191,7 +191,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->SysinfoTopLeft->hide();
     ui_->pushButtonWifiSetup->hide();
 
-    //ui_->pushButtonNoDevice->hide();
     ui_->pushButtonAndroidAuto->hide();
     ui_->pushButtonAndroidAuto2->hide();
 
@@ -251,11 +250,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // hide wifi if not forced
     if (!this->wifiButtonForce) {
-        //ui_->pushButtonWifi->hide();
-        ui_->pushButtonWifi2->hide();
         ui_->AAWIFIWidget->hide();
+        ui_->AAWIFIWidget2->hide();
     } else {
         ui_->AAUSBWidget->hide();
+        ui_->AAUSBWidget2->hide();
     }
 
     // set custom buttons if file enabled by trigger file
@@ -1199,7 +1198,7 @@ void f1x::openauto::autoapp::ui::MainWindow::setTrigger()
 
 void f1x::openauto::autoapp::ui::MainWindow::setRetryUSBConnect()
 {
-    ui_->SysinfoTopLeft->setText("Trying USB reconnect ...");
+    ui_->SysinfoTopLeft->setText("Trying USB connect ...");
     ui_->SysinfoTopLeft->show();
 
     QTimer::singleShot(10000, this, SLOT(resetRetryUSBMessage()));
@@ -1387,18 +1386,23 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // check if phone is conencted to usb
-
     if (std::ifstream("/tmp/android_device")) {
         if (ui_->pushButtonAndroidAuto->isVisible() == false) {
             ui_->pushButtonAndroidAuto->show();
-            ui_->pushButtonAndroidAuto2->show();
             ui_->pushButtonNoDevice->hide();
+        }
+        if (ui_->pushButtonAndroidAuto2->isVisible() == false) {
+            ui_->pushButtonAndroidAuto2->show();
+            ui_->pushButtonNoDevice2->hide();
         }
     } else {
         if (ui_->pushButtonAndroidAuto->isVisible() == true) {
-            ui_->pushButtonAndroidAuto->hide();
-            ui_->pushButtonAndroidAuto2->hide();
             ui_->pushButtonNoDevice->show();
+            ui_->pushButtonAndroidAuto->hide();
+        }
+        if (ui_->pushButtonAndroidAuto2->isVisible() == true) {
+            ui_->pushButtonNoDevice2->show();
+            ui_->pushButtonAndroidAuto2->hide();
         }
     }
 
@@ -1534,7 +1538,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
 
-    // check if sutdown is external triggered and init clean app exit
+    // check if shutdown is external triggered and init clean app exit
     if (std::ifstream("/tmp/external_exit")) {
         f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
     }
@@ -1542,20 +1546,20 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     QFileInfo hotspotFile("/tmp/hotspot_active");
     this->hotspotActive = hotspotFile.exists();
 
-    // hide wifi if not forced
+    // hide wifi if hotspot disabled
     if (!this->hotspotActive) {
-        if ((ui_->AAWIFIWidget->isVisible() == true) || (ui_->pushButtonWifi2->isVisible() == true)){
-            //ui_->pushButtonWifi->hide();
+        if ((ui_->AAWIFIWidget->isVisible() == true) || (ui_->AAWIFIWidget2->isVisible() == true)){
             ui_->AAWIFIWidget->hide();
-            ui_->pushButtonWifi2->hide();
+            ui_->AAWIFIWidget2->hide();
             ui_->AAUSBWidget->show();
+            ui_->AAUSBWidget2->show();
         }
     } else {
-        if ((ui_->AAWIFIWidget->isVisible() == false) || (ui_->pushButtonWifi2->isVisible() == false)) {
-            //ui_->pushButtonWifi->show();
+        if ((ui_->AAWIFIWidget->isVisible() == false) || (ui_->AAWIFIWidget2->isVisible() == false)) {
             ui_->AAWIFIWidget->show();
-            ui_->pushButtonWifi2->show();
+            ui_->AAWIFIWidget2->show();
             ui_->AAUSBWidget->hide();
+            ui_->AAUSBWidget2->hide();
         }
     }
 
@@ -1564,10 +1568,18 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             ui_->pushButtonWifi->show();
             ui_->pushButtonNoWiFiDevice->hide();
         }
+        if (ui_->pushButtonWifi2->isVisible() == false) {
+            ui_->pushButtonWifi2->show();
+            ui_->pushButtonNoWiFiDevice2->hide();
+        }
     } else {
         if (ui_->pushButtonWifi->isVisible() == true) {
             ui_->pushButtonNoWiFiDevice->show();
             ui_->pushButtonWifi->hide();
+        }
+        if (ui_->pushButtonWifi2->isVisible() == true) {
+            ui_->pushButtonNoWiFiDevice2->show();
+            ui_->pushButtonWifi2->hide();
         }
     }
 
@@ -1576,7 +1588,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     if (ui_->pushButtonCameraShow2->isVisible() == true) {
         button_count = button_count + 1;
     }
-    if (ui_->pushButtonWifi2->isVisible() == true) {
+    if (ui_->AAWIFIWidget2->isVisible() == true) {
         button_count = button_count + 1;
     }
     if (ui_->pushButtonDebug2->isVisible() == true) {
