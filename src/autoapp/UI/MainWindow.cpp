@@ -1566,20 +1566,28 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     if (std::ifstream("/tmp/temp_recent_list")) {
         if (ui_->pushButtonWifi->isVisible() == false) {
             ui_->pushButtonWifi->show();
+        }
+        if (ui_->pushButtonNoWiFiDevice->isVisible() == true) {
             ui_->pushButtonNoWiFiDevice->hide();
         }
         if (ui_->pushButtonWifi2->isVisible() == false) {
             ui_->pushButtonWifi2->show();
+        }
+        if (ui_->pushButtonNoWiFiDevice2->isVisible() == true) {
             ui_->pushButtonNoWiFiDevice2->hide();
         }
     } else {
         if (ui_->pushButtonWifi->isVisible() == true) {
-            ui_->pushButtonNoWiFiDevice->show();
             ui_->pushButtonWifi->hide();
         }
+        if (ui_->pushButtonNoWiFiDevice->isVisible() == false) {
+            ui_->pushButtonNoWiFiDevice->show();
+        }
         if (ui_->pushButtonWifi2->isVisible() == true) {
-            ui_->pushButtonNoWiFiDevice2->show();
             ui_->pushButtonWifi2->hide();
+        }
+        if (ui_->pushButtonNoWiFiDevice2->isVisible() == false) {
+            ui_->pushButtonNoWiFiDevice2->show();
         }
     }
 
