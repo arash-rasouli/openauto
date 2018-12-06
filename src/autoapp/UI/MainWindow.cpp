@@ -160,7 +160,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonBrightness2, &QPushButton::clicked, this, &MainWindow::showBrightnessSlider);
     connect(ui_->pushButtonVolume, &QPushButton::clicked, this, &MainWindow::showVolumeSlider);
     connect(ui_->pushButtonVolume2, &QPushButton::clicked, this, &MainWindow::showVolumeSlider);
-    connect(ui_->pushButtonAlpha, &QPushButton::clicked, this, &MainWindow::showAlphaSlider);
     connect(ui_->pushButtonDebug, &QPushButton::clicked, this, &MainWindow::createDebuglog);
     connect(ui_->pushButtonDebug2, &QPushButton::clicked, this, &MainWindow::createDebuglog);
     connect(ui_->pushButtonBluetooth, &QPushButton::clicked, this, &MainWindow::setPairable);
@@ -220,7 +219,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonDebug2->hide();
     }
 
-    ui_->systemConfigInProgress->hide();
     ui_->pushButtonLock->hide();
     ui_->pushButtonLock2->hide();
     ui_->btDevice->hide();
@@ -233,10 +231,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // as default hide brightness slider
     ui_->BrightnessSliderControl->hide();
-
-    // as default hide alpha slider and button
-    ui_->pushButtonAlpha->hide();
-    ui_->AlphaSliderControl->hide();
 
     // as default hide volume slider player
     ui_->VolumeSliderControlPlayer->hide();
@@ -510,14 +504,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonToggleGUI2->hide();
     }
 
-    // hide alpha controls if enabled in settings
-    //if (!configuration->hideAlpha()) {
-    //    ui_->pushButtonAlpha->show();
-    //}
-
     // init alpha values
-    ui_->horizontalSliderAlpha->setValue(int(configuration->getAlphaTrans()));
-    MainWindow::on_horizontalSliderAlpha_valueChanged(int(configuration->getAlphaTrans()));
+    //MainWindow::updateAlpha(int(configuration->getAlphaTrans()));
+    MainWindow::updateAlpha();
 
     // Hide auto day/night if needed
     if (this->lightsensor) {
@@ -648,7 +637,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
     }
     ui_->BrightnessSliderControl->show();
     ui_->VolumeSliderControl->hide();
-    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness2_clicked()
@@ -680,7 +668,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness2_clicked()
     }
     ui_->BrightnessSliderControl->show();
     ui_->VolumeSliderControl->hide();
-    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume_clicked()
@@ -694,8 +681,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume_clicked()
     }
     ui_->VolumeSliderControl->show();
     ui_->BrightnessSliderControl->hide();
-    ui_->AlphaSliderControl->hide();
-
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume2_clicked()
@@ -708,14 +693,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonVolume2_clicked()
         ui_->pushButtonMute->show();
     }
     ui_->VolumeSliderControl->show();
-    ui_->BrightnessSliderControl->hide();
-    ui_->AlphaSliderControl->hide();
-}
-
-void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonAlpha_clicked()
-{
-    ui_->AlphaSliderControl->show();
-    ui_->VolumeSliderControl->hide();
     ui_->BrightnessSliderControl->hide();
 }
 
@@ -752,41 +729,43 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolume_valueChan
     system(("/usr/local/bin/autoapp_helper setvolume " + std::to_string(value) + "&").c_str());
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderAlpha_valueChanged(int value)
+void f1x::openauto::autoapp::ui::MainWindow::updateAlpha()
 {
-    int n = snprintf(this->alpha_str, 5, "%d", value);
-    double alpha = value/100.0;
-    QString alp=QString::number(alpha);
-    ui_->alphaValueLabel->setText(alp);
-    ui_->pushButtonAlpha->setStyleSheet( "background-color: rgba(243, 243, 243, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonExit->setStyleSheet( "background-color: rgba(164, 0, 0, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonShutdown->setStyleSheet( "background-color: rgba(239, 41, 41, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonReboot->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonCancel->setStyleSheet( "background-color: rgba(32, 74, 135, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonBrightness->setStyleSheet( "background-color: rgba(245, 121, 0, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonVolume->setStyleSheet( "background-color: rgba(64, 191, 191, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonAlpha->setStyleSheet( "background-color: rgba(173, 127, 168, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonLock->setStyleSheet( "background-color: rgba(15, 54, 5, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonSettings->setStyleSheet( "background-color: rgba(138, 226, 52, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonDay->setStyleSheet( "background: rgba(252, 233, 79, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonNight->setStyleSheet( "background-color: rgba(114, 159, 207, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonCameraShow->setStyleSheet( "background-color: rgba(100, 62, 4, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonWifi->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonToggleGUI->setStyleSheet( "background-color: rgba(237, 164, 255, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButton_c1->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c1 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c2->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c2 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c3->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c3 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c4->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c4 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c5->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c5 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButton_c6->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c6 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButtonDummy1->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonDummy2->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonDebug->setStyleSheet( "background-color: rgba(85, 87, 83, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
-    ui_->pushButtonMusic->setStyleSheet( "background-color: rgba(78, 154, 6, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButtonAndroidAuto->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButtonNoDevice->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-    ui_->pushButtonNoWiFiDevice->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    int value = configuration_->getAlphaTrans();
+    //int n = snprintf(this->alpha_str, 5, "%d", value);
+
+    if (value != this->alpha_current_str) {
+        this->alpha_current_str = value;
+        double alpha = value/100.0;
+        QString alp=QString::number(alpha);
+        ui_->pushButtonExit->setStyleSheet( "background-color: rgba(164, 0, 0, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonShutdown->setStyleSheet( "background-color: rgba(239, 41, 41, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonReboot->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonCancel->setStyleSheet( "background-color: rgba(32, 74, 135, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonBrightness->setStyleSheet( "background-color: rgba(245, 121, 0, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonVolume->setStyleSheet( "background-color: rgba(64, 191, 191, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonLock->setStyleSheet( "background-color: rgba(15, 54, 5, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonSettings->setStyleSheet( "background-color: rgba(138, 226, 52, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonDay->setStyleSheet( "background: rgba(252, 233, 79, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonNight->setStyleSheet( "background-color: rgba(114, 159, 207, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonCameraShow->setStyleSheet( "background-color: rgba(100, 62, 4, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonWifi->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonToggleGUI->setStyleSheet( "background-color: rgba(237, 164, 255, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButton_c1->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c1 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButton_c2->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c2 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButton_c3->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c3 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButton_c4->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c4 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButton_c5->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c5 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButton_c6->setStyleSheet( "background-color: rgba(" + this->custom_button_color_c6 + ", " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButtonDummy1->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonDummy2->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonDebug->setStyleSheet( "background-color: rgba(85, 87, 83, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
+        ui_->pushButtonMusic->setStyleSheet( "background-color: rgba(78, 154, 6, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButtonAndroidAuto->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButtonNoDevice->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        ui_->pushButtonNoWiFiDevice->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
@@ -869,7 +848,6 @@ void f1x::openauto::autoapp::ui::MainWindow::playerShow()
     ui_->VolumeSliderControlPlayer->show();
     ui_->VolumeSliderControl->hide();
     ui_->BrightnessSliderControl->hide();
-    ui_->AlphaSliderControl->hide();
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::playerHide()
@@ -883,7 +861,6 @@ void f1x::openauto::autoapp::ui::MainWindow::playerHide()
     ui_->VolumeSliderControl->show();
     ui_->VolumeSliderControlPlayer->hide();
     ui_->BrightnessSliderControl->hide();
-    ui_->AlphaSliderControl->hide();
     f1x::openauto::autoapp::ui::MainWindow::updateBG();
     f1x::openauto::autoapp::ui::MainWindow::tmpChanged();
 }
@@ -1437,41 +1414,37 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
 
-    // check the need for system messages
-    QFileInfo configInProgressFile("/tmp/config_in_progress");
-    QFileInfo debugInProgressFile("/tmp/debug_in_progress");
-    QFileInfo enablePairingFile("/tmp/enable_pairing");
-
     if (std::ifstream("/tmp/config_in_progress") || std::ifstream("/tmp/debug_in_progress") || std::ifstream("/tmp/enable_pairing")) {
-        if (ui_->systemConfigInProgress->isVisible() == false) {
+        if (ui_->SysinfoTopLeft->isVisible() == false) {
             if (std::ifstream("/tmp/config_in_progress")) {
-                ui_->systemConfigInProgress->setText("System config in progress - please wait ...");
                 ui_->pushButtonSettings->hide();
                 ui_->pushButtonSettings2->hide();
                 ui_->pushButtonLock->show();
                 ui_->pushButtonLock2->show();
-                ui_->systemConfigInProgress->show();
+                ui_->SysinfoTopLeft->setText("Config in progress ...");
+                ui_->SysinfoTopLeft->show();
             }
             if (std::ifstream("/tmp/debug_in_progress")) {
-                ui_->systemConfigInProgress->setText("Creating debug.zip on /boot - please wait ...");
                 ui_->pushButtonSettings->hide();
                 ui_->pushButtonSettings2->hide();
                 ui_->pushButtonDebug->hide();
                 ui_->pushButtonDebug2->hide();
                 ui_->pushButtonLock->show();
                 ui_->pushButtonLock2->show();
-                ui_->systemConfigInProgress->show();
+                ui_->SysinfoTopLeft->setText("Creating debug.zip ...");
+                ui_->SysinfoTopLeft->show();
             }
             if (std::ifstream("/tmp/enable_pairing")) {
-                ui_->systemConfigInProgress->setText("Auto Bluetooth Pairing enabled for 120 seconds!");
                 ui_->pushButtonDebug->hide();
                 ui_->pushButtonDebug2->hide();
-                ui_->systemConfigInProgress->show();
+                ui_->SysinfoTopLeft->setText("Pairing enabled for 120 seconds!");
+                ui_->SysinfoTopLeft->show();
             }
         }
     } else {
-        if (ui_->systemConfigInProgress->isVisible() == true) {
-            ui_->systemConfigInProgress->hide();
+        if (ui_->SysinfoTopLeft->isVisible() == true) {
+            ui_->SysinfoTopLeft->setText("");
+            ui_->SysinfoTopLeft->hide();
             ui_->pushButtonSettings->show();
             ui_->pushButtonSettings2->show();
             ui_->pushButtonLock->hide();
@@ -1653,16 +1626,6 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         ui_->pushButtonToggleGUI2->show();
     }
 
-    // hide alpha controls if enabled in settings
-    if (!this->configuration_->hideAlpha()) {
-        ui_->pushButtonAlpha->show();
-    } else {
-        ui_->pushButtonAlpha->hide();
-    }
-    if (QString::number(this->configuration_->getAlphaTrans()) != QString::number(ui_->horizontalSliderAlpha->value())) {
-        ui_->horizontalSliderAlpha->setValue(static_cast<int>(this->configuration_->getAlphaTrans()));
-    }
-
     // read value from tsl2561
     if (std::ifstream("/tmp/tsl2561") && this->configuration_->showLux()) {
         QFile paramFile("/tmp/tsl2561");
@@ -1683,4 +1646,5 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             ui_->label_right->setText("");
         }
     }
+    MainWindow::updateAlpha();
 }

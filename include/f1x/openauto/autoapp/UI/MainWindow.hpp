@@ -92,14 +92,13 @@ signals:
 private slots:
     void on_horizontalSliderBrightness_valueChanged(int value);
     void on_horizontalSliderVolume_valueChanged(int value);
-    void on_horizontalSliderAlpha_valueChanged(int value);
+    void updateAlpha();
 
 private slots:
     void on_pushButtonBrightness_clicked();
     void on_pushButtonBrightness2_clicked();
     void on_pushButtonVolume_clicked();
     void on_pushButtonVolume2_clicked();
-    void on_pushButtonAlpha_clicked();
     void switchGuiToDay();
     void switchGuiToNight();
     void showTime();
@@ -158,7 +157,8 @@ private:
     QFile *brightnessFileAlt;
     char brightness_str[6];
     char volume_str[6];
-    char alpha_str[6];
+    //char alpha_str[6];
+    int alpha_current_str;
     QString bversion;
     QString bdate;
 

@@ -50,6 +50,8 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->horizontalSliderScreenDPI, &QSlider::valueChanged, this, &SettingsWindow::onUpdateScreenDPI);
     connect(ui_->horizontalSliderAlphaTrans, &QSlider::valueChanged, this, &SettingsWindow::onUpdateAlphaTrans);
+    connect(ui_->horizontalSliderDay, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightnessDay);
+    connect(ui_->horizontalSliderNight, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightnessNight);
     connect(ui_->radioButtonUseExternalBluetoothAdapter, &QRadioButton::clicked, [&](bool checked) { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(checked); });
     connect(ui_->radioButtonDisableBluetooth, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
     connect(ui_->radioButtonUseLocalBluetoothAdapter, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
@@ -79,7 +81,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->labelBluetoothAdapterAddress->hide();
     ui_->lineEditExternalBluetoothAdapterAddress->hide();
     ui_->labelTestInProgress->hide();
-    ui_->checkBoxHideAlpha->hide();
 
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
@@ -131,7 +132,6 @@ void SettingsWindow::onSave()
     configuration_->oldGUI(ui_->checkBoxOldGUI->isChecked());
     configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
     configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
-    configuration_->hideAlpha(ui_->checkBoxHideAlpha->isChecked());
     configuration_->showLux(ui_->checkBoxShowLux->isChecked());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
 
@@ -282,6 +282,10 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxDayNight->currentText().toStdString()) );
     params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderDay->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderNight->value()) );
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -315,7 +319,6 @@ void SettingsWindow::load()
     ui_->checkBoxShowBigClock->setChecked(configuration_->showBigClock());
     ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
     ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
-    ui_->checkBoxHideAlpha->setChecked(configuration_->hideAlpha());
     ui_->checkBoxShowLux->setChecked(configuration_->showLux());
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
 
@@ -433,6 +436,16 @@ void SettingsWindow::onUpdateAlphaTrans(int value)
     ui_->labelAlphaTransValue->setText(QString::number(alpha));
 }
 
+void SettingsWindow::onUpdateBrightnessDay(int value)
+{
+    ui_->labelBrightnessDay->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateBrightnessNight(int value)
+{
+    ui_->labelBrightnessNight->setText(QString::number(value));
+}
+
 void SettingsWindow::onUpdateSystemVolume(int value)
 {
     ui_->labelSystemVolumeValue->setText(QString::number(value));
@@ -469,6 +482,26 @@ void SettingsWindow::loadSystemValues()
     system("/usr/local/bin/autoapp_helper getoutputs");
     system("/usr/local/bin/autoapp_helper getinputs");
     system("/usr/local/bin/autoapp_helper getparams");
+    system("/usr/local/bin/autoapp_helper getbrightnessvalues");
+
+    // set brightness slider attribs
+    QFile paramFile(QString("/tmp/br_values"));
+    paramFile.open(QIODevice::ReadOnly);
+    QTextStream data_param(&paramFile);
+    QStringList brigthnessvalues = data_param.readAll().split("#");
+    paramFile.close();
+
+    ui_->horizontalSliderDay->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderDay->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderDay->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderDay->setTickInterval(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderDay->setValue(brigthnessvalues[3].toInt());
+
+    ui_->horizontalSliderNight->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderNight->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderNight->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderNight->setTickInterval(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderNight->setValue(brigthnessvalues[4].toInt());
 
     if (std::ifstream("/tmp/return_value")) {
         QFile paramFile(QString("/tmp/return_value"));

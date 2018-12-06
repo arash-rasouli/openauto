@@ -54,6 +54,8 @@ private slots:
     void onResetToDefaults();
     void onUpdateScreenDPI(int value);
     void onUpdateAlphaTrans(int value);
+    void onUpdateBrightnessDay(int value);
+    void onUpdateBrightnessNight(int value);
     void onShowBindings();
     void onUpdateSystemVolume(int value);
     void onUpdateSystemCapture(int value);
