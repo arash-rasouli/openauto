@@ -193,6 +193,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonAndroidAuto->hide();
     ui_->pushButtonAndroidAuto2->hide();
 
+    ui_->SysinfoTopLeft2->hide();
+
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
     timer->start(1000);
@@ -227,6 +229,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFileInfo brightnessFile(brightnessFilename);
     if (!brightnessFile.exists() && !this->brightnessButtonForce) {
         ui_->pushButtonBrightness->hide();
+        ui_->pushButtonBrightness2->hide();
     }
 
     // as default hide brightness slider
@@ -404,6 +407,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     // run monitor for custom brightness command if enabled in crankshaft_env.sh
     if (brigthnessvalues[3] == "1") {
         ui_->pushButtonBrightness->show();
+        ui_->pushButtonBrightness2->show();
         this->customBrightnessControl = true;
         system("/usr/local/bin/autoapp_helper startcustombrightness &");
     }
@@ -1212,7 +1216,6 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFolders()
     catch(...) {
         ui_->SysinfoTopLeft->hide();
     }
-
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
@@ -1415,14 +1418,14 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     if (std::ifstream("/tmp/config_in_progress") || std::ifstream("/tmp/debug_in_progress") || std::ifstream("/tmp/enable_pairing")) {
-        if (ui_->SysinfoTopLeft->isVisible() == false) {
+        if (ui_->SysinfoTopLeft2->isVisible() == false) {
             if (std::ifstream("/tmp/config_in_progress")) {
                 ui_->pushButtonSettings->hide();
                 ui_->pushButtonSettings2->hide();
                 ui_->pushButtonLock->show();
                 ui_->pushButtonLock2->show();
-                ui_->SysinfoTopLeft->setText("Config in progress ...");
-                ui_->SysinfoTopLeft->show();
+                ui_->SysinfoTopLeft2->setText("Config in progress ...");
+                ui_->SysinfoTopLeft2->show();
             }
             if (std::ifstream("/tmp/debug_in_progress")) {
                 ui_->pushButtonSettings->hide();
@@ -1431,20 +1434,20 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
                 ui_->pushButtonDebug2->hide();
                 ui_->pushButtonLock->show();
                 ui_->pushButtonLock2->show();
-                ui_->SysinfoTopLeft->setText("Creating debug.zip ...");
-                ui_->SysinfoTopLeft->show();
+                ui_->SysinfoTopLeft2->setText("Creating debug.zip ...");
+                ui_->SysinfoTopLeft2->show();
             }
             if (std::ifstream("/tmp/enable_pairing")) {
                 ui_->pushButtonDebug->hide();
                 ui_->pushButtonDebug2->hide();
-                ui_->SysinfoTopLeft->setText("Pairing enabled for 120 seconds!");
-                ui_->SysinfoTopLeft->show();
+                ui_->SysinfoTopLeft2->setText("Pairing enabled for 120 seconds!");
+                ui_->SysinfoTopLeft2->show();
             }
         }
     } else {
-        if (ui_->SysinfoTopLeft->isVisible() == true) {
-            ui_->SysinfoTopLeft->setText("");
-            ui_->SysinfoTopLeft->hide();
+        if (ui_->SysinfoTopLeft2->isVisible() == true) {
+            ui_->SysinfoTopLeft2->setText("");
+            ui_->SysinfoTopLeft2->hide();
             ui_->pushButtonSettings->show();
             ui_->pushButtonSettings2->show();
             ui_->pushButtonLock->hide();
