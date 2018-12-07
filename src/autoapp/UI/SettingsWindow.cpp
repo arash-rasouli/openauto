@@ -52,6 +52,16 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->horizontalSliderAlphaTrans, &QSlider::valueChanged, this, &SettingsWindow::onUpdateAlphaTrans);
     connect(ui_->horizontalSliderDay, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightnessDay);
     connect(ui_->horizontalSliderNight, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightnessNight);
+    connect(ui_->horizontalSliderBrightness1, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightness1);
+    connect(ui_->horizontalSliderBrightness2, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightness2);
+    connect(ui_->horizontalSliderBrightness3, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightness3);
+    connect(ui_->horizontalSliderBrightness4, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightness4);
+    connect(ui_->horizontalSliderBrightness5, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightness5);
+    connect(ui_->horizontalSliderLux1, &QSlider::valueChanged, this, &SettingsWindow::onUpdateLux1);
+    connect(ui_->horizontalSliderLux2, &QSlider::valueChanged, this, &SettingsWindow::onUpdateLux2);
+    connect(ui_->horizontalSliderLux3, &QSlider::valueChanged, this, &SettingsWindow::onUpdateLux3);
+    connect(ui_->horizontalSliderLux4, &QSlider::valueChanged, this, &SettingsWindow::onUpdateLux4);
+    connect(ui_->horizontalSliderLux5, &QSlider::valueChanged, this, &SettingsWindow::onUpdateLux5);
     connect(ui_->radioButtonUseExternalBluetoothAdapter, &QRadioButton::clicked, [&](bool checked) { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(checked); });
     connect(ui_->radioButtonDisableBluetooth, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
     connect(ui_->radioButtonUseLocalBluetoothAdapter, &QRadioButton::clicked, [&]() { ui_->lineEditExternalBluetoothAdapterAddress->setEnabled(false); });
@@ -76,6 +86,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
 
     ui_->horizontalGroupBox->hide();
     ui_->labelBluetoothAdapterAddress->hide();
@@ -91,6 +102,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonTab6, &QPushButton::clicked, this, &SettingsWindow::show_tab6);
     connect(ui_->pushButtonTab7, &QPushButton::clicked, this, &SettingsWindow::show_tab7);
     connect(ui_->pushButtonTab8, &QPushButton::clicked, this, &SettingsWindow::show_tab8);
+    connect(ui_->pushButtonTab9, &QPushButton::clicked, this, &SettingsWindow::show_tab9);
 
     QTime time=QTime::currentTime();
     QString time_text_hour=time.toString("hh");
@@ -286,6 +298,30 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::to_string(ui_->horizontalSliderNight->value()) );
     params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderLux1->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderBrightness1->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderLux2->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderBrightness2->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderLux3->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderBrightness3->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderLux4->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderBrightness4->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderLux5->value()) );
+    params.append("#");
+    params.append( std::to_string(ui_->horizontalSliderBrightness5->value()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxCheckInterval->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxNightmodeStep->currentText().toStdString()) );
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -456,6 +492,56 @@ void SettingsWindow::onUpdateSystemCapture(int value)
     ui_->labelSystemCaptureValue->setText(QString::number(value));
 }
 
+void SettingsWindow::onUpdateLux1(int value)
+{
+    ui_->valueLux1->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateLux2(int value)
+{
+    ui_->valueLux2->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateLux3(int value)
+{
+    ui_->valueLux3->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateLux4(int value)
+{
+    ui_->valueLux4->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateLux5(int value)
+{
+    ui_->valueLux5->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateBrightness1(int value)
+{
+    ui_->valueBrightness1->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateBrightness2(int value)
+{
+    ui_->valueBrightness2->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateBrightness3(int value)
+{
+    ui_->valueBrightness3->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateBrightness4(int value)
+{
+    ui_->valueBrightness4->setText(QString::number(value));
+}
+
+void SettingsWindow::onUpdateBrightness5(int value)
+{
+    ui_->valueBrightness5->setText(QString::number(value));
+}
+
 void SettingsWindow::unpairAll()
 {
     system("/usr/local/bin/crankshaft bluetooth unpair &");
@@ -502,6 +588,51 @@ void SettingsWindow::loadSystemValues()
     ui_->horizontalSliderNight->setSingleStep(brigthnessvalues[2].toInt());
     ui_->horizontalSliderNight->setTickInterval(brigthnessvalues[2].toInt());
     ui_->horizontalSliderNight->setValue(brigthnessvalues[4].toInt());
+
+    ui_->horizontalSliderBrightness1->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderBrightness1->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderBrightness1->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness1->setTickInterval(brigthnessvalues[2].toInt());
+
+    ui_->horizontalSliderBrightness2->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderBrightness2->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderBrightness2->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness2->setTickInterval(brigthnessvalues[2].toInt());
+
+    ui_->horizontalSliderBrightness3->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderBrightness3->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderBrightness3->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness3->setTickInterval(brigthnessvalues[2].toInt());
+
+    ui_->horizontalSliderBrightness4->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderBrightness4->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderBrightness4->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness4->setTickInterval(brigthnessvalues[2].toInt());
+
+    ui_->horizontalSliderBrightness5->setMinimum(brigthnessvalues[0].toInt());
+    ui_->horizontalSliderBrightness5->setMaximum(brigthnessvalues[1].toInt());
+    ui_->horizontalSliderBrightness5->setSingleStep(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness5->setTickInterval(brigthnessvalues[2].toInt());
+
+    // set tsl2561 slider attribs
+    QFile param2File(QString("/tmp/tsl2561_values"));
+    param2File.open(QIODevice::ReadOnly);
+    QTextStream data_param2(&param2File);
+    QStringList brigthnessvalues2 = data_param2.readAll().split("#");
+    param2File.close();
+
+    ui_->horizontalSliderLux1->setValue(brigthnessvalues2[0].toInt());
+    ui_->horizontalSliderBrightness1->setValue(brigthnessvalues2[1].toInt());
+    ui_->horizontalSliderLux2->setValue(brigthnessvalues2[2].toInt());
+    ui_->horizontalSliderBrightness2->setValue(brigthnessvalues2[3].toInt());
+    ui_->horizontalSliderLux3->setValue(brigthnessvalues2[4].toInt());
+    ui_->horizontalSliderBrightness3->setValue(brigthnessvalues2[5].toInt());
+    ui_->horizontalSliderLux4->setValue(brigthnessvalues2[6].toInt());
+    ui_->horizontalSliderBrightness4->setValue(brigthnessvalues2[7].toInt());
+    ui_->horizontalSliderLux5->setValue(brigthnessvalues2[8].toInt());
+    ui_->horizontalSliderBrightness5->setValue(brigthnessvalues2[9].toInt());   
+    ui_->comboBoxCheckInterval->setCurrentText(brigthnessvalues2[10]);
+    ui_->comboBoxNightmodeStep->setCurrentText(brigthnessvalues2[11]);
 
     if (std::ifstream("/tmp/return_value")) {
         QFile paramFile(QString("/tmp/return_value"));
@@ -759,8 +890,13 @@ void SettingsWindow::loadSystemValues()
         // set lightsensor
         if (getparams[40] == "enabled") {
             ui_->comboBoxLS->setCurrentIndex(1);
+            ui_->groupBoxSliderDay->hide();
+            ui_->groupBoxSliderNight->hide();
         } else {
             ui_->comboBoxLS->setCurrentIndex(0);
+            ui_->pushButtonTab9->hide();
+            ui_->groupBoxSliderDay->show();
+            ui_->groupBoxSliderNight->show();
         }
         ui_->comboBoxDayNight->setCurrentText(getparams[41]);
     }
@@ -825,6 +961,7 @@ void SettingsWindow::show_tab1()
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab1->show();
 }
 
@@ -837,6 +974,7 @@ void SettingsWindow::show_tab2()
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab2->show();
 }
 
@@ -849,6 +987,7 @@ void SettingsWindow::show_tab3()
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab3->show();
 }
 
@@ -861,6 +1000,7 @@ void SettingsWindow::show_tab4()
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab4->show();
 }
 
@@ -873,6 +1013,7 @@ void SettingsWindow::show_tab5()
     ui_->tab6->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab5->show();
 }
 
@@ -885,6 +1026,7 @@ void SettingsWindow::show_tab6()
     ui_->tab5->hide();
     ui_->tab7->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab6->show();
 }
 
@@ -897,6 +1039,7 @@ void SettingsWindow::show_tab7()
     ui_->tab5->hide();
     ui_->tab6->hide();
     ui_->tab8->hide();
+    ui_->tab9->hide();
     ui_->tab7->show();
 }
 
@@ -909,7 +1052,21 @@ void SettingsWindow::show_tab8()
     ui_->tab5->hide();
     ui_->tab6->hide();
     ui_->tab7->hide();
+    ui_->tab9->hide();
     ui_->tab8->show();
+}
+
+void SettingsWindow::show_tab9()
+{
+    ui_->tab1->hide();
+    ui_->tab2->hide();
+    ui_->tab3->hide();
+    ui_->tab4->hide();
+    ui_->tab5->hide();
+    ui_->tab6->hide();
+    ui_->tab7->hide();
+    ui_->tab8->hide();
+    ui_->tab9->show();
 }
 
 }

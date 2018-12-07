@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>963</width>
-    <height>3194</height>
+    <height>3512</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -218,6 +218,31 @@ outline: none;
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButtonTab9">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color: rgb(85, 87, 83);
+}
+QPushButton:pressed {
+background-color: rgb(114, 159, 207);
+}
+QPushButton:focus {
+background-color: rgb(114, 159, 207);
+outline: none;
+}</string>
+       </property>
+       <property name="text">
+        <string>TSL2561</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButtonTab8">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -387,13 +412,6 @@ outline: none;
              </property>
              <property name="text">
               <string>Hide menu toggle button</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBoxShowLux">
-             <property name="text">
-              <string>Show Lux value from tls2561</string>
              </property>
             </widget>
            </item>
@@ -5563,6 +5581,773 @@ subcontrol-position: center left;
          </item>
         </layout>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="tab9" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="horizontalWidget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QGroupBox" name="groupBoxLux">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Lux Level Sensor</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="formWidget_2" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QFormLayout" name="formLayout_20">
+               <property name="verticalSpacing">
+                <number>14</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>9</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>2</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="valueLux1">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>5</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QSlider" name="horizontalSliderLux1">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                 <property name="value">
+                  <number>5</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="valueLux2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>20</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="valueLux3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>100</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="valueLux4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>200</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="valueLux5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>500</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSlider" name="horizontalSliderLux2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>200</number>
+                 </property>
+                 <property name="value">
+                  <number>20</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QSlider" name="horizontalSliderLux3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>300</number>
+                 </property>
+                 <property name="value">
+                  <number>100</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QSlider" name="horizontalSliderLux4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>400</number>
+                 </property>
+                 <property name="value">
+                  <number>200</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QSlider" name="horizontalSliderLux5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>500</number>
+                 </property>
+                 <property name="value">
+                  <number>500</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBoxBrightness">
+           <property name="title">
+            <string>Brightness (set this value if lux level reached)</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>2</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="formWidget" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QFormLayout" name="formLayout_19">
+               <property name="verticalSpacing">
+                <number>14</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>9</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>9</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="valueBrightness1">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>30</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QSlider" name="horizontalSliderBrightness1">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>30</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="valueBrightness2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>90</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSlider" name="horizontalSliderBrightness2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>90</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="valueBrightness3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>150</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QSlider" name="horizontalSliderBrightness3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>150</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="valueBrightness4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>210</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QSlider" name="horizontalSliderBrightness4">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>210</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="valueBrightness5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>255</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QSlider" name="horizontalSliderBrightness5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QSlider::handle:horizontal { background: white; height: 32px; width: 52px; margin: 0 0;}
+QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                 <property name="value">
+                  <number>255</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxOptions">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Options</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="horizontalWidget" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="NightmodeStep" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QFormLayout" name="formLayout_28">
+               <property name="formAlignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item row="2" column="0">
+                <widget class="QLabel" name="labelNightmodeStep">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>230</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Trigger night mode on this step
+or lower</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QComboBox" name="comboBoxNightmodeStep">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>1</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>2</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>3</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>4</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>5</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="CheckInterval" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QFormLayout" name="formLayout_21">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelCheckInterval">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>230</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Check Interval Sensor (seconds)</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QComboBox" name="comboBoxCheckInterval">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>5</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>15</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>20</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>25</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>30</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxShowLux">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Show Lux value from tsl2561 on Main Window</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

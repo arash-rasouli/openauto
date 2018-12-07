@@ -65,6 +65,16 @@ private slots:
     void syncNTPTime();
     void on_pushButtonAudioTest_clicked();
     void updateNetworkInfo();
+    void onUpdateLux1(int value);
+    void onUpdateLux2(int value);
+    void onUpdateLux3(int value);
+    void onUpdateLux4(int value);
+    void onUpdateLux5(int value);
+    void onUpdateBrightness1(int value);
+    void onUpdateBrightness2(int value);
+    void onUpdateBrightness3(int value);
+    void onUpdateBrightness4(int value);
+    void onUpdateBrightness5(int value);
 
 private slots:
     void show_tab1();
@@ -75,6 +85,7 @@ private slots:
     void show_tab6();
     void show_tab7();
     void show_tab8();
+    void show_tab9();
 
 private:
     void showEvent(QShowEvent* event);

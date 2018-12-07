@@ -41,6 +41,9 @@ SensorService::SensorService(boost::asio::io_service& ioService, aasdk::messenge
 void SensorService::start()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
+        if (is_file_exist("/tmp/night_mode_enabled")) {
+            this->isNight = true;
+        }
         this->nightSensorPolling();
         OPENAUTO_LOG(info) << "[SensorService] start.";
         channel_->receive(this->shared_from_this());
@@ -49,6 +52,7 @@ void SensorService::start()
 
 void SensorService::stop()
 {
+    this->stopPolling = true;
     strand_.dispatch([this, self = this->shared_from_this()]() {
         OPENAUTO_LOG(info) << "[SensorService] stop.";
     });
@@ -136,19 +140,25 @@ void SensorService::sendNightData()
     auto promise = aasdk::channel::SendPromise::defer(strand_);
     promise->then([]() {}, std::bind(&SensorService::onChannelError, this->shared_from_this(), std::placeholders::_1));
     channel_->sendSensorEventIndication(indication, std::move(promise));
+    if (this->firstRun) {
+        this->firstRun = false;
+        this->previous = this->isNight;
+    }
 }
 
 void SensorService::nightSensorPolling()
 {
-    strand_.dispatch([this, self = this->shared_from_this()]() {
-        this->isNight = is_file_exist("/tmp/night_mode_enabled");
-        if (this->previous != this->isNight) {
-            this->previous = this->isNight;
-            this->sendNightData();
-        }
-        timer_.expires_from_now(boost::posix_time::seconds(5));
-        timer_.async_wait(strand_.wrap(std::bind(&SensorService::nightSensorPolling, this->shared_from_this())));
-    });
+    if (!this->stopPolling) {
+        strand_.dispatch([this, self = this->shared_from_this()]() {
+            this->isNight = is_file_exist("/tmp/night_mode_enabled");
+            if (this->previous != this->isNight && !this->firstRun) {
+                this->previous = this->isNight;
+                this->sendNightData();
+            }
+            timer_.expires_from_now(boost::posix_time::seconds(5));
+            timer_.async_wait(strand_.wrap(std::bind(&SensorService::nightSensorPolling, this->shared_from_this())));
+        });
+    }
 }
 
 bool SensorService::is_file_exist(const char *fileName)
