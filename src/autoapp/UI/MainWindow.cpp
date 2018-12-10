@@ -116,6 +116,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     QFileInfo wallpaperClassicNightFile("wallpaper-classic-night.png");
     this->wallpaperNightFileExists = wallpaperNightFile.exists();
 
+    QFileInfo wallpaperEQFile("wallpaper-eq.png");
+    this->wallpaperEQFileExists = wallpaperEQFile.exists();
+
     if (wallpaperDayFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperDayFile.symLinkTarget());
         this->wallpaperDayFileExists = linkTarget.exists();
@@ -134,6 +137,11 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     if (wallpaperClassicNightFile.isSymLink()) {
         QFileInfo linkTarget(wallpaperClassicNightFile.symLinkTarget());
         this->wallpaperClassicNightFileExists = linkTarget.exists();
+    }
+
+    if (wallpaperEQFile.isSymLink()) {
+        QFileInfo linkTarget(wallpaperEQFile.symLinkTarget());
+        this->wallpaperEQFileExists = linkTarget.exists();
     }
 
     ui_->setupUi(this);
@@ -842,7 +850,12 @@ void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
 
 void f1x::openauto::autoapp::ui::MainWindow::playerShow()
 {
-    this->setStyleSheet("QMainWindow { background: url(:/bg-equilizer.png); background-repeat: no-repeat; background-position: center; }");
+    if (this->wallpaperEQFileExists) {
+        this->setStyleSheet("QMainWindow { background: url(wallpaper-eq.png); background-repeat: no-repeat; background-position: center; }");
+    } else {
+        this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+    }
+
     if (!this->oldGUIStyle) {
         ui_->menuWidget->hide();
     } else {

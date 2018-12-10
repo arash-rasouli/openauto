@@ -207,6 +207,7 @@ private:
     bool wallpaperNightFileExists = false;
     bool wallpaperClassicDayFileExists = false;
     bool wallpaperClassicNightFileExists = false;
+    bool wallpaperEQFileExists = false;
 
     bool exitMenuVisible = false;
 

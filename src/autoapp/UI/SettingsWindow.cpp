@@ -322,6 +322,12 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxNightmodeStep->currentText().toStdString()) );
     params.append("#");
+    if (ui_->checkBoxDisableDayNightRTC->isChecked()) {
+        params.append("0");
+    } else {
+        params.append("1");
+    }
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -899,6 +905,11 @@ void SettingsWindow::loadSystemValues()
             ui_->groupBoxSliderNight->show();
         }
         ui_->comboBoxDayNight->setCurrentText(getparams[41]);
+        if (getparams[42] == "1") {
+            ui_->checkBoxDisableDayNightRTC->setChecked(false);
+        } else {
+            ui_->checkBoxDisableDayNightRTC->setChecked(true);
+        }
     }
 }
 
