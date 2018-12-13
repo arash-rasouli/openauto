@@ -328,6 +328,19 @@ void SettingsWindow::onSave()
         params.append("1");
     }
     params.append("#");
+    if(ui_->radioButtonAnimatedCSNG->isChecked())
+    {
+        params.append("0");
+    }
+    else if(ui_->radioButtonCSNG->isChecked())
+    {
+        params.append("1");
+    }
+    else if(ui_->radioButtonCustom->isChecked())
+    {
+        params.append("2");
+    }
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -909,6 +922,15 @@ void SettingsWindow::loadSystemValues()
             ui_->checkBoxDisableDayNightRTC->setChecked(false);
         } else {
             ui_->checkBoxDisableDayNightRTC->setChecked(true);
+        }
+        if (getparams[43] == "csnganimation") {
+            ui_->radioButtonAnimatedCSNG->setChecked(true);
+        }
+        else if (getparams[43] == "crankshaft") {
+            ui_->radioButtonCSNG->setChecked(true);
+        }
+        else if (getparams[43] == "custom") {
+            ui_->radioButtonCustom->setChecked(true);
         }
     }
 }

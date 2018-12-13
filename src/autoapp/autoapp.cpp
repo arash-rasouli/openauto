@@ -239,7 +239,7 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
         OPENAUTO_LOG(info) << "[CS] Manual start android auto entity by reset usb.";
         if (std::ifstream("/tmp/android_device")) {
-            system("/usr/local/bin/autoapp_helper usbreset &");
+            system("/usr/local/bin/autoapp_helper usbreset");
             app->waitForUSBDevice();
         }
     });
@@ -251,7 +251,6 @@ int main(int argc, char* argv[])
             usleep(500000);
             app->stop();
         } else {
-            //app->onAndroidAutoQuit();
             app->stop();
         }
     });
@@ -261,6 +260,7 @@ int main(int argc, char* argv[])
     app->waitForUSBDevice();
 
     auto result = qApplication.exec();
+
     std::for_each(threadPool.begin(), threadPool.end(), std::bind(&std::thread::join, std::placeholders::_1));
 
     libusb_exit(usbContext);

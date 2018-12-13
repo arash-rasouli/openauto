@@ -22,6 +22,9 @@ public:
     ~Warning() override;
 
     Ui::Warning* ui_;
+
+private slots:
+    void Autoclose();
 };
 
 }

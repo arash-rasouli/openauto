@@ -61,88 +61,26 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     this->configuration_ = configuration;
 
     // trigger files
-    QFileInfo nightModeFile("/tmp/night_mode_enabled");
-    this->nightModeEnabled = nightModeFile.exists();
-
-    QFileInfo devModeFile("/tmp/dev_mode_enabled");
-    this->devModeEnabled = devModeFile.exists();
-
-    QFileInfo wifiButtonFile("/etc/button_wifi_visible");
-    this->wifiButtonForce = wifiButtonFile.exists();
-
-    QFileInfo cameraButtonFile("/etc/button_camera_visible");
-    this->cameraButtonForce = cameraButtonFile.exists();
-
-    QFileInfo brightnessButtonFile("/etc/button_brightness_visible");
-    this->brightnessButtonForce = brightnessButtonFile.exists();
-
-    QFileInfo DebugmodeFile("/tmp/usb_debug_mode");
-    this->systemDebugmode = DebugmodeFile.exists();
-
-    QFileInfo lightsensorFile("/etc/cs_lightsensor");
-    this->lightsensor = lightsensorFile.exists();
-
-    QFileInfo c1ButtonFile(this->custom_button_file_c1);
-    this->c1ButtonForce = c1ButtonFile.exists();
-
-    QFileInfo c2ButtonFile(this->custom_button_file_c2);
-    this->c2ButtonForce = c2ButtonFile.exists();
-
-    QFileInfo c3ButtonFile(this->custom_button_file_c3);
-    this->c3ButtonForce = c3ButtonFile.exists();
-
-    QFileInfo c4ButtonFile(this->custom_button_file_c4);
-    this->c4ButtonForce = c4ButtonFile.exists();
-
-    QFileInfo c5ButtonFile(this->custom_button_file_c5);
-    this->c5ButtonForce = c5ButtonFile.exists();
-
-    QFileInfo c6ButtonFile(this->custom_button_file_c6);
-    this->c6ButtonForce = c6ButtonFile.exists();
-
-    QFileInfo c7ButtonFile(this->custom_button_file_c7);
-    this->c7ButtonForce = c7ButtonFile.exists();
+    this->nightModeEnabled = check_file_exist(this->nightModeFile);
+    this->devModeEnabled = check_file_exist(this->devModeFile);
+    this->wifiButtonForce = check_file_exist(this->wifiButtonFile);
+    this->cameraButtonForce = check_file_exist(this->cameraButtonFile);
+    this->brightnessButtonForce = check_file_exist(this->brightnessButtonFile);
+    this->systemDebugmode = check_file_exist(this->debugModeFile);
+    this->lightsensor = check_file_exist(this->lsFile);
+    this->c1ButtonForce = check_file_exist(this->custom_button_file_c1);
+    this->c2ButtonForce = check_file_exist(this->custom_button_file_c2);
+    this->c3ButtonForce = check_file_exist(this->custom_button_file_c3);
+    this->c4ButtonForce = check_file_exist(this->custom_button_file_c4);
+    this->c5ButtonForce = check_file_exist(this->custom_button_file_c5);
+    this->c6ButtonForce = check_file_exist(this->custom_button_file_c6);
 
     // wallpaper stuff
-    QFileInfo wallpaperDayFile("wallpaper.png");
-    this->wallpaperDayFileExists = wallpaperDayFile.exists();
-
-    QFileInfo wallpaperNightFile("wallpaper-night.png");
-    this->wallpaperNightFileExists = wallpaperNightFile.exists();
-
-    QFileInfo wallpaperClassicDayFile("wallpaper-classic.png");
-    this->wallpaperDayFileExists = wallpaperDayFile.exists();
-
-    QFileInfo wallpaperClassicNightFile("wallpaper-classic-night.png");
-    this->wallpaperNightFileExists = wallpaperNightFile.exists();
-
-    QFileInfo wallpaperEQFile("wallpaper-eq.png");
-    this->wallpaperEQFileExists = wallpaperEQFile.exists();
-
-    if (wallpaperDayFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperDayFile.symLinkTarget());
-        this->wallpaperDayFileExists = linkTarget.exists();
-    }
-
-    if (wallpaperNightFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperNightFile.symLinkTarget());
-        this->wallpaperNightFileExists = linkTarget.exists();
-    }
-
-    if (wallpaperClassicDayFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperClassicDayFile.symLinkTarget());
-        this->wallpaperClassicDayFileExists = linkTarget.exists();
-    }
-
-    if (wallpaperClassicNightFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperClassicNightFile.symLinkTarget());
-        this->wallpaperClassicNightFileExists = linkTarget.exists();
-    }
-
-    if (wallpaperEQFile.isSymLink()) {
-        QFileInfo linkTarget(wallpaperEQFile.symLinkTarget());
-        this->wallpaperEQFileExists = linkTarget.exists();
-    }
+    this->wallpaperDayFileExists = check_file_exist("wallpaper.png");
+    this->wallpaperNightFileExists = check_file_exist("wallpaper-night.png");
+    this->wallpaperClassicDayFileExists = check_file_exist("wallpaper-classic.png");
+    this->wallpaperClassicNightFileExists = check_file_exist("wallpaper-classic-night.png");
+    this->wallpaperEQFileExists = check_file_exist("wallpaper-eq.png");
 
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
@@ -445,38 +383,13 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // set bg's on startup
+    MainWindow::updateBG();
     if (!this->nightModeEnabled) {
-        if (this->oldGUIStyle) {
-            if (this->wallpaperClassicDayFileExists) {
-                this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
-            } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-            }
-        } else {
-            if (this->wallpaperDayFileExists) {
-                this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
-            } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-            }
-        }
         ui_->pushButtonDay->hide();
         ui_->pushButtonDay2->hide();
         ui_->pushButtonNight->show();
         ui_->pushButtonNight2->show();
     } else {
-        if (this->oldGUIStyle) {
-            if (this->wallpaperClassicNightFileExists) {
-                this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
-            } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-            }
-        } else {
-            if (this->wallpaperNightFileExists) {
-                this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
-            } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-            }
-        }
         ui_->pushButtonNight->hide();
         ui_->pushButtonNight2->hide();
         ui_->pushButtonDay->show();
@@ -517,7 +430,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     }
 
     // init alpha values
-    //MainWindow::updateAlpha(int(configuration->getAlphaTrans()));
     MainWindow::updateAlpha();
 
     // Hide auto day/night if needed
@@ -615,10 +527,6 @@ void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed6()
     system(qPrintable(this->custom_button_command_c6 + " &"));
 }
 
-void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed7()
-{
-    system(qPrintable(this->custom_button_command_c7 + " &"));
-}
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonBrightness_clicked()
 {
@@ -783,19 +691,7 @@ void f1x::openauto::autoapp::ui::MainWindow::updateAlpha()
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
 {
     MainWindow::on_pushButtonVolume_clicked();
-    if (this->oldGUIStyle) {
-        if (this->wallpaperClassicNightFileExists) {
-            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
-        } else {
-            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-        }
-    } else {
-        if (this->wallpaperNightFileExists) {
-            this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
-        } else {
-            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-        }
-    }
+    f1x::openauto::autoapp::ui::MainWindow::updateBG();
     ui_->pushButtonDay->show();
     ui_->pushButtonDay2->show();
     ui_->pushButtonNight->hide();
@@ -805,19 +701,7 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
 {
     MainWindow::on_pushButtonVolume_clicked();
-    if (this->oldGUIStyle) {
-        if (this->wallpaperClassicDayFileExists) {
-            this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
-        } else {
-            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-        }
-    } else {
-        if (this->wallpaperDayFileExists) {
-            this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
-        } else {
-            this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-        }
-    }
+    f1x::openauto::autoapp::ui::MainWindow::updateBG();
     ui_->pushButtonNight->show();
     ui_->pushButtonNight2->show();
     ui_->pushButtonDay->hide();
@@ -942,32 +826,46 @@ void f1x::openauto::autoapp::ui::MainWindow::toggleGUI()
 
 void f1x::openauto::autoapp::ui::MainWindow::updateBG()
 {
-    if (!this->nightModeEnabled) {
-        if (this->oldGUIStyle) {
-            if (this->wallpaperClassicDayFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }") );
+    if (this->date_text == "12/24") {
+        this->setStyleSheet("QMainWindow { background: url(:/christmas.png); background-repeat: no-repeat; background-position: center; }");
+        this->holidaybg = true;
+    }
+    else if (this->date_text == "12/31") {
+        this->setStyleSheet("QMainWindow { background: url(:/firework.png); background-repeat: no-repeat; background-position: center; }");
+        this->holidaybg = true;
+    }
+    else {
+        if (!this->nightModeEnabled) {
+            if (this->oldGUIStyle) {
+                if (this->wallpaperClassicDayFileExists) {
+                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }") );
+                    this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
+                } else {
+                    this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                }
             } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                if (this->wallpaperDayFileExists) {
+                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }") );
+                    this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
+                } else {
+                    this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                }
             }
         } else {
-            if (this->wallpaperDayFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }") );
+            if (this->oldGUIStyle) {
+                if (this->wallpaperClassicNightFileExists) {
+                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }") );
+                    this->setStyleSheet( "QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
+                } else {
+                    this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                }
             } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-            }
-        }
-    } else {
-        if (this->oldGUIStyle) {
-            if (this->wallpaperClassicNightFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }") );
-            } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
-            }
-        } else {
-            if (this->wallpaperNightFileExists) {
-                this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }") );
-            } else {
-                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                if (this->wallpaperNightFileExists) {
+                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }") );
+                    this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
+                } else {
+                    this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+                }
             }
         }
     }
@@ -996,13 +894,26 @@ void f1x::openauto::autoapp::ui::MainWindow::setUnMute()
 void f1x::openauto::autoapp::ui::MainWindow::showTime()
 {
     QTime time=QTime::currentTime();
+    QDate date=QDate::currentDate();
     QString time_text=time.toString("hh : mm : ss");
+    this->date_text=date.toString("MM/dd");
+
     if ((time.second() % 2) == 0) {
         time_text[3] = ' ';
         time_text[8] = ' ';
     }
+
     ui_->Digital_clock->setText(time_text);
     ui_->bigClock->setText(time_text);
+
+    if (!this->holidaybg) {
+        if (this->date_text == "12/24") {
+            MainWindow::updateBG();
+        }
+        else if (this->date_text == "12/31") {
+            MainWindow::updateBG();
+        }
+    }
 }
 
 
@@ -1341,6 +1252,24 @@ void f1x::openauto::autoapp::ui::MainWindow::on_StateChanged(QMediaPlayer::State
     }
 }
 
+
+bool f1x::openauto::autoapp::ui::MainWindow::check_file_exist(const char *fileName)
+{
+    std::ifstream ifile(fileName, std::ios::in);
+    // file not ok - checking if symlink
+    if (!ifile.good()) {
+        QFileInfo linkFile = QString(fileName);
+        if (linkFile.isSymLink()) {
+            QFileInfo linkTarget(linkFile.symLinkTarget());
+            return linkTarget.exists();
+        } else {
+            return ifile.good();
+        }
+    } else {
+        return ifile.good();
+    }
+}
+
 void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 {
     try {
@@ -1400,8 +1329,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // check if bluetooth available
-    QFileInfo bluetoothButtonFile("/tmp/button_bluetooth_visible");
-    this->bluetoothEnabled = bluetoothButtonFile.exists();
+    this->bluetoothEnabled = check_file_exist("/tmp/button_bluetooth_visible");
 
     if (this->bluetoothEnabled) {
         if (ui_->pushButtonBluetooth->isVisible() == false) {
@@ -1473,8 +1401,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // update day/night state
-    QFileInfo nightModeFile("/tmp/night_mode_enabled");
-    this->nightModeEnabled = nightModeFile.exists();
+    this->nightModeEnabled = check_file_exist("/tmp/night_mode_enabled");
 
     if (this->nightModeEnabled) {
         if (!this->DayNightModeState) {
@@ -1492,9 +1419,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     if (this->cameraButtonForce) {
 
         // check if dashcam is recording
-        QFileInfo dashCamRecordingFile("/tmp/dashcam_is_recording");
-        this->dashCamRecording = dashCamRecordingFile.exists();
-
+        this->dashCamRecording = check_file_exist("/tmp/dashcam_is_recording");
         // show recording state if dashcam is visible
         if (ui_->cameraWidget->isVisible() == true) {
             if (this->dashCamRecording) {
@@ -1511,9 +1436,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
 
         // check if rearcam is eanbled
-        QFileInfo rearCamFile("/tmp/rearcam_enabled");
-        this->rearCamEnabled = rearCamFile.exists();
-
+        this->rearCamEnabled = check_file_exist("/tmp/rearcam_enabled");
         if (this->rearCamEnabled) {
             if (!this->rearCamVisible) {
                 this->rearCamVisible = true;
@@ -1532,8 +1455,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         f1x::openauto::autoapp::ui::MainWindow::MainWindow::exit();
     }
 
-    QFileInfo hotspotFile("/tmp/hotspot_active");
-    this->hotspotActive = hotspotFile.exists();
+    this->hotspotActive = check_file_exist("/tmp/hotspot_active");
 
     // hide wifi if hotspot disabled
     if (!this->hotspotActive) {
