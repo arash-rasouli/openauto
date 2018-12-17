@@ -30,6 +30,7 @@
 #include <QScreen>
 #include <QRect>
 #include <QFileSystemWatcher>
+#include <QVideoWidget>
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -441,6 +442,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonBrightness->hide();
         ui_->pushButtonBrightness2->hide();
     }
+
+    // Hide recordings button
+    ui_->pushButtonRecordings->hide();
 
     player = new QMediaPlayer(this);
     playlist = new QMediaPlaylist(this);

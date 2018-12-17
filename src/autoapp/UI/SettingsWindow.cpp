@@ -341,6 +341,8 @@ void SettingsWindow::onSave()
         params.append("2");
     }
     params.append("#");
+    params.append( std::string(ui_->comboBoxCountryCode->currentText().split("|")[0].replace(" ","").toStdString()) );
+    params.append("#");
 
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -932,6 +934,7 @@ void SettingsWindow::loadSystemValues()
         else if (getparams[43] == "custom") {
             ui_->radioButtonCustom->setChecked(true);
         }
+        ui_->comboBoxCountryCode->setCurrentIndex(ui_->comboBoxCountryCode->findText(getparams[44], Qt::MatchFlag::MatchStartsWith));
     }
 }
 

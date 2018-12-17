@@ -81,7 +81,7 @@ void ConnectDialog::connectHandler(const boost::system::error_code& ec, const st
 void ConnectDialog::onConnectionSucceed(aasdk::tcp::ITCPEndpoint::SocketPointer, const std::string& ipAddress)
 {
     ui_->progressBarConnect->hide();
-    this->insertIpAddress(ipAddress);
+    //this->insertIpAddress(ipAddress);
     this->setControlsEnabledStatus(true);
 }
 
@@ -134,9 +134,12 @@ void ConnectDialog::loadClientList()
         QTextStream data(&versionFile);
         while (!data.atEnd())
         {
-            QString ip = data.readLine();
-            ui_->listWidgetClients->addItem(ip);
-            ui_->lineEditIPAddress->setText(ip);
+            QString ip = data.readLine().trimmed();
+            if (ip != "") {
+                ui_->listWidgetClients->addItem(ip);
+                ui_->lineEditIPAddress->setText(ip);
+                //ConnectDialog::insertIpAddress(ip.toStdString());
+            }
         }
         versionFile.close();
 

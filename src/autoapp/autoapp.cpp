@@ -238,20 +238,28 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
         OPENAUTO_LOG(info) << "[CS] Manual start android auto entity by reset usb.";
-        if (std::ifstream("/tmp/android_device")) {
-            system("/usr/local/bin/autoapp_helper usbreset");
-            app->waitForUSBDevice();
+        try {
+            if (std::ifstream("/tmp/android_device")) {
+                system("/usr/local/bin/autoapp_helper usbreset");
+                app->waitForUSBDevice();
+            }
+        } catch (...) {
+            OPENAUTO_LOG(info) << "[CS] Exception in Manual start android auto entity by reset usb.";
         }
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStop, [&app]() {
         OPENAUTO_LOG(info) << "[CS] Manual stop android auto entity.";
-        if (std::ifstream("/tmp/android_device")) {
-            system("/usr/local/bin/autoapp_helper usbreset");
-            usleep(500000);
-            app->stop();
-        } else {
-            app->stop();
+        try {
+            if (std::ifstream("/tmp/android_device")) {
+                system("/usr/local/bin/autoapp_helper usbreset");
+                usleep(500000);
+                app->stop();
+            } else {
+                app->onAndroidAutoQuit();
+            }
+        } catch (...) {
+            OPENAUTO_LOG(info) << "[CS] Exception in Manual stop android auto entity.";
         }
     });
 

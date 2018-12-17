@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>963</width>
-    <height>3602</height>
+    <height>3688</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -2512,7 +2512,7 @@ outline: none;</string>
          <property name="bottomMargin">
           <number>2</number>
          </property>
-         <item row="0" column="0">
+         <item row="3" column="0">
           <layout class="QFormLayout" name="formLayout_10">
            <property name="topMargin">
             <number>2</number>
@@ -2557,7 +2557,7 @@ outline: none;</string>
            </item>
           </layout>
          </item>
-         <item row="1" column="1">
+         <item row="4" column="1">
           <layout class="QHBoxLayout" name="WifiButtonArea">
            <property name="spacing">
             <number>0</number>
@@ -2671,7 +2671,7 @@ outline: none;</string>
            </item>
           </layout>
          </item>
-         <item row="0" column="1">
+         <item row="3" column="1">
           <layout class="QFormLayout" name="formLayout_9">
            <property name="topMargin">
             <number>2</number>
@@ -2802,41 +2802,6 @@ outline: none;</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_hotspot">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>140</width>
-               <height>36</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>140</width>
-               <height>36</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Enable Hotspot at system startup</string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QCheckBox" name="checkBoxHotspot">
-             <property name="text">
-              <string>Yes</string>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="1">
             <widget class="QLineEdit" name="lineEditPassword">
              <property name="minimumSize">
@@ -2861,6 +2826,559 @@ outline: none;</string>
             </widget>
            </item>
           </layout>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QGroupBox" name="groupBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Wifi Setup</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="formWidget" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QFormLayout" name="formLayout_30">
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelCountryCode">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Country Code</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QComboBox" name="comboBoxCountryCode">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>AE | United Arab Emirates</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>AR | Argentina</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>AT | Austria</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>AU | Australia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>BG | Bulgaria</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>BH | Bahrain</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>BM | Bermuda</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>BO | Bolivia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>BR | Brazil</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CA | Canada</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CH | Switzerland</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CL | Chile</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CN | China</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CO | Colombia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CR | Costa Rica</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CS | Serbia and Montenegro</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CY | Cyprus</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>CZ | Czech Republic</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>DE | Germany</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>DK | Denmark</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>DO | Dominican Republic</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>DZ | Algeria</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>EC | Ecuador</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>EE | Estonia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>EG | Egypt</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ES | Spain</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>FI | Finland</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>FR | France</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>GB | United Kingdom</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>GR | Greece</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>GT | Guatemala</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HK | Hong Kong</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HN | Honduras</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ID | Indonesia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>IE | Ireland</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>IL | Israel</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>IN | India</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>IS | Iceland</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>IT | Italy</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>JM | Jamaica</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>JO | Jordan</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>JP3 | Japan</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>KE | Kenya</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>KR | Republic of Korea (South Korea)</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>KW | Kuwait</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>KW | Kuwait</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>LB | Lebanon</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>LI | Liechtenstein</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>LK | Sri Lanka</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>LT | Lithuania</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>LU | Luxembourg</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>MA | Morocco</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>MU | Mauritius</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>MX | Mexico</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>NL | Netherlands</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>NO | Norway</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>NZ | New Zealand</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>OM | Oman</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PA | Panama</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PE | Peru</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PH | Philippines</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PK | Islamic Republic of Pakistan</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PL | Poland</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PR | Puerto Rico</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>PT | Portugal</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>QA | Qatar</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>RO | Romania</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>RU | Russia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SA | Saudi Arabia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SG | Singapore</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SI | Slovenia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SK | Slovak Republic</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SV | El Salvador</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>TH | Thailand</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>TN | Tunisia</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>TR | Turkey</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>TT | Trinidad and Tobago</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>TW | Taiwan</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>UA | Ukraine</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>US | United States</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>UY | Uruguay</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>VE | Venezuela</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>VN | Vietnam</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ZA | South Africa</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QCheckBox" name="checkBoxHotspot">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Enable</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLabel" name="label_hotspot">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Start system in Hotspot Mode</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>

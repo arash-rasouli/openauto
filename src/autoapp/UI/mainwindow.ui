@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>862</width>
-    <height>1351</height>
+    <height>1357</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -2627,6 +2627,44 @@ outline: none;</string>
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pushButtonRecordings">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(186, 189, 182);
+color: rgb(0, 0, 0);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+outline: none;</string>
+           </property>
+           <property name="text">
+            <string>Recordings</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/list-hot.png</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButtonSave">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -3604,13 +3642,13 @@ outline: none;</string>
            <number>0</number>
           </property>
           <property name="topMargin">
-           <number>4</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
            <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>4</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QLabel" name="label_2">
@@ -3623,13 +3661,13 @@ outline: none;</string>
             <property name="minimumSize">
              <size>
               <width>150</width>
-              <height>20</height>
+              <height>34</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>150</width>
-              <height>20</height>
+              <height>34</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -3652,18 +3690,18 @@ background-color: rgba(0, 0, 0, 0);</string>
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>20</height>
+              <height>34</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>20</height>
+              <height>34</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <pointsize>14</pointsize>
+              <pointsize>12</pointsize>
               <weight>75</weight>
               <italic>true</italic>
               <bold>true</bold>
@@ -3676,8 +3714,17 @@ color: rgb(255, 255, 255);</string>
             <property name="text">
              <string/>
             </property>
+            <property name="textFormat">
+             <enum>Qt::AutoText</enum>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -3692,13 +3739,13 @@ color: rgb(255, 255, 255);</string>
             <property name="minimumSize">
              <size>
               <width>150</width>
-              <height>16</height>
+              <height>34</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>150</width>
-              <height>16</height>
+              <height>34</height>
              </size>
             </property>
             <property name="font">

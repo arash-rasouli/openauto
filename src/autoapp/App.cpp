@@ -156,7 +156,12 @@ void App::onAndroidAutoQuit()
 
         if(!isStopped_)
         {
-            this->waitForDevice();
+            try {
+                this->waitForDevice();
+            } catch (...) {
+                OPENAUTO_LOG(info) << "[App] Exception in onAndroidAutoQuit.";
+            }
+
         }
     });
 }
