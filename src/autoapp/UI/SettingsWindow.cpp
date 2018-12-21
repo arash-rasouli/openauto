@@ -28,6 +28,7 @@
 #include <QNetworkInterface>
 #include <QNetworkConfigurationManager>
 #include <fstream>
+#include <QStorageInfo>
 
 namespace f1x
 {
@@ -145,7 +146,10 @@ void SettingsWindow::onSave()
     configuration_->setAlphaTrans(static_cast<size_t>(ui_->horizontalSliderAlphaTrans->value()));
     configuration_->hideMenuToggle(ui_->checkBoxHideMenuToggle->isChecked());
     configuration_->showLux(ui_->checkBoxShowLux->isChecked());
+    configuration_->showCursor(ui_->checkBoxShowCursor->isChecked());
+    configuration_->hideBrightnessControl(ui_->checkBoxHideBrightnessControl->isChecked());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
+    configuration_->showAutoPlay(ui_->checkBoxShowPlayer->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
 
@@ -377,7 +381,10 @@ void SettingsWindow::load()
     ui_->checkBoxOldGUI->setChecked(configuration_->oldGUI());
     ui_->checkBoxHideMenuToggle->setChecked(configuration_->hideMenuToggle());
     ui_->checkBoxShowLux->setChecked(configuration_->showLux());
+    ui_->checkBoxShowCursor->setChecked(configuration_->showCursor());
+    ui_->checkBoxHideBrightnessControl->setChecked(configuration_->hideBrightnessControl());
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
+    ui_->checkBoxShowPlayer->setChecked(configuration_->showAutoPlay());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
     ui_->radioButton60FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_60);
@@ -409,6 +416,17 @@ void SettingsWindow::load()
     ui_->radioButtonQtAudio->setChecked(audioOutputBackendType == configuration::AudioOutputBackendType::QT);
 
     ui_->checkBoxHardwareSave->setChecked(false);
+    QStorageInfo storage("/media/CSSTORAGE");
+    storage.refresh();
+    if (storage.isValid() && storage.isReady()) {
+        if (storage.isReadOnly()) {
+            ui_->labelStorage->setText("Storage is read only!  (" + storage.device() + ") - This can be caused by demaged filesystem on CSSTORAGE. Try a reboot.");
+        } else {
+            ui_->labelStorage->setText("Device: " + storage.device() + " Label: " + storage.displayName() + " Total: " + QString::number(storage.bytesTotal()/1024/1024/1024) + "GB Free: " + QString::number(storage.bytesFree()/1024/1024/1024) + "GB (" + storage.fileSystemType() + ")");
+        }
+    } else {
+        ui_->labelStorage->setText("Storage is not ready or missing!");
+    }
 }
 
 void SettingsWindow::loadButtonCheckBoxes()

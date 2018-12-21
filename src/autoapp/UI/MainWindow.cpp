@@ -353,8 +353,10 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // run monitor for custom brightness command if enabled in crankshaft_env.sh
     if (brigthnessvalues[3] == "1") {
-        ui_->pushButtonBrightness->show();
-        ui_->pushButtonBrightness2->show();
+        if (!configuration->hideBrightnessControl()) {
+            ui_->pushButtonBrightness->show();
+            ui_->pushButtonBrightness2->show();
+        }
         this->customBrightnessControl = true;
         system("/usr/local/bin/autoapp_helper startcustombrightness &");
     }
@@ -479,7 +481,19 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         MainWindow::playerShow();
         MainWindow::playerHide();
         MainWindow::on_pushButtonPlayerPlayList_clicked();
-        MainWindow::playerShow();
+        if (configuration->showAutoPlay()) {
+            MainWindow::playerShow();
+        }
+    }
+
+    // update notify
+    this->csmtupdate = check_file_exist("/tmp/csmt_update_available");
+    this->udevupdate = check_file_exist("/tmp/udev_update_available");
+    this->openautoupdate = check_file_exist("/tmp/openauto_update_available");
+
+    if (this->csmtupdate || this->udevupdate || this->openautoupdate) {
+        ui_->SysinfoTopLeft->setText("Update available!");
+        ui_->SysinfoTopLeft->show();
     }
 
     watcher = new QFileSystemWatcher(this);
@@ -489,6 +503,21 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     watcher_tmp = new QFileSystemWatcher(this);
     watcher_tmp->addPath("/tmp");
     connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
+
+    // Experimental test code
+    //QBluetoothLocalDevice localDevice;
+    //QString localDeviceName;
+    //QString localDeviceAddress;
+    //if (localDevice.isValid()) {
+    //    localDeviceName = localDevice.name();
+    //    localDeviceAddress = localDevice.address().toString();
+    //    QList<QBluetoothAddress> btdevices;
+    //    btdevices = localDevice.connectedDevices();
+    //    QString btdevice = btdevices.first().toString();
+    //    QMessageBox btMessage(QMessageBox::Critical, "BT Device", btdevice, QMessageBox::Ok);
+    //    btMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //    btMessage.exec();
+    //}
 }
 
 MainWindow::~MainWindow()
@@ -1566,6 +1595,23 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     } else {
         ui_->pushButtonToggleGUI->show();
         ui_->pushButtonToggleGUI2->show();
+    }
+
+    // hide brightness button if eanbled in settings
+    if (configuration_->hideBrightnessControl()) {
+        if ((ui_->pushButtonBrightness->isVisible() == true) || (ui_->pushButtonBrightness->isVisible() == true) || (ui_->BrightnessSliderControl->isVisible() == true)) {
+            ui_->pushButtonBrightness->hide();
+            ui_->pushButtonBrightness2->hide();
+            ui_->BrightnessSliderControl->hide();
+            ui_->VolumeSliderControl->show();
+        }
+    } else {
+        if (!this->lightsensor) {
+            if ((ui_->pushButtonBrightness->isVisible() == false) || (ui_->pushButtonBrightness->isVisible() == false)) {
+                ui_->pushButtonBrightness->show();
+                ui_->pushButtonBrightness2->show();
+            }
+        }
     }
 
     // read value from tsl2561

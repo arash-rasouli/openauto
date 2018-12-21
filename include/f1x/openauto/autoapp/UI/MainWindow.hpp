@@ -243,6 +243,10 @@ private:
 
     bool lightsensor = false;
     bool holidaybg = false;
+
+    bool csmtupdate = false;
+    bool udevupdate = false;
+    bool openautoupdate = false;
 };
 
 }

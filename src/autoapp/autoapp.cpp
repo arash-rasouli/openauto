@@ -130,11 +130,11 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::exec);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openWifiDialog, &wifiDialog, &autoapp::ui::WifiDialog::exec);
 
-    qApplication.setOverrideCursor(Qt::BlankCursor);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::toggleCursor, [&qApplication]() {
-        const auto cursor = qApplication.overrideCursor()->shape() == Qt::BlankCursor ? Qt::ArrowCursor : Qt::BlankCursor;
-        qApplication.setOverrideCursor(cursor);
-    });
+    if (configuration->showCursor() == false) {
+        qApplication.setOverrideCursor(Qt::BlankCursor);
+    } else {
+        qApplication.setOverrideCursor(Qt::ArrowCursor);
+    }
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraHide, [&qApplication]() {
 #ifdef RASPBERRYPI3

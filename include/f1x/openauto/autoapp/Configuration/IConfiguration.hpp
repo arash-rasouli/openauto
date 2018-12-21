@@ -66,6 +66,10 @@ public:
     virtual bool hideAlpha() const = 0;
     virtual void showLux(bool value) = 0;
     virtual bool showLux() const = 0;
+    virtual void showCursor(bool value) = 0;
+    virtual bool showCursor() const = 0;
+    virtual void hideBrightnessControl(bool value) = 0;
+    virtual bool hideBrightnessControl() const = 0;
 
     virtual std::string getMp3MasterPath() const = 0;
     virtual void setMp3MasterPath(const std::string& value) = 0;
@@ -75,6 +79,8 @@ public:
     virtual void setMp3Track(int32_t value) = 0;
     virtual bool mp3AutoPlay() const = 0;
     virtual void mp3AutoPlay(bool value) = 0;
+    virtual bool showAutoPlay() const = 0;
+    virtual void showAutoPlay(bool value) = 0;
 
     virtual aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const = 0;
     virtual void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) = 0;

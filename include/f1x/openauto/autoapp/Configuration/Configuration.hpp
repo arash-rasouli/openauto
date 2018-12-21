@@ -58,6 +58,10 @@ public:
     bool hideAlpha() const override;
     void showLux(bool value) override;
     bool showLux() const override;
+    void showCursor(bool value) override;
+    bool showCursor() const override;
+    void hideBrightnessControl(bool value) override;
+    bool hideBrightnessControl() const override;
 
     std::string getMp3MasterPath() const override;
     void setMp3MasterPath(const std::string& value) override;
@@ -67,6 +71,8 @@ public:
     void setMp3Track(int32_t value) override;
     bool mp3AutoPlay() const override;
     void mp3AutoPlay(bool value) override;
+    bool showAutoPlay() const override;
+    void showAutoPlay(bool value) override;
 
     aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const override;
     void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) override;
@@ -110,10 +116,13 @@ private:
     bool hideMenuToggle_;
     bool hideAlpha_;
     bool showLux_;
+    bool showCursor_;
+    bool hideBrightnessControl_;
     std::string mp3MasterPath_;
     std::string mp3SubFolder_;
     int32_t mp3Track_;
     bool mp3AutoPlay_;
+    bool showAutoPlay_;
 
     aasdk::proto::enums::VideoFPS::Enum videoFPS_;
     aasdk::proto::enums::VideoResolution::Enum videoResolution_;
@@ -138,6 +147,8 @@ private:
     static const std::string cGeneralHideMenuToggleKey;
     static const std::string cGeneralHideAlphaKey;
     static const std::string cGeneralShowLuxKey;
+    static const std::string cGeneralShowCursorKey;
+    static const std::string cGeneralHideBrightnessControlKey;
 
     static const std::string cGeneralHandednessOfTrafficTypeKey;
 
@@ -145,6 +156,7 @@ private:
     static const std::string cGeneralMp3SubFolderKey;
     static const std::string cGeneralMp3TrackKey;
     static const std::string cGeneralMp3AutoPlayKey;
+    static const std::string cGeneralShowAutoPlayKey;
 
     static const std::string cVideoFPSKey;
     static const std::string cVideoResolutionKey;

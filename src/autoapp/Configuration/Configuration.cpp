@@ -39,6 +39,8 @@ const std::string Configuration::cGeneralAlphaTransKey = "General.AlphaTrans";
 const std::string Configuration::cGeneralHideMenuToggleKey = "General.HideMenuToggle";
 const std::string Configuration::cGeneralHideAlphaKey = "General.HideAlpha";
 const std::string Configuration::cGeneralShowLuxKey = "General.ShowLux";
+const std::string Configuration::cGeneralShowCursorKey = "General.ShowCursor";
+const std::string Configuration::cGeneralHideBrightnessControlKey = "General.HideBrightnessControl";
 
 const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.HandednessOfTrafficType";
 
@@ -46,6 +48,7 @@ const std::string Configuration::cGeneralMp3MasterPathKey = "General.Mp3MasterPa
 const std::string Configuration::cGeneralMp3SubFolderKey = "General.Mp3SubFolder";
 const std::string Configuration::cGeneralMp3TrackKey = "General.Mp3Track";
 const std::string Configuration::cGeneralMp3AutoPlayKey = "General.Mp3AutoPlay";
+const std::string Configuration::cGeneralShowAutoPlayKey = "General.ShowAutoPlay";
 
 const std::string Configuration::cVideoFPSKey = "Video.FPS";
 const std::string Configuration::cVideoResolutionKey = "Video.Resolution";
@@ -101,17 +104,20 @@ void Configuration::load()
         hideMenuToggle_ = iniConfig.get<bool>(cGeneralHideMenuToggleKey, false);
         hideAlpha_ = iniConfig.get<bool>(cGeneralHideAlphaKey, false);
         showLux_ = iniConfig.get<bool>(cGeneralShowLuxKey, false);
+        showCursor_ = iniConfig.get<bool>(cGeneralShowCursorKey, false);
+        hideBrightnessControl_ = iniConfig.get<bool>(cGeneralHideBrightnessControlKey, false);
         mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/MYMEDIA");
         mp3SubFolder_ = iniConfig.get<std::string>(cGeneralMp3SubFolderKey, "/");
         mp3Track_ = iniConfig.get<size_t>(cGeneralMp3TrackKey, 0);
         mp3AutoPlay_ = iniConfig.get<bool>(cGeneralMp3AutoPlayKey, false);
+        showAutoPlay_ = iniConfig.get<bool>(cGeneralShowAutoPlayKey, false);
 
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
                                                                                              aasdk::proto::enums::VideoFPS::_30));
 
         videoResolution_ = static_cast<aasdk::proto::enums::VideoResolution::Enum>(iniConfig.get<uint32_t>(cVideoResolutionKey,
                                                                                                            aasdk::proto::enums::VideoResolution::_480p));
-        screenDPI_ = iniConfig.get<size_t>(cVideoScreenDPIKey, 140);
+        screenDPI_ = iniConfig.get<size_t>(cVideoScreenDPIKey, 100);
 
         omxLayerIndex_ = iniConfig.get<int32_t>(cVideoOMXLayerIndexKey, 1);
         videoMargins_ = QRect(0, 0, iniConfig.get<int32_t>(cVideoMarginWidth, 0), iniConfig.get<int32_t>(cVideoMarginHeight, 0));
@@ -146,13 +152,16 @@ void Configuration::reset()
     hideMenuToggle_ = false;
     hideAlpha_ = false;
     showLux_ = false;
+    showCursor_ = false;
+    hideBrightnessControl_ = false;
     mp3MasterPath_ = "/media/MYMEDIA";
     mp3SubFolder_ = "/";
     mp3Track_ = 0;
     mp3AutoPlay_ = false;
+    showAutoPlay_ = false;
     videoFPS_ = aasdk::proto::enums::VideoFPS::_30;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
-    screenDPI_ = 140;
+    screenDPI_ = 100;
     omxLayerIndex_ = 1;
     videoMargins_ = QRect(0, 0, 0, 0);
     enableTouchscreen_ = true;
@@ -176,10 +185,13 @@ void Configuration::save()
     iniConfig.put<bool>(cGeneralHideMenuToggleKey, hideMenuToggle_);
     iniConfig.put<bool>(cGeneralHideAlphaKey, hideAlpha_);
     iniConfig.put<bool>(cGeneralShowLuxKey, showLux_);
+    iniConfig.put<bool>(cGeneralShowCursorKey, showCursor_);
+    iniConfig.put<bool>(cGeneralHideBrightnessControlKey, hideBrightnessControl_);
     iniConfig.put<std::string>(cGeneralMp3MasterPathKey, mp3MasterPath_);
     iniConfig.put<std::string>(cGeneralMp3SubFolderKey, mp3SubFolder_);
     iniConfig.put<int32_t>(cGeneralMp3TrackKey, mp3Track_);
     iniConfig.put<bool>(cGeneralMp3AutoPlayKey, mp3AutoPlay_);
+    iniConfig.put<bool>(cGeneralShowAutoPlayKey, showAutoPlay_);
 
     iniConfig.put<uint32_t>(cVideoFPSKey, static_cast<uint32_t>(videoFPS_));
     iniConfig.put<uint32_t>(cVideoResolutionKey, static_cast<uint32_t>(videoResolution_));
@@ -299,6 +311,26 @@ bool Configuration::showLux() const
     return showLux_;
 }
 
+void Configuration::showCursor(bool value)
+{
+    showCursor_ = value;
+}
+
+bool Configuration::showCursor() const
+{
+    return showCursor_;
+}
+
+void Configuration::hideBrightnessControl(bool value)
+{
+    hideBrightnessControl_ = value;
+}
+
+bool Configuration::hideBrightnessControl() const
+{
+    return hideBrightnessControl_;
+}
+
 std::string Configuration::getMp3MasterPath() const
 {
     return mp3MasterPath_;
@@ -337,6 +369,16 @@ void Configuration::mp3AutoPlay(bool value)
 bool Configuration::mp3AutoPlay() const
 {
     return mp3AutoPlay_;
+}
+
+void Configuration::showAutoPlay(bool value)
+{
+    showAutoPlay_ = value;
+}
+
+bool Configuration::showAutoPlay() const
+{
+    return showAutoPlay_;
 }
 
 aasdk::proto::enums::VideoFPS::Enum Configuration::getVideoFPS() const
