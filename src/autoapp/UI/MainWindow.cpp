@@ -31,6 +31,7 @@
 #include <QRect>
 #include <QFileSystemWatcher>
 #include <QVideoWidget>
+#include <QNetworkInterface>
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -86,7 +87,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->setupUi(this);
     connect(ui_->pushButtonSettings, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(ui_->pushButtonSettings2, &QPushButton::clicked, this, &MainWindow::openSettings);
-    connect(ui_->pushButtonWifiSetup, &QPushButton::clicked, this, &MainWindow::openWifiDialog);
+    connect(ui_->pushButtonUpdate, &QPushButton::clicked, this, &MainWindow::openUpdateDialog);
     connect(ui_->pushButtonExit, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonExit2, &QPushButton::clicked, this, &MainWindow::toggleExit);
     connect(ui_->pushButtonShutdown, &QPushButton::clicked, this, &MainWindow::exit);
@@ -127,6 +128,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonAndroidAuto2, &QPushButton::clicked, this, &MainWindow::TriggerAppStart);
     connect(ui_->pushButtonAndroidAuto2, &QPushButton::clicked, this, &MainWindow::setRetryUSBConnect);
 
+    ui_->clockOnlyWidget->hide();
+
     // by default hide bluetooth button on init
     ui_->pushButtonBluetooth->hide();
 
@@ -135,12 +138,35 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonUSB->hide();
 
     ui_->SysinfoTopLeft->hide();
-    ui_->pushButtonWifiSetup->hide();
 
     ui_->pushButtonAndroidAuto->hide();
     ui_->pushButtonAndroidAuto2->hide();
 
     ui_->SysinfoTopLeft2->hide();
+
+    ui_->pushButtonUpdate->hide();
+    ui_->label_dummy_right->hide();
+
+    ui_->dcRecording->hide();
+
+    if (!configuration->showNetworkinfo()) {
+        ui_->networkInfo->hide();
+    }
+
+    if (check_file_exist("/etc/crankshaft.branch")) {
+        QFile branchFile(QString("/etc/crankshaft.branch"));
+        branchFile.open(QIODevice::ReadOnly);
+        QTextStream data_branch(&branchFile);
+        QString branch = data_branch.readAll().split("\n")[0];
+        branchFile.close();
+        if (branch != "crankshaft-ng") {
+            if (branch == "csng-dev") {
+                ui_->Header_Label->setText("<html><head/><body><p><span style=' font-style:normal; color:#ffffff;'>crank</span><span style=' font-style:normal; color:#5ce739;'>shaft </span><span style=' font-style:normal; color:#40bfbf;'>NG </span><span style=' font-style:normal; color:#888a85;'>- </span><span style=' font-style:normal; color:#cc0000;'>Dev-Build</span></p></body></html>");
+            } else {
+                ui_->Header_Label->setText("<html><head/><body><p><span style=' font-style:normal; color:#ffffff;'>crank</span><span style=' font-style:normal; color:#5ce739;'>shaft </span><span style=' font-style:normal; color:#40bfbf;'>NG </span><span style=' font-style:normal; color:#888a85;'>- </span><span style=' font-style:normal; color:#ce5c00;'>Custom-Build</span></p></body></html>");
+            }
+        }
+    }
 
     QTimer *timer=new QTimer(this);
     connect(timer, SIGNAL(timeout()),this,SLOT(showTime()));
@@ -193,12 +219,24 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->pushButtonUnMute->hide();
 
     // hide wifi if not forced
-    if (!this->wifiButtonForce) {
+    if (!this->wifiButtonForce && !std::ifstream("/tmp/mobile_hotspot_detected")) {
         ui_->AAWIFIWidget->hide();
         ui_->AAWIFIWidget2->hide();
     } else {
         ui_->AAUSBWidget->hide();
         ui_->AAUSBWidget2->hide();
+    }
+
+    if (std::ifstream("/tmp/temp_recent_list") || std::ifstream("/tmp/mobile_hotspot_detected")) {
+        ui_->pushButtonWifi->show();
+        ui_->pushButtonNoWiFiDevice->hide();
+        ui_->pushButtonWifi2->show();
+        ui_->pushButtonNoWiFiDevice2->hide();
+    } else {
+        ui_->pushButtonWifi->hide();
+        ui_->pushButtonNoWiFiDevice->show();
+        ui_->pushButtonWifi2->hide();
+        ui_->pushButtonNoWiFiDevice2->show();
     }
 
     // set custom buttons if file enabled by trigger file
@@ -352,7 +390,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     ui_->horizontalSliderBrightness->setTickInterval(brigthnessvalues[2].toInt());
 
     // run monitor for custom brightness command if enabled in crankshaft_env.sh
-    if (brigthnessvalues[3] == "1") {
+    if (std::ifstream("/tmp/custombrightness")) {
         if (!configuration->hideBrightnessControl()) {
             ui_->pushButtonBrightness->show();
             ui_->pushButtonBrightness2->show();
@@ -432,6 +470,13 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonToggleGUI2->hide();
     }
 
+    // hide brightness button if eanbled in settings
+    if (configuration->hideBrightnessControl()) {
+        ui_->pushButtonBrightness->hide();
+        ui_->pushButtonBrightness2->hide();
+        ui_->BrightnessSliderControl->hide();
+    }
+
     // init alpha values
     MainWindow::updateAlpha();
 
@@ -486,16 +531,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         }
     }
 
-    // update notify
-    this->csmtupdate = check_file_exist("/tmp/csmt_update_available");
-    this->udevupdate = check_file_exist("/tmp/udev_update_available");
-    this->openautoupdate = check_file_exist("/tmp/openauto_update_available");
-
-    if (this->csmtupdate || this->udevupdate || this->openautoupdate) {
-        ui_->SysinfoTopLeft->setText("Update available!");
-        ui_->SysinfoTopLeft->show();
-    }
-
     watcher = new QFileSystemWatcher(this);
     watcher->addPath("/media/USBDRIVES");
     connect(watcher, &QFileSystemWatcher::directoryChanged, this, &MainWindow::setTrigger);
@@ -504,20 +539,7 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     watcher_tmp->addPath("/tmp");
     connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &MainWindow::tmpChanged);
 
-    // Experimental test code
-    //QBluetoothLocalDevice localDevice;
-    //QString localDeviceName;
-    //QString localDeviceAddress;
-    //if (localDevice.isValid()) {
-    //    localDeviceName = localDevice.name();
-    //    localDeviceAddress = localDevice.address().toString();
-    //    QList<QBluetoothAddress> btdevices;
-    //    btdevices = localDevice.connectedDevices();
-    //    QString btdevice = btdevices.first().toString();
-    //    QMessageBox btMessage(QMessageBox::Critical, "BT Device", btdevice, QMessageBox::Ok);
-    //    btMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
-    //    btMessage.exec();
-    //}
+    updateNetworkInfo();
 }
 
 MainWindow::~MainWindow()
@@ -528,6 +550,46 @@ MainWindow::~MainWindow()
 }
 }
 }
+}
+
+void f1x::openauto::autoapp::ui::MainWindow::updateNetworkInfo()
+{
+    QNetworkInterface wlan0if = QNetworkInterface::interfaceFromName("wlan0");
+    if (wlan0if.flags().testFlag(QNetworkInterface::IsUp)) {
+        QList<QNetworkAddressEntry> entrieswlan0 = wlan0if.addressEntries();
+        if (!entrieswlan0.isEmpty()) {
+            QNetworkAddressEntry wlan0 = entrieswlan0.first();
+            //qDebug() << "wlan0: " << wlan0.ip();
+            ui_->value_ip->setText(wlan0.ip().toString().simplified());
+            ui_->value_mask->setText(wlan0.netmask().toString().simplified());
+            if (std::ifstream("/tmp/wifi_ssid")) {
+                QFile wifiData(QString("/tmp/wifi_ssid"));
+                wifiData.open(QIODevice::ReadOnly);
+                QTextStream gateway_date(&wifiData);
+                QString linedate = gateway_date.readAll();
+                wifiData.close();
+                ui_->value_ssid->setText(linedate.simplified());
+            } else {
+                ui_->value_ssid->setText("");
+            }
+            if (std::ifstream("/tmp/gateway_wlan0")) {
+                QFile gatewayData(QString("/tmp/gateway_wlan0"));
+                gatewayData.open(QIODevice::ReadOnly);
+                QTextStream gateway_date(&gatewayData);
+                QString linedate = gateway_date.readAll();
+                gatewayData.close();
+                ui_->value_gw->setText(linedate.simplified());
+            } else {
+                ui_->value_gw->setText("");
+            }
+        }
+    } else {
+        //qDebug() << "wlan0: down";
+        ui_->value_ip->setText("");
+        ui_->value_mask->setText("");
+        ui_->value_gw->setText("");
+        ui_->value_ssid->setText("wlan0: down");
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::customButtonPressed1()
@@ -723,22 +785,28 @@ void f1x::openauto::autoapp::ui::MainWindow::updateAlpha()
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
 {
-    MainWindow::on_pushButtonVolume_clicked();
+    //MainWindow::on_pushButtonVolume_clicked();
     f1x::openauto::autoapp::ui::MainWindow::updateBG();
     ui_->pushButtonDay->show();
     ui_->pushButtonDay2->show();
     ui_->pushButtonNight->hide();
     ui_->pushButtonNight2->hide();
+    if (ui_->mediaWidget->isVisible() == true) {
+        ui_->VolumeSliderControl->hide();
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
 {
-    MainWindow::on_pushButtonVolume_clicked();
+    //MainWindow::on_pushButtonVolume_clicked();
     f1x::openauto::autoapp::ui::MainWindow::updateBG();
     ui_->pushButtonNight->show();
     ui_->pushButtonNight2->show();
     ui_->pushButtonDay->hide();
     ui_->pushButtonDay2->hide();
+    if (ui_->mediaWidget->isVisible() == true) {
+        ui_->VolumeSliderControl->hide();
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::cameraControlHide()
@@ -867,7 +935,7 @@ void f1x::openauto::autoapp::ui::MainWindow::updateBG()
         this->setStyleSheet("QMainWindow { background: url(:/firework.png); background-repeat: no-repeat; background-position: center; }");
         this->holidaybg = true;
     }
-    else {
+    else if (ui_->mediaWidget->isVisible() == false) {
         if (!this->nightModeEnabled) {
             if (this->oldGUIStyle) {
                 if (this->wallpaperClassicDayFileExists) {
@@ -938,6 +1006,7 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
 
     ui_->Digital_clock->setText(time_text);
     ui_->bigClock->setText(time_text);
+    ui_->bigClock2->setText(time_text);
 
     if (!this->holidaybg) {
         if (this->date_text == "12/24") {
@@ -1326,6 +1395,52 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
 
+    // check if system is in display off mode (tap2wake/screensaver)
+    if (std::ifstream("/tmp/screensaver")) {
+        if (ui_->menuWidget->isVisible() == true) {
+            ui_->menuWidget->hide();
+        }
+        if (ui_->oldmenuWidget->isVisible() == true) {
+            ui_->oldmenuWidget->hide();
+        }
+        if (ui_->headerWidget->isVisible() == true) {
+            ui_->headerWidget->hide();
+        }
+        if (ui_->mediaWidget->isVisible() == true) {
+            ui_->mediaWidget->hide();
+        }
+        if (ui_->cameraWidget->isVisible() == true) {
+            ui_->cameraWidget->hide();
+        }
+        if (ui_->VolumeSliderControlPlayer->isVisible() == true) {
+            ui_->VolumeSliderControlPlayer->hide();
+        }
+        if (ui_->VolumeSliderControl->isVisible() == true) {
+            ui_->VolumeSliderControl->hide();
+        }
+        if (ui_->BrightnessSliderControl->isVisible() == true) {
+            ui_->BrightnessSliderControl->hide();
+        }
+        cameraHide();
+        if (ui_->clockOnlyWidget->isVisible() == false) {
+            ui_->clockOnlyWidget->show();
+        }
+    } else {
+        if (ui_->headerWidget->isVisible() == false) {
+            ui_->headerWidget->show();
+        }
+        if (ui_->VolumeSliderControl->isVisible() == false) {
+            if (ui_->mediaWidget->isVisible() == false) {
+                ui_->VolumeSliderControl->show();
+            }
+        }
+        if (ui_->clockOnlyWidget->isVisible() == true) {
+            ui_->clockOnlyWidget->hide();
+            toggleGUI();
+            toggleGUI();
+        }
+    }
+
     // check if custom command needs black background
     if (std::ifstream("/tmp/blackscreen")) {
         if (ui_->centralWidget->isVisible() == true) {
@@ -1453,6 +1568,17 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 
         // check if dashcam is recording
         this->dashCamRecording = check_file_exist("/tmp/dashcam_is_recording");
+
+        if (this->dashCamRecording) {
+            if (ui_->dcRecording->isVisible() == false) {
+                ui_->dcRecording->show();
+            }
+        } else {
+            if (ui_->dcRecording->isVisible() == true) {
+                ui_->dcRecording->hide();
+            }
+        }
+
         // show recording state if dashcam is visible
         if (ui_->cameraWidget->isVisible() == true) {
             if (this->dashCamRecording) {
@@ -1490,8 +1616,8 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 
     this->hotspotActive = check_file_exist("/tmp/hotspot_active");
 
-    // hide wifi if hotspot disabled
-    if (!this->hotspotActive) {
+    // hide wifi if hotspot disabled and force wifi unselected
+    if (!this->hotspotActive && !std::ifstream("/tmp/mobile_hotspot_detected")) {
         if ((ui_->AAWIFIWidget->isVisible() == true) || (ui_->AAWIFIWidget2->isVisible() == true)){
             ui_->AAWIFIWidget->hide();
             ui_->AAWIFIWidget2->hide();
@@ -1507,7 +1633,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
 
-    if (std::ifstream("/tmp/temp_recent_list")) {
+    if (std::ifstream("/tmp/temp_recent_list") || std::ifstream("/tmp/mobile_hotspot_detected")) {
         if (ui_->pushButtonWifi->isVisible() == false) {
             ui_->pushButtonWifi->show();
         }
@@ -1588,6 +1714,16 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
 
+    if (!this->configuration_->showNetworkinfo()) {
+        if (ui_->networkInfo->isVisible() == true) {
+            ui_->networkInfo->hide();
+        }
+    } else {
+        if (ui_->networkInfo->isVisible() == false) {
+            ui_->networkInfo->show();
+        }
+    }
+
     // hide gui toggle if enabled in settings
     if (this->configuration_->hideMenuToggle()) {
         ui_->pushButtonToggleGUI->hide();
@@ -1603,7 +1739,9 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             ui_->pushButtonBrightness->hide();
             ui_->pushButtonBrightness2->hide();
             ui_->BrightnessSliderControl->hide();
-            ui_->VolumeSliderControl->show();
+            if (ui_->mediaWidget->isVisible() == false) {
+                ui_->VolumeSliderControl->show();
+            }
         }
     } else {
         if (!this->lightsensor) {
@@ -1635,4 +1773,34 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
     MainWindow::updateAlpha();
+
+    // update notify
+    this->csmtupdate = check_file_exist("/tmp/csmt_update_available");
+    this->udevupdate = check_file_exist("/tmp/udev_update_available");
+    this->openautoupdate = check_file_exist("/tmp/openauto_update_available");
+    this->systemupdate = check_file_exist("/tmp/system_update_available");
+
+    if (this->csmtupdate || this->udevupdate || this->openautoupdate || this->systemupdate) {
+        if (ui_->pushButtonUpdate->isVisible() == false) {
+            ui_->pushButtonUpdate->show();
+            ui_->label_left->show();
+            ui_->label_right->show();
+            if (this->devModeEnabled) {
+                ui_->devlabel_right->hide();
+            } else {
+                ui_->label_dummy_right->show();
+            }
+        }
+    } else {
+        if (ui_->pushButtonUpdate->isVisible() == true) {
+            ui_->pushButtonUpdate->hide();
+            ui_->label_left->hide();
+            ui_->label_right->hide();
+            ui_->label_dummy_right->hide();
+            if (this->devModeEnabled) {
+                ui_->devlabel_right->show();
+            }
+        }
+    }
+    updateNetworkInfo();
 }

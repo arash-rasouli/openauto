@@ -62,6 +62,8 @@ public:
     bool showCursor() const override;
     void hideBrightnessControl(bool value) override;
     bool hideBrightnessControl() const override;
+    void showNetworkinfo(bool value) override;
+    bool showNetworkinfo() const override;
 
     std::string getMp3MasterPath() const override;
     void setMp3MasterPath(const std::string& value) override;
@@ -118,6 +120,7 @@ private:
     bool showLux_;
     bool showCursor_;
     bool hideBrightnessControl_;
+    bool showNetworkinfo_;
     std::string mp3MasterPath_;
     std::string mp3SubFolder_;
     int32_t mp3Track_;
@@ -149,6 +152,7 @@ private:
     static const std::string cGeneralShowLuxKey;
     static const std::string cGeneralShowCursorKey;
     static const std::string cGeneralHideBrightnessControlKey;
+    static const std::string cGeneralShowNetworkinfoKey;
 
     static const std::string cGeneralHandednessOfTrafficTypeKey;
 

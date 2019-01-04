@@ -1,7 +1,7 @@
 #include <QDialog>
 
 namespace Ui {
-class Warning;
+class WarningDialog;
 }
 
 namespace f1x
@@ -13,15 +13,15 @@ namespace autoapp
 namespace ui
 {
 
-class Warning : public QDialog
+class WarningDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Warning(QWidget *parent = nullptr);
-    ~Warning() override;
+    explicit WarningDialog(QWidget *parent = nullptr);
+    ~WarningDialog() override;
 
-    Ui::Warning* ui_;
+    Ui::WarningDialog* ui_;
 
 private slots:
     void Autoclose();

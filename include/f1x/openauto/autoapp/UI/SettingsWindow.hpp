@@ -75,6 +75,8 @@ private slots:
     void onUpdateBrightness3(int value);
     void onUpdateBrightness4(int value);
     void onUpdateBrightness5(int value);
+    void on_pushButtonNetwork0_clicked();
+    void on_pushButtonNetwork1_clicked();
 
 private slots:
     void show_tab1();

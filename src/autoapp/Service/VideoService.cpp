@@ -158,12 +158,9 @@ void VideoService::onVideoFocusRequest(const aasdk::proto::messages::VideoFocusR
                        << ", focus mode: " << request.focus_mode()
                        << ", focus reason: " << request.focus_reason();
 
-    this->sendVideoFocusIndication();
-    channel_->receive(this->shared_from_this());
-
     // stop video service on go back to openauto
     if (request.focus_mode() == 2) {
-        OPENAUTO_LOG(info) << "[VideoService] Exit entity...";
+        OPENAUTO_LOG(info) << "[VideoService] Back to CSNG...";
         try {
             if (!std::ifstream("/tmp/entityexit")) {
                 std::ofstream("/tmp/entityexit");
@@ -172,6 +169,9 @@ void VideoService::onVideoFocusRequest(const aasdk::proto::messages::VideoFocusR
             OPENAUTO_LOG(error) << "[VideoService] Error in creating entityexit";
         }
     }
+
+    this->sendVideoFocusIndication();
+    channel_->receive(this->shared_from_this());
 }
 
 void VideoService::sendVideoFocusIndication()

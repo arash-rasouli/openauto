@@ -26,7 +26,6 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QNetworkInterface>
-#include <QNetworkConfigurationManager>
 #include <fstream>
 #include <QStorageInfo>
 
@@ -72,11 +71,17 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
-    connect(ui_->pushButtonHotspotStart, &QPushButton::clicked, this, &SettingsWindow::onStartHotspot);
-    connect(ui_->pushButtonHotspotStop, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
+    connect(ui_->radioButtonHotspot, &QPushButton::clicked, this, &SettingsWindow::onStartHotspot);
+    connect(ui_->radioButtonClient, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonNTP, &QPushButton::clicked, this, &SettingsWindow::close);
+    connect(ui_->pushButtonCheckNow, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft update check &"); });
+    connect(ui_->pushButtonDebuglog, &QPushButton::clicked, this, &SettingsWindow::close);
+    connect(ui_->pushButtonDebuglog, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft debuglog &");});
+    connect(ui_->pushButtonNetworkAuto, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft network auto &");});
+    connect(ui_->pushButtonNetwork0, &QPushButton::clicked, this, &SettingsWindow::on_pushButtonNetwork0_clicked);
+    connect(ui_->pushButtonNetwork1, &QPushButton::clicked, this, &SettingsWindow::on_pushButtonNetwork1_clicked);
 
     // menu
     ui_->tab1->show();
@@ -110,20 +115,18 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     QString time_text_minute=time.toString("mm");
     ui_->spinBoxHour->setValue((time_text_hour).toInt());
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
-    ui_->label_modeswitchprogress->hide();
+    ui_->label_modeswitchprogress->setText("Ok");
 
     if (std::ifstream("/tmp/hotspot_active")) {
-        ui_->pushButtonHotspotStop->show();
-        ui_->pushButtonHotspotStart->hide();
-        ui_->lineEdit_wifimode->setText("Hotspot");
+        ui_->radioButtonClient->setChecked(0);
+        ui_->radioButtonHotspot->setChecked(1);
         ui_->lineEditWifiSSID->setText(this->hotspotssid);
         ui_->lineEditPassword->show();
         ui_->label_password->show();
         ui_->lineEditPassword->setText("1234567890");
     } else {
-        ui_->pushButtonHotspotStart->show();
-        ui_->pushButtonHotspotStop->hide();
-        ui_->lineEdit_wifimode->setText("Client");
+        ui_->radioButtonClient->setChecked(1);
+        ui_->radioButtonHotspot->setChecked(0);
         ui_->lineEditWifiSSID->setText(this->wifissid);
         ui_->lineEditPassword->hide();
         ui_->label_password->hide();
@@ -148,6 +151,7 @@ void SettingsWindow::onSave()
     configuration_->showLux(ui_->checkBoxShowLux->isChecked());
     configuration_->showCursor(ui_->checkBoxShowCursor->isChecked());
     configuration_->hideBrightnessControl(ui_->checkBoxHideBrightnessControl->isChecked());
+    configuration_->showNetworkinfo(ui_->checkBoxNetworkinfo->isChecked());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
     configuration_->showAutoPlay(ui_->checkBoxShowPlayer->isChecked());
 
@@ -347,7 +351,12 @@ void SettingsWindow::onSave()
     params.append("#");
     params.append( std::string(ui_->comboBoxCountryCode->currentText().split("|")[0].replace(" ","").toStdString()) );
     params.append("#");
-
+    if (ui_->checkBoxBlankOnly ->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
     this->close();
@@ -383,6 +392,7 @@ void SettingsWindow::load()
     ui_->checkBoxShowLux->setChecked(configuration_->showLux());
     ui_->checkBoxShowCursor->setChecked(configuration_->showCursor());
     ui_->checkBoxHideBrightnessControl->setChecked(configuration_->hideBrightnessControl());
+    ui_->checkBoxNetworkinfo->setChecked(configuration_->showNetworkinfo());
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
     ui_->checkBoxShowPlayer->setChecked(configuration_->showAutoPlay());
 
@@ -953,7 +963,15 @@ void SettingsWindow::loadSystemValues()
             ui_->radioButtonCustom->setChecked(true);
         }
         ui_->comboBoxCountryCode->setCurrentIndex(ui_->comboBoxCountryCode->findText(getparams[44], Qt::MatchFlag::MatchStartsWith));
+        // set screen blank instead off
+        if (getparams[45] == "1") {
+            ui_->checkBoxBlankOnly->setChecked(true);
+        } else {
+            ui_->checkBoxBlankOnly->setChecked(false);
+        }
     }
+    // update network info
+    updateNetworkInfo();
 }
 
 void SettingsWindow::onShowBindings()
@@ -983,26 +1001,28 @@ void SettingsWindow::onShowBindings()
 
 void SettingsWindow::onStartHotspot()
 {
-    ui_->label_modeswitchprogress->show();
-    ui_->pushButtonHotspotStart->hide();
-    ui_->pushButtonHotspotStop->hide();
-    ui_->lineEdit_wifimode->setText("");
+    ui_->label_modeswitchprogress->setText("Wait ...");
+    ui_->radioButtonClient->setEnabled(0);
+    ui_->radioButtonHotspot->setEnabled(0);
     ui_->lineEdit_wlan0->setText("");
     ui_->lineEditWifiSSID->setText("");
-    system("touch /tmp/manual_hotspot_control && sudo systemctl start hotspot &");
+    qApp->processEvents();
+    std::remove("/tmp/manual_hotspot_control");
+    std::ofstream("/tmp/manual_hotspot_control");
+    system("/opt/crankshaft/service_hotspot.sh start &");
     QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
 
 void SettingsWindow::onStopHotspot()
 {
-    ui_->label_modeswitchprogress->show();
-    ui_->pushButtonHotspotStart->hide();
-    ui_->pushButtonHotspotStop->hide();
-    ui_->lineEdit_wifimode->setText("");
+    ui_->label_modeswitchprogress->setText("Wait ...");
+    ui_->radioButtonClient->setEnabled(0);
+    ui_->radioButtonHotspot->setEnabled(0);
     ui_->lineEdit_wlan0->setText("");
     ui_->lineEditWifiSSID->setText("");
     ui_->lineEditPassword->setText("");
-    system("sudo systemctl stop hotspot &");
+    qApp->processEvents();
+    system("/opt/crankshaft/service_hotspot.sh stop &");
     QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
 
@@ -1161,28 +1181,60 @@ void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
             //qDebug() << "wlan0: " << wlan0.ip();
             ui_->lineEdit_wlan0->setText(wlan0.ip().toString());
         }
+        if (std::ifstream("/tmp/wifi_ssid")) {
+            QFile wifiData(QString("/tmp/wifi_ssid"));
+            wifiData.open(QIODevice::ReadOnly);
+            QTextStream gateway_date(&wifiData);
+            QString linedate = gateway_date.readAll();
+            wifiData.close();
+            ui_->lineEditWifiSSID->setText(linedate.simplified());
+        } else {
+            ui_->lineEditWifiSSID->setText("");
+        }
     } else {
         //qDebug() << "wlan0: down";
         ui_->lineEdit_wlan0->setText("interface down");
     }
 
     if (std::ifstream("/tmp/hotspot_active")) {
-        ui_->pushButtonHotspotStop->show();
-        ui_->pushButtonHotspotStart->hide();
-        ui_->label_modeswitchprogress->hide();
-        ui_->lineEdit_wifimode->setText("Hotspot");
+        ui_->radioButtonClient->setEnabled(1);
+        ui_->radioButtonHotspot->setEnabled(1);
+        ui_->radioButtonHotspot->setChecked(1);
+        ui_->radioButtonClient->setChecked(0);
+        ui_->label_modeswitchprogress->setText("Ok");
         ui_->lineEditWifiSSID->setText(this->hotspotssid);
         ui_->lineEditPassword->show();
         ui_->label_password->show();
         ui_->lineEditPassword->setText("1234567890");
     } else {
-        ui_->pushButtonHotspotStart->show();
-        ui_->pushButtonHotspotStop->hide();
-        ui_->label_modeswitchprogress->hide();
-        ui_->lineEdit_wifimode->setText("Client");
+        ui_->radioButtonClient->setEnabled(1);
+        ui_->radioButtonHotspot->setEnabled(1);
+        ui_->radioButtonHotspot->setChecked(0);
+        ui_->radioButtonClient->setChecked(1);
+        ui_->label_modeswitchprogress->setText("Ok");
         ui_->lineEditWifiSSID->setText(this->wifissid);
         ui_->lineEditPassword->hide();
         ui_->label_password->hide();
         ui_->lineEditPassword->setText("");
     }
+}
+
+void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonNetwork0_clicked()
+{
+    ui_->lineEdit_wlan0->setText("");
+    ui_->lineEditWifiSSID->setText("");
+    ui_->lineEditPassword->setText("");
+    qApp->processEvents();
+    system("/usr/local/bin/crankshaft network 0 &");
+
+}
+
+void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonNetwork1_clicked()
+{
+    ui_->lineEdit_wlan0->setText("");
+    ui_->lineEditWifiSSID->setText("");
+    ui_->lineEditPassword->setText("");
+    qApp->processEvents();
+    system("/usr/local/bin/crankshaft network 1 &");
+    QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }

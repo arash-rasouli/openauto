@@ -45,6 +45,7 @@ public:
     void start(aasdk::tcp::ITCPEndpoint::SocketPointer socket);
     void stop();
     void onAndroidAutoQuit() override;
+    bool disableAutostartEntity = false;
 
 private:
     using std::enable_shared_from_this<App>::shared_from_this;

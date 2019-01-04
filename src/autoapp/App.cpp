@@ -108,11 +108,17 @@ void App::aoapDeviceHandler(aasdk::usb::DeviceHandle deviceHandle)
 
     try
     {
-        connectedAccessoriesEnumerator_->cancel();
+        // ignore autostart if exit to csng was used
+        if (!disableAutostartEntity) {
+            OPENAUTO_LOG(info) << "[App] Autostart Entity allowed - let's go.";
+            connectedAccessoriesEnumerator_->cancel();
 
-        auto aoapDevice(aasdk::usb::AOAPDevice::create(usbWrapper_, ioService_, deviceHandle));
-        androidAutoEntity_ = androidAutoEntityFactory_.create(std::move(aoapDevice));
-        androidAutoEntity_->start(*this);
+            auto aoapDevice(aasdk::usb::AOAPDevice::create(usbWrapper_, ioService_, deviceHandle));
+            androidAutoEntity_ = androidAutoEntityFactory_.create(std::move(aoapDevice));
+            androidAutoEntity_->start(*this);
+        } else {
+            OPENAUTO_LOG(info) << "[App] Autostart Entity not allowed - skip.";
+        }
     }
     catch(const aasdk::error::Error& error)
     {
@@ -149,17 +155,21 @@ void App::waitForDevice()
 void App::onAndroidAutoQuit()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
-        OPENAUTO_LOG(info) << "[App] quit.";
+        OPENAUTO_LOG(info) << "[App] onAndroidAutoQuit.";
 
-        androidAutoEntity_->stop();
-        androidAutoEntity_.reset();
+        try {
+            androidAutoEntity_->stop();
+            androidAutoEntity_.reset();
+        } catch (...) {
+            OPENAUTO_LOG(info) << "[App] Exception in onAndroidAutoQuit.";
+        }
 
         if(!isStopped_)
         {
             try {
                 this->waitForDevice();
             } catch (...) {
-                OPENAUTO_LOG(info) << "[App] Exception in onAndroidAutoQuit.";
+                OPENAUTO_LOG(info) << "[App] Exception in onAndroidAutoQuit - waitfordevice.";
             }
 
         }

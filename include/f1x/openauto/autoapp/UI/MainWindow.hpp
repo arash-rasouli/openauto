@@ -81,6 +81,7 @@ signals:
     void cameraRecord();
     void openConnectDialog();
     void openWifiDialog();
+    void openUpdateDialog();
     void showBrightnessSlider();
     void showVolumeSlider();
     void showAlphaSlider();
@@ -145,6 +146,7 @@ private slots:
     void setTrigger();
     void setRetryUSBConnect();
     void resetRetryUSBMessage();
+    void updateNetworkInfo();
     bool check_file_exist(const char *filename);
 
 private:
@@ -247,6 +249,7 @@ private:
     bool csmtupdate = false;
     bool udevupdate = false;
     bool openautoupdate = false;
+    bool systemupdate = false;
 };
 
 }

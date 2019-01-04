@@ -34,8 +34,8 @@
 #include <f1x/openauto/autoapp/UI/MainWindow.hpp>
 #include <f1x/openauto/autoapp/UI/SettingsWindow.hpp>
 #include <f1x/openauto/autoapp/UI/ConnectDialog.hpp>
-#include <f1x/openauto/autoapp/UI/WifiDialog.hpp>
-#include <f1x/openauto/autoapp/UI/Warning.hpp>
+#include <f1x/openauto/autoapp/UI/WarningDialog.hpp>
+#include <f1x/openauto/autoapp/UI/UpdateDialog.hpp>
 #include <f1x/openauto/Common/Log.hpp>
 
 namespace aasdk = f1x::aasdk;
@@ -88,8 +88,8 @@ int main(int argc, char* argv[])
 
     QApplication qApplication(argc, argv);
     const int width = QApplication::desktop()->width();
-    OPENAUTO_LOG(info) << "[OpenAuto] Display width: " << width;
     const int height = QApplication::desktop()->height();
+    OPENAUTO_LOG(info) << "[OpenAuto] Display width: " << width;
     OPENAUTO_LOG(info) << "[OpenAuto] Display height: " << height;
 
     auto configuration = std::make_shared<autoapp::configuration::Configuration>();
@@ -106,29 +106,28 @@ int main(int argc, char* argv[])
     autoapp::configuration::RecentAddressesList recentAddressesList(7);
     recentAddressesList.read();
 
-    autoapp::ui::WifiDialog wifiDialog;
-    wifiDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
-    // center dialog
-    wifiDialog.move((width - 540)/2,(height-340)/2);
-
     aasdk::tcp::TCPWrapper tcpWrapper;
-    autoapp::ui::ConnectDialog connectDialog(ioService, tcpWrapper, recentAddressesList);
-    connectDialog.setWindowFlags(Qt::WindowStaysOnTopHint);
-    // center dialog
-    connectDialog.move((width - 500)/2,(height-360)/2);
+    autoapp::ui::ConnectDialog connectdialog(ioService, tcpWrapper, recentAddressesList);
+    connectdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    connectdialog.move((width - 500)/2,(height-300)/2);
 
-    autoapp::ui::Warning warning;
-    warning.setWindowFlags(Qt::WindowStaysOnTopHint);
-    // center dialog
-    warning.move((width - 500)/2,(height-300)/2);
+    autoapp::ui::WarningDialog warningdialog;
+    warningdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    warningdialog.move((width - 500)/2,(height-300)/2);
+
+    autoapp::ui::UpdateDialog updatedialog;
+    updatedialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    updatedialog.setFixedSize(500, 260);
+    updatedialog.move((width - 500)/2,(height-260)/2);
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { system("touch /tmp/shutdown"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::loadClientList);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectDialog, &autoapp::ui::ConnectDialog::exec);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openWifiDialog, &wifiDialog, &autoapp::ui::WifiDialog::exec);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::loadClientList);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::exec);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openUpdateDialog, &updatedialog, &autoapp::ui::UpdateDialog::updateCheck);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openUpdateDialog, &updatedialog, &autoapp::ui::UpdateDialog::exec);
 
     if (configuration->showCursor() == false) {
         qApplication.setOverrideCursor(Qt::BlankCursor);
@@ -232,38 +231,41 @@ int main(int argc, char* argv[])
     auto connectedAccessoriesEnumerator(std::make_shared<aasdk::usb::ConnectedAccessoriesEnumerator>(usbWrapper, ioService, queryChainFactory));
     auto app = std::make_shared<autoapp::App>(ioService, usbWrapper, tcpWrapper, androidAutoEntityFactory, std::move(usbHub), std::move(connectedAccessoriesEnumerator));
 
-    QObject::connect(&connectDialog, &autoapp::ui::ConnectDialog::connectionSucceed, [&app](auto socket) {
+    QObject::connect(&connectdialog, &autoapp::ui::ConnectDialog::connectionSucceed, [&app](auto socket) {
         app->start(std::move(socket));
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
-        OPENAUTO_LOG(info) << "[CS] Manual start android auto entity by reset usb.";
+        OPENAUTO_LOG(info) << "[Autoapp] Manual start android auto entity by reset usb.";
         try {
             if (std::ifstream("/tmp/android_device")) {
-                system("/usr/local/bin/autoapp_helper usbreset");
+                //system("/usr/local/bin/autoapp_helper usbreset");
+                app->disableAutostartEntity = false;
                 app->waitForUSBDevice();
             }
         } catch (...) {
-            OPENAUTO_LOG(info) << "[CS] Exception in Manual start android auto entity by reset usb.";
+            OPENAUTO_LOG(info) << "[Autoapp] Exception in Manual start android auto entity by reset usb.";
         }
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStop, [&app]() {
-        OPENAUTO_LOG(info) << "[CS] Manual stop android auto entity.";
+        OPENAUTO_LOG(info) << "[Autoapp] Manual stop android auto entity.";
         try {
             if (std::ifstream("/tmp/android_device")) {
+                app->disableAutostartEntity = true;
                 system("/usr/local/bin/autoapp_helper usbreset");
                 usleep(500000);
                 app->stop();
             } else {
-                app->onAndroidAutoQuit();
+                app->stop();
+                //app->onAndroidAutoQuit();
             }
         } catch (...) {
-            OPENAUTO_LOG(info) << "[CS] Exception in Manual stop android auto entity.";
+            OPENAUTO_LOG(info) << "[Autoapp] Exception in Manual stop android auto entity.";
         }
     });
 
-    warning.show();
+    warningdialog.show();
 
     app->waitForUSBDevice();
 
