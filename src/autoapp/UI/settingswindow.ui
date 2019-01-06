@@ -445,7 +445,7 @@ outline: none;
          </sizepolicy>
         </property>
         <property name="title">
-         <string>Transparency Tile GUI</string>
+         <string>Transparency GUI</string>
         </property>
         <layout class="QFormLayout" name="formLayout_15">
          <property name="topMargin">
@@ -3406,114 +3406,142 @@ outline: none;</string>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_19">
                <property name="leftMargin">
-                <number>9</number>
+                <number>0</number>
                </property>
                <property name="topMargin">
                 <number>0</number>
                </property>
                <property name="rightMargin">
-                <number>9</number>
+                <number>0</number>
                </property>
                <property name="bottomMargin">
                 <number>2</number>
                </property>
                <item>
-                <widget class="QPushButton" name="pushButtonNetwork0">
+                <widget class="QLabel" name="label_notavailable">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
-                   <height>0</height>
+                   <width>0</width>
+                   <height>24</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>120</width>
-                   <height>16777215</height>
+                   <width>16777215</width>
+                   <height>24</height>
                   </size>
                  </property>
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(117, 80, 123);
-outline: none;</string>
-                 </property>
                  <property name="text">
-                  <string>Config 1</string>
+                  <string>not available</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButtonNetwork1">
+                <widget class="QWidget" name="clientNetworkSelect" native="true">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
-                   <height>0</height>
+                   <width>0</width>
+                   <height>24</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>120</width>
-                   <height>16777215</height>
+                   <width>16777215</width>
+                   <height>24</height>
                   </size>
                  </property>
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(117, 80, 123);
+                 <layout class="QHBoxLayout" name="horizontalLayout_22">
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="pushButtonNetwork0">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(117, 80, 123);
 outline: none;</string>
-                 </property>
-                 <property name="text">
-                  <string>Config 2</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonNetworkAuto">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>120</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>120</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background-color: rgb(78, 154, 6);
+                    </property>
+                    <property name="text">
+                     <string>Default</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButtonNetwork1">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(117, 80, 123);
 outline: none;</string>
-                 </property>
-                 <property name="text">
-                  <string>Auto</string>
-                 </property>
+                    </property>
+                    <property name="text">
+                     <string>Phone Hotspot</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButtonNetworkAuto">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(78, 154, 6);
+outline: none;</string>
+                    </property>
+                    <property name="text">
+                     <string>Auto</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
               </layout>

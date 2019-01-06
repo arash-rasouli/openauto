@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>929</width>
-    <height>1529</height>
+    <height>1511</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -762,510 +762,6 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="networkInfo" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>24</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>24</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_15">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <spacer name="horizontalSpacer_14">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QWidget" name="ssidInfo" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_16">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_ssid">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string>SSID: </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="value_ssid">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="ipInfo" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_17">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_ip">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string>IP: </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="value_ip">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="maskInfo" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_20">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_mask">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string>Mask: </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="value_mask">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="gwInfo" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_22">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_gw">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string>GW: </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="value_gw">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>130</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgba(0, 0, 0, 0);
-color: rgb(196, 160, 0);</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_15">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="Line" name="line">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -1286,6 +782,509 @@ color: rgb(196, 160, 0);</string>
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="networkInfo" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgba(0, 0, 0, 0);
+border-radius: 0px;
+border: 2px solid rgba(255,255,255,0.5);
+outline: none;</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_15">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <spacer name="horizontalSpacer_14">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QWidget" name="ssidInfo" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: no-border;</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_ssid">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string>SSID: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="value_ssid">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="ipInfo" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: no-border;</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_ip">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string>IP: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="value_ip">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>130</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="maskInfo" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: no-border;</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_20">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_mask">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string>Mask: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="value_mask">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>130</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="gwInfo" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: no-border;</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_22">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_gw">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string>GW: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="value_gw">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+color: rgb(255, 255, 255);
+border: no-border;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_15">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -2315,6 +2314,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2355,6 +2356,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2395,6 +2398,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2435,6 +2440,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2475,6 +2482,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2515,6 +2524,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2579,6 +2590,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2619,6 +2632,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2659,6 +2674,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -2780,6 +2797,8 @@ outline: none;</string>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                    </property>
                    <property name="text">
@@ -2827,6 +2846,8 @@ outline: none;</string>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgba(136, 138, 133, 0.5);
 color: rgb(255, 255, 255);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                    </property>
                    <property name="text">
@@ -2882,6 +2903,8 @@ Device</string>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                    </property>
                    <property name="text">
@@ -2929,6 +2952,8 @@ outline: none;</string>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgba(136, 138, 133, 0.5);
 color: rgb(255, 255, 255);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                    </property>
                    <property name="text">
@@ -2963,6 +2988,8 @@ Device</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -3003,6 +3030,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -3043,6 +3072,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -3083,6 +3114,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">
@@ -3123,6 +3156,8 @@ outline: none;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
 outline: none;</string>
                 </property>
                 <property name="text">

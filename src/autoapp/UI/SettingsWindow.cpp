@@ -116,6 +116,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->spinBoxHour->setValue((time_text_hour).toInt());
     ui_->spinBoxMinute->setValue((time_text_minute).toInt());
     ui_->label_modeswitchprogress->setText("Ok");
+    ui_->label_notavailable->hide();
 
     if (std::ifstream("/tmp/hotspot_active")) {
         ui_->radioButtonClient->setChecked(0);
@@ -124,6 +125,8 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
         ui_->lineEditPassword->show();
         ui_->label_password->show();
         ui_->lineEditPassword->setText("1234567890");
+        ui_->clientNetworkSelect->hide();
+        ui_->label_notavailable->show();
     } else {
         ui_->radioButtonClient->setChecked(1);
         ui_->radioButtonHotspot->setChecked(0);
@@ -131,6 +134,8 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
         ui_->lineEditPassword->hide();
         ui_->label_password->hide();
         ui_->lineEditPassword->setText("");
+        ui_->clientNetworkSelect->hide();
+        ui_->label_notavailable->show();
     }
 }
 
@@ -1002,6 +1007,8 @@ void SettingsWindow::onShowBindings()
 void SettingsWindow::onStartHotspot()
 {
     ui_->label_modeswitchprogress->setText("Wait ...");
+    ui_->clientNetworkSelect->hide();
+    ui_->label_notavailable->show();
     ui_->radioButtonClient->setEnabled(0);
     ui_->radioButtonHotspot->setEnabled(0);
     ui_->lineEdit_wlan0->setText("");
@@ -1016,6 +1023,8 @@ void SettingsWindow::onStartHotspot()
 void SettingsWindow::onStopHotspot()
 {
     ui_->label_modeswitchprogress->setText("Wait ...");
+    ui_->clientNetworkSelect->hide();
+    ui_->label_notavailable->show();
     ui_->radioButtonClient->setEnabled(0);
     ui_->radioButtonHotspot->setEnabled(0);
     ui_->lineEdit_wlan0->setText("");
@@ -1216,6 +1225,8 @@ void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
         ui_->lineEditPassword->hide();
         ui_->label_password->hide();
         ui_->lineEditPassword->setText("");
+        ui_->clientNetworkSelect->show();
+        ui_->label_notavailable->hide();
     }
 }
 

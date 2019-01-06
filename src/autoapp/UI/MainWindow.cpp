@@ -475,6 +475,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonBrightness->hide();
         ui_->pushButtonBrightness2->hide();
         ui_->BrightnessSliderControl->hide();
+        // also hide volume button cause not needed if brightness not visible
+        ui_->pushButtonVolume->hide();
+        ui_->pushButtonVolume2->hide();
     }
 
     // init alpha values
@@ -488,6 +491,9 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->pushButtonNight2->hide();
         ui_->pushButtonBrightness->hide();
         ui_->pushButtonBrightness2->hide();
+        // hide also volume cause not needed without brightness
+        ui_->pushButtonVolume->hide();
+        ui_->pushButtonVolume2->hide();
     }
 
     // Hide recordings button
@@ -780,6 +786,25 @@ void f1x::openauto::autoapp::ui::MainWindow::updateAlpha()
         ui_->pushButtonAndroidAuto->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
         ui_->pushButtonNoDevice->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
         ui_->pushButtonNoWiFiDevice->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
+        // old style
+        ui_->pushButtonSettings2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonLock2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonMusic2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonBrightness2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonToggleGUI2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonExit2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonShutdown2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonReboot2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonCancel2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonAndroidAuto2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonNoDevice2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonWifi2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonNoWiFiDevice2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonDay2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonNight2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonCameraShow2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonVolume2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
+        ui_->pushButtonDebug2->setStyleSheet( "background-color: rgba(136, 138, 133, " + alp + " ); color: rgb(255, 255, 255); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); outline: none;");
     }
 }
 
@@ -791,6 +816,7 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToNight()
     ui_->pushButtonDay2->show();
     ui_->pushButtonNight->hide();
     ui_->pushButtonNight2->hide();
+    ui_->BrightnessSliderControl->hide();
     if (ui_->mediaWidget->isVisible() == true) {
         ui_->VolumeSliderControl->hide();
     }
@@ -804,6 +830,7 @@ void f1x::openauto::autoapp::ui::MainWindow::switchGuiToDay()
     ui_->pushButtonNight2->show();
     ui_->pushButtonDay->hide();
     ui_->pushButtonDay2->hide();
+    ui_->BrightnessSliderControl->hide();
     if (ui_->mediaWidget->isVisible() == true) {
         ui_->VolumeSliderControl->hide();
     }
@@ -1677,7 +1704,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     }
 
     // Hide auto day/night if needed
-    if (this->lightsensor) {
+    if (this->lightsensor || std::ifstream("/tmp/daynight_gpio")) {
         ui_->pushButtonDay->hide();
         ui_->pushButtonNight->hide();
         ui_->pushButtonDay2->hide();
@@ -1739,6 +1766,9 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             ui_->pushButtonBrightness->hide();
             ui_->pushButtonBrightness2->hide();
             ui_->BrightnessSliderControl->hide();
+            // also hide volume button if brightness hidden
+            ui_->pushButtonVolume->hide();
+            ui_->pushButtonVolume2->hide();
             if (ui_->mediaWidget->isVisible() == false) {
                 ui_->VolumeSliderControl->show();
             }
@@ -1748,6 +1778,10 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             if ((ui_->pushButtonBrightness->isVisible() == false) || (ui_->pushButtonBrightness->isVisible() == false)) {
                 ui_->pushButtonBrightness->show();
                 ui_->pushButtonBrightness2->show();
+                // also show volume button if brightness visible
+                ui_->pushButtonVolume->show();
+                ui_->pushButtonVolume2->show();
+                ui_->BrightnessSliderControl->hide();
             }
         }
     }
