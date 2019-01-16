@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>929</width>
-    <height>1511</height>
+    <width>1010</width>
+    <height>1657</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -140,6 +140,40 @@
           <number>0</number>
          </property>
          <item>
+          <widget class="QLabel" name="labelLock">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(78, 154, 6);
+color: rgb(239, 239, 239);
+outline: none;
+border-radius: 4px;</string>
+           </property>
+           <property name="text">
+            <string>Lock</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="devlabel_right">
            <property name="minimumSize">
             <size>
@@ -221,7 +255,7 @@ border-radius: 4px;
            </property>
            <property name="font">
             <font>
-             <pointsize>8</pointsize>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -241,10 +275,22 @@ color: rgb(211, 215, 207);</string>
          <item>
           <widget class="QLabel" name="Header_Label">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
            </property>
            <property name="font">
             <font>
@@ -320,6 +366,34 @@ color: rgb(211, 215, 207);</string>
            <property name="styleSheet">
             <string notr="true">background-color: rgba(0, 0, 0, 0);
 color: rgb(211, 215, 207);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelLockDummy">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(0, 0, 0, 0);</string>
            </property>
            <property name="text">
             <string/>
@@ -607,7 +681,7 @@ color: rgb(0, 102, 255);</string>
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_13">
+              <spacer name="horizontalSpacer_16">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
@@ -644,8 +718,8 @@ color: rgb(0, 102, 255);</string>
                </property>
                <property name="font">
                 <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
+                 <weight>50</weight>
+                 <bold>false</bold>
                 </font>
                </property>
                <property name="styleSheet">
@@ -680,9 +754,43 @@ border-radius: 4px;
               </spacer>
              </item>
              <item>
+              <widget class="QLabel" name="labelBluetoothPairable">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>80</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(32, 74, 135);
+color: rgb(255, 255, 255);
+outline: none;
+border-radius: 4px;</string>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#29ffff;&quot;&gt;Pairable&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="pushButtonBluetooth">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -1340,41 +1448,124 @@ border: no-border;</string>
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="pushButtonAndroidAuto">
+             <widget class="QWidget" name="ButtonAndroidAuto" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: rgba(48, 140, 198, 0.5);
+              <layout class="QVBoxLayout" name="verticalLayout_16">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="labelAndroidAutoTop">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgba(48, 140, 198, 0.5);
 color: rgb(255, 255, 255);
 border-radius: 4px;
 border: 2px solid rgba(255,255,255,0.5);
 outline: none;
+border-bottom: 0px;</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButtonAndroidAuto">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgba(48, 140, 198, 0.5);
+color: rgb(255, 255, 255);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+outline: none;
+border-top: 0px;
+border-bottom: 0px;
 </string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normalon>:/aausb-hot.png</normalon>
-               </iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normalon>:/aausb-hot.png</normalon>
+                  </iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>50</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="autoRepeat">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelAndroidAutoBottom">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgba(48, 140, 198, 0.5);
+color: rgb(255, 255, 255);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+outline: none;
+border-top: 0px;</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
             <item>
@@ -3208,7 +3399,7 @@ outline: none;</string>
         <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButtonCameraHide">
+        <widget class="QWidget" name="horizontalWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -3218,11 +3409,260 @@ outline: none;</string>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(0, 0, 0, 1);
 border-radius: 4px;
-border: 2px solid rgba(255,255,255,0.5);</string>
+border: 2px solid rgba(255,255,255,0.5);
+outline: none;</string>
          </property>
-         <property name="text">
-          <string/>
-         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_18">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="verticalWidget_2" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+border: 0px;</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_15">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="pushButtonUp">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>66</width>
+                 <height>66</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>66</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+border-left: 0px;
+border-top: 0px;
+color: rgb(255, 255, 255);
+outline: none;</string>
+               </property>
+               <property name="text">
+                <string>Up</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonDown">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>66</width>
+                 <height>66</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>66</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+border-left: 0px;
+border-bottom: 0px;
+color: rgb(255, 255, 255);
+outline: none;</string>
+               </property>
+               <property name="text">
+                <string>Down</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonCameraHide">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+border: 0px;
+outline: none;</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="verticalWidget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgba(0, 0, 0, 0);
+border: 0px;
+</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_14">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="pushButtonPlus">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>66</width>
+                 <height>66</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>66</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>16</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+border-right: 0px;
+border-top: 0px;
+color: rgb(255, 255, 255);
+outline: none;</string>
+               </property>
+               <property name="text">
+                <string>+</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButtonMinus">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>66</width>
+                 <height>66</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>66</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>16</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgba(136, 138, 133, 0.5);
+border-radius: 4px;
+border: 2px solid rgba(255,255,255,0.5);
+border-right: 0px;
+border-bottom: 0px;
+color: rgb(255, 255, 255);
+outline: none;</string>
+               </property>
+               <property name="text">
+                <string>-</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -4777,45 +5217,6 @@ outline: none;
             </property>
             <property name="flat">
              <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonUSB">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color: rgba(186, 189, 182, 0.7);
-border-radius: 4px;
-border: 2px solid rgba(255,255,255,0.5);
-color: rgb(255, 255, 255);
-outline: none;</string>
-            </property>
-            <property name="text">
-             <string>USB</string>
             </property>
            </widget>
           </item>

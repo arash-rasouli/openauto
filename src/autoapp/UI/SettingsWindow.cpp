@@ -1,4 +1,4 @@
-﻿/*subfolder
+/*subfolder
 *  This file is part of openauto project.
 *  Copyright (C) 2018 f1x.studio (Michal Szwaj)
 *
@@ -28,6 +28,7 @@
 #include <QNetworkInterface>
 #include <fstream>
 #include <QStorageInfo>
+#include <QProcess>
 
 namespace f1x
 {
@@ -75,6 +76,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->radioButtonClient, &QPushButton::clicked, this, &SettingsWindow::onStopHotspot);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::setTime);
     connect(ui_->pushButtonSetTime, &QPushButton::clicked, this, &SettingsWindow::close);
+    connect(ui_->pushButtonNTP, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft rtc sync &"); });
     connect(ui_->pushButtonNTP, &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonCheckNow, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft update check &"); });
     connect(ui_->pushButtonDebuglog, &QPushButton::clicked, this, &SettingsWindow::close);
@@ -98,6 +100,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->labelBluetoothAdapterAddress->hide();
     ui_->lineEditExternalBluetoothAdapterAddress->hide();
     ui_->labelTestInProgress->hide();
+    ui_->pushButtonShowBindings->hide();
 
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
@@ -118,10 +121,31 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->label_modeswitchprogress->setText("Ok");
     ui_->label_notavailable->hide();
 
+    QString wifi_ssid = configuration_->getCSValue("WIFI_SSID");
+    QString wifi2_ssid = configuration_->getCSValue("WIFI2_SSID");
+
+    ui_->pushButtonNetwork0->setText(wifi_ssid);
+    ui_->pushButtonNetwork1->setText(wifi2_ssid);
+
+    if (!std::ifstream("/boot/crankshaft/network1.conf")) {
+        ui_->pushButtonNetwork1->hide();
+        ui_->pushButtonNetwork0->show();
+    }
+    if (!std::ifstream("/boot/crankshaft/network0.conf")) {
+        ui_->pushButtonNetwork1->hide();
+        ui_->pushButtonNetwork0->setText(configuration_->getCSValue("WIFI2_SSID"));
+    }
+    if (!std::ifstream("/boot/crankshaft/network0.conf") && !std::ifstream("/boot/crankshaft/network1.conf")) {
+        ui_->pushButtonNetwork0->hide();
+        ui_->pushButtonNetwork1->hide();
+        ui_->pushButtonNetworkAuto->hide();
+        ui_->label_notavailable->show();
+    }
+
     if (std::ifstream("/tmp/hotspot_active")) {
         ui_->radioButtonClient->setChecked(0);
         ui_->radioButtonHotspot->setChecked(1);
-        ui_->lineEditWifiSSID->setText(this->hotspotssid);
+        ui_->lineEditWifiSSID->setText(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","ssid"));
         ui_->lineEditPassword->show();
         ui_->label_password->show();
         ui_->lineEditPassword->setText("1234567890");
@@ -130,18 +154,32 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     } else {
         ui_->radioButtonClient->setChecked(1);
         ui_->radioButtonHotspot->setChecked(0);
-        ui_->lineEditWifiSSID->setText(this->wifissid);
+        ui_->lineEditWifiSSID->setText(configuration_->readFileContent("/tmp/wifi_ssid"));
         ui_->lineEditPassword->hide();
         ui_->label_password->hide();
         ui_->lineEditPassword->setText("");
         ui_->clientNetworkSelect->hide();
         ui_->label_notavailable->show();
     }
+
+    QTimer *refresh=new QTimer(this);
+    connect(refresh, SIGNAL(timeout()),this,SLOT(updateInfo()));
+    refresh->start(5000);
 }
 
 SettingsWindow::~SettingsWindow()
 {
     delete ui_;
+}
+
+void SettingsWindow::updateInfo()
+{
+    if (ui_->tab6->isVisible() == true) {
+        updateSystemInfo();
+    }
+    if (ui_->tab5->isVisible() == true) {
+        updateNetworkInfo();
+    }
 }
 
 void SettingsWindow::onSave()
@@ -159,6 +197,7 @@ void SettingsWindow::onSave()
     configuration_->showNetworkinfo(ui_->checkBoxNetworkinfo->isChecked());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
     configuration_->showAutoPlay(ui_->checkBoxShowPlayer->isChecked());
+    configuration_->hideWarning(ui_->checkBoxDontShowAgain->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
 
@@ -183,6 +222,8 @@ void SettingsWindow::onSave()
 
     configuration_->setTouchscreenEnabled(ui_->checkBoxEnableTouchscreen->isChecked());
     this->saveButtonCheckBoxes();
+
+    configuration_->playerButtonControl(ui_->checkBoxPlayerControl->isChecked());
 
     if(ui_->radioButtonDisableBluetooth->isChecked())
     {
@@ -362,6 +403,22 @@ void SettingsWindow::onSave()
         params.append("0");
     }
     params.append("#");
+    if (ui_->checkBoxFlipX ->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    if (ui_->checkBoxFlipY ->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    params.append( std::string(ui_->comboBoxRotation->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxResolution->currentText().toStdString()) );
+    params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
     this->close();
@@ -400,6 +457,7 @@ void SettingsWindow::load()
     ui_->checkBoxNetworkinfo->setChecked(configuration_->showNetworkinfo());
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
     ui_->checkBoxShowPlayer->setChecked(configuration_->showAutoPlay());
+    ui_->checkBoxDontShowAgain->setChecked(configuration_->hideWarning());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
     ui_->radioButton60FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_60);
@@ -416,6 +474,7 @@ void SettingsWindow::load()
 
     ui_->checkBoxEnableTouchscreen->setChecked(configuration_->getTouchscreenEnabled());
     this->loadButtonCheckBoxes();
+    ui_->checkBoxPlayerControl->setChecked(configuration_->playerButtonControl());
 
     ui_->radioButtonDisableBluetooth->setChecked(configuration_->getBluetoothAdapterType() == configuration::BluetoothAdapterType::NONE);
     ui_->radioButtonUseLocalBluetoothAdapter->setChecked(configuration_->getBluetoothAdapterType() == configuration::BluetoothAdapterType::LOCAL);
@@ -431,7 +490,7 @@ void SettingsWindow::load()
     ui_->radioButtonQtAudio->setChecked(audioOutputBackendType == configuration::AudioOutputBackendType::QT);
 
     ui_->checkBoxHardwareSave->setChecked(false);
-    QStorageInfo storage("/media/CSSTORAGE");
+    QStorageInfo storage("/media/USBDRIVES/CSSTORAGE");
     storage.refresh();
     if (storage.isValid() && storage.isReady()) {
         if (storage.isReadOnly()) {
@@ -619,130 +678,104 @@ void SettingsWindow::syncNTPTime()
 
 void SettingsWindow::loadSystemValues()
 {
-    system("/usr/local/bin/autoapp_helper getoutputs");
-    system("/usr/local/bin/autoapp_helper getinputs");
-    system("/usr/local/bin/autoapp_helper getparams");
-    system("/usr/local/bin/autoapp_helper getbrightnessvalues");
-
     // set brightness slider attribs
-    QFile paramFile(QString("/tmp/br_values"));
-    paramFile.open(QIODevice::ReadOnly);
-    QTextStream data_param(&paramFile);
-    QStringList brigthnessvalues = data_param.readAll().split("#");
-    paramFile.close();
+    ui_->horizontalSliderDay->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderDay->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderDay->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderDay->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderDay->setValue(configuration_->getCSValue("BR_DAY").toInt());
 
-    ui_->horizontalSliderDay->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderDay->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderDay->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderDay->setTickInterval(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderDay->setValue(brigthnessvalues[3].toInt());
+    ui_->horizontalSliderNight->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderNight->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderNight->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderNight->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderNight->setValue(configuration_->getCSValue("BR_NIGHT").toInt());
 
-    ui_->horizontalSliderNight->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderNight->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderNight->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderNight->setTickInterval(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderNight->setValue(brigthnessvalues[4].toInt());
+    ui_->horizontalSliderBrightness1->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderBrightness1->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderBrightness1->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderBrightness1->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
 
-    ui_->horizontalSliderBrightness1->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderBrightness1->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderBrightness1->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderBrightness1->setTickInterval(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness2->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderBrightness2->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderBrightness2->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderBrightness2->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
 
-    ui_->horizontalSliderBrightness2->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderBrightness2->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderBrightness2->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderBrightness2->setTickInterval(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness3->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderBrightness3->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderBrightness3->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderBrightness3->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
 
-    ui_->horizontalSliderBrightness3->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderBrightness3->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderBrightness3->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderBrightness3->setTickInterval(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness4->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderBrightness4->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderBrightness4->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderBrightness4->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
 
-    ui_->horizontalSliderBrightness4->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderBrightness4->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderBrightness4->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderBrightness4->setTickInterval(brigthnessvalues[2].toInt());
-
-    ui_->horizontalSliderBrightness5->setMinimum(brigthnessvalues[0].toInt());
-    ui_->horizontalSliderBrightness5->setMaximum(brigthnessvalues[1].toInt());
-    ui_->horizontalSliderBrightness5->setSingleStep(brigthnessvalues[2].toInt());
-    ui_->horizontalSliderBrightness5->setTickInterval(brigthnessvalues[2].toInt());
+    ui_->horizontalSliderBrightness5->setMinimum(configuration_->getCSValue("BR_MIN").toInt());
+    ui_->horizontalSliderBrightness5->setMaximum(configuration_->getCSValue("BR_MAX").toInt());
+    ui_->horizontalSliderBrightness5->setSingleStep(configuration_->getCSValue("BR_STEP").toInt());
+    ui_->horizontalSliderBrightness5->setTickInterval(configuration_->getCSValue("BR_STEP").toInt());
 
     // set tsl2561 slider attribs
-    QFile param2File(QString("/tmp/tsl2561_values"));
-    param2File.open(QIODevice::ReadOnly);
-    QTextStream data_param2(&param2File);
-    QStringList brigthnessvalues2 = data_param2.readAll().split("#");
-    param2File.close();
-
-    ui_->horizontalSliderLux1->setValue(brigthnessvalues2[0].toInt());
-    ui_->horizontalSliderBrightness1->setValue(brigthnessvalues2[1].toInt());
-    ui_->horizontalSliderLux2->setValue(brigthnessvalues2[2].toInt());
-    ui_->horizontalSliderBrightness2->setValue(brigthnessvalues2[3].toInt());
-    ui_->horizontalSliderLux3->setValue(brigthnessvalues2[4].toInt());
-    ui_->horizontalSliderBrightness3->setValue(brigthnessvalues2[5].toInt());
-    ui_->horizontalSliderLux4->setValue(brigthnessvalues2[6].toInt());
-    ui_->horizontalSliderBrightness4->setValue(brigthnessvalues2[7].toInt());
-    ui_->horizontalSliderLux5->setValue(brigthnessvalues2[8].toInt());
-    ui_->horizontalSliderBrightness5->setValue(brigthnessvalues2[9].toInt());   
-    ui_->comboBoxCheckInterval->setCurrentText(brigthnessvalues2[10]);
-    ui_->comboBoxNightmodeStep->setCurrentText(brigthnessvalues2[11]);
+    ui_->horizontalSliderLux1->setValue(configuration_->getCSValue("LUX_LEVEL_1").toInt());
+    ui_->horizontalSliderBrightness1->setValue(configuration_->getCSValue("DISP_BRIGHTNESS_1").toInt());
+    ui_->horizontalSliderLux2->setValue(configuration_->getCSValue("LUX_LEVEL_2").toInt());
+    ui_->horizontalSliderBrightness2->setValue(configuration_->getCSValue("DISP_BRIGHTNESS_2").toInt());
+    ui_->horizontalSliderLux3->setValue(configuration_->getCSValue("LUX_LEVEL_3").toInt());
+    ui_->horizontalSliderBrightness3->setValue(configuration_->getCSValue("DISP_BRIGHTNESS_3").toInt());
+    ui_->horizontalSliderLux4->setValue(configuration_->getCSValue("LUX_LEVEL_4").toInt());
+    ui_->horizontalSliderBrightness4->setValue(configuration_->getCSValue("DISP_BRIGHTNESS_4").toInt());
+    ui_->horizontalSliderLux5->setValue(configuration_->getCSValue("LUX_LEVEL_5").toInt());
+    ui_->horizontalSliderBrightness5->setValue(configuration_->getCSValue("DISP_BRIGHTNESS_5").toInt());
+    ui_->comboBoxCheckInterval->setCurrentText(configuration_->getCSValue("TSL2561_CHECK_INTERVAL"));
+    ui_->comboBoxNightmodeStep->setCurrentText(configuration_->getCSValue("TSL2561_DAYNIGHT_ON_STEP"));
 
     if (std::ifstream("/tmp/return_value")) {
-        QFile paramFile(QString("/tmp/return_value"));
-        paramFile.open(QIODevice::ReadOnly);
-        QTextStream data_param(&paramFile);
-        QStringList getparams = data_param.readAll().split("#");
-        paramFile.close();
+        QString return_values = configuration_->readFileContent("/tmp/return_value");
+        QStringList getparams = return_values.split("#");
 
         // version string
-        ui_->valueSystemVersion->setText(getparams[0]);
+        ui_->valueSystemVersion->setText(configuration_->readFileContent("/etc/crankshaft.build"));
         // date string
-        ui_->valueSystemBuildDate->setText(getparams[1]);
+        ui_->valueSystemBuildDate->setText(configuration_->readFileContent("/etc/crankshaft.date"));
         // set volume
-        ui_->labelSystemVolumeValue->setText(getparams[2]);
-        ui_->horizontalSliderSystemVolume->setValue(getparams[2].toInt());
+        ui_->labelSystemVolumeValue->setText(configuration_->readFileContent("/boot/crankshaft/volume"));
+        ui_->horizontalSliderSystemVolume->setValue(configuration_->readFileContent("/boot/crankshaft/volume").toInt());
         // set cap volume
-        ui_->labelSystemCaptureValue->setText(getparams[3]);
-        ui_->horizontalSliderSystemCapture->setValue(getparams[3].toInt());
+        ui_->labelSystemCaptureValue->setText(configuration_->readFileContent("/boot/crankshaft/capvolume"));
+        ui_->horizontalSliderSystemCapture->setValue(configuration_->readFileContent("/boot/crankshaft/capvolume").toInt());
         // set shutdown
-        ui_->valueShutdownTimer->setText(getparams[4]);
-        ui_->spinBoxShutdown->setValue(getparams[5].toInt());
+        ui_->valueShutdownTimer->setText("- - -");
+        ui_->spinBoxShutdown->setValue(configuration_->getCSValue("DISCONNECTION_POWEROFF_MINS").toInt());
         // set disconnect
-        ui_->valueDisconnectTimer->setText(getparams[6]);
-        ui_->spinBoxDisconnect->setValue(getparams[7].toInt());
+        ui_->valueDisconnectTimer->setText("- - -");
+        ui_->spinBoxDisconnect->setValue(configuration_->getCSValue("DISCONNECTION_SCREEN_POWEROFF_SECS").toInt());
         // set day/night
-        ui_->spinBoxDay->setValue(getparams[8].toInt());
-        ui_->spinBoxNight->setValue(getparams[9].toInt());
+        ui_->spinBoxDay->setValue(configuration_->getCSValue("RTC_DAY_START").toInt());
+        ui_->spinBoxNight->setValue(configuration_->getCSValue("RTC_NIGHT_START").toInt());
         // set gpios
-        if (getparams[10] == "1") {
+        if (configuration_->getCSValue("ENABLE_GPIO") == "1") {
            ui_->checkBoxGPIO->setChecked(true);
         } else {
             ui_->checkBoxGPIO->setChecked(false);
         }
-        ui_->comboBoxDevMode->setCurrentText(getparams[11]);
-        ui_->comboBoxInvert->setCurrentText(getparams[12]);
-        ui_->comboBoxX11->setCurrentText(getparams[13]);
-        ui_->comboBoxRearcam->setCurrentText(getparams[14]);
-        ui_->comboBoxAndroid->setCurrentText(getparams[15]);
+        ui_->comboBoxDevMode->setCurrentText(configuration_->getCSValue("DEV_PIN"));
+        ui_->comboBoxInvert->setCurrentText(configuration_->getCSValue("INVERT_PIN"));
+        ui_->comboBoxX11->setCurrentText(configuration_->getCSValue("X11_PIN"));
+        ui_->comboBoxRearcam->setCurrentText(configuration_->getCSValue("REARCAM_PIN"));
+        ui_->comboBoxAndroid->setCurrentText(configuration_->getCSValue("ANDROID_PIN"));
         // set mode
-        if (getparams[16] == "0") {
+        if (configuration_->getCSValue("START_X11") == "0") {
             ui_->radioButtonEGL->setChecked(true);
         } else {
             ui_->radioButtonX11->setChecked(true);
         }
         // set rotation
-        if (getparams[17] == "0") {
+        if (configuration_->getCSValue("FLIP_SCREEN") == "0") {
             ui_->radioButtonScreenNormal->setChecked(true);
         } else {
             ui_->radioButtonScreenRotated->setChecked(true);
         }
-        // set free mem
-        ui_->valueSystemFreeMem->setText(getparams[18]);
-        // set cpu freq
-        ui_->valueSystemCPUFreq->setText(getparams[19] + "MHz");
-        // set cpu temp
-        ui_->valueSystemCPUTemp->setText(getparams[20]);
 
         if (std::ifstream("/tmp/get_inputs")) {
             QFile inputsFile(QString("/tmp/get_inputs"));
@@ -782,23 +815,8 @@ void SettingsWindow::loadSystemValues()
             }
         }
 
-        if (std::ifstream("/tmp/get_default_output")) {
-            QFile defaultoutputFile(QString("/tmp/get_default_output"));
-            defaultoutputFile.open(QIODevice::ReadOnly);
-            QTextStream data_return(&defaultoutputFile);
-            QStringList defoutput = data_return.readAll().split("\n");
-            defaultoutputFile.close();
-            ui_->comboBoxPulseOutput->setCurrentText(defoutput[0]);
-        }
-
-        if (std::ifstream("/tmp/get_default_input")) {
-            QFile defaultinputFile(QString("/tmp/get_default_input"));
-            defaultinputFile.open(QIODevice::ReadOnly);
-            QTextStream data_return(&defaultinputFile);
-            QStringList definput = data_return.readAll().split("\n");
-            defaultinputFile.close();
-            ui_->comboBoxPulseInput->setCurrentText(definput[0]);
-        }
+        ui_->comboBoxPulseOutput->setCurrentText(configuration_->readFileContent("/tmp/get_default_output"));
+        ui_->comboBoxPulseInput->setCurrentText(configuration_->readFileContent("/tmp/get_default_input"));
 
         if (std::ifstream("/tmp/timezone_listing")) {
             QFile zoneFile(QString("/tmp/timezone_listing"));
@@ -820,129 +838,157 @@ void SettingsWindow::loadSystemValues()
         }
 
         // set rtc
-        ui_->comboBoxHardwareRTC->setCurrentText(getparams[21]);
-        // set timezone
-        ui_->comboBoxTZ->setCurrentText(getparams[22]);
+        QString rtcstring = configuration_->getParamFromFile("/boot/config.txt","dtoverlay=i2c-rtc");
+        if (rtcstring != "") {
+            QStringList rtc = rtcstring.split(",");
+            ui_->comboBoxHardwareRTC->setCurrentText(rtc[1].trimmed());
+            // set timezone
+            ui_->comboBoxTZ->setCurrentText(configuration_->readFileContent("/etc/timezone"));
+        } else {
+            ui_->comboBoxHardwareRTC->setCurrentText("none");
+        }
 
         // set dac
         QString dac = "Custom";
-        if (getparams[23] == "allo-boss-dac-pcm512x-audio") {
+        if (getparams[4] == "allo-boss-dac-pcm512x-audio") {
             dac = "Allo - Boss";
         }
-        if (getparams[23] == "allo-piano-dac-pcm512x-audio") {
+        if (getparams[4] == "allo-piano-dac-pcm512x-audio") {
             dac = "Allo - Piano";
         }
-        if (getparams[23] == "iqaudio-dacplus") {
+        if (getparams[4] == "iqaudio-dacplus") {
             dac = "IQaudIO - Pi-DAC Plus/Pro/Zero";
         }
-        if (getparams[23] == "iqaudio-dacplus,unmute_amp") {
+        if (getparams[4] == "iqaudio-dacplus,unmute_amp") {
             dac = "IQaudIO - Pi-Digi Amp Plus";
         }
-        if (getparams[23] == "iqaudio-dacplus,auto_mute_amp") {
+        if (getparams[4] == "iqaudio-dacplus,auto_mute_amp") {
             dac = "IQaudIO - Pi-Digi Amp Plus - Automute";
         }
-        if (getparams[23] == "iqaudio-digi-wm8804-audio") {
+        if (getparams[4] == "iqaudio-digi-wm8804-audio") {
             dac = "IQaudIO - Pi-Digi Plus";
         }
-        if (getparams[23] == "audioinjector-wm8731-audio") {
+        if (getparams[4] == "audioinjector-wm8731-audio") {
             dac = "Audioinjector - Zero/Stereo";
         }
-        if (getparams[23] == "hifiberry-dac") {
+        if (getparams[4] == "hifiberry-dac") {
             dac = "Hifiberry - DAC";
         }
-        if (getparams[23] == "hifiberry-dacplus") {
+        if (getparams[4] == "hifiberry-dacplus") {
             dac = "Hifiberry - DAC Plus";
         }
-        if (getparams[23] == "hifiberry-digi") {
+        if (getparams[4] == "hifiberry-digi") {
             dac = "Hifiberry - Digi";
         }
-        if (getparams[23] == "hifiberry-digi-pro") {
+        if (getparams[4] == "hifiberry-digi-pro") {
             dac = "Hifiberry - Digi Pro";
         }
-        if (getparams[23] == "hifiberry-amp") {
+        if (getparams[4] == "hifiberry-amp") {
             dac = "Hifiberry - DAC Amp";
         }
-        if (getparams[23] == "audio") {
+        if (getparams[4] == "audio") {
             dac = "Raspberry Pi - Onboard";
         }
         ui_->comboBoxHardwareDAC->setCurrentText(dac);
 
         // set shutdown disable
-        if (getparams[24] == "1") {
+        if (configuration_->getCSValue("DISCONNECTION_POWEROFF_DISABLE") == "1") {
             ui_->checkBoxDisableShutdown->setChecked(true);
         } else {
             ui_->checkBoxDisableShutdown->setChecked(false);
         }
 
         // set screen off disable
-        if (getparams[25] == "1") {
+        if (configuration_->getCSValue("DISCONNECTION_SCREEN_POWEROFF_DISABLE") == "1") {
             ui_->checkBoxDisableScreenOff->setChecked(true);
         } else {
             ui_->checkBoxDisableScreenOff->setChecked(false);
         }
 
         // set custom brightness command
-        if (getparams[26] != "0") {
-            ui_->labelCustomBrightnessCommand->setText(getparams[26] + " brvalue");
+        if (configuration_->getCSValue("CUSTOM_BRIGHTNESS_COMMAND") != "") {
+            ui_->labelCustomBrightnessCommand->setText(configuration_->getCSValue("CUSTOM_BRIGHTNESS_COMMAND") + " brvalue");
         } else {
             ui_->labelCustomBrightnessCommand->setText("Disabled");
         }
 
         // set debug mode
-        if (getparams[27] == "1") {
+        if (configuration_->getCSValue("DEBUG_MODE") == "1") {
             ui_->radioButtonDebugmodeEnabled->setChecked(true);
         } else {
             ui_->radioButtonDebugmodeDisabled->setChecked(true);
         }
 
         // GPIO based shutdown
-        ui_->comboBoxGPIOShutdown->setCurrentText(getparams[28]);
-        ui_->spinBoxGPIOShutdownDelay->setValue(getparams[29].toInt());
+        ui_->comboBoxGPIOShutdown->setCurrentText(configuration_->getCSValue("IGNITION_PIN"));
+        ui_->spinBoxGPIOShutdownDelay->setValue(configuration_->getCSValue("IGNITION_DELAY").toInt());
 
-        // Wifi Credentials
-        this->wifissid = getparams[30];
-
-        // Wifi Hotspot Credentials
-        if (getparams[31] == "1") {
+        // Wifi Hotspot
+        if (configuration_->getCSValue("ENABLE_HOTSPOT") == "1") {
             ui_->checkBoxHotspot->setChecked(true);
         } else {
             ui_->checkBoxHotspot->setChecked(false);
         }
 
-        this->hotspotssid = getparams[32];
-
         // set cam
-        ui_->comboBoxCam->setCurrentText(getparams[33]);
+        if (configuration_->getParamFromFile("/boot/config.txt","start_x") == "1") {
+            ui_->comboBoxCam->setCurrentText("enabled");
+        } else {
+            ui_->comboBoxCam->setCurrentText("disabled");
+        }
+        if (configuration_->getCSValue("RPICAM_HFLIP") == "1") {
+            ui_->checkBoxFlipX->setChecked(true);
+        } else {
+            ui_->checkBoxFlipX->setChecked(false);
+        }
+        if (configuration_->getCSValue("RPICAM_VFLIP") == "1") {
+            ui_->checkBoxFlipY->setChecked(true);
+        } else {
+            ui_->checkBoxFlipY->setChecked(false);
+        }
+        ui_->comboBoxRotation->setCurrentText(configuration_->getCSValue("RPICAM_ROTATION"));
+        ui_->comboBoxResolution->setCurrentText(configuration_->getCSValue("RPICAM_RESOLUTION"));
 
         // set bluetooth
-        if (getparams[34] == "1") {
+        if (configuration_->getCSValue("ENABLE_BLUETOOTH") == "1") {
             // check external bluetooth enabled
-            if (getparams[36] == "1") {
+            if (configuration_->getCSValue("EXTERNAL_BLUETOOTH") == "1") {
                 ui_->radioButtonUseExternalBluetoothAdapter->setChecked(true);
             } else {
                 ui_->radioButtonUseLocalBluetoothAdapter->setChecked(true);
             }
             // mac
-            ui_->lineEditExternalBluetoothAdapterAddress->setText(getparams[37]);
+            //ui_->lineEditExternalBluetoothAdapterAddress->setText(getparams[37]);
         } else {
             ui_->radioButtonDisableBluetooth->setChecked(true);
             ui_->lineEditExternalBluetoothAdapterAddress->setText("");
         }
-        if (getparams[35] == "1") {
+        if (configuration_->getCSValue("ENABLE_PAIRABLE") == "1") {
             ui_->checkBoxBluetoothAutoPair->setChecked(true);
         } else {
             ui_->checkBoxBluetoothAutoPair->setChecked(false);
         }
         // set bluetooth type
-        ui_->comboBoxBluetooth->setCurrentText(getparams[38]);
+        if (configuration_->getCSValue("ENABLE_BLUETOOTH") == "1") {
+            QString bt = configuration_->getParamFromFile("/boot/config.txt","dtoverlay=pi3-disable-bt");
+            if (bt.contains("pi3-disable-bt")) {
+                ui_->comboBoxBluetooth->setCurrentText("external");
+            } else {
+                ui_->comboBoxBluetooth->setCurrentText("builtin");
+            }
+        } else {
+            ui_->comboBoxBluetooth->setCurrentText("none");
+        }
+
         // set sdoc
-        if (getparams[39] == "enabled") {
+        QString sdoc = configuration_->getParamFromFile("/boot/config.txt","dtoverlay=sdtweak");
+        if (sdoc.contains("sdtweak")) {
             ui_->comboBoxSDOC->setCurrentIndex(1);
         } else {
             ui_->comboBoxSDOC->setCurrentIndex(0);
         }
         // set lightsensor
-        if (getparams[40] == "enabled") {
+        if (std::ifstream("/etc/cs_lightsensor")) {
             ui_->comboBoxLS->setCurrentIndex(1);
             ui_->groupBoxSliderDay->hide();
             ui_->groupBoxSliderNight->hide();
@@ -952,24 +998,26 @@ void SettingsWindow::loadSystemValues()
             ui_->groupBoxSliderDay->show();
             ui_->groupBoxSliderNight->show();
         }
-        ui_->comboBoxDayNight->setCurrentText(getparams[41]);
-        if (getparams[42] == "1") {
+        ui_->comboBoxDayNight->setCurrentText(configuration_->getCSValue("DAYNIGHT_PIN"));
+        if (configuration_->getCSValue("RTC_DAYNIGHT") == "1") {
             ui_->checkBoxDisableDayNightRTC->setChecked(false);
         } else {
             ui_->checkBoxDisableDayNightRTC->setChecked(true);
         }
-        if (getparams[43] == "csnganimation") {
+        QString theme = configuration_->getParamFromFile("/etc/plymouth/plymouthd.conf","Theme");
+        if (theme == "csnganimation") {
             ui_->radioButtonAnimatedCSNG->setChecked(true);
         }
-        else if (getparams[43] == "crankshaft") {
+        else if (theme == "crankshaft") {
             ui_->radioButtonCSNG->setChecked(true);
         }
-        else if (getparams[43] == "custom") {
+        else if (theme == "custom") {
             ui_->radioButtonCustom->setChecked(true);
         }
-        ui_->comboBoxCountryCode->setCurrentIndex(ui_->comboBoxCountryCode->findText(getparams[44], Qt::MatchFlag::MatchStartsWith));
+        // wifi country code
+        ui_->comboBoxCountryCode->setCurrentIndex(ui_->comboBoxCountryCode->findText(configuration_->getCSValue("WIFI_COUNTRY"), Qt::MatchFlag::MatchStartsWith));
         // set screen blank instead off
-        if (getparams[45] == "1") {
+        if (configuration_->getCSValue("SCREEN_POWEROFF_OVERRIDE") == "1") {
             ui_->checkBoxBlankOnly->setChecked(true);
         } else {
             ui_->checkBoxBlankOnly->setChecked(false);
@@ -1013,11 +1061,11 @@ void SettingsWindow::onStartHotspot()
     ui_->radioButtonHotspot->setEnabled(0);
     ui_->lineEdit_wlan0->setText("");
     ui_->lineEditWifiSSID->setText("");
+    ui_->pushButtonNetworkAuto->hide();
     qApp->processEvents();
     std::remove("/tmp/manual_hotspot_control");
     std::ofstream("/tmp/manual_hotspot_control");
     system("/opt/crankshaft/service_hotspot.sh start &");
-    QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
 }
 
 void SettingsWindow::onStopHotspot()
@@ -1030,9 +1078,57 @@ void SettingsWindow::onStopHotspot()
     ui_->lineEdit_wlan0->setText("");
     ui_->lineEditWifiSSID->setText("");
     ui_->lineEditPassword->setText("");
+    ui_->pushButtonNetworkAuto->hide();
     qApp->processEvents();
     system("/opt/crankshaft/service_hotspot.sh stop &");
-    QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
+}
+
+void SettingsWindow::updateSystemInfo()
+{
+    // free ram
+    struct sysinfo info;
+    sysinfo(&info);
+    ui_->valueSystemFreeMem->setText(QString::number(info.freeram/1024/1024) + " MB");
+    // current cpu speed
+    QString freq = configuration_->readFileContent("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq");
+    int currentfreq = freq.toInt()/1000;
+    ui_->valueSystemCPUFreq->setText(QString::number(currentfreq) + "MHz");
+    // current cpu temp
+    QString temp = configuration_->readFileContent("/sys/class/thermal/thermal_zone0/temp");
+    int currenttemp = temp.toInt()/1000;
+    ui_->valueSystemCPUTemp->setText(QString::number(currenttemp) + "°C");
+    // get remaining times
+    QProcess process;
+    process.start("/bin/bash", QStringList() << "-c" << "systemctl list-timers -all | grep disconnect | awk {'print $1'}");
+    process.waitForFinished(-1);
+    QString stdout = process.readAllStandardOutput();
+    if (stdout.simplified() != "n/a") {
+        process.start("/bin/bash", QStringList() << "-c" << "systemctl list-timers -all | grep disconnect | awk {'print $5\" \"$6'}");
+        process.waitForFinished(-1);
+        QString stdout = process.readAllStandardOutput();
+        if (stdout.simplified() != "") {
+            ui_->valueDisconnectTimer->setText(stdout.simplified());
+        } else {
+            ui_->valueDisconnectTimer->setText("Stopped");
+        }
+    } else {
+        ui_->valueDisconnectTimer->setText("Stopped");
+    }
+    process.start("/bin/bash", QStringList() << "-c" << "systemctl list-timers -all | grep shutdown | awk {'print $1'}");
+    process.waitForFinished(-1);
+    stdout = process.readAllStandardOutput();
+    if (stdout.simplified() != "n/a") {
+        process.start("/bin/bash", QStringList() << "-c" << "systemctl list-timers -all | grep shutdown | awk {'print $5\" \"$6'}");
+        process.waitForFinished(-1);
+        QString stdout = process.readAllStandardOutput();
+        if (stdout.simplified() != "") {
+            ui_->valueShutdownTimer->setText(stdout.simplified());
+        } else {
+            ui_->valueShutdownTimer->setText("Stopped");
+        }
+    } else {
+        ui_->valueShutdownTimer->setText("Stopped");
+    }
 }
 
 void SettingsWindow::show_tab1()
@@ -1169,64 +1265,75 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonAudioTest_clicked(
 
 void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
 {
-    QNetworkInterface eth0if = QNetworkInterface::interfaceFromName("eth0");
-    if (eth0if.flags().testFlag(QNetworkInterface::IsUp)) {
-        QList<QNetworkAddressEntry> entrieseth0 = eth0if.addressEntries();
-        if (!entrieseth0.isEmpty()) {
-            QNetworkAddressEntry eth0 = entrieseth0.first();
-            //qDebug() << "eth0: " << eth0.ip();
-            ui_->lineEdit_eth0->setText(eth0.ip().toString());
-        }
-    } else {
-        //qDebug() << "eth0: down";
-        ui_->lineEdit_eth0->setText("interface down");
-    }
-
-    QNetworkInterface wlan0if = QNetworkInterface::interfaceFromName("wlan0");
-    if (wlan0if.flags().testFlag(QNetworkInterface::IsUp)) {
-        QList<QNetworkAddressEntry> entrieswlan0 = wlan0if.addressEntries();
-        if (!entrieswlan0.isEmpty()) {
-            QNetworkAddressEntry wlan0 = entrieswlan0.first();
-            //qDebug() << "wlan0: " << wlan0.ip();
-            ui_->lineEdit_wlan0->setText(wlan0.ip().toString());
-        }
-        if (std::ifstream("/tmp/wifi_ssid")) {
-            QFile wifiData(QString("/tmp/wifi_ssid"));
-            wifiData.open(QIODevice::ReadOnly);
-            QTextStream gateway_date(&wifiData);
-            QString linedate = gateway_date.readAll();
-            wifiData.close();
-            ui_->lineEditWifiSSID->setText(linedate.simplified());
+    if (!std::ifstream("/tmp/mode_change_progress")) {
+        QNetworkInterface eth0if = QNetworkInterface::interfaceFromName("eth0");
+        if (eth0if.flags().testFlag(QNetworkInterface::IsUp)) {
+            QList<QNetworkAddressEntry> entrieseth0 = eth0if.addressEntries();
+            if (!entrieseth0.isEmpty()) {
+                QNetworkAddressEntry eth0 = entrieseth0.first();
+                //qDebug() << "eth0: " << eth0.ip();
+                ui_->lineEdit_eth0->setText(eth0.ip().toString());
+            }
         } else {
-            ui_->lineEditWifiSSID->setText("");
+            //qDebug() << "eth0: down";
+            ui_->lineEdit_eth0->setText("interface down");
         }
-    } else {
-        //qDebug() << "wlan0: down";
-        ui_->lineEdit_wlan0->setText("interface down");
-    }
 
-    if (std::ifstream("/tmp/hotspot_active")) {
-        ui_->radioButtonClient->setEnabled(1);
-        ui_->radioButtonHotspot->setEnabled(1);
-        ui_->radioButtonHotspot->setChecked(1);
-        ui_->radioButtonClient->setChecked(0);
-        ui_->label_modeswitchprogress->setText("Ok");
-        ui_->lineEditWifiSSID->setText(this->hotspotssid);
-        ui_->lineEditPassword->show();
-        ui_->label_password->show();
-        ui_->lineEditPassword->setText("1234567890");
-    } else {
-        ui_->radioButtonClient->setEnabled(1);
-        ui_->radioButtonHotspot->setEnabled(1);
-        ui_->radioButtonHotspot->setChecked(0);
-        ui_->radioButtonClient->setChecked(1);
-        ui_->label_modeswitchprogress->setText("Ok");
-        ui_->lineEditWifiSSID->setText(this->wifissid);
-        ui_->lineEditPassword->hide();
-        ui_->label_password->hide();
-        ui_->lineEditPassword->setText("");
-        ui_->clientNetworkSelect->show();
-        ui_->label_notavailable->hide();
+        QNetworkInterface wlan0if = QNetworkInterface::interfaceFromName("wlan0");
+        if (wlan0if.flags().testFlag(QNetworkInterface::IsUp)) {
+            QList<QNetworkAddressEntry> entrieswlan0 = wlan0if.addressEntries();
+            if (!entrieswlan0.isEmpty()) {
+                QNetworkAddressEntry wlan0 = entrieswlan0.first();
+                //qDebug() << "wlan0: " << wlan0.ip();
+                ui_->lineEdit_wlan0->setText(wlan0.ip().toString());
+            }
+        } else {
+            //qDebug() << "wlan0: down";
+            ui_->lineEdit_wlan0->setText("interface down");
+        }
+
+        if (std::ifstream("/tmp/hotspot_active")) {
+            ui_->radioButtonClient->setEnabled(1);
+            ui_->radioButtonHotspot->setEnabled(1);
+            ui_->radioButtonHotspot->setChecked(1);
+            ui_->radioButtonClient->setChecked(0);
+            ui_->label_modeswitchprogress->setText("Ok");
+            ui_->lineEditWifiSSID->setText(configuration_->getParamFromFile("/etc/hostapd/hostapd.conf","ssid"));
+            ui_->lineEditPassword->show();
+            ui_->label_password->show();
+            ui_->lineEditPassword->setText("1234567890");
+            ui_->clientNetworkSelect->hide();
+            ui_->pushButtonNetworkAuto->hide();
+            ui_->label_notavailable->show();
+        } else {
+            ui_->radioButtonClient->setEnabled(1);
+            ui_->radioButtonHotspot->setEnabled(1);
+            ui_->radioButtonHotspot->setChecked(0);
+            ui_->radioButtonClient->setChecked(1);
+            ui_->label_modeswitchprogress->setText("Ok");
+            ui_->lineEditWifiSSID->setText(configuration_->readFileContent("/tmp/wifi_ssid"));
+            ui_->lineEditPassword->hide();
+            ui_->label_password->hide();
+            ui_->lineEditPassword->setText("");
+            ui_->clientNetworkSelect->show();
+            ui_->label_notavailable->hide();
+            ui_->pushButtonNetworkAuto->show();
+
+            if (!std::ifstream("/boot/crankshaft/network1.conf")) {
+                ui_->pushButtonNetwork1->hide();
+                ui_->pushButtonNetwork0->show();
+            }
+            if (!std::ifstream("/boot/crankshaft/network0.conf")) {
+                ui_->pushButtonNetwork1->hide();
+                ui_->pushButtonNetwork0->setText(configuration_->getCSValue("WIFI2_SSID"));
+            }
+            if (!std::ifstream("/boot/crankshaft/network0.conf") && !std::ifstream("/boot/crankshaft/network1.conf")) {
+                ui_->pushButtonNetwork0->hide();
+                ui_->pushButtonNetwork1->hide();
+                ui_->pushButtonNetworkAuto->hide();
+                ui_->label_notavailable->show();
+            }
+        }
     }
 }
 
@@ -1236,7 +1343,7 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonNetwork0_clicked()
     ui_->lineEditWifiSSID->setText("");
     ui_->lineEditPassword->setText("");
     qApp->processEvents();
-    system("/usr/local/bin/crankshaft network 0 &");
+    system("/usr/local/bin/crankshaft network 0 >/dev/null 2>&1 &");
 
 }
 
@@ -1246,6 +1353,5 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonNetwork1_clicked()
     ui_->lineEditWifiSSID->setText("");
     ui_->lineEditPassword->setText("");
     qApp->processEvents();
-    system("/usr/local/bin/crankshaft network 1 &");
-    QTimer::singleShot(15000, this, SLOT(updateNetworkInfo()));
+    system("/usr/local/bin/crankshaft network 1 >/dev/null 2>&1 &");
 }

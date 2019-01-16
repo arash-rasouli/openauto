@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 #include <QFileDialog>
+#include <sys/sysinfo.h>
 
 class QCheckBox;
 class QTimer;
@@ -77,8 +78,10 @@ private slots:
     void onUpdateBrightness5(int value);
     void on_pushButtonNetwork0_clicked();
     void on_pushButtonNetwork1_clicked();
+    void updateSystemInfo();
+    void updateInfo();
 
-private slots:
+public slots:
     void show_tab1();
     void show_tab2();
     void show_tab3();
@@ -99,9 +102,6 @@ private:
 
     Ui::SettingsWindow* ui_;
     configuration::IConfiguration::Pointer configuration_;
-
-    QString hotspotssid;
-    QString wifissid;
 };
 
 }

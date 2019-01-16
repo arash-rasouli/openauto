@@ -39,7 +39,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
     connect(watcher_tmp, &QFileSystemWatcher::directoryChanged, this, &UpdateDialog::updateCheck);
 
     watcher_download = new QFileSystemWatcher(this);
-    watcher_download->addPath("/media/CSSTORAGE");
+    watcher_download->addPath("/media/USBDRIVES/CSSTORAGE");
     connect(watcher_download, &QFileSystemWatcher::directoryChanged, this, &UpdateDialog::downloadCheck);
 }
 
@@ -94,7 +94,7 @@ void f1x::openauto::autoapp::ui::UpdateDialog::on_pushButtonUpdateCheck_clicked(
 
 void f1x::openauto::autoapp::ui::UpdateDialog::downloadCheck()
 {
-    QDir directory("/media/CSSTORAGE");
+    QDir directory("/media/USBDRIVES/CSSTORAGE");
     QStringList files = directory.entryList(QStringList() << "*.zip", QDir::AllEntries, QDir::Name);
     foreach(QString filename, files) {
         if (filename != "") {
@@ -136,6 +136,9 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
             ui_->progressBarOpenauto->hide();
             ui_->labelOpenautoOK->show();
         }
+    } else {
+        ui_->labelOpenautoOK->hide();
+        ui_->pushButtonUpdateOpenauto->hide();
     }
 
     if (std::ifstream("/tmp/system_update_ready")) {
@@ -153,15 +156,21 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
         if (std::ifstream("/tmp/system_update_downloading")) {
             ui_->labelSystemOK->hide();
             ui_->pushButtonUpdateSystem->hide();
+            ui_->pushButtonUpdateCheck->hide();
             ui_->progressBarSystem->show();
 
-            QFileInfo downloadfile = "/media/CSSTORAGE/" + ui_->labelDownload->text();
+            QFileInfo downloadfile = "/media/USBDRIVES/CSSTORAGE/" + ui_->labelDownload->text();
             if (downloadfile.exists()) {
                 qint64 size = downloadfile.size();
                 size = size/1024/1024;
                 ui_->progressBarSystem->setValue(size);
             }
+        } else {
+            if (ui_->pushButtonUpdateCheck->isVisible() == false) {
+                ui_->pushButtonUpdateCheck->show();
+            }
         }
+
         if (!std::ifstream("/tmp/system_update_available") && !std::ifstream("/tmp/system_update_downloading")) {
             ui_->progressBarSystem->hide();
             ui_->labelSystemOK->show();

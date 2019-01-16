@@ -146,6 +146,20 @@ void ConnectDialog::loadClientList()
                 }
             }
             versionFile.close();
+            if (ui_->listWidgetClients->count() == 1) {
+                this->setControlsEnabledStatus(false);
+                const auto& ipAddress = ui_->lineEditIPAddress->text().toStdString();
+                auto socket = std::make_shared<boost::asio::ip::tcp::socket>(ioService_);
+                ui_->progressBarConnect->show();
+                try
+                {
+                    tcpWrapper_.asyncConnect(*socket, ipAddress, 5277, std::bind(&ConnectDialog::connectHandler, this, std::placeholders::_1, ipAddress, socket));
+                }
+                catch(const boost::system::system_error& se)
+                {
+                    emit connectionFailed(QString(se.what()));
+                }
+            }
         } else {
             ui_->lineEditIPAddress->setText("");
         }

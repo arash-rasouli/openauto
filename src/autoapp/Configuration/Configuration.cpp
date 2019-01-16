@@ -42,6 +42,7 @@ const std::string Configuration::cGeneralShowLuxKey = "General.ShowLux";
 const std::string Configuration::cGeneralShowCursorKey = "General.ShowCursor";
 const std::string Configuration::cGeneralHideBrightnessControlKey = "General.HideBrightnessControl";
 const std::string Configuration::cGeneralShowNetworkinfoKey = "General.ShowNetworkinfo";
+const std::string Configuration::cGeneralHideWarningKey = "General.HideWarning";
 
 const std::string Configuration::cGeneralHandednessOfTrafficTypeKey = "General.HandednessOfTrafficType";
 
@@ -66,6 +67,7 @@ const std::string Configuration::cBluetoothAdapterTypeKey = "Bluetooth.AdapterTy
 const std::string Configuration::cBluetoothRemoteAdapterAddressKey = "Bluetooth.RemoteAdapterAddress";
 
 const std::string Configuration::cInputEnableTouchscreenKey = "Input.EnableTouchscreen";
+const std::string Configuration::cInputEnablePlayerControlKey = "Input.EnablePlayerControl";
 const std::string Configuration::cInputPlayButtonKey = "Input.PlayButton";
 const std::string Configuration::cInputPauseButtonKey = "Input.PauseButton";
 const std::string Configuration::cInputTogglePlayButtonKey = "Input.TogglePlayButton";
@@ -107,6 +109,7 @@ void Configuration::load()
         showLux_ = iniConfig.get<bool>(cGeneralShowLuxKey, false);
         showCursor_ = iniConfig.get<bool>(cGeneralShowCursorKey, false);
         hideBrightnessControl_ = iniConfig.get<bool>(cGeneralHideBrightnessControlKey, false);
+        hideWarning_ = iniConfig.get<bool>(cGeneralHideWarningKey, false);
         showNetworkinfo_ = iniConfig.get<bool>(cGeneralShowNetworkinfoKey, false);
         mp3MasterPath_ = iniConfig.get<std::string>(cGeneralMp3MasterPathKey, "/media/MYMEDIA");
         mp3SubFolder_ = iniConfig.get<std::string>(cGeneralMp3SubFolderKey, "/");
@@ -119,12 +122,13 @@ void Configuration::load()
 
         videoResolution_ = static_cast<aasdk::proto::enums::VideoResolution::Enum>(iniConfig.get<uint32_t>(cVideoResolutionKey,
                                                                                                            aasdk::proto::enums::VideoResolution::_480p));
-        screenDPI_ = iniConfig.get<size_t>(cVideoScreenDPIKey, 100);
+        screenDPI_ = iniConfig.get<size_t>(cVideoScreenDPIKey, 140);
 
         omxLayerIndex_ = iniConfig.get<int32_t>(cVideoOMXLayerIndexKey, 1);
         videoMargins_ = QRect(0, 0, iniConfig.get<int32_t>(cVideoMarginWidth, 0), iniConfig.get<int32_t>(cVideoMarginHeight, 0));
 
         enableTouchscreen_ = iniConfig.get<bool>(cInputEnableTouchscreenKey, true);
+        enablePlayerControl_ = iniConfig.get<bool>(cInputEnablePlayerControlKey, false);
         this->readButtonCodes(iniConfig);
 
         bluetoothAdapterType_ = static_cast<BluetoothAdapterType>(iniConfig.get<uint32_t>(cBluetoothAdapterTypeKey,
@@ -156,6 +160,7 @@ void Configuration::reset()
     showLux_ = false;
     showCursor_ = false;
     hideBrightnessControl_ = false;
+    hideWarning_ = false;
     showNetworkinfo_ = false;
     mp3MasterPath_ = "/media/MYMEDIA";
     mp3SubFolder_ = "/";
@@ -164,10 +169,11 @@ void Configuration::reset()
     showAutoPlay_ = false;
     videoFPS_ = aasdk::proto::enums::VideoFPS::_30;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
-    screenDPI_ = 100;
+    screenDPI_ = 140;
     omxLayerIndex_ = 1;
     videoMargins_ = QRect(0, 0, 0, 0);
     enableTouchscreen_ = true;
+    enablePlayerControl_ = false;
     buttonCodes_.clear();
     bluetoothAdapterType_ = BluetoothAdapterType::NONE;
     bluetoothRemoteAdapterAddress_ = "";
@@ -190,6 +196,7 @@ void Configuration::save()
     iniConfig.put<bool>(cGeneralShowLuxKey, showLux_);
     iniConfig.put<bool>(cGeneralShowCursorKey, showCursor_);
     iniConfig.put<bool>(cGeneralHideBrightnessControlKey, hideBrightnessControl_);
+    iniConfig.put<bool>(cGeneralHideWarningKey, hideWarning_);
     iniConfig.put<bool>(cGeneralShowNetworkinfoKey, showNetworkinfo_);
     iniConfig.put<std::string>(cGeneralMp3MasterPathKey, mp3MasterPath_);
     iniConfig.put<std::string>(cGeneralMp3SubFolderKey, mp3SubFolder_);
@@ -205,6 +212,7 @@ void Configuration::save()
     iniConfig.put<uint32_t>(cVideoMarginHeight, videoMargins_.height());
 
     iniConfig.put<bool>(cInputEnableTouchscreenKey, enableTouchscreen_);
+    iniConfig.put<bool>(cInputEnablePlayerControlKey, enablePlayerControl_);
     this->writeButtonCodes(iniConfig);
 
     iniConfig.put<uint32_t>(cBluetoothAdapterTypeKey, static_cast<uint32_t>(bluetoothAdapterType_));
@@ -335,6 +343,16 @@ bool Configuration::hideBrightnessControl() const
     return hideBrightnessControl_;
 }
 
+void Configuration::hideWarning(bool value)
+{
+    hideWarning_ = value;
+}
+
+bool Configuration::hideWarning() const
+{
+    return hideWarning_;
+}
+
 void Configuration::showNetworkinfo(bool value)
 {
     showNetworkinfo_ = value;
@@ -455,6 +473,16 @@ void Configuration::setTouchscreenEnabled(bool value)
     enableTouchscreen_ = value;
 }
 
+bool Configuration::playerButtonControl() const
+{
+    return enablePlayerControl_;
+}
+
+void Configuration::playerButtonControl(bool value)
+{
+    enablePlayerControl_ = value;
+}
+
 Configuration::ButtonCodes Configuration::getButtonCodes() const
 {
     return buttonCodes_;
@@ -513,6 +541,129 @@ AudioOutputBackendType Configuration::getAudioOutputBackendType() const
 void Configuration::setAudioOutputBackendType(AudioOutputBackendType value)
 {
     audioOutputBackendType_ = value;
+}
+
+QString Configuration::getCSValue(QString searchString) const
+{
+    using namespace std;
+    ifstream inFile;
+    ifstream inFile2;
+    string line;
+    searchString = searchString.append("=");
+    inFile.open("/boot/crankshaft/crankshaft_env.sh");
+    inFile2.open("/opt/crankshaft/crankshaft_default_env.sh");
+
+    size_t pos;
+
+    if(inFile) {
+        while(inFile.good())
+        {
+            getline(inFile,line); // get line from file
+            if (line[0] != '#') {
+                pos=line.find(searchString.toStdString()); // search
+                if(pos!=std::string::npos) // string::npos is returned if string is not found
+                {
+                    int equalPosition = line.find("=");
+                    QString value = line.substr(equalPosition + 1).c_str();
+                    value.replace("\"","");
+                    OPENAUTO_LOG(info) << "[Configuration] CS param found: " << searchString.toStdString() << " Value:" << value.toStdString();
+                    return value;
+                }
+            }
+        }
+        OPENAUTO_LOG(warning) << "[Configuration] unable to find cs param: " << searchString.toStdString();
+        OPENAUTO_LOG(warning) << "[Configuration] Fallback to /opt/crankshaft/crankshaft_default_env.sh)";
+        while(inFile2.good())
+        {
+            getline(inFile2,line); // get line from file
+            if (line[0] != '#') {
+                pos=line.find(searchString.toStdString()); // search
+                if(pos!=std::string::npos) // string::npos is returned if string is not found
+                {
+                    int equalPosition = line.find("=");
+                    QString value = line.substr(equalPosition + 1).c_str();
+                    value.replace("\"","");
+                    OPENAUTO_LOG(info) << "[Configuration] CS param found: " << searchString.toStdString() << " Value:" << value.toStdString();
+                    return value;
+                }
+            }
+        }
+        return "";
+    } else {
+        OPENAUTO_LOG(warning) << "[Configuration] unable to open cs param file (/boot/crankshaft/crankshaft_env.sh)";
+        OPENAUTO_LOG(warning) << "[Configuration] Fallback to /opt/crankshaft/crankshaft_default_env.sh)";
+
+        while(inFile2.good())
+        {
+            getline(inFile2,line); // get line from file
+            if (line[0] != '#') {
+                pos=line.find(searchString.toStdString()); // search
+                if(pos!=std::string::npos) // string::npos is returned if string is not found
+                {
+                    int equalPosition = line.find("=");
+                    QString value = line.substr(equalPosition + 1).c_str();
+                    value.replace("\"","");
+                    OPENAUTO_LOG(info) << "[Configuration] CS param found: " << searchString.toStdString() << " Value:" << value.toStdString();
+                    return value;
+                }
+            }
+        }
+        return "";
+    }
+}
+
+QString Configuration::getParamFromFile(QString fileName, QString searchString) const
+{
+    OPENAUTO_LOG(info) << "[Configuration] Request param from file: " << fileName.toStdString() << " param: " << searchString.toStdString();
+    using namespace std;
+    ifstream inFile;
+    string line;
+    if (!searchString.contains("dtoverlay")) {
+        searchString = searchString.append("=");
+    }
+    inFile.open(fileName.toStdString());
+
+    size_t pos;
+
+    if(inFile) {
+        while(inFile.good())
+        {
+            getline(inFile,line); // get line from file
+            if (line[0] != '#') {
+                pos=line.find(searchString.toStdString()); // search
+                if(pos!=std::string::npos) // string::npos is returned if string is not found
+                {
+                    int equalPosition = line.find("=");
+                    QString value = line.substr(equalPosition + 1).c_str();
+                    value.replace("\"","");
+                    OPENAUTO_LOG(info) << "[Configuration] Param from file: " << fileName.toStdString() << " found: " << searchString.toStdString() << " Value:" << value.toStdString();
+                    return value;
+                }
+            }
+        }
+        return "";
+    } else {
+        return "";
+    }
+}
+
+QString Configuration::readFileContent(QString fileName) const
+{
+    using namespace std;
+    ifstream inFile;
+    string line;
+    inFile.open(fileName.toStdString());
+    string result = "";
+    if(inFile) {
+        while(inFile.good())
+        {
+            getline(inFile,line); // get line from file
+            result.append(line);
+        }
+        return result.c_str();
+    } else {
+        return "";
+    }
 }
 
 void Configuration::readButtonCodes(boost::property_tree::ptree& iniConfig)

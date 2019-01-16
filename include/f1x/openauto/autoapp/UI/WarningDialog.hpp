@@ -21,6 +21,7 @@ public:
     explicit WarningDialog(QWidget *parent = nullptr);
     ~WarningDialog() override;
 
+private:
     Ui::WarningDialog* ui_;
 
 private slots:

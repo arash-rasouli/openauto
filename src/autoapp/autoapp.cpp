@@ -122,8 +122,9 @@ int main(int argc, char* argv[])
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::exit, []() { system("touch /tmp/shutdown"); std::exit(0); });
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::reboot, []() { system("touch /tmp/reboot"); std::exit(0); });
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::show_tab1);
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::loadClientList);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::exec);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openUpdateDialog, &updatedialog, &autoapp::ui::UpdateDialog::updateCheck);
@@ -136,85 +137,69 @@ int main(int argc, char* argv[])
     }
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraHide, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Background &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Background.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraShow, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Foreground &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Foreground.";
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraPosYUp, [&qApplication]() {
+        system("/opt/crankshaft/cameracontrol.py PosYUp &");
+        OPENAUTO_LOG(info) << "[Camera] PosY up.";
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraPosYDown, [&qApplication]() {
+        system("/opt/crankshaft/cameracontrol.py PosYDown &");
+        OPENAUTO_LOG(info) << "[Camera] PosY down.";
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraZoomPlus, [&qApplication]() {
+        system("/opt/crankshaft/cameracontrol.py ZoomPlus &");
+        OPENAUTO_LOG(info) << "[Camera] Zoom plus.";
+    });
+
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraZoomMinus, [&qApplication]() {
+        system("/opt/crankshaft/cameracontrol.py ZoomMinus &");
+        OPENAUTO_LOG(info) << "[Camera] Zoom minus.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::hideRearCam, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py DashcamMode &");
         system("sudo rm /tmp/rearcam_enabled &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Dashcam mode.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::showRearCam, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Rearcam &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Rearcam mode.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraRecord, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Record &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Record.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraStop, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Stop &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Stop.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraSave, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/cameracontrol.py Save &");
-        OPENAUTO_LOG(info) << "[CS] Ran RPiCameraControl script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Cam script.";
-#endif
+        OPENAUTO_LOG(info) << "[Camera] Save.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptNight, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/service_daynight.sh app night");
-        OPENAUTO_LOG(info) << "[CS] Run night script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
-#endif
+        OPENAUTO_LOG(info) << "[MainWindow] Night.";
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerScriptDay, [&qApplication]() {
-#ifdef RASPBERRYPI3
         system("/opt/crankshaft/service_daynight.sh app day");
-        OPENAUTO_LOG(info) << "[CS] Run day script.";
-#else
-        OPENAUTO_LOG(info) << "[CS] You are not running this on a Raspberry Pi, skipping Day/Night script.";
-#endif
+        OPENAUTO_LOG(info) << "[MainWindow] Day.";
     });
 
     mainWindow.showFullScreen();
@@ -236,36 +221,46 @@ int main(int argc, char* argv[])
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
-        OPENAUTO_LOG(info) << "[Autoapp] Manual start android auto entity by reset usb.";
+        OPENAUTO_LOG(info) << "[Autoapp] Manual start android auto.";
         try {
             if (std::ifstream("/tmp/android_device")) {
-                //system("/usr/local/bin/autoapp_helper usbreset");
                 app->disableAutostartEntity = false;
+                app->stop();
                 app->waitForUSBDevice();
             }
         } catch (...) {
-            OPENAUTO_LOG(info) << "[Autoapp] Exception in Manual start android auto entity by reset usb.";
+            OPENAUTO_LOG(info) << "[Autoapp] Exception in Manual start android auto.";
         }
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStop, [&app]() {
-        OPENAUTO_LOG(info) << "[Autoapp] Manual stop android auto entity.";
         try {
             if (std::ifstream("/tmp/android_device")) {
+                OPENAUTO_LOG(info) << "[Autoapp] Manual stop usb android auto.";
                 app->disableAutostartEntity = true;
                 system("/usr/local/bin/autoapp_helper usbreset");
-                usleep(500000);
+                usleep(1000000);
                 app->stop();
             } else {
+                OPENAUTO_LOG(info) << "[Autoapp] Manual stop wifi android auto.";
                 app->stop();
-                //app->onAndroidAutoQuit();
             }
         } catch (...) {
-            OPENAUTO_LOG(info) << "[Autoapp] Exception in Manual stop android auto entity.";
+            OPENAUTO_LOG(info) << "[Autoapp] Exception in manual stop android auto.";
         }
     });
 
-    warningdialog.show();
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::CloseAllDialogs, [&settingsWindow, &connectdialog, &updatedialog, &warningdialog]() {
+        settingsWindow.close();
+        connectdialog.close();
+        warningdialog.close();
+        updatedialog.close();
+        OPENAUTO_LOG(info) << "[Autoapp] Close all possible open dialogs.";
+    });
+
+    if (configuration->hideWarning() == false) {
+        warningdialog.show();
+    }
 
     app->waitForUSBDevice();
 

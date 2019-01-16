@@ -42,6 +42,10 @@
 #include <taglib/tag.h>
 
 #include <QFileSystemWatcher>
+#include <QKeyEvent>
+
+#include <QBluetoothLocalDevice>
+//#include <QtBluetooth>
 
 namespace Ui
 {
@@ -79,6 +83,12 @@ signals:
     void cameraStop();
     void cameraSave();
     void cameraRecord();
+    void cameraPosYUp();
+    void cameraPosYDown();
+    void cameraZoomPlus();
+    void cameraZoomMinus();
+    void cameraFlipX();
+    void cameraFlipY();
     void openConnectDialog();
     void openWifiDialog();
     void openUpdateDialog();
@@ -89,6 +99,7 @@ signals:
     void hideRearCam();
     void TriggerAppStart();
     void TriggerAppStop();
+    void CloseAllDialogs();
 
 private slots:
     void on_horizontalSliderBrightness_valueChanged(int value);
@@ -148,6 +159,9 @@ private slots:
     void resetRetryUSBMessage();
     void updateNetworkInfo();
     bool check_file_exist(const char *filename);
+    void KeyPress(QString key);
+
+    void hostModeStateChanged(QBluetoothLocalDevice::HostMode);
 
 private:
     Ui::MainWindow* ui_;
@@ -250,6 +264,40 @@ private:
     bool udevupdate = false;
     bool openautoupdate = false;
     bool systemupdate = false;
+
+    int camera_ycorection;
+    int camera_zoom;
+
+    QBluetoothLocalDevice *localDevice;
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        if (event->key() == Qt::Key_C) {
+            MainWindow::KeyPress("C");
+        }
+        if (event->key() == Qt::Key_X) {
+            MainWindow::KeyPress("X");
+        }
+        if (event->key() == Qt::Key_V) {
+            MainWindow::KeyPress("V");
+        }
+        if (event->key() == Qt::Key_N) {
+            MainWindow::KeyPress("N");
+        }
+        if (event->key() == Qt::Key_B) {
+            MainWindow::KeyPress("B");
+        }
+        if (event->key() == Qt::Key_H) {
+            MainWindow::KeyPress("H");
+        }
+        if (event->key() == Qt::Key_A) {
+            MainWindow::KeyPress("A");
+        }
+        if (event->key() == Qt::Key_L) {
+            MainWindow::KeyPress("L");
+        }
+    }
 };
 
 }

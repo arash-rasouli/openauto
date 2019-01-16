@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>3473</height>
+    <height>3601</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -299,53 +299,111 @@ outline: none;
          <number>6</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBoxHandenessOfTraffic">
+         <widget class="QWidget" name="verticalWidget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="title">
-           <string>Handedness of traffic</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_23">
+          <layout class="QVBoxLayout" name="verticalLayout_12">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
            <property name="topMargin">
             <number>0</number>
            </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
            <property name="bottomMargin">
-            <number>2</number>
+            <number>0</number>
            </property>
            <item>
-            <widget class="QRadioButton" name="radioButtonLeftHandDrive">
+            <widget class="QGroupBox" name="groupBoxHandenessOfTraffic">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="text">
-              <string>Left-hand drive</string>
+             <property name="title">
+              <string>Handedness of traffic</string>
              </property>
-             <property name="checked">
-              <bool>true</bool>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
+             <layout class="QVBoxLayout" name="verticalLayout_23">
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QRadioButton" name="radioButtonLeftHandDrive">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Left-hand drive</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="radioButtonRightHandDrive">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Right-hand drive</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButtonRightHandDrive">
+            <widget class="QGroupBox" name="groupBoxSafety">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="text">
-              <string>Right-hand drive</string>
+             <property name="title">
+              <string>Safety Warning</string>
              </property>
+             <layout class="QVBoxLayout" name="verticalLayout_13">
+              <property name="topMargin">
+               <number>2</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QCheckBox" name="checkBoxDontShowAgain">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Don't show again</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -2188,222 +2246,419 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
        <number>2</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="inputs">
-        <item>
-         <widget class="QCheckBox" name="checkBoxEnableTouchscreen">
-          <property name="text">
-           <string>Enable touchscreen</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="checkBoxShowCursor">
-          <property name="text">
-           <string>Show cursor (needs reboot!)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="buttons">
-          <property name="title">
-           <string>Buttons</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <property name="topMargin">
-            <number>0</number>
+       <widget class="QGroupBox" name="general">
+        <property name="title">
+         <string>General</string>
+        </property>
+        <layout class="QVBoxLayout" name="inputs">
+         <property name="spacing">
+          <number>9</number>
+         </property>
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>9</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QCheckBox" name="checkBoxEnableTouchscreen">
+           <property name="text">
+            <string>Enable touchscreen</string>
            </property>
-           <property name="bottomMargin">
-            <number>0</number>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxShowCursor">
+           <property name="text">
+            <string>Show cursor (needs reboot!)</string>
            </property>
-           <property name="horizontalSpacing">
-            <number>9</number>
-           </property>
-           <item row="3" column="0">
-            <widget class="QCheckBox" name="checkBoxNextTrackButton">
-             <property name="text">
-              <string>Next track</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="checkBoxPlayButton">
-             <property name="text">
-              <string>Play</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QCheckBox" name="checkBoxCallEndButton">
-             <property name="text">
-              <string>Call end</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QCheckBox" name="checkBoxEnterButton">
-             <property name="text">
-              <string>Enter</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QCheckBox" name="checkBoxLeftButton">
-             <property name="text">
-              <string>Left</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QCheckBox" name="checkBoxPreviousTrackButton">
-             <property name="text">
-              <string>Previous track</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QCheckBox" name="checkBoxVoiceCommandButton">
-             <property name="text">
-              <string>Voice command</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QCheckBox" name="checkBoxTogglePlayButton">
-             <property name="text">
-              <string>Toggle play</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="QCheckBox" name="checkBoxBackButton">
-             <property name="text">
-              <string>Back</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QCheckBox" name="checkBoxRightButton">
-             <property name="text">
-              <string>Right</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QCheckBox" name="checkBoxScrollWheelButton">
-             <property name="text">
-              <string>Scroll wheel</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="checkBoxHomeButton">
-             <property name="text">
-              <string>Home</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QCheckBox" name="checkBoxPauseButton">
-             <property name="text">
-              <string>Pause</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QCheckBox" name="checkBoxDownButton">
-             <property name="text">
-              <string>Down</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QCheckBox" name="checkBoxUpButton">
-             <property name="text">
-              <string>Up</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QCheckBox" name="checkBoxPhoneButton">
-             <property name="text">
-              <string>Phone</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QPushButton" name="pushButtonSelectAll">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Select all</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QPushButton" name="pushButtonClearSelection">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Clear selection</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QPushButton" name="pushButtonShowBindings">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Show bindings</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item>
-       <widget class="QLabel" name="autofill_space_tab4">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       <widget class="QGroupBox" name="buttons">
+        <property name="title">
+         <string>Button Controls Android Auto</string>
         </property>
-        <property name="text">
-         <string/>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="horizontalSpacing">
+          <number>9</number>
+         </property>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="checkBoxUpButton">
+           <property name="text">
+            <string>Up [Up]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QCheckBox" name="checkBoxLeftButton">
+           <property name="text">
+            <string>Left [Left]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="checkBoxPreviousTrackButton">
+           <property name="text">
+            <string>Previous track [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBoxPlayButton">
+           <property name="text">
+            <string>Play [X]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="checkBoxCallEndButton">
+           <property name="text">
+            <string>Call end [O]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="checkBoxTogglePlayButton">
+           <property name="text">
+            <string>Toggle play [B]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QCheckBox" name="checkBoxVoiceCommandButton">
+           <property name="text">
+            <string>Voice command [M]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QCheckBox" name="checkBoxBackButton">
+           <property name="text">
+            <string>Back [Esc]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="checkBoxPauseButton">
+           <property name="text">
+            <string>Pause [C]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="checkBoxHomeButton">
+           <property name="text">
+            <string>Home [H]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="checkBoxEnterButton">
+           <property name="text">
+            <string>Enter [Enter]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QCheckBox" name="checkBoxDownButton">
+           <property name="text">
+            <string>Down [Down]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QCheckBox" name="checkBoxScrollWheelButton">
+           <property name="text">
+            <string>Scroll wheel [1] / [2]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="pushButtonSelectAll">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Select all</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QPushButton" name="pushButtonShowBindings">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Show bindings</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QCheckBox" name="checkBoxRightButton">
+           <property name="text">
+            <string>Right [Right]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QCheckBox" name="checkBoxPhoneButton">
+           <property name="text">
+            <string>Phone [P]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="checkBoxNextTrackButton">
+           <property name="text">
+            <string>Next track [N]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4">
+          <widget class="QPushButton" name="pushButtonClearSelection">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Clear selection</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Button Controls Media Player</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="horizontalSpacing">
+          <number>9</number>
+         </property>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_24">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Toggle Play [B]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="label_25">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Next track [N]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_23">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Play [X]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBoxPlayerControl">
+           <property name="text">
+            <string>Enable Controls</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLabel" name="label_26">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Next album [A]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Pause [C]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_27">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Home [H]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="label_28">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Previous track [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QLabel" name="label_29">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Previous album [L]</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>4</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -3401,26 +3656,32 @@ outline: none;</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>80</height>
+               </size>
+              </property>
               <property name="title">
                <string>Force Client Network To Use</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <layout class="QVBoxLayout" name="verticalLayout_11">
                <property name="leftMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="topMargin">
                 <number>0</number>
                </property>
                <property name="rightMargin">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="bottomMargin">
                 <number>2</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_notavailable">
+                <widget class="QPushButton" name="pushButtonNetworkAuto">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -3437,11 +3698,12 @@ outline: none;</string>
                    <height>24</height>
                   </size>
                  </property>
-                 <property name="text">
-                  <string>not available</string>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(78, 154, 6);
+outline: none;</string>
                  </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                 <property name="text">
+                  <string>Auto</string>
                  </property>
                 </widget>
                </item>
@@ -3486,6 +3748,18 @@ outline: none;</string>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>24</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>24</height>
+                     </size>
+                    </property>
                     <property name="font">
                      <font>
                       <weight>75</weight>
@@ -3497,7 +3771,7 @@ outline: none;</string>
 outline: none;</string>
                     </property>
                     <property name="text">
-                     <string>Default</string>
+                     <string>Config 1</string>
                     </property>
                    </widget>
                   </item>
@@ -3509,6 +3783,18 @@ outline: none;</string>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>24</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>24</height>
+                     </size>
+                    </property>
                     <property name="font">
                      <font>
                       <weight>75</weight>
@@ -3520,28 +3806,39 @@ outline: none;</string>
 outline: none;</string>
                     </property>
                     <property name="text">
-                     <string>Phone Hotspot</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="pushButtonNetworkAuto">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">background-color: rgb(78, 154, 6);
-outline: none;</string>
-                    </property>
-                    <property name="text">
-                     <string>Auto</string>
+                     <string>Config 2</string>
                     </property>
                    </widget>
                   </item>
                  </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_notavailable">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>not available</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -8285,205 +8582,6 @@ QComboBox::item:selected {
              </item>
             </widget>
            </item>
-           <item row="1" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QComboBox" name="comboBoxHardwareRTC">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>200</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>200</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QScrollBar { 
-	width: 40px;
-	background-color: rgba(85, 87, 83, 0.7);
-}
-QComboBox::item {
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}
-QComboBox::item:selected {
-	background-color: rgb(78, 154, 6);
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}</string>
-               </property>
-               <item>
-                <property name="text">
-                 <string>none</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>abx80x</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>ds1307</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>ds1339</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>ds3231</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mcp7940x</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>mcp7941x</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>pcf2127</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>pcf8523</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>pcf8563</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="formWidget" native="true">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <layout class="QFormLayout" name="formLayout_7">
-                <property name="horizontalSpacing">
-                 <number>0</number>
-                </property>
-                <property name="verticalSpacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="labelHardwareTZ">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Timezone</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QComboBox" name="comboBoxTZ">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>32</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>32</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>12</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QScrollBar { 
-	width: 40px;
-	background-color: rgba(85, 87, 83, 0.7);
-}
-QComboBox::item {
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}
-QComboBox::item:selected {
-	background-color: rgb(78, 154, 6);
-	padding-top: 6px;
-	padding-bottom: 6px;
-	height: 32px;
-	min-height: 32px;
-}</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </item>
            <item row="1" column="0">
             <widget class="QLabel" name="labelHardwareRTC">
              <property name="sizePolicy">
@@ -8501,6 +8599,225 @@ QComboBox::item:selected {
              <property name="text">
               <string>RTC</string>
              </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QWidget" name="" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QComboBox" name="comboBoxHardwareRTC">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>200</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>none</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>abx80x</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>ds1307</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>ds1339</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>ds3231</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mcp7940x</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>mcp7941x</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>pcf2127</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>pcf8523</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>pcf8563</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="formWidget" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <layout class="QFormLayout" name="formLayout_7">
+                 <property name="horizontalSpacing">
+                  <number>0</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="labelHardwareTZ">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>100</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Timezone</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="comboBoxTZ">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item row="2" column="0">
@@ -8523,34 +8840,55 @@ QComboBox::item:selected {
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QComboBox" name="comboBoxCam">
+            <widget class="QWidget" name="horizontalWidget" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QScrollBar { 
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QComboBox" name="comboBoxCam">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
 	width: 40px;
 	background-color: rgba(85, 87, 83, 0.7);
 }
@@ -8567,17 +8905,202 @@ QComboBox::item:selected {
 	height: 32px;
 	min-height: 32px;
 }</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>none</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>enabled</string>
-              </property>
-             </item>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>none</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>enabled</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxFlipX">
+                <property name="minimumSize">
+                 <size>
+                  <width>80</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>FlipX</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBoxFlipY">
+                <property name="minimumSize">
+                 <size>
+                  <width>80</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>FlipY</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_30">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Rotation °</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="comboBoxRotation">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>90</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>180</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>270</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_31">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>80</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>80</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Resolution</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="comboBoxResolution">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QScrollBar { 
+	width: 40px;
+	background-color: rgba(85, 87, 83, 0.7);
+}
+QComboBox::item {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}
+QComboBox::item:selected {
+	background-color: rgb(78, 154, 6);
+	padding-top: 6px;
+	padding-bottom: 6px;
+	height: 32px;
+	min-height: 32px;
+}</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>720</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>1080</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item row="3" column="0">
@@ -8596,6 +9119,32 @@ QComboBox::item:selected {
              </property>
              <property name="text">
               <string>Bluetooth</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="labelHardwareSDOC">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>SDCard OC</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="labelHardwareLS">
+             <property name="text">
+              <string>Lightsensor</string>
              </property>
             </widget>
            </item>
@@ -8662,25 +9211,6 @@ QComboBox::item:selected {
              </item>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="labelHardwareSDOC">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>SDCard OC</string>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="1">
             <widget class="QComboBox" name="comboBoxSDOC">
              <property name="sizePolicy">
@@ -8737,13 +9267,6 @@ QComboBox::item:selected {
                <string>enabled (This can cause demaged sdcard - use at your own risk!)</string>
               </property>
              </item>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="labelHardwareLS">
-             <property name="text">
-              <string>Lightsensor</string>
-             </property>
             </widget>
            </item>
            <item row="5" column="1">

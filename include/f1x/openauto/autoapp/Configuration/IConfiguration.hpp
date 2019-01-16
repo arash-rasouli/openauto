@@ -72,6 +72,8 @@ public:
     virtual bool hideBrightnessControl() const = 0;
     virtual void showNetworkinfo(bool value) = 0;
     virtual bool showNetworkinfo() const = 0;
+    virtual void hideWarning(bool value) = 0;
+    virtual bool hideWarning() const = 0;
 
     virtual std::string getMp3MasterPath() const = 0;
     virtual void setMp3MasterPath(const std::string& value) = 0;
@@ -83,6 +85,10 @@ public:
     virtual void mp3AutoPlay(bool value) = 0;
     virtual bool showAutoPlay() const = 0;
     virtual void showAutoPlay(bool value) = 0;
+
+    virtual QString getCSValue(QString searchString) const = 0;
+    virtual QString readFileContent(QString fileName) const = 0;
+    virtual QString getParamFromFile(QString fileName, QString searchString) const = 0;
 
     virtual aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const = 0;
     virtual void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) = 0;
@@ -97,6 +103,8 @@ public:
 
     virtual bool getTouchscreenEnabled() const = 0;
     virtual void setTouchscreenEnabled(bool value) = 0;
+    virtual bool playerButtonControl() const = 0;
+    virtual void playerButtonControl(bool value) = 0;
     virtual ButtonCodes getButtonCodes() const = 0;
     virtual void setButtonCodes(const ButtonCodes& value) = 0;
 

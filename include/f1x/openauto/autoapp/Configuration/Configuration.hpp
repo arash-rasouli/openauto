@@ -20,6 +20,10 @@
 
 #include <boost/property_tree/ini_parser.hpp>
 #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <stdio.h>
 
 namespace f1x
 {
@@ -64,6 +68,8 @@ public:
     bool hideBrightnessControl() const override;
     void showNetworkinfo(bool value) override;
     bool showNetworkinfo() const override;
+    void hideWarning(bool value) override;
+    bool hideWarning() const override;
 
     std::string getMp3MasterPath() const override;
     void setMp3MasterPath(const std::string& value) override;
@@ -75,6 +81,10 @@ public:
     void mp3AutoPlay(bool value) override;
     bool showAutoPlay() const override;
     void showAutoPlay(bool value) override;
+
+    QString getCSValue(QString searchString) const override;
+    QString readFileContent(QString fileName) const override;
+    QString getParamFromFile(QString fileName, QString searchString) const override;
 
     aasdk::proto::enums::VideoFPS::Enum getVideoFPS() const override;
     void setVideoFPS(aasdk::proto::enums::VideoFPS::Enum value) override;
@@ -89,6 +99,8 @@ public:
 
     bool getTouchscreenEnabled() const override;
     void setTouchscreenEnabled(bool value) override;
+    bool playerButtonControl() const override;
+    void playerButtonControl(bool value) override;
     ButtonCodes getButtonCodes() const override;
     void setButtonCodes(const ButtonCodes& value) override;
 
@@ -121,6 +133,7 @@ private:
     bool showCursor_;
     bool hideBrightnessControl_;
     bool showNetworkinfo_;
+    bool hideWarning_;
     std::string mp3MasterPath_;
     std::string mp3SubFolder_;
     int32_t mp3Track_;
@@ -133,6 +146,7 @@ private:
     int32_t omxLayerIndex_;
     QRect videoMargins_;
     bool enableTouchscreen_;
+    bool enablePlayerControl_;
     ButtonCodes buttonCodes_;
     BluetoothAdapterType bluetoothAdapterType_;
     std::string bluetoothRemoteAdapterAddress_;
@@ -153,6 +167,7 @@ private:
     static const std::string cGeneralShowCursorKey;
     static const std::string cGeneralHideBrightnessControlKey;
     static const std::string cGeneralShowNetworkinfoKey;
+    static const std::string cGeneralHideWarningKey;
 
     static const std::string cGeneralHandednessOfTrafficTypeKey;
 
@@ -177,6 +192,7 @@ private:
     static const std::string cBluetoothRemoteAdapterAddressKey;
 
     static const std::string cInputEnableTouchscreenKey;
+    static const std::string cInputEnablePlayerControlKey;
     static const std::string cInputPlayButtonKey;
     static const std::string cInputPauseButtonKey;
     static const std::string cInputTogglePlayButtonKey;
