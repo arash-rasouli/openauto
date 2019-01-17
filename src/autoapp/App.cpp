@@ -84,13 +84,29 @@ void App::stop()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
         isStopped_ = true;
-        connectedAccessoriesEnumerator_->cancel();
-        usbHub_->cancel();
+        try {
+            connectedAccessoriesEnumerator_->cancel();
+        } catch (...) {
+            OPENAUTO_LOG(error) << "[App] stop: exception caused by connectedAccessoriesEnumerator_->cancel()";
+        }
+        try {
+            usbHub_->cancel();
+        } catch (...) {
+            OPENAUTO_LOG(error) << "[App] stop: exception caused by usbHub_->cancel();";
+        }
 
         if(androidAutoEntity_ != nullptr)
         {
-            androidAutoEntity_->stop();
-            androidAutoEntity_.reset();
+            try {
+                androidAutoEntity_->stop();
+            } catch (...) {
+                OPENAUTO_LOG(error) << "[App] stop: exception caused by androidAutoEntity_->stop();";
+            }
+            try {
+                androidAutoEntity_.reset();
+            } catch (...) {
+                OPENAUTO_LOG(error) << "[App] stop: exception caused by androidAutoEntity_.reset();";
+            }
         }
     });
 
@@ -152,17 +168,51 @@ void App::waitForDevice()
     usbHub_->start(std::move(promise));
 }
 
+void App::pause()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[App] pause...";
+        androidAutoEntity_->pause();
+    });
+}
+
+void App::resume()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        if(androidAutoEntity_ != nullptr)
+        {
+            OPENAUTO_LOG(info) << "[App] resume...";
+            androidAutoEntity_->resume();
+        } else {
+            OPENAUTO_LOG(info) << "[App] Ignore resume -> no androidAutoEntity_ ...";
+        }
+    });
+}
+
 void App::onAndroidAutoQuit()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
         OPENAUTO_LOG(info) << "[App] onAndroidAutoQuit.";
 
-        androidAutoEntity_->stop();
-        androidAutoEntity_.reset();
+        try {
+            androidAutoEntity_->stop();
+        } catch (...) {
+            OPENAUTO_LOG(error) << "[App] onAndroidAutoQuit: exception caused by androidAutoEntity_->stop();";
+        }
+        try {
+            androidAutoEntity_.reset();
+        } catch (...) {
+            OPENAUTO_LOG(error) << "[App] onAndroidAutoQuit: exception caused by androidAutoEntity_.reset();";
+        }
 
         if(!isStopped_)
         {
-            this->waitForDevice();
+            try {
+                this->waitForDevice();
+            } catch (...) {
+                OPENAUTO_LOG(error) << "[App] onAndroidAutoQuit: exception caused by this->waitForDevice();";
+            }
+
         }
     });
 }

@@ -54,6 +54,20 @@ void VideoService::stop()
     });
 }
 
+void VideoService::pause()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[VideoService] pause.";
+    });
+}
+
+void VideoService::resume()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[VideoService] resume.";
+    });
+}
+
 void VideoService::onChannelOpenRequest(const aasdk::proto::messages::ChannelOpenRequest& request)
 {
     OPENAUTO_LOG(info) << "[VideoService] open request, priority: " << request.priority();

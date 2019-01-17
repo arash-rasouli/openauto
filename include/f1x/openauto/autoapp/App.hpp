@@ -44,6 +44,8 @@ public:
     void waitForUSBDevice();
     void start(aasdk::tcp::ITCPEndpoint::SocketPointer socket);
     void stop();
+    void pause();
+    void resume();
     void onAndroidAutoQuit() override;
     bool disableAutostartEntity = false;
 

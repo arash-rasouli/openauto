@@ -221,29 +221,39 @@ int main(int argc, char* argv[])
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
-        OPENAUTO_LOG(info) << "[Autoapp] Manual start android auto.";
+        OPENAUTO_LOG(info) << "[Autoapp] TriggerAppStart: Manual start android auto.";
         try {
-            if (std::ifstream("/tmp/android_device")) {
-                app->disableAutostartEntity = false;
-                app->stop();
-                app->waitForUSBDevice();
-            }
+            app->disableAutostartEntity = false;
+            app->resume();
+            app->waitForUSBDevice();
         } catch (...) {
-            OPENAUTO_LOG(info) << "[Autoapp] Exception in Manual start android auto.";
+            OPENAUTO_LOG(error) << "[Autoapp] TriggerAppStart: app->waitForUSBDevice();";
         }
     });
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStop, [&app]() {
         try {
             if (std::ifstream("/tmp/android_device")) {
-                OPENAUTO_LOG(info) << "[Autoapp] Manual stop usb android auto.";
+                OPENAUTO_LOG(info) << "[Autoapp] TriggerAppStop: Manual stop usb android auto.";
                 app->disableAutostartEntity = true;
                 system("/usr/local/bin/autoapp_helper usbreset");
-                usleep(1000000);
-                app->stop();
+                usleep(500000);
+                try {
+                    app->stop();
+                    //app->pause();
+                } catch (...) {
+                    OPENAUTO_LOG(error) << "[Autoapp] TriggerAppStop: stop();";
+                }
+
             } else {
-                OPENAUTO_LOG(info) << "[Autoapp] Manual stop wifi android auto.";
-                app->stop();
+                OPENAUTO_LOG(info) << "[Autoapp] TriggerAppStop: Manual stop wifi android auto.";
+                try {
+                    app->stop();
+                    //app->pause();
+                } catch (...) {
+                    OPENAUTO_LOG(error) << "[Autoapp] TriggerAppStop: stop();";
+                }
+
             }
         } catch (...) {
             OPENAUTO_LOG(info) << "[Autoapp] Exception in manual stop android auto.";

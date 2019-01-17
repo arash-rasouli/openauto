@@ -58,6 +58,20 @@ void SensorService::stop()
     });
 }
 
+void SensorService::pause()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[SensorService] pause.";
+    });
+}
+
+void SensorService::resume()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[SensorService] resume.";
+    });
+}
+
 void SensorService::fillFeatures(aasdk::proto::messages::ServiceDiscoveryResponse& response)
 {
     OPENAUTO_LOG(info) << "[SensorService] fill features.";

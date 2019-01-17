@@ -87,6 +87,33 @@ void AndroidAutoEntity::stop()
     });
 }
 
+void AndroidAutoEntity::pause()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[AndroidAutoEntity] pause.";
+
+        try {
+            std::for_each(serviceList_.begin(), serviceList_.end(), std::bind(&IService::pause, std::placeholders::_1));
+            messenger_->stop();
+        } catch (...) {
+            OPENAUTO_LOG(info) << "[AndroidAutoEntity] exception in pause.";
+        }
+    });
+}
+
+void AndroidAutoEntity::resume()
+{
+    strand_.dispatch([this, self = this->shared_from_this()]() {
+        OPENAUTO_LOG(info) << "[AndroidAutoEntity] resume.";
+
+        try {
+            std::for_each(serviceList_.begin(), serviceList_.end(), std::bind(&IService::resume, std::placeholders::_1));
+        } catch (...) {
+            OPENAUTO_LOG(info) << "[AndroidAutoEntity] exception in resume.";
+        }
+    });
+}
+
 void AndroidAutoEntity::onVersionResponse(uint16_t majorCode, uint16_t minorCode, aasdk::proto::enums::VersionResponseStatus::Enum status)
 {
     OPENAUTO_LOG(info) << "[AndroidAutoEntity] version response, version: " << majorCode
