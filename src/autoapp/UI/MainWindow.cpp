@@ -157,12 +157,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
         ui_->labelLockDummy->hide();
     }
 
-    if (check_file_exist("/etc/crankshaft.branch")) {
-        QFile branchFile(QString("/etc/crankshaft.branch"));
-        branchFile.open(QIODevice::ReadOnly);
-        QTextStream data_branch(&branchFile);
-        QString branch = data_branch.readAll().split("\n")[0];
-        branchFile.close();
+    if (std::ifstream("/etc/crankshaft.branch")) {
+        QString branch = configuration_->readFileContent("/etc/crankshaft.branch");
         if (branch != "crankshaft-ng") {
             if (branch == "csng-dev") {
                 ui_->Header_Label->setText("<html><head/><body><p><span style=' font-style:normal; color:#ffffff;'>crank</span><span style=' font-style:normal; color:#5ce739;'>shaft </span><span style=' font-style:normal; color:#40bfbf;'>NG </span><span style=' font-style:normal; color:#888a85;'>- </span><span style=' font-style:normal; color:#cc0000;'>Dev-Build</span></p></body></html>");
@@ -206,7 +202,21 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     ui_->pushButtonLock->hide();
     ui_->pushButtonLock2->hide();
+
     ui_->btDevice->hide();
+
+    // check if a device is connected via bluetooth
+    if (std::ifstream("/tmp/btdevice")) {
+        if (ui_->btDevice->isVisible() == false || ui_->btDevice->text().simplified() == "") {
+            QString btdevicename = configuration_->readFileContent("/tmp/btdevice");
+            ui_->btDevice->setText(btdevicename);
+            ui_->btDevice->show();
+        }
+    } else {
+        if (ui_->btDevice->isVisible() == true) {
+            ui_->btDevice->hide();
+        }
+    }
 
     // hide brightness slider of control file is not existing
     QFileInfo brightnessFile(brightnessFilename);
@@ -402,13 +412,8 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
 
     // read param file
     if (std::ifstream("/boot/crankshaft/volume")) {
-        QFile audioparamFile(QString("/boot/crankshaft/volume"));
-        audioparamFile.open(QIODevice::ReadOnly);
-        QTextStream data_param(&audioparamFile);
-        QString getparams = data_param.readAll();
-        audioparamFile.close();
         // init volume
-        QString vol=QString::number(getparams.toInt());
+        QString vol=QString::number(configuration_->readFileContent("/boot/crankshaft/volume").toInt());
         ui_->volumeValueLabel->setText(vol+"%");
         ui_->horizontalSliderVolume->setValue(vol.toInt());
     }
@@ -795,9 +800,9 @@ void f1x::openauto::autoapp::ui::MainWindow::updateAlpha()
         ui_->pushButtonDummy3->setStyleSheet( "background-color: rgba(186, 189, 182, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
         ui_->pushButtonDebug->setStyleSheet( "background-color: rgba(85, 87, 83, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5);");
         ui_->pushButtonMusic->setStyleSheet( "background-color: rgba(78, 154, 6, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
-        ui_->pushButtonAndroidAuto->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255); border-bottom: 0px; border-top: 0px;");
-        ui_->labelAndroidAutoBottom->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255); border-top: 0px;");
-        ui_->labelAndroidAutoTop->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255); border-bottom: 0px;");
+        ui_->pushButtonAndroidAuto->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255); border-bottom: 0px; border-top: 0px;");
+        ui_->labelAndroidAutoBottom->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255); border-top: 0px;");
+        ui_->labelAndroidAutoTop->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-top-left-radius: 4px; border-top-right-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255); border-bottom: 0px;");
         ui_->pushButtonNoDevice->setStyleSheet( "background-color: rgba(48, 140, 198, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
         ui_->pushButtonNoWiFiDevice->setStyleSheet( "background-color: rgba(252, 175, 62, " + alp + " ); border-radius: 4px; border: 2px solid rgba(255,255,255,0.5); color: rgb(255,255,255);");
         // old style
@@ -1064,8 +1069,33 @@ void f1x::openauto::autoapp::ui::MainWindow::showTime()
             MainWindow::updateBG();
         }
     }
-}
 
+    // check connected devices
+    if (localDevice->isValid()) {
+        QString localDeviceName = localDevice->name();
+        QString localDeviceAddress = localDevice->address().toString();
+        QList<QBluetoothAddress> btdevices;
+        btdevices = localDevice->connectedDevices();
+
+        int count = btdevices.count();
+        if (count > 0) {
+            //QBluetoothAddress btdevice = btdevices[0];
+            //QString btmac = btdevice.toString();
+            //ui_->btDeviceCount->setText(QString::number(count));
+            if (ui_->btDevice->isVisible() == false) {
+                ui_->btDevice->show();
+            }
+            if (std::ifstream("/tmp/btdevice")) {
+                ui_->btDevice->setText(configuration_->readFileContent("/tmp/btdevice"));
+            }
+        } else {
+            if (ui_->btDevice->isVisible() == true) {
+                ui_->btDevice->hide();
+                ui_->btDevice->setText("BT-Device");
+            }
+        }
+    }
+}
 
 void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderProgressPlayer_sliderMoved(int position)
 {
@@ -1171,16 +1201,27 @@ void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_itemClicked(QListWidgetI
 
 void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
 {
+    QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
+    QString filename = QFileInfo(fullpathplaying).fileName();
+
     QImage img = player->metaData(QMediaMetaData::CoverArtImage).value<QImage>();
     QImage imgscaled = img.scaled(270,270,Qt::IgnoreAspectRatio);
     if (!imgscaled.isNull()) {
-    ui_->pushButtonBack->setIcon(QPixmap::fromImage(imgscaled));
+        ui_->pushButtonBack->setIcon(QPixmap::fromImage(imgscaled));
     } else {
-     ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+        if (playlist->currentIndex() != -1 && fullpathplaying != "") {
+            QString filename = ui_->mp3List->item(playlist->currentIndex())->text();
+            QString cover = this->musicfolder + "/" + this->albumfolder + "/" + filename + ".png";
+            if (check_file_exist(cover.toStdString().c_str())) {
+                QPixmap img = cover;
+                ui_->pushButtonBack->setIcon(img.scaled(270,270,Qt::KeepAspectRatio));
+            } else {
+                ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+            }
+        } else {
+            ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+        }
     }
-
-    QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
-    QString filename = QFileInfo(fullpathplaying).fileName();
 
     try {
         // use metadata from mp3list widget (prescanned id3 by taglib)
@@ -1310,29 +1351,36 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
 
         QList<QMediaContent> content;
         QDir directory(this->musicfolder + "/" + this->albumfolder);
-        QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg" << "*.mp4" << "*.mp4a" << "*.wma",QDir::Files, QDir::Name);
+        QStringList mp3s = directory.entryList(QStringList() << "*.mp3" << "*.flac" << "*.aac" << "*.ogg" << "*.mp4" << "*.mp4a" << "*.wma" << "*.strm",QDir::Files, QDir::Name);
         foreach (QString filename, mp3s) {
             // add to mediacontent
-            content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
-            // add items to gui
-            // read metadata using taglib
-            try {
-                TagLib::FileRef file((this->musicfolder + "/" + this->albumfolder + "/" + filename).toUtf8(),true);
-                TagLib::String artist_string = file.tag()->artist();
-                TagLib::String title_string = file.tag()->title();
-                TagLib::uint track_string = file.tag()->track();
-                QString artistid3 = QString::fromStdWString(artist_string.toCWString());
-                QString titleid3 = QString::fromStdWString(title_string.toCWString());
-                QString trackid3 = QString::number(track_string);
-                int tracklength = trackid3.length();
-                if (tracklength < 2) {
-                    trackid3 = "0" + trackid3;
+            if (filename.endsWith(".strm")) {
+                QString url=configuration_->readFileContent(this->musicfolder + "/" + this->albumfolder + "/" + filename);
+                content.push_back(QMediaContent(QUrl(url)));
+                ui_->mp3List->addItem(filename.replace(".strm",""));
+                //ui_->mp3List->addItem(url);
+            } else {
+                content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
+                // add items to gui
+                // read metadata using taglib
+                try {
+                    TagLib::FileRef file((this->musicfolder + "/" + this->albumfolder + "/" + filename).toUtf8(),true);
+                    TagLib::String artist_string = file.tag()->artist();
+                    TagLib::String title_string = file.tag()->title();
+                    TagLib::uint track_string = file.tag()->track();
+                    QString artistid3 = QString::fromStdWString(artist_string.toCWString());
+                    QString titleid3 = QString::fromStdWString(title_string.toCWString());
+                    QString trackid3 = QString::number(track_string);
+                    int tracklength = trackid3.length();
+                    if (tracklength < 2) {
+                        trackid3 = "0" + trackid3;
+                    }
+                    QString ID3Entry = trackid3 + ": " + artistid3 + " - " + titleid3;
+                    ui_->mp3List->addItem(ID3Entry);
+                } catch (...) {
+                    // old way only adding filename to list
+                    ui_->mp3List->addItem(filename);
                 }
-                QString ID3Entry = trackid3 + ": " + artistid3 + " - " + titleid3;
-                ui_->mp3List->addItem(ID3Entry);
-            } catch (...) {
-                // old way only adding filename to list
-                ui_->mp3List->addItem(filename);
             }
         }
         // set playlist
@@ -1479,7 +1527,6 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
     try {
         if (std::ifstream("/tmp/entityexit")) {
             MainWindow::TriggerAppStop();
-            usleep(1000000);
             std::remove("/tmp/entityexit");
         }
     } catch (...) {
@@ -1614,23 +1661,6 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
         if (ui_->pushButtonBluetooth->isVisible() == true) {
             ui_->pushButtonBluetooth->hide();
-        }
-    }
-
-    // check if a device is connected via bluetooth
-    if (std::ifstream("/tmp/btdevice")) {
-        if (ui_->btDevice->isVisible() == false || ui_->btDevice->text().simplified() == "") {
-            QFile phoneBTData(QString("/tmp/btdevice"));
-            phoneBTData.open(QIODevice::ReadOnly);
-            QTextStream data_date(&phoneBTData);
-            QString linedate = data_date.readAll();
-            phoneBTData.close();
-            ui_->btDevice->setText(linedate.simplified());
-            ui_->btDevice->show();
-        }
-    } else {
-        if (ui_->btDevice->isVisible() == true) {
-            ui_->btDevice->hide();
         }
     }
 
@@ -1891,16 +1921,11 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
 
     // read value from tsl2561
     if (std::ifstream("/tmp/tsl2561") && this->configuration_->showLux()) {
-        QFile paramFile("/tmp/tsl2561");
-        paramFile.open(QIODevice::ReadOnly);
-        QTextStream data(&paramFile);
-        QStringList value = data.readAll().split("\n");
-        paramFile.close();
         if (ui_->label_left->isVisible() == false) {
             ui_->label_left->show();
             ui_->label_right->show();
         }
-        ui_->label_left->setText("Lux: " + value[0]);
+        ui_->label_left->setText("Lux: " + configuration_->readFileContent("/tmp/tsl2561"));
     } else {
         if (ui_->label_left->isVisible() == true) {
             ui_->label_left->hide();
@@ -1952,23 +1977,4 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
         }
     }
     updateNetworkInfo();
-
-    //QString localDeviceName;
-    //QString localDeviceAddress;
-
-    //if (localDevice->isValid()) {
-    //    localDeviceName = localDevice->name();
-    //    localDeviceAddress = localDevice->address().toString();
-    //    QList<QBluetoothAddress> btdevices;
-    //    btdevices = localDevice->connectedDevices();
-
-    //    int count = btdevices.count();
-    //    if (count > 0) {
-    //        QBluetoothAddress btdevice = btdevices[0];
-    //        QString btmac = btdevice.toString();
-    //        ui_->btDevice->setText("BT: " + QString::number(count));
-    //    } else {
-    //        ui_->btDevice->setText("BT: " + QString::number(count));
-    //    }
-    //}
 }
