@@ -94,7 +94,6 @@ void AndroidAutoEntity::pause()
 
         try {
             std::for_each(serviceList_.begin(), serviceList_.end(), std::bind(&IService::pause, std::placeholders::_1));
-            messenger_->stop();
         } catch (...) {
             OPENAUTO_LOG(info) << "[AndroidAutoEntity] exception in pause.";
         }

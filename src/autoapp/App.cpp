@@ -46,8 +46,23 @@ App::App(boost::asio::io_service& ioService, aasdk::usb::USBWrapper& usbWrapper,
 void App::waitForUSBDevice()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
-        this->waitForDevice();
-        this->enumerateDevices();
+        try
+        {
+            this->waitForDevice();
+        }
+        catch(...)
+        {
+            OPENAUTO_LOG(error) << "[App] waitForUSBDevice() -exception caused by this->waitForDevice();";
+        }
+        try
+        {
+            this->enumerateDevices();
+        }
+        catch(...)
+        {
+            OPENAUTO_LOG(error) << "[App] waitForUSBDevice() exception caused by this->enumerateDevices()";
+        }
+
     });
 }
 
@@ -224,7 +239,11 @@ void App::onUSBHubError(const aasdk::error::Error& error)
     if(error != aasdk::error::ErrorCode::OPERATION_ABORTED &&
        error != aasdk::error::ErrorCode::OPERATION_IN_PROGRESS)
     {
-        this->waitForDevice();
+        try {
+            this->waitForDevice();
+        } catch (...) {
+            OPENAUTO_LOG(error) << "[App] onUSBHubError: exception caused by this->waitForDevice();";
+        }
     }
 }
 

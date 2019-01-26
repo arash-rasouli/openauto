@@ -69,7 +69,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonClearSelection, &QPushButton::clicked, std::bind(&SettingsWindow::setButtonCheckBoxes, this, false));
     connect(ui_->pushButtonSelectAll, &QPushButton::clicked, std::bind(&SettingsWindow::setButtonCheckBoxes, this, true));
     connect(ui_->pushButtonResetToDefaults, &QPushButton::clicked, this, &SettingsWindow::onResetToDefaults);
-    connect(ui_->pushButtonShowBindings, &QPushButton::clicked, this, &SettingsWindow::onShowBindings);
     connect(ui_->horizontalSliderSystemVolume, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemVolume);
     connect(ui_->horizontalSliderSystemCapture, &QSlider::valueChanged, this, &SettingsWindow::onUpdateSystemCapture);
     connect(ui_->radioButtonHotspot, &QPushButton::clicked, this, &SettingsWindow::onStartHotspot);
@@ -84,6 +83,8 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonNetworkAuto, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft network auto &");});
     connect(ui_->pushButtonNetwork0, &QPushButton::clicked, this, &SettingsWindow::on_pushButtonNetwork0_clicked);
     connect(ui_->pushButtonNetwork1, &QPushButton::clicked, this, &SettingsWindow::on_pushButtonNetwork1_clicked);
+    connect(ui_->pushButtonSambaStart, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft samba start &");});
+    connect(ui_->pushButtonSambaStop, &QPushButton::clicked, [&]() { system("/usr/local/bin/crankshaft samba stop &");});
 
     // menu
     ui_->tab1->show();
@@ -100,7 +101,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->labelBluetoothAdapterAddress->hide();
     ui_->lineEditExternalBluetoothAdapterAddress->hide();
     ui_->labelTestInProgress->hide();
-    ui_->pushButtonShowBindings->hide();
 
     connect(ui_->pushButtonTab1, &QPushButton::clicked, this, &SettingsWindow::show_tab1);
     connect(ui_->pushButtonTab2, &QPushButton::clicked, this, &SettingsWindow::show_tab2);
@@ -109,6 +109,7 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     connect(ui_->pushButtonTab5, &QPushButton::clicked, this, &SettingsWindow::show_tab5);
     connect(ui_->pushButtonTab5, &QPushButton::clicked, this, &SettingsWindow::updateNetworkInfo);
     connect(ui_->pushButtonTab6, &QPushButton::clicked, this, &SettingsWindow::show_tab6);
+    connect(ui_->pushButtonTab6, &QPushButton::clicked, this, &SettingsWindow::updateSystemInfo);
     connect(ui_->pushButtonTab7, &QPushButton::clicked, this, &SettingsWindow::show_tab7);
     connect(ui_->pushButtonTab8, &QPushButton::clicked, this, &SettingsWindow::show_tab8);
     connect(ui_->pushButtonTab9, &QPushButton::clicked, this, &SettingsWindow::show_tab9);
@@ -160,6 +161,16 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
         ui_->lineEditPassword->setText("");
         ui_->clientNetworkSelect->hide();
         ui_->label_notavailable->show();
+    }
+
+    if (std::ifstream("/tmp/samba_running")) {
+        ui_->labelSambaStatus->setText("running");
+        ui_->pushButtonSambaStart->hide();
+        ui_->pushButtonSambaStop->show();
+    } else {
+        ui_->labelSambaStatus->setText("stopped");
+        ui_->pushButtonSambaStop->hide();
+        ui_->pushButtonSambaStart->show();
     }
 
     QTimer *refresh=new QTimer(this);
@@ -342,7 +353,7 @@ void SettingsWindow::onSave()
         params.append("0");
     }
     params.append("#");
-    params.append( std::string(ui_->comboBoxSDOC->currentText().split(" ")[0].toStdString()) );
+    params.append( std::string(ui_->comboBoxUSBCam->currentText().toStdString()) );
     params.append("#");
     params.append( std::string(ui_->comboBoxLS->currentText().split(" ")[0].toStdString()) );
     params.append("#");
@@ -418,6 +429,36 @@ void SettingsWindow::onSave()
     params.append( std::string(ui_->comboBoxRotation->currentText().toStdString()) );
     params.append("#");
     params.append( std::string(ui_->comboBoxResolution->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string((ui_->comboBoxFPS->currentText()).replace(" (not @1080)","").toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxAWB->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxEXP->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxLoopTime->currentText().toStdString()) );
+    params.append("#");
+    params.append( std::string(ui_->comboBoxLoopCount->currentText().toStdString()) );
+    params.append("#");
+    if (ui_->checkBoxAutoRecording ->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    if (ui_->checkBoxFlipXUSB ->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    if (ui_->checkBoxFlipYUSB ->isChecked()) {
+        params.append("1");
+    } else {
+        params.append("0");
+    }
+    params.append("#");
+    params.append( std::string(ui_->comboBoxUSBRotation->currentText().replace("180","1").toStdString()) );
     params.append("#");
     system((std::string("/usr/local/bin/autoapp_helper setparams#") + std::string(params) + std::string(" &") ).c_str());
 
@@ -948,6 +989,38 @@ void SettingsWindow::loadSystemValues()
         }
         ui_->comboBoxRotation->setCurrentText(configuration_->getCSValue("RPICAM_ROTATION"));
         ui_->comboBoxResolution->setCurrentText(configuration_->getCSValue("RPICAM_RESOLUTION"));
+        ui_->comboBoxFPS->setCurrentText(configuration_->getCSValue("RPICAM_FPS"));
+        ui_->comboBoxAWB->setCurrentText(configuration_->getCSValue("RPICAM_AWB"));
+        ui_->comboBoxEXP->setCurrentText(configuration_->getCSValue("RPICAM_EXP"));
+        ui_->comboBoxLoopTime->setCurrentText(configuration_->getCSValue("RPICAM_LOOPTIME"));
+        ui_->comboBoxLoopCount->setCurrentText(configuration_->getCSValue("RPICAM_LOOPCOUNT"));
+
+        if (configuration_->getCSValue("RPICAM_AUTORECORDING") == "1") {
+            ui_->checkBoxAutoRecording->setChecked(true);
+        } else {
+            ui_->checkBoxAutoRecording->setChecked(false);
+        }
+
+        if (configuration_->getCSValue("USBCAM_USE") == "1") {
+            ui_->comboBoxUSBCam->setCurrentText("enabled");
+        } else {
+            ui_->comboBoxUSBCam->setCurrentText("none");
+        }
+        if (configuration_->getCSValue("USBCAM_ROTATION") == "1") {
+            ui_->comboBoxUSBRotation->setCurrentText("180");
+        } else {
+            ui_->comboBoxUSBRotation->setCurrentText("0");
+        }
+        if (configuration_->getCSValue("USBCAM_HFLIP") == "1") {
+            ui_->checkBoxFlipXUSB->setChecked(true);
+        } else {
+            ui_->checkBoxFlipXUSB->setChecked(false);
+        }
+        if (configuration_->getCSValue("USBCAM_VFLIP") == "1") {
+            ui_->checkBoxFlipYUSB->setChecked(true);
+        } else {
+            ui_->checkBoxFlipYUSB->setChecked(false);
+        }
 
         // set bluetooth
         if (configuration_->getCSValue("ENABLE_BLUETOOTH") == "1") {
@@ -980,13 +1053,6 @@ void SettingsWindow::loadSystemValues()
             ui_->comboBoxBluetooth->setCurrentText("none");
         }
 
-        // set sdoc
-        QString sdoc = configuration_->getParamFromFile("/boot/config.txt","dtoverlay=sdtweak");
-        if (sdoc.contains("sdtweak")) {
-            ui_->comboBoxSDOC->setCurrentIndex(1);
-        } else {
-            ui_->comboBoxSDOC->setCurrentIndex(0);
-        }
         // set lightsensor
         if (std::ifstream("/etc/cs_lightsensor")) {
             ui_->comboBoxLS->setCurrentIndex(1);
@@ -1025,31 +1091,6 @@ void SettingsWindow::loadSystemValues()
     }
     // update network info
     updateNetworkInfo();
-}
-
-void SettingsWindow::onShowBindings()
-{
-    const QString message = QString("Enter -> [Enter] \n")
-                            + QString("Left -> [Left] \n")
-                            + QString("Right -> [Right] \n")
-                            + QString("Up -> [Up] \n")
-                            + QString("Down -> [Down] \n")
-                            + QString("Back -> [Esc] \n")
-                            + QString("Home -> [H] \n")
-                            + QString("Phone -> [P] \n")
-                            + QString("Call end -> [O] \n")
-                            + QString("Play -> [X] \n")
-                            + QString("Pause -> [C] \n")
-                            + QString("Previous track -> [V]/[Media Previous] \n")
-                            + QString("Next track -> [N]/[Media Next] \n")
-                            + QString("Toggle play -> [B]/[Media Play] \n")
-                            + QString("Voice command -> [M] \n")
-                            + QString("Wheel left -> [1] \n")
-                            + QString("Wheel right -> [2]");
-
-    QMessageBox confirmationMessage(QMessageBox::Information, "Information", message, QMessageBox::Ok);
-    confirmationMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
-    confirmationMessage.exec();
 }
 
 void SettingsWindow::onStartHotspot()
@@ -1265,6 +1306,20 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonAudioTest_clicked(
 
 void f1x::openauto::autoapp::ui::SettingsWindow::updateNetworkInfo()
 {
+    if (std::ifstream("/tmp/samba_running")) {
+        ui_->labelSambaStatus->setText("running");
+        if (ui_->pushButtonSambaStart->isVisible() == true) {
+            ui_->pushButtonSambaStart->hide();
+            ui_->pushButtonSambaStop->show();
+        }
+    } else {
+        ui_->labelSambaStatus->setText("stopped");
+        if (ui_->pushButtonSambaStop->isVisible() == true) {
+            ui_->pushButtonSambaStop->hide();
+            ui_->pushButtonSambaStart->show();
+        }
+    }
+
     if (!std::ifstream("/tmp/mode_change_progress")) {
         QNetworkInterface eth0if = QNetworkInterface::interfaceFromName("eth0");
         if (eth0if.flags().testFlag(QNetworkInterface::IsUp)) {

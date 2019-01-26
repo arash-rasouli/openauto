@@ -38,6 +38,7 @@ private slots:
     void on_pushButtonUpdateOpenauto_clicked();
     void on_pushButtonUpdateSystem_clicked();
     void on_pushButtonUpdateCheck_clicked();
+    void on_pushButtonUpdateCancel_clicked();
 
 private:
     Ui::UpdateDialog *ui_;

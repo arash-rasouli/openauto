@@ -2,6 +2,7 @@
 #include "ui_updatedialog.h"
 #include <QFileInfo>
 #include <QTextStream>
+#include <QStorageInfo>
 #include <fstream>
 #include <cstdio>
 
@@ -24,6 +25,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
     connect(ui_->pushButtonUpdateOpenauto, &QPushButton::clicked, this, &UpdateDialog::on_pushButtonUpdateOpenauto_clicked);
     connect(ui_->pushButtonUpdateSystem, &QPushButton::clicked, this, &UpdateDialog::on_pushButtonUpdateSystem_clicked);
     connect(ui_->pushButtonUpdateCheck, &QPushButton::clicked, this, &UpdateDialog::on_pushButtonUpdateCheck_clicked);
+    connect(ui_->pushButtonUpdateCancel, &QPushButton::clicked, this, &UpdateDialog::on_pushButtonUpdateCancel_clicked);
     connect(ui_->pushButtonClose, &QPushButton::clicked, this, &UpdateDialog::close);
 
     ui_->progressBarCsmt->hide();
@@ -32,6 +34,7 @@ UpdateDialog::UpdateDialog(QWidget *parent)
     ui_->progressBarSystem->hide();
     ui_->labelSystemReadyInstall->hide();
     ui_->labelUpdateChecking->hide();
+    ui_->pushButtonUpdateCancel->hide();
     updateCheck();
 
     watcher_tmp = new QFileSystemWatcher(this);
@@ -41,6 +44,16 @@ UpdateDialog::UpdateDialog(QWidget *parent)
     watcher_download = new QFileSystemWatcher(this);
     watcher_download->addPath("/media/USBDRIVES/CSSTORAGE");
     connect(watcher_download, &QFileSystemWatcher::directoryChanged, this, &UpdateDialog::downloadCheck);
+
+    QStorageInfo storage("/media/USBDRIVES/CSSTORAGE");
+    storage.refresh();
+    if (storage.isValid() && storage.isReady()) {
+        ui_->system->show();
+        ui_->labelNoStorage->hide();
+    } else {
+        ui_->labelNoStorage->show();
+        ui_->system->hide();
+    }
 }
 
 UpdateDialog::~UpdateDialog()
@@ -90,6 +103,12 @@ void f1x::openauto::autoapp::ui::UpdateDialog::on_pushButtonUpdateCheck_clicked(
     updateCheck();
     ui_->labelUpdateChecking->hide();
     ui_->pushButtonUpdateCheck->show();
+}
+
+void f1x::openauto::autoapp::ui::UpdateDialog::on_pushButtonUpdateCancel_clicked()
+{
+    ui_->pushButtonUpdateCancel->hide();
+    system("crankshaft update cancel &");
 }
 
 void f1x::openauto::autoapp::ui::UpdateDialog::downloadCheck()
@@ -146,6 +165,7 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
         ui_->pushButtonUpdateSystem->hide();
         ui_->progressBarSystem->hide();
         ui_->labelSystemReadyInstall->show();
+        ui_->pushButtonUpdateCancel->hide();
     } else {
         ui_->labelSystemReadyInstall->hide();
         if (std::ifstream("/tmp/system_update_available")) {
@@ -158,6 +178,7 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
             ui_->pushButtonUpdateSystem->hide();
             ui_->pushButtonUpdateCheck->hide();
             ui_->progressBarSystem->show();
+            ui_->pushButtonUpdateCancel->show();
 
             QFileInfo downloadfile = "/media/USBDRIVES/CSSTORAGE/" + ui_->labelDownload->text();
             if (downloadfile.exists()) {
@@ -168,6 +189,8 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
         } else {
             if (ui_->pushButtonUpdateCheck->isVisible() == false) {
                 ui_->pushButtonUpdateCheck->show();
+                ui_->labelDownload->setText("");
+                ui_->pushButtonUpdateCancel->hide();
             }
         }
 
@@ -183,3 +206,4 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
 }
 }
 }
+

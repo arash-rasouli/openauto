@@ -876,6 +876,19 @@ void f1x::openauto::autoapp::ui::MainWindow::cameraControlShow()
             ui_->oldmenuWidget->hide();
         }
         ui_->cameraWidget->show();
+
+        // check if dashcam is recording
+        if (std::ifstream("/tmp/dashcam_is_recording")) {
+            if (ui_->pushButtonRecordActive->isVisible() == false) {
+                ui_->pushButtonRecordActive->show();
+                ui_->pushButtonRecord->hide();
+            }
+        } else {
+            if (ui_->pushButtonRecordActive->isVisible() == true) {
+                ui_->pushButtonRecordActive->hide();
+                ui_->pushButtonRecord->show();
+            }
+        }
     }
 }
 
@@ -988,34 +1001,44 @@ void f1x::openauto::autoapp::ui::MainWindow::updateBG()
         this->setStyleSheet("QMainWindow { background: url(:/firework.png); background-repeat: no-repeat; background-position: center; }");
         this->holidaybg = true;
     }
-    else if (ui_->mediaWidget->isVisible() == false) {
-        if (!this->nightModeEnabled) {
+    if (!this->nightModeEnabled) {
+        if (ui_->mediaWidget->isVisible() == true) {
+            if (this->wallpaperEQFileExists) {
+                this->setStyleSheet("QMainWindow { background: url(wallpaper-eq.png); background-repeat: no-repeat; background-position: center; }");
+            } else {
+                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+            }
+        } else {
             if (this->oldGUIStyle) {
                 if (this->wallpaperClassicDayFileExists) {
-                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }") );
                     this->setStyleSheet("QMainWindow { background: url(wallpaper-classic.png); background-repeat: no-repeat; background-position: center; }");
                 } else {
                     this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
                 }
             } else {
                 if (this->wallpaperDayFileExists) {
-                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }") );
                     this->setStyleSheet("QMainWindow { background: url(wallpaper.png); background-repeat: no-repeat; background-position: center; }");
                 } else {
                     this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
                 }
             }
+        }
+    } else {
+        if (ui_->mediaWidget->isVisible() == true) {
+            if (this->wallpaperEQFileExists) {
+                this->setStyleSheet("QMainWindow { background: url(wallpaper-eq.png); background-repeat: no-repeat; background-position: center; }");
+            } else {
+                this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
+            }
         } else {
             if (this->oldGUIStyle) {
                 if (this->wallpaperClassicNightFileExists) {
-                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }") );
                     this->setStyleSheet( "QMainWindow { background: url(wallpaper-classic-night.png); background-repeat: no-repeat; background-position: center; }");
                 } else {
                     this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
                 }
             } else {
                 if (this->wallpaperNightFileExists) {
-                    //this->setStyleSheet( this->styleSheet().append("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }") );
                     this->setStyleSheet("QMainWindow { background: url(wallpaper-night.png); background-repeat: no-repeat; background-position: center; }");
                 } else {
                     this->setStyleSheet("QMainWindow { background: url(:/black.png); background-repeat: no-repeat; background-position: center; }");
@@ -1228,6 +1251,19 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
         if (playlist->currentIndex() != -1 && fullpathplaying != "") {
             QString currentsong = ui_->mp3List->item(playlist->currentIndex())->text();
             ui_->labelCurrentPlaying->setText(currentsong);
+            if (currentsong.length() > 48) {
+                int id = QFontDatabase::addApplicationFont(":/Roboto-Regular.ttf");
+                QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+                QFont _font(family, 12, QFont::Bold);
+                _font.setItalic(true);
+                ui_->labelCurrentPlaying->setFont(_font);
+            } else {
+                int id = QFontDatabase::addApplicationFont(":/Roboto-Regular.ttf");
+                QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+                QFont _font(family, 16, QFont::Bold);
+                _font.setItalic(true);
+                ui_->labelCurrentPlaying->setFont(_font);
+            }
         }
     } catch (...) {
         // use metadata from player
@@ -1358,10 +1394,9 @@ void f1x::openauto::autoapp::ui::MainWindow::scanFiles()
                 QString url=configuration_->readFileContent(this->musicfolder + "/" + this->albumfolder + "/" + filename);
                 content.push_back(QMediaContent(QUrl(url)));
                 ui_->mp3List->addItem(filename.replace(".strm",""));
-                //ui_->mp3List->addItem(url);
             } else {
-                content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
                 // add items to gui
+                content.push_back(QMediaContent(QUrl::fromLocalFile(this->musicfolder + "/" + this->albumfolder + "/" + filename)));
                 // read metadata using taglib
                 try {
                     TagLib::FileRef file((this->musicfolder + "/" + this->albumfolder + "/" + filename).toUtf8(),true);
@@ -1589,6 +1624,7 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             ui_->clockOnlyWidget->hide();
             toggleGUI();
             toggleGUI();
+            updateBG();
         }
     }
 
@@ -1749,20 +1785,6 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
                     ui_->pushButtonRecord->show();
                     ui_->pushButtonRecordActive->hide();
                 }
-            }
-        }
-
-        // check if rearcam is eanbled
-        this->rearCamEnabled = check_file_exist("/tmp/rearcam_enabled");
-        if (this->rearCamEnabled) {
-            if (!this->rearCamVisible) {
-                this->rearCamVisible = true;
-                f1x::openauto::autoapp::ui::MainWindow::MainWindow::showRearCam();
-            }
-        } else {
-            if (this->rearCamVisible) {
-                this->rearCamVisible = false;
-                f1x::openauto::autoapp::ui::MainWindow::MainWindow::hideRearCam();
             }
         }
     }

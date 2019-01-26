@@ -166,17 +166,6 @@ int main(int argc, char* argv[])
         OPENAUTO_LOG(info) << "[Camera] Zoom minus.";
     });
 
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::hideRearCam, [&qApplication]() {
-        system("/opt/crankshaft/cameracontrol.py DashcamMode &");
-        system("sudo rm /tmp/rearcam_enabled &");
-        OPENAUTO_LOG(info) << "[Camera] Dashcam mode.";
-    });
-
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::showRearCam, [&qApplication]() {
-        system("/opt/crankshaft/cameracontrol.py Rearcam &");
-        OPENAUTO_LOG(info) << "[Camera] Rearcam mode.";
-    });
-
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::cameraRecord, [&qApplication]() {
         system("/opt/crankshaft/cameracontrol.py Record &");
         OPENAUTO_LOG(info) << "[Camera] Record.";
@@ -248,7 +237,7 @@ int main(int argc, char* argv[])
             } else {
                 OPENAUTO_LOG(info) << "[Autoapp] TriggerAppStop: Manual stop wifi android auto.";
                 try {
-                    app->stop();
+                    app->onAndroidAutoQuit();
                     //app->pause();
                 } catch (...) {
                     OPENAUTO_LOG(error) << "[Autoapp] TriggerAppStop: stop();";

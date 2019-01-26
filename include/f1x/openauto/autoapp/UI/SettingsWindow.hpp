@@ -57,7 +57,6 @@ private slots:
     void onUpdateAlphaTrans(int value);
     void onUpdateBrightnessDay(int value);
     void onUpdateBrightnessNight(int value);
-    void onShowBindings();
     void onUpdateSystemVolume(int value);
     void onUpdateSystemCapture(int value);
     void setTime();
