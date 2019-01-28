@@ -1055,7 +1055,7 @@ void f1x::openauto::autoapp::ui::MainWindow::createDebuglog()
 
 void f1x::openauto::autoapp::ui::MainWindow::setPairable()
 {
-    system("/usr/local/bin/autoapp_helper enablepairing &");
+    system("/usr/local/bin/crankshaft bluetooth pairable &");
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::setMute()
