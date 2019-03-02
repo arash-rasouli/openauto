@@ -1137,7 +1137,14 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonList_clicked()
     ui_->PlayerPlayingWidget->hide();
     ui_->pushButtonList->hide();
     ui_->pushButtonPlayerPlayList->show();
-    ui_->pushButtonBackToPlayer->show();
+
+    if (playlist->currentIndex() == -1) {
+        ui_->pushButtonPlayerStop->hide();
+        ui_->pushButtonPlayerPause->hide();
+        ui_->pushButtonBackToPlayer->hide();
+    } else {
+        ui_->pushButtonBackToPlayer->show();
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerStop_clicked()
@@ -1289,6 +1296,25 @@ void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
     ui_->labelTrack->setText(QString::number(playlist->currentIndex()+1));
     ui_->labelTrackCount->setText(QString::number(playlist->mediaCount()));
 
+    if (playlist->currentIndex() == -1) {
+        // check for folder icon
+        QString cover = this->musicfolder + "/" + this->albumfolder + "/folder.png";
+        QString coverjpg = this->musicfolder + "/" + this->albumfolder + "/folder.jpg";
+        if (check_file_exist(cover.toStdString().c_str())) {
+            QPixmap img = cover;
+            ui_->pushButtonBack->setIcon(img.scaled(270,270,Qt::KeepAspectRatio));
+        } else if (check_file_exist(coverjpg.toStdString().c_str())) {
+            QPixmap img = coverjpg;
+            ui_->pushButtonBack->setIcon(img.scaled(270,270,Qt::KeepAspectRatio));
+        } else {
+            ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
+        }
+        ui_->labelCurrentPlaying->setText(ui_->comboBoxAlbum->currentText());
+        ui_->pushButtonPlayerStop->hide();
+        ui_->pushButtonPlayerPause->hide();
+        ui_->pushButtonPlayerPlayList->show();
+    }
+
     // Write current playing album and track to config
     this->configuration_->setMp3Track(playlist->currentIndex());
     this->configuration_->setMp3SubFolder(ui_->comboBoxAlbum->currentText().toStdString());
@@ -1300,6 +1326,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPlayList_clicked
     player->setPlaylist(this->playlist);
     playlist->setCurrentIndex(this->currentPlaylistIndex);
     player->play();
+    ui_->pushButtonBack->setIcon(QPixmap("://coverlogo.png"));
     ui_->mp3selectWidget->hide();
     ui_->PlayerPlayingWidget->show();
     ui_->pushButtonPlayerPlayList->hide();
@@ -1432,11 +1459,23 @@ void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_currentRowChanged(int cu
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerNextBig_clicked()
 {
     playlist->next();
+    if (playlist->currentIndex() != -1) {
+        player->play();
+        ui_->pushButtonPlayerStop->show();
+        ui_->pushButtonPlayerPause->show();
+        ui_->pushButtonPlayerPlayList->hide();
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPrevBig_clicked()
 {
     playlist->previous();
+    if (playlist->currentIndex() != -1) {
+        player->play();
+        ui_->pushButtonPlayerStop->show();
+        ui_->pushButtonPlayerPause->show();
+        ui_->pushButtonPlayerPlayList->hide();
+    }
 }
 
 void f1x::openauto::autoapp::ui::MainWindow::on_pushButtonPlayerPrevAlbum_clicked()

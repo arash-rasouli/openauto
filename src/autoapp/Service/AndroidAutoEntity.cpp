@@ -60,7 +60,7 @@ void AndroidAutoEntity::start(IAndroidAutoEntityEventHandler& eventHandler)
 
         eventHandler_ = eventHandler;
         std::for_each(serviceList_.begin(), serviceList_.end(), std::bind(&IService::start, std::placeholders::_1));
-        this->schedulePing();
+        //this->schedulePing();
 
         auto versionRequestPromise = aasdk::channel::SendPromise::defer(strand_);
         versionRequestPromise->then([]() {}, std::bind(&AndroidAutoEntity::onChannelError, this->shared_from_this(), std::placeholders::_1));
@@ -77,7 +77,7 @@ void AndroidAutoEntity::stop()
         try {
             eventHandler_ = nullptr;
             std::for_each(serviceList_.begin(), serviceList_.end(), std::bind(&IService::stop, std::placeholders::_1));
-            pinger_->cancel();
+            //pinger_->cancel();
             messenger_->stop();
             transport_->stop();
             cryptor_->deinit();
