@@ -51,6 +51,7 @@ const std::string Configuration::cGeneralMp3SubFolderKey = "General.Mp3SubFolder
 const std::string Configuration::cGeneralMp3TrackKey = "General.Mp3Track";
 const std::string Configuration::cGeneralMp3AutoPlayKey = "General.Mp3AutoPlay";
 const std::string Configuration::cGeneralShowAutoPlayKey = "General.ShowAutoPlay";
+const std::string Configuration::cGeneralInstantPlayKey = "General.InstantPlay";
 
 const std::string Configuration::cVideoFPSKey = "Video.FPS";
 const std::string Configuration::cVideoResolutionKey = "Video.Resolution";
@@ -116,6 +117,7 @@ void Configuration::load()
         mp3Track_ = iniConfig.get<size_t>(cGeneralMp3TrackKey, 0);
         mp3AutoPlay_ = iniConfig.get<bool>(cGeneralMp3AutoPlayKey, false);
         showAutoPlay_ = iniConfig.get<bool>(cGeneralShowAutoPlayKey, false);
+        instantPlay_ = iniConfig.get<bool>(cGeneralInstantPlayKey, false);
 
         videoFPS_ = static_cast<aasdk::proto::enums::VideoFPS::Enum>(iniConfig.get<uint32_t>(cVideoFPSKey,
                                                                                              aasdk::proto::enums::VideoFPS::_30));
@@ -167,6 +169,7 @@ void Configuration::reset()
     mp3Track_ = 0;
     mp3AutoPlay_ = false;
     showAutoPlay_ = false;
+    instantPlay_ = false;
     videoFPS_ = aasdk::proto::enums::VideoFPS::_30;
     videoResolution_ = aasdk::proto::enums::VideoResolution::_480p;
     screenDPI_ = 140;
@@ -203,6 +206,7 @@ void Configuration::save()
     iniConfig.put<int32_t>(cGeneralMp3TrackKey, mp3Track_);
     iniConfig.put<bool>(cGeneralMp3AutoPlayKey, mp3AutoPlay_);
     iniConfig.put<bool>(cGeneralShowAutoPlayKey, showAutoPlay_);
+    iniConfig.put<bool>(cGeneralInstantPlayKey, instantPlay_);
 
     iniConfig.put<uint32_t>(cVideoFPSKey, static_cast<uint32_t>(videoFPS_));
     iniConfig.put<uint32_t>(cVideoResolutionKey, static_cast<uint32_t>(videoResolution_));
@@ -411,6 +415,16 @@ void Configuration::showAutoPlay(bool value)
 bool Configuration::showAutoPlay() const
 {
     return showAutoPlay_;
+}
+
+void Configuration::instantPlay(bool value)
+{
+    instantPlay_ = value;
+}
+
+bool Configuration::instantPlay() const
+{
+    return instantPlay_;
 }
 
 aasdk::proto::enums::VideoFPS::Enum Configuration::getVideoFPS() const

@@ -37,8 +37,7 @@
         <file>player-hot.png</file>
         <file>coverlogo.png</file>
         <file>black.png</file>
-        <file>christmas.png</file>
-        <file>firework.png</file>
+        <file>album-hot.png</file>
         <file>Roboto-Regular.ttf</file>
     </qresource>
 </RCC>

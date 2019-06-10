@@ -81,6 +81,8 @@ public:
     void mp3AutoPlay(bool value) override;
     bool showAutoPlay() const override;
     void showAutoPlay(bool value) override;
+    bool instantPlay() const override;
+    void instantPlay(bool value) override;
 
     QString getCSValue(QString searchString) const override;
     QString readFileContent(QString fileName) const override;
@@ -139,6 +141,7 @@ private:
     int32_t mp3Track_;
     bool mp3AutoPlay_;
     bool showAutoPlay_;
+    bool instantPlay_;
 
     aasdk::proto::enums::VideoFPS::Enum videoFPS_;
     aasdk::proto::enums::VideoResolution::Enum videoResolution_;
@@ -176,6 +179,7 @@ private:
     static const std::string cGeneralMp3TrackKey;
     static const std::string cGeneralMp3AutoPlayKey;
     static const std::string cGeneralShowAutoPlayKey;
+    static const std::string cGeneralInstantPlayKey;
 
     static const std::string cVideoFPSKey;
     static const std::string cVideoResolutionKey;

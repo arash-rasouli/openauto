@@ -163,6 +163,11 @@ private slots:
 
     void hostModeStateChanged(QBluetoothLocalDevice::HostMode);
 
+    //void on_AlbumCoverListView_clicked(const QModelIndex &index);
+    void on_AlbumCoverListView_clicked(const QModelIndex &index);
+
+    void on_pushButtonAlbum_clicked();
+
 private:
     Ui::MainWindow* ui_;
     configuration::IConfiguration::Pointer configuration_;

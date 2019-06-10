@@ -85,6 +85,8 @@ public:
     virtual void mp3AutoPlay(bool value) = 0;
     virtual bool showAutoPlay() const = 0;
     virtual void showAutoPlay(bool value) = 0;
+    virtual bool instantPlay() const = 0;
+    virtual void instantPlay(bool value) = 0;
 
     virtual QString getCSValue(QString searchString) const = 0;
     virtual QString readFileContent(QString fileName) const = 0;

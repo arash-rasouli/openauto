@@ -208,6 +208,7 @@ void SettingsWindow::onSave()
     configuration_->showNetworkinfo(ui_->checkBoxNetworkinfo->isChecked());
     configuration_->mp3AutoPlay(ui_->checkBoxAutoPlay->isChecked());
     configuration_->showAutoPlay(ui_->checkBoxShowPlayer->isChecked());
+    configuration_->instantPlay(ui_->checkBoxInstantPlay->isChecked());
     configuration_->hideWarning(ui_->checkBoxDontShowAgain->isChecked());
 
     configuration_->setVideoFPS(ui_->radioButton30FPS->isChecked() ? aasdk::proto::enums::VideoFPS::_30 : aasdk::proto::enums::VideoFPS::_60);
@@ -498,6 +499,7 @@ void SettingsWindow::load()
     ui_->checkBoxNetworkinfo->setChecked(configuration_->showNetworkinfo());
     ui_->checkBoxAutoPlay->setChecked(configuration_->mp3AutoPlay());
     ui_->checkBoxShowPlayer->setChecked(configuration_->showAutoPlay());
+    ui_->checkBoxInstantPlay->setChecked(configuration_->instantPlay());
     ui_->checkBoxDontShowAgain->setChecked(configuration_->hideWarning());
 
     ui_->radioButton30FPS->setChecked(configuration_->getVideoFPS() == aasdk::proto::enums::VideoFPS::_30);
@@ -887,6 +889,7 @@ void SettingsWindow::loadSystemValues()
             ui_->comboBoxTZ->setCurrentText(configuration_->readFileContent("/etc/timezone"));
         } else {
             ui_->comboBoxHardwareRTC->setCurrentText("none");
+            ui_->comboBoxTZ->setCurrentText(configuration_->readFileContent("/etc/timezone"));
         }
 
         // set dac
