@@ -20,6 +20,7 @@
 #include <f1x/openauto/Common/Log.hpp>
 #include <f1x/openauto/autoapp/Service/SensorService.hpp>
 #include <fstream>
+#include <cmath>
 
 namespace f1x
 {
@@ -41,19 +42,40 @@ SensorService::SensorService(boost::asio::io_service& ioService, aasdk::messenge
 void SensorService::start()
 {
     strand_.dispatch([this, self = this->shared_from_this()]() {
+        if (gps_open("127.0.0.1", "2947", &this->gpsData_))
+        {
+            OPENAUTO_LOG(warning) << "[SensorService] can't connect to GPSD.";
+        }
+        else
+        {
+            OPENAUTO_LOG(info) << "[SensorService] Connected to GPSD.";
+            gps_stream(&this->gpsData_, WATCH_ENABLE | WATCH_JSON, NULL);
+            this->gpsEnabled_ = true;
+        }
+
         if (is_file_exist("/tmp/night_mode_enabled")) {
             this->isNight = true;
         }
-        this->nightSensorPolling();
+        this->sensorPolling();
+
         OPENAUTO_LOG(info) << "[SensorService] start.";
         channel_->receive(this->shared_from_this());
     });
+
 }
 
 void SensorService::stop()
 {
     this->stopPolling = true;
+
     strand_.dispatch([this, self = this->shared_from_this()]() {
+        if (this->gpsEnabled_)
+        {
+            gps_stream(&this->gpsData_, WATCH_DISABLE, NULL);
+            gps_close(&this->gpsData_);
+            this->gpsEnabled_ = false;
+        }
+
         OPENAUTO_LOG(info) << "[SensorService] stop.";
     });
 }
@@ -81,7 +103,7 @@ void SensorService::fillFeatures(aasdk::proto::messages::ServiceDiscoveryRespons
 
     auto* sensorChannel = channelDescriptor->mutable_sensor_channel();
     sensorChannel->add_sensors()->set_type(aasdk::proto::enums::SensorType::DRIVING_STATUS);
-    //sensorChannel->add_sensors()->set_type(aasdk::proto::enums::SensorType::LOCATION);
+    sensorChannel->add_sensors()->set_type(aasdk::proto::enums::SensorType::LOCATION);
     sensorChannel->add_sensors()->set_type(aasdk::proto::enums::SensorType::NIGHT_DATA);
 }
 
@@ -160,7 +182,42 @@ void SensorService::sendNightData()
     }
 }
 
-void SensorService::nightSensorPolling()
+void SensorService::sendGPSLocationData()
+{
+    aasdk::proto::messages::SensorEventIndication indication;
+    auto * locInd = indication.add_gps_location();
+
+    // epoch seconds
+    locInd->set_timestamp(this->gpsData_.fix.time * 1e3);
+    // degrees
+    locInd->set_latitude(this->gpsData_.fix.latitude * 1e7);
+    locInd->set_longitude(this->gpsData_.fix.longitude * 1e7);
+    // meters
+    auto accuracy = sqrt(pow(this->gpsData_.fix.epx, 2) + pow(this->gpsData_.fix.epy, 2));
+    locInd->set_accuracy(accuracy * 1e3);
+
+    if (this->gpsData_.set & ALTITUDE_SET)
+    {
+        // meters above ellipsoid
+        locInd->set_altitude(this->gpsData_.fix.altitude * 1e2);
+    }
+    if (this->gpsData_.set & SPEED_SET)
+    {
+        // meters per second to knots
+        locInd->set_speed(this->gpsData_.fix.speed * 1.94384 * 1e3);
+    }
+    if (this->gpsData_.set & TRACK_SET)
+    {
+        // degrees
+        locInd->set_bearing(this->gpsData_.fix.track * 1e6);
+    }
+
+    auto promise = aasdk::channel::SendPromise::defer(strand_);
+    promise->then([]() {}, std::bind(&SensorService::onChannelError, this->shared_from_this(), std::placeholders::_1));
+    channel_->sendSensorEventIndication(indication, std::move(promise));
+}
+
+void SensorService::sensorPolling()
 {
     if (!this->stopPolling) {
         strand_.dispatch([this, self = this->shared_from_this()]() {
@@ -169,8 +226,20 @@ void SensorService::nightSensorPolling()
                 this->previous = this->isNight;
                 this->sendNightData();
             }
-            timer_.expires_from_now(boost::posix_time::seconds(5));
-            timer_.async_wait(strand_.wrap(std::bind(&SensorService::nightSensorPolling, this->shared_from_this())));
+
+            if ((this->gpsEnabled_) &&
+               (gps_waiting(&this->gpsData_, 0)) &&
+               (gps_read(&this->gpsData_) > 0) &&
+               (this->gpsData_.status != STATUS_NO_FIX) &&
+               (this->gpsData_.fix.mode == MODE_2D || this->gpsData_.fix.mode == MODE_3D) &&
+               (this->gpsData_.set & TIME_SET) &&
+               (this->gpsData_.set & LATLON_SET))
+            {
+                this->sendGPSLocationData();
+            }
+
+            timer_.expires_from_now(boost::posix_time::milliseconds(250));
+            timer_.async_wait(strand_.wrap(std::bind(&SensorService::sensorPolling, this->shared_from_this())));
         });
     }
 }

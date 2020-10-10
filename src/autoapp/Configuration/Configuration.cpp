@@ -85,6 +85,7 @@ const std::string Configuration::cInputDownButtonKey = "Input.DownButton";
 const std::string Configuration::cInputScrollWheelButtonKey = "Input.ScrollWheelButton";
 const std::string Configuration::cInputBackButtonKey = "Input.BackButton";
 const std::string Configuration::cInputEnterButtonKey = "Input.EnterButton";
+const std::string Configuration::cInputNavButtonKey = "Input.NavButton";
 
 Configuration::Configuration()
 {
@@ -698,6 +699,7 @@ void Configuration::readButtonCodes(boost::property_tree::ptree& iniConfig)
     this->insertButtonCode(iniConfig, cInputScrollWheelButtonKey, aasdk::proto::enums::ButtonCode::SCROLL_WHEEL);
     this->insertButtonCode(iniConfig, cInputBackButtonKey, aasdk::proto::enums::ButtonCode::BACK);
     this->insertButtonCode(iniConfig, cInputEnterButtonKey, aasdk::proto::enums::ButtonCode::ENTER);
+    this->insertButtonCode(iniConfig, cInputNavButtonKey, aasdk::proto::enums::ButtonCode::NAVIGATION);
 }
 
 void Configuration::insertButtonCode(boost::property_tree::ptree& iniConfig, const std::string& buttonCodeKey, aasdk::proto::enums::ButtonCode::Enum buttonCode)
@@ -726,6 +728,7 @@ void Configuration::writeButtonCodes(boost::property_tree::ptree& iniConfig)
     iniConfig.put<bool>(cInputScrollWheelButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::SCROLL_WHEEL) != buttonCodes_.end());
     iniConfig.put<bool>(cInputBackButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::BACK) != buttonCodes_.end());
     iniConfig.put<bool>(cInputEnterButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::ENTER) != buttonCodes_.end());
+    iniConfig.put<bool>(cInputNavButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::NAVIGATION) != buttonCodes_.end());
 }
 
 }

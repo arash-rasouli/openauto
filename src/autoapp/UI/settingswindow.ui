@@ -2464,6 +2464,13 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
            </property>
           </widget>
          </item>
+         <item row="1" column="4">
+          <widget class="QCheckBox" name="checkBoxNavButton">
+           <property name="text">
+            <string>Nav [F]</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="3">
           <widget class="QCheckBox" name="checkBoxScrollWheelButton">
            <property name="text">

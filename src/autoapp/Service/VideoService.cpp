@@ -112,7 +112,7 @@ void VideoService::onAVChannelStartIndication(const aasdk::proto::messages::AVCh
 
 void VideoService::onAVChannelStopIndication(const aasdk::proto::messages::AVChannelStopIndication& indication)
 {
-    OPENAUTO_LOG(info) << "[VideoService] stop indication";
+    OPENAUTO_LOG(info) << "[VideoService] stop indication, session: " << session_;
 
     channel_->receive(this->shared_from_this());
 }

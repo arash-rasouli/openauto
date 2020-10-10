@@ -92,7 +92,7 @@ void ConnectDialog::onConnectionFailed(const QString& message)
 
     ui_->progressBarConnect->hide();
     QMessageBox errorMessage(QMessageBox::Critical, "Connect error", message, QMessageBox::Ok);
-    errorMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //errorMessage.setWindowFlags(Qt::WindowStaysOnTopHint);
     errorMessage.exec();
 }
 
