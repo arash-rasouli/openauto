@@ -4171,9 +4171,6 @@ border: 2px solid rgba(255,255,255,0.5);</string>
                <property name="wordWrap">
                 <bool>true</bool>
                </property>
-               <property name="itemAlignment">
-                <set>Qt::AlignCenter</set>
-               </property>
               </widget>
              </item>
              <item>
@@ -4261,7 +4258,7 @@ height: 50px;
                 <enum>QListView::Static</enum>
                </property>
                <property name="isWrapping" stdset="0">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
                <property name="resizeMode">
                 <enum>QListView::Fixed</enum>
@@ -4280,9 +4277,6 @@ height: 50px;
                </property>
                <property name="viewMode">
                 <enum>QListView::ListMode</enum>
-               </property>
-               <property name="itemAlignment">
-                <set>Qt::AlignCenter</set>
                </property>
                <property name="currentRow">
                 <number>-1</number>

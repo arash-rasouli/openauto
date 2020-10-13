@@ -164,6 +164,10 @@ bool InputDevice::handleKeyEvent(QEvent* event, QKeyEvent* key)
         buttonCode = aasdk::proto::enums::ButtonCode::SCROLL_WHEEL;
         break;
 
+    case Qt::Key_F:
+        buttonCode = aasdk::proto::enums::ButtonCode::NAVIGATION;
+        break;
+
     default:
         return true;
     }

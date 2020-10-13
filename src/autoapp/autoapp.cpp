@@ -95,10 +95,10 @@ int main(int argc, char* argv[])
     auto configuration = std::make_shared<autoapp::configuration::Configuration>();
 
     autoapp::ui::MainWindow mainWindow(configuration);
-    mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //mainWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     autoapp::ui::SettingsWindow settingsWindow(configuration);
-    settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //settingsWindow.setWindowFlags(Qt::WindowStaysOnTopHint);
 
     settingsWindow.setFixedSize(width, height);
     settingsWindow.adjustSize();
@@ -108,15 +108,15 @@ int main(int argc, char* argv[])
 
     aasdk::tcp::TCPWrapper tcpWrapper;
     autoapp::ui::ConnectDialog connectdialog(ioService, tcpWrapper, recentAddressesList);
-    connectdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //connectdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     connectdialog.move((width - 500)/2,(height-300)/2);
 
     autoapp::ui::WarningDialog warningdialog;
-    warningdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //warningdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     warningdialog.move((width - 500)/2,(height-300)/2);
 
     autoapp::ui::UpdateDialog updatedialog;
-    updatedialog.setWindowFlags(Qt::WindowStaysOnTopHint);
+    //updatedialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     updatedialog.setFixedSize(500, 260);
     updatedialog.move((width - 500)/2,(height-260)/2);
 

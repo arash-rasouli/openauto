@@ -1805,7 +1805,12 @@ void f1x::openauto::autoapp::ui::MainWindow::tmpChanged()
             QFile deviceData(QString("/tmp/android_device"));
             deviceData.open(QIODevice::ReadOnly);
             QTextStream data_date(&deviceData);
-            QString linedate = data_date.readAll().split("\n")[1];
+            data_date.readLine();
+            // wait for second line to be written
+            QString linedate;
+            while (linedate.isNull()) {
+                linedate = data_date.readLine();
+            }
             deviceData.close();
             ui_->labelAndroidAutoBottom->setText(linedate.simplified().replace("_"," "));
         } catch (...) {

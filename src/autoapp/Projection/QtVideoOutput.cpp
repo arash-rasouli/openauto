@@ -71,13 +71,14 @@ void QtVideoOutput::onStartPlayback()
 {
     videoWidget_->setAspectRatioMode(Qt::IgnoreAspectRatio);
     videoWidget_->setFocus();
-    videoWidget_->setWindowFlags(Qt::WindowStaysOnTopHint);
+    //videoWidget_->setWindowFlags(Qt::WindowStaysOnTopHint);
     videoWidget_->setFullScreen(true);
     videoWidget_->show();
 
     mediaPlayer_->setVideoOutput(videoWidget_.get());
     mediaPlayer_->setMedia(QMediaContent(), &videoBuffer_);
     mediaPlayer_->play();
+    OPENAUTO_LOG(debug) << "Player error state -> " << mediaPlayer_->errorString().toStdString();
 }
 
 void QtVideoOutput::onStopPlayback()

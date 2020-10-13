@@ -18,23 +18,39 @@
 
 #pragma once
 
-#include <QBluetoothAddress>
+#include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
+#include <f1x/openauto/autoapp/Service/IService.hpp>
+#include <boost/asio/io_service.hpp>
+#include <f1x/aasdk/Messenger/IMessenger.hpp>
 
 namespace f1x
 {
 namespace openauto
 {
-namespace btservice
+namespace autoapp
+{
+namespace service
 {
 
-class IAndroidBluetoothServer
+class WifiService: public IService, public std::enable_shared_from_this<WifiService>
 {
 public:
-    virtual ~IAndroidBluetoothServer() = default;
+    typedef std::shared_ptr<WifiService> Pointer;
 
-    virtual uint16_t start(const QBluetoothAddress& address) = 0;
+    WifiService(configuration::IConfiguration::Pointer configuration);
+
+    void start() override;
+    void stop() override;
+    void pause() override;
+    void resume() override;
+    void fillFeatures(aasdk::proto::messages::ServiceDiscoveryResponse& response) override;
+
+private:
+    using std::enable_shared_from_this<WifiService>::shared_from_this;
+    configuration::IConfiguration::Pointer configuration_;
 };
 
+}
 }
 }
 }

@@ -17,6 +17,7 @@
 */
 
 #include <QApplication>
+#include <QThread>
 #include <f1x/openauto/autoapp/Projection/QtAudioOutput.hpp>
 #include <f1x/openauto/Common/Log.hpp>
 
@@ -30,7 +31,8 @@ namespace projection
 {
 
 QtAudioOutput::QtAudioOutput(uint32_t channelCount, uint32_t sampleSize, uint32_t sampleRate)
-    : playbackStarted_(false)
+    : audioBuffer_(nullptr)
+    , playbackStarted_(false)
 {
     audioFormat_.setChannelCount(channelCount);
     audioFormat_.setSampleRate(sampleRate);
@@ -39,7 +41,10 @@ QtAudioOutput::QtAudioOutput(uint32_t channelCount, uint32_t sampleSize, uint32_
     audioFormat_.setByteOrder(QAudioFormat::LittleEndian);
     audioFormat_.setSampleType(QAudioFormat::SignedInt);
 
-    this->moveToThread(QApplication::instance()->thread());
+    QThread * th = QApplication::instance()->thread();
+    this->moveToThread(th);
+    th->setPriority(QThread::TimeCriticalPriority);
+
     connect(this, &QtAudioOutput::startPlayback, this, &QtAudioOutput::onStartPlayback);
     connect(this, &QtAudioOutput::suspendPlayback, this, &QtAudioOutput::onSuspendPlayback);
     connect(this, &QtAudioOutput::stopPlayback, this, &QtAudioOutput::onStopPlayback);
@@ -55,12 +60,15 @@ void QtAudioOutput::createAudioOutput()
 
 bool QtAudioOutput::open()
 {
-    return audioBuffer_.open(QIODevice::ReadWrite);
+    return true;
 }
 
 void QtAudioOutput::write(aasdk::messenger::Timestamp::ValueType, const aasdk::common::DataConstBuffer& buffer)
 {
-    audioBuffer_.write(reinterpret_cast<const char*>(buffer.cdata), buffer.size);
+    if (audioBuffer_ != nullptr)
+    {
+        audioBuffer_->write(reinterpret_cast<const char*>(buffer.cdata), buffer.size);
+    }
 }
 
 void QtAudioOutput::start()
@@ -97,7 +105,7 @@ void QtAudioOutput::onStartPlayback()
 {
     if(!playbackStarted_)
     {
-        audioOutput_->start(&audioBuffer_);
+        audioBuffer_ = audioOutput_->start();
         playbackStarted_ = true;
     }
     else
