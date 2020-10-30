@@ -202,6 +202,14 @@ void ConnectDialog::insertIpAddress(const std::string& ipAddress)
     this->loadRecentList();
 }
 
+void f1x::openauto::autoapp::ui::ConnectDialog::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        ConnectDialog::close();
+    }
+}
+
 }
 }
 }

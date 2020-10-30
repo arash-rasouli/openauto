@@ -202,6 +202,14 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
     }
 }
 
+void f1x::openauto::autoapp::ui::UpdateDialog::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        UpdateDialog::close();
+    }
+}
+
 }
 }
 }

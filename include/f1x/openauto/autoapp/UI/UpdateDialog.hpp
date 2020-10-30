@@ -6,6 +6,7 @@
 #include <QStringList>
 #include <QTimer>
 #include <QFileInfo>
+#include <QKeyEvent>
 
 namespace Ui {
 class UpdateDialog;
@@ -39,6 +40,9 @@ private slots:
     void on_pushButtonUpdateSystem_clicked();
     void on_pushButtonUpdateCheck_clicked();
     void on_pushButtonUpdateCancel_clicked();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     Ui::UpdateDialog *ui_;

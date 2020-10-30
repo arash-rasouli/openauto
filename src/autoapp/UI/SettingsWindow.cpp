@@ -1416,3 +1416,11 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonNetwork1_clicked()
     qApp->processEvents();
     system("/usr/local/bin/crankshaft network 1 >/dev/null 2>&1 &");
 }
+
+void f1x::openauto::autoapp::ui::SettingsWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        f1x::openauto::autoapp::ui::SettingsWindow::close();
+    }
+}

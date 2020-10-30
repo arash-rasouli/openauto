@@ -69,7 +69,7 @@ public:
     ~MainWindow() override;
     QMediaPlayer* player;
     QFileSystemWatcher* watcher;
-    QFileSystemWatcher* watcher_tmp;
+    QFileSystemWatcher* watcher_tmp; 
 
 signals:
     void exit();
@@ -159,8 +159,6 @@ private slots:
     void resetRetryUSBMessage();
     void updateNetworkInfo();
     bool check_file_exist(const char *filename);
-    void KeyPress(QString key);
-
     void hostModeStateChanged(QBluetoothLocalDevice::HostMode);
 
     //void on_AlbumCoverListView_clicked(const QModelIndex &index);
@@ -276,33 +274,8 @@ private:
     QBluetoothLocalDevice *localDevice;
 
 protected:
-    void keyPressEvent(QKeyEvent *event) override
-    {
-        if (event->key() == Qt::Key_C) {
-            MainWindow::KeyPress("C");
-        }
-        if (event->key() == Qt::Key_X) {
-            MainWindow::KeyPress("X");
-        }
-        if (event->key() == Qt::Key_V) {
-            MainWindow::KeyPress("V");
-        }
-        if (event->key() == Qt::Key_N) {
-            MainWindow::KeyPress("N");
-        }
-        if (event->key() == Qt::Key_B) {
-            MainWindow::KeyPress("B");
-        }
-        if (event->key() == Qt::Key_H) {
-            MainWindow::KeyPress("H");
-        }
-        if (event->key() == Qt::Key_A) {
-            MainWindow::KeyPress("A");
-        }
-        if (event->key() == Qt::Key_L) {
-            MainWindow::KeyPress("L");
-        }
-    }
+    void keyPressEvent(QKeyEvent *event);
+
 };
 
 }

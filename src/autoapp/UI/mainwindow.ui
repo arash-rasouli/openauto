@@ -236,7 +236,6 @@ border-radius: 4px;</string>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(115, 210, 22);
 color: rgb(0, 0, 0);
-outline: none;
 border-radius: 4px;
 </string>
            </property>
@@ -725,7 +724,6 @@ color: rgb(0, 102, 255);</string>
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(164, 0, 0);
 color: rgb(239, 239, 239);
-outline: none;
 border-radius: 4px;
 </string>
                </property>
@@ -817,7 +815,6 @@ border-radius: 4px;
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(32, 74, 135);
 color: rgb(239, 239, 239);
-outline: none;
 border-radius: 4px;
 </string>
                </property>
@@ -1527,7 +1524,6 @@ border-bottom: 0px;</string>
                   <string notr="true">background-color: rgba(48, 140, 198, 0.5);
 color: rgb(255, 255, 255);
 border: 2px solid rgba(255,255,255,0.5);
-outline: none;
 border-top: 0px;
 border-bottom: 0px;
 </string>
@@ -1610,6 +1606,9 @@ outline: none;</string>
                <string>No
 USB Device</string>
               </property>
+              <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+              </property>
              </widget>
             </item>
            </layout>
@@ -1649,7 +1648,7 @@ USB Device</string>
 border-radius: 4px;
 border: 2px solid rgba(255,255,255,0.5);
 color: rgb(255, 255, 255);
-outline: none;</string>
+               </string>
               </property>
               <property name="text">
                <string/>
@@ -1692,6 +1691,9 @@ outline: none;</string>
                <string>No
 WiFi Clients</string>
               </property>
+              <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+              </property>              
              </widget>
             </item>
            </layout>
@@ -5519,7 +5521,7 @@ outline: none;</string>
          <property name="styleSheet">
           <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(164, 0, 0);
-outline: none;</string>
+          </string>
          </property>
          <property name="text">
           <string>Muted</string>
@@ -5548,8 +5550,7 @@ outline: none;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">color: rgb(255, 255, 255);
-background-color: #6d6d6d;
-outline: none;</string>
+background-color: #6d6d6d;</string>
          </property>
          <property name="text">
           <string>Mute</string>
