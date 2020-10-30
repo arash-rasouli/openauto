@@ -1423,4 +1423,13 @@ void f1x::openauto::autoapp::ui::SettingsWindow::keyPressEvent(QKeyEvent *event)
     {
         f1x::openauto::autoapp::ui::SettingsWindow::close();
     }
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Return) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier));
+    }    
+    if (event->key() == Qt::Key_1) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier));
+    }
+    if (event->key() == Qt::Key_2) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier));
+    }    
 }
