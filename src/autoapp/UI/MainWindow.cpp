@@ -765,7 +765,6 @@ void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderBrightness_value
 
 void f1x::openauto::autoapp::ui::MainWindow::on_horizontalSliderVolume_valueChanged(int value)
 {
-    int n = snprintf(this->volume_str, 5, "%d", value);
     QString vol=QString::number(value);
     ui_->volumeValueLabel->setText(vol+"%");
     system(("/usr/local/bin/autoapp_helper setvolume " + std::to_string(value) + "&").c_str());
@@ -1259,7 +1258,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_itemClicked(QListWidgetI
 
 void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
 {
-    QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
+    QString fullpathplaying = player->currentMedia().request().url().toString();
     QString filename = QFileInfo(fullpathplaying).fileName();
 
     QImage img = player->metaData(QMediaMetaData::CoverArtImage).value<QImage>();
@@ -1688,8 +1687,9 @@ void f1x::openauto::autoapp::ui::MainWindow::keyPressEvent(QKeyEvent *event)
             on_pushButtonPlayerNextAlbum_clicked();
         }
     }
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Return) {
+    if (event->key() == Qt::Key_Return) {
         QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier));
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier));
     }
     if (event->key() == Qt::Key_1) {
         QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier));
