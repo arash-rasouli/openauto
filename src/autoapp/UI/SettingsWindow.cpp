@@ -1416,3 +1416,21 @@ void f1x::openauto::autoapp::ui::SettingsWindow::on_pushButtonNetwork1_clicked()
     qApp->processEvents();
     system("/usr/local/bin/crankshaft network 1 >/dev/null 2>&1 &");
 }
+
+void f1x::openauto::autoapp::ui::SettingsWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        f1x::openauto::autoapp::ui::SettingsWindow::close();
+    }
+    if (event->key() == Qt::Key_Return) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier));
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier));
+    }    
+    if (event->key() == Qt::Key_1) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier));
+    }
+    if (event->key() == Qt::Key_2) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier));
+    }
+}

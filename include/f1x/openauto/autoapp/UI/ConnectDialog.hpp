@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include <QStringListModel>
+#include <QKeyEvent>
 #include <f1x/aasdk/TCP/ITCPEndpoint.hpp>
 #include <f1x/aasdk/TCP/ITCPWrapper.hpp>
 #include <f1x/openauto/autoapp/Configuration/IRecentAddressesList.hpp>
@@ -40,6 +41,9 @@ private slots:
     void onConnectionSucceed(aasdk::tcp::ITCPEndpoint::SocketPointer socket, const std::string& ipAddress);
     void onRecentAddressClicked(const QModelIndex& index);
     void onUpdateButtonClicked();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     void insertIpAddress(const std::string& ipAddress);

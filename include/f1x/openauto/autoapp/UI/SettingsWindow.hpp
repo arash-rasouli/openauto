@@ -22,6 +22,7 @@
 #include <QWidget>
 #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 #include <QFileDialog>
+#include <QKeyEvent>
 #include <sys/sysinfo.h>
 
 class QCheckBox;
@@ -48,6 +49,9 @@ public:
     explicit SettingsWindow(configuration::IConfiguration::Pointer configuration, QWidget *parent = nullptr);
     ~SettingsWindow() override;
     void loadSystemValues();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void unpairAll();

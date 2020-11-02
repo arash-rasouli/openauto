@@ -27,7 +27,8 @@ UpdateDialog::UpdateDialog(QWidget *parent)
     connect(ui_->pushButtonUpdateCheck, &QPushButton::clicked, this, &UpdateDialog::on_pushButtonUpdateCheck_clicked);
     connect(ui_->pushButtonUpdateCancel, &QPushButton::clicked, this, &UpdateDialog::on_pushButtonUpdateCancel_clicked);
     connect(ui_->pushButtonClose, &QPushButton::clicked, this, &UpdateDialog::close);
-
+    
+    ui_->pushButtonClose->setFocus();
     ui_->progressBarCsmt->hide();
     ui_->progressBarUdev->hide();
     ui_->progressBarOpenauto->hide();
@@ -200,6 +201,24 @@ void f1x::openauto::autoapp::ui::UpdateDialog::updateCheck()
             ui_->pushButtonUpdateSystem->hide();
         }
     }
+}
+
+void f1x::openauto::autoapp::ui::UpdateDialog::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        UpdateDialog::close();
+    }
+    if (event->key() == Qt::Key_Return) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier));
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier));
+    }    
+    if (event->key() == Qt::Key_1) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier));
+    }
+    if (event->key() == Qt::Key_2) {
+        QApplication::postEvent (QApplication::focusWidget(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier));
+    }    
 }
 
 }
