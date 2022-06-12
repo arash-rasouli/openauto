@@ -1260,7 +1260,7 @@ void f1x::openauto::autoapp::ui::MainWindow::on_mp3List_itemClicked(QListWidgetI
 
 void f1x::openauto::autoapp::ui::MainWindow::metaDataChanged()
 {
-    QString fullpathplaying = player->currentMedia().request().url().toString();
+    QString fullpathplaying = player->currentMedia().canonicalUrl().toString();
     QString filename = QFileInfo(fullpathplaying).fileName();
 
     QImage img = player->metaData(QMediaMetaData::CoverArtImage).value<QImage>();
