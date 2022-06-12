@@ -35,7 +35,6 @@ find_package(OpenSSL REQUIRED)
 find_package(rtaudio REQUIRED)
 find_package(taglib REQUIRED)
 find_package(blkid REQUIRED)
-find_package(gps REQUIRED)
 
 if(WIN32)
     set(WINSOCK2_LIBRARIES "ws2_32")
@@ -90,7 +89,6 @@ target_link_libraries(autoapp libusb
                         ${RTAUDIO_LIBRARIES}
                         ${TAGLIB_LIBRARIES}
                         ${BLKID_LIBRARIES}
-                        ${GPS_LIBRARIES}
                         ${AASDK_PROTO_LIBRARIES}
                         ${AASDK_LIBRARIES})
 
