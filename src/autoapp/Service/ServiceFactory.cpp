@@ -109,13 +109,13 @@ IService::Pointer ServiceFactory::createInputService(aasdk::messenger::IMessenge
     QRect videoGeometry;
     switch(configuration_->getVideoResolution())
     {
-    case aasdk::proto::enums::VideoResolution::_720p:
-        videoGeometry = QRect(0, 0, 1280, 720);
-        break;
+    // case aasdk::proto::enums::VideoResolution::_720p:
+    //     videoGeometry = QRect(0, 0, 1280, 720);
+    //     break;
 
-    case aasdk::proto::enums::VideoResolution::_1080p:
-        videoGeometry = QRect(0, 0, 1920, 1080);
-        break;
+    // case aasdk::proto::enums::VideoResolution::_1080p:
+    //     videoGeometry = QRect(0, 0, 1920, 1080);
+    //     break;
 
     default:
         videoGeometry = QRect(0, 0, 800, 480);
