@@ -106,10 +106,6 @@ public:
     ButtonCodes getButtonCodes() const override;
     void setButtonCodes(const ButtonCodes& value) override;
 
-    BluetoothAdapterType getBluetoothAdapterType() const override;
-    void setBluetoothAdapterType(BluetoothAdapterType value) override;
-    std::string getBluetoothRemoteAdapterAddress() const override;
-    void setBluetoothRemoteAdapterAddress(const std::string& value) override;
 
     bool musicAudioChannelEnabled() const override;
     void setMusicAudioChannelEnabled(bool value) override;
@@ -151,8 +147,6 @@ private:
     bool enableTouchscreen_;
     bool enablePlayerControl_;
     ButtonCodes buttonCodes_;
-    BluetoothAdapterType bluetoothAdapterType_;
-    std::string bluetoothRemoteAdapterAddress_;
     bool musicAudioChannelEnabled_;
     bool speechAudiochannelEnabled_;
     AudioOutputBackendType audioOutputBackendType_;
@@ -192,8 +186,6 @@ private:
     static const std::string cAudioSpeechAudioChannelEnabled;
     static const std::string cAudioOutputBackendType;
 
-    static const std::string cBluetoothAdapterTypeKey;
-    static const std::string cBluetoothRemoteAdapterAddressKey;
 
     static const std::string cInputEnableTouchscreenKey;
     static const std::string cInputEnablePlayerControlKey;

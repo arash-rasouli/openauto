@@ -64,8 +64,7 @@ const std::string Configuration::cAudioMusicAudioChannelEnabled = "Audio.MusicAu
 const std::string Configuration::cAudioSpeechAudioChannelEnabled = "Audio.SpeechAudioChannelEnabled";
 const std::string Configuration::cAudioOutputBackendType = "Audio.OutputBackendType";
 
-const std::string Configuration::cBluetoothAdapterTypeKey = "Bluetooth.AdapterType";
-const std::string Configuration::cBluetoothRemoteAdapterAddressKey = "Bluetooth.RemoteAdapterAddress";
+
 
 const std::string Configuration::cInputEnableTouchscreenKey = "Input.EnableTouchscreen";
 const std::string Configuration::cInputEnablePlayerControlKey = "Input.EnablePlayerControl";
@@ -134,10 +133,9 @@ void Configuration::load()
         enablePlayerControl_ = iniConfig.get<bool>(cInputEnablePlayerControlKey, false);
         this->readButtonCodes(iniConfig);
 
-        bluetoothAdapterType_ = static_cast<BluetoothAdapterType>(iniConfig.get<uint32_t>(cBluetoothAdapterTypeKey,
-                                                                                          static_cast<uint32_t>(BluetoothAdapterType::NONE)));
+   
 
-        bluetoothRemoteAdapterAddress_ = iniConfig.get<std::string>(cBluetoothRemoteAdapterAddressKey, "");
+
         musicAudioChannelEnabled_ = iniConfig.get<bool>(cAudioMusicAudioChannelEnabled, true);
         speechAudiochannelEnabled_ = iniConfig.get<bool>(cAudioSpeechAudioChannelEnabled, true);
         audioOutputBackendType_ = static_cast<AudioOutputBackendType>(iniConfig.get<uint32_t>(cAudioOutputBackendType, static_cast<uint32_t>(AudioOutputBackendType::RTAUDIO)));
@@ -179,8 +177,7 @@ void Configuration::reset()
     enableTouchscreen_ = true;
     enablePlayerControl_ = false;
     buttonCodes_.clear();
-    bluetoothAdapterType_ = BluetoothAdapterType::NONE;
-    bluetoothRemoteAdapterAddress_ = "";
+
     musicAudioChannelEnabled_ = true;
     speechAudiochannelEnabled_ = true;
     audioOutputBackendType_ = AudioOutputBackendType::QT;
@@ -220,8 +217,6 @@ void Configuration::save()
     iniConfig.put<bool>(cInputEnablePlayerControlKey, enablePlayerControl_);
     this->writeButtonCodes(iniConfig);
 
-    iniConfig.put<uint32_t>(cBluetoothAdapterTypeKey, static_cast<uint32_t>(bluetoothAdapterType_));
-    iniConfig.put<std::string>(cBluetoothRemoteAdapterAddressKey, bluetoothRemoteAdapterAddress_);
 
     iniConfig.put<bool>(cAudioMusicAudioChannelEnabled, musicAudioChannelEnabled_);
     iniConfig.put<bool>(cAudioSpeechAudioChannelEnabled, speechAudiochannelEnabled_);
@@ -508,25 +503,7 @@ void Configuration::setButtonCodes(const ButtonCodes& value)
     buttonCodes_ = value;
 }
 
-BluetoothAdapterType Configuration::getBluetoothAdapterType() const
-{
-    return bluetoothAdapterType_;
-}
 
-void Configuration::setBluetoothAdapterType(BluetoothAdapterType value)
-{
-    bluetoothAdapterType_ = value;
-}
-
-std::string Configuration::getBluetoothRemoteAdapterAddress() const
-{
-    return bluetoothRemoteAdapterAddress_;
-}
-
-void Configuration::setBluetoothRemoteAdapterAddress(const std::string& value)
-{
-    bluetoothRemoteAdapterAddress_ = value;
-}
 
 bool Configuration::musicAudioChannelEnabled() const
 {

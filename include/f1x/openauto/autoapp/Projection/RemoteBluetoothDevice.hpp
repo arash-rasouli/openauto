@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include <f1x/openauto/autoapp/Projection/IBluetoothDevice.hpp>
+// #include <f1x/openauto/autoapp/Projection/IBluetoothDevice.hpp>
 
 namespace f1x
 {
@@ -29,20 +29,6 @@ namespace autoapp
 namespace projection
 {
 
-class RemoteBluetoothDevice: public IBluetoothDevice
-{
-public:
-    RemoteBluetoothDevice(const std::string& address);
-
-    void stop() override;
-    bool isPaired(const std::string& address) const override;
-    void pair(const std::string& address, PairingPromise::Pointer promise) override;
-    std::string getLocalAddress() const override;
-    bool isAvailable() const override;
-
-private:
-    std::string address_;
-};
 
 }
 }

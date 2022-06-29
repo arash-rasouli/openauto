@@ -20,10 +20,10 @@
 
 #include <stdint.h>
 #include <memory>
-#include <QBluetoothServer>
-#include <f1x/openauto/btservice/IAndroidBluetoothServer.hpp>
-#include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
-#include <f1x/aasdk/Messenger/Message.hpp>
+// #include <QBluetoothServer>
+// #include <f1x/openauto/btservice/IAndroidBluetoothServer.hpp>
+// #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
+// #include <f1x/aasdk/Messenger/Message.hpp>
 
 namespace f1x
 {
@@ -32,37 +32,6 @@ namespace openauto
 namespace btservice
 {
 
-class AndroidBluetoothServer: public QObject, public IAndroidBluetoothServer
-{
-    Q_OBJECT
-
-public:
-    AndroidBluetoothServer(autoapp::configuration::IConfiguration::Pointer configuration);
-
-    uint16_t start(const QBluetoothAddress& address) override;
-
-private slots:
-    void onClientConnected();
-
-private:
-    std::unique_ptr<QBluetoothServer> rfcommServer_;
-    QBluetoothSocket* socket = nullptr;
-    autoapp::configuration::IConfiguration::Pointer configuration_;
-
-    void readSocket();
-
-    QByteArray buffer;
-
-    void handleWifiInfoRequest(QByteArray &buffer, uint16_t length);
-
-    void sendMessage(const google::protobuf::Message &message, uint16_t type);
-
-    void handleWifiSecurityRequest(QByteArray &buffer, uint16_t length);
-
-    void handleWifiInfoRequestResponse(QByteArray &buffer, uint16_t length);
-
-    const ::std::string getIP4_(const QString intf);
-};
 
 }
 }
