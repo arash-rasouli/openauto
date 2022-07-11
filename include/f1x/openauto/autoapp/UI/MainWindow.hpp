@@ -44,9 +44,6 @@
 #include <QFileSystemWatcher>
 #include <QKeyEvent>
 
-// #include <QBluetoothLocalDevice>
-//#include <QtBluetooth>
-
 namespace Ui
 {
 class MainWindow;
@@ -117,7 +114,6 @@ private slots:
     void cameraControlHide();
     void toggleExit();
     void createDebuglog();
-    void setPairable();
     void toggleMuteButton();
     void toggleGUI();
     void setMute();
@@ -158,9 +154,7 @@ private slots:
     void resetRetryUSBMessage();
     void updateNetworkInfo();
     bool check_file_exist(const char *filename);
-    // void hostModeStateChanged(QBluetoothLocalDevice::HostMode);
 
-    //void on_AlbumCoverListView_clicked(const QModelIndex &index);
     void on_AlbumCoverListView_clicked(const QModelIndex &index);
 
     void on_pushButtonAlbum_clicked();

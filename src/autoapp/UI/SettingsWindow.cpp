@@ -47,8 +47,6 @@ SettingsWindow::SettingsWindow(configuration::IConfiguration::Pointer configurat
     ui_->setupUi(this);
     connect(ui_->pushButtonCancel, &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->pushButtonSave, &QPushButton::clicked, this, &SettingsWindow::onSave);
-    connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::unpairAll);
-    connect(ui_->pushButtonUnpair , &QPushButton::clicked, this, &SettingsWindow::close);
     connect(ui_->horizontalSliderScreenDPI, &QSlider::valueChanged, this, &SettingsWindow::onUpdateScreenDPI);
     connect(ui_->horizontalSliderAlphaTrans, &QSlider::valueChanged, this, &SettingsWindow::onUpdateAlphaTrans);
     connect(ui_->horizontalSliderDay, &QSlider::valueChanged, this, &SettingsWindow::onUpdateBrightnessDay);
@@ -673,11 +671,6 @@ void SettingsWindow::onUpdateBrightness4(int value)
 void SettingsWindow::onUpdateBrightness5(int value)
 {
     ui_->valueBrightness5->setText(QString::number(value));
-}
-
-void SettingsWindow::unpairAll()
-{
-    // system("/usr/local/bin/crankshaft bluetooth unpair &");
 }
 
 void SettingsWindow::setTime()
