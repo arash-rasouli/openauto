@@ -83,7 +83,6 @@ public slots:
     void show_tab2();
     void show_tab3();
     void show_tab4();
-    void show_tab5();
     void show_tab6();
     void show_tab7();
     void show_tab8();
