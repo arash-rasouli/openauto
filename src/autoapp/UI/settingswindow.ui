@@ -2384,13 +2384,6 @@ QSlider::groove:horizontal { background: #6d6d6d; height: 32px;}</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="checkBoxPhoneButton">
-           <property name="text">
-            <string>Phone [P]</string>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="0">
           <widget class="QCheckBox" name="checkBoxNextTrackButton">
            <property name="text">

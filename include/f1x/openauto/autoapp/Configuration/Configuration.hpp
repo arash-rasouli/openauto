@@ -195,7 +195,6 @@ private:
     static const std::string cInputNextTrackButtonKey;
     static const std::string cInputPreviousTrackButtonKey;
     static const std::string cInputHomeButtonKey;
-    static const std::string cInputPhoneButtonKey;
     static const std::string cInputCallEndButtonKey;
     static const std::string cInputVoiceCommandButtonKey;
     static const std::string cInputLeftButtonKey;

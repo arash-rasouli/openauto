@@ -74,7 +74,6 @@ const std::string Configuration::cInputTogglePlayButtonKey = "Input.TogglePlayBu
 const std::string Configuration::cInputNextTrackButtonKey = "Input.NextTrackButton";
 const std::string Configuration::cInputPreviousTrackButtonKey = "Input.PreviousTrackButton";
 const std::string Configuration::cInputHomeButtonKey = "Input.HomeButton";
-const std::string Configuration::cInputPhoneButtonKey = "Input.PhoneButton";
 const std::string Configuration::cInputCallEndButtonKey = "Input.CallEndButton";
 const std::string Configuration::cInputVoiceCommandButtonKey = "Input.VoiceCommandButton";
 const std::string Configuration::cInputLeftButtonKey = "Input.LeftButton";
@@ -666,7 +665,6 @@ void Configuration::readButtonCodes(boost::property_tree::ptree& iniConfig)
     this->insertButtonCode(iniConfig, cInputNextTrackButtonKey, aasdk::proto::enums::ButtonCode::NEXT);
     this->insertButtonCode(iniConfig, cInputPreviousTrackButtonKey, aasdk::proto::enums::ButtonCode::PREV);
     this->insertButtonCode(iniConfig, cInputHomeButtonKey, aasdk::proto::enums::ButtonCode::HOME);
-    this->insertButtonCode(iniConfig, cInputPhoneButtonKey, aasdk::proto::enums::ButtonCode::PHONE);
     this->insertButtonCode(iniConfig, cInputCallEndButtonKey, aasdk::proto::enums::ButtonCode::CALL_END);
     this->insertButtonCode(iniConfig, cInputVoiceCommandButtonKey, aasdk::proto::enums::ButtonCode::MICROPHONE_1);
     this->insertButtonCode(iniConfig, cInputLeftButtonKey, aasdk::proto::enums::ButtonCode::LEFT);
@@ -695,7 +693,6 @@ void Configuration::writeButtonCodes(boost::property_tree::ptree& iniConfig)
     iniConfig.put<bool>(cInputNextTrackButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::NEXT) != buttonCodes_.end());
     iniConfig.put<bool>(cInputPreviousTrackButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::PREV) != buttonCodes_.end());
     iniConfig.put<bool>(cInputHomeButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::HOME) != buttonCodes_.end());
-    iniConfig.put<bool>(cInputPhoneButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::PHONE) != buttonCodes_.end());
     iniConfig.put<bool>(cInputCallEndButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::CALL_END) != buttonCodes_.end());
     iniConfig.put<bool>(cInputVoiceCommandButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::MICROPHONE_1) != buttonCodes_.end());
     iniConfig.put<bool>(cInputLeftButtonKey, std::find(buttonCodes_.begin(), buttonCodes_.end(), aasdk::proto::enums::ButtonCode::LEFT) != buttonCodes_.end());
