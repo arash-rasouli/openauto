@@ -22,7 +22,6 @@ OpenAuto is an AndroidAuto(tm) headunit emulator based on aasdk library and Qt l
  - Touchscreen and buttons input
  - Automatic launch after device hotplug
  - Automatic detection of connected Android devices
- - Wireless (WiFi) mode via head unit server (must be enabled in hidden developer settings)
  - User-friendly settings
 
 ### Supported platforms
