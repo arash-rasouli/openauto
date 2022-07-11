@@ -671,9 +671,6 @@ color: rgb(78, 244, 37);</string>
                 <string notr="true">background-color: rgba(255, 255, 255, 0);
 color: rgb(0, 102, 255);</string>
                </property>
-               <property name="text">
-                <string>BT-Device</string>
-               </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
                </property>
