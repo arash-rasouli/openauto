@@ -24,7 +24,6 @@
 #include <f1x/aasdk/USB/AccessoryModeQueryChain.hpp>
 #include <f1x/aasdk/USB/AccessoryModeQueryChainFactory.hpp>
 #include <f1x/aasdk/USB/AccessoryModeQueryFactory.hpp>
-#include <f1x/aasdk/TCP/TCPWrapper.hpp>
 #include <f1x/openauto/autoapp/App.hpp>
 #include <f1x/openauto/autoapp/Configuration/IConfiguration.hpp>
 #include <f1x/openauto/autoapp/Configuration/RecentAddressesList.hpp>
@@ -33,7 +32,6 @@
 #include <f1x/openauto/autoapp/Configuration/Configuration.hpp>
 #include <f1x/openauto/autoapp/UI/MainWindow.hpp>
 #include <f1x/openauto/autoapp/UI/SettingsWindow.hpp>
-#include <f1x/openauto/autoapp/UI/ConnectDialog.hpp>
 #include <f1x/openauto/autoapp/UI/WarningDialog.hpp>
 #include <f1x/openauto/autoapp/UI/UpdateDialog.hpp>
 #include <f1x/openauto/Common/Log.hpp>
@@ -106,11 +104,6 @@ int main(int argc, char* argv[])
     autoapp::configuration::RecentAddressesList recentAddressesList(7);
     recentAddressesList.read();
 
-    aasdk::tcp::TCPWrapper tcpWrapper;
-    autoapp::ui::ConnectDialog connectdialog(ioService, tcpWrapper, recentAddressesList);
-    //connectdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
-    connectdialog.move((width - 500)/2,(height-300)/2);
-
     autoapp::ui::WarningDialog warningdialog;
     //warningdialog.setWindowFlags(Qt::WindowStaysOnTopHint);
     warningdialog.move((width - 500)/2,(height-300)/2);
@@ -125,8 +118,6 @@ int main(int argc, char* argv[])
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::showFullScreen);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::show_tab1);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openSettings, &settingsWindow, &autoapp::ui::SettingsWindow::loadSystemValues);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::loadClientList);
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openConnectDialog, &connectdialog, &autoapp::ui::ConnectDialog::exec);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openUpdateDialog, &updatedialog, &autoapp::ui::UpdateDialog::updateCheck);
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::openUpdateDialog, &updatedialog, &autoapp::ui::UpdateDialog::exec);
 
@@ -236,9 +227,8 @@ int main(int argc, char* argv[])
         }
     });
 
-    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::CloseAllDialogs, [&settingsWindow, &connectdialog, &updatedialog, &warningdialog]() {
+    QObject::connect(&mainWindow, &autoapp::ui::MainWindow::CloseAllDialogs, [&settingsWindow, &updatedialog, &warningdialog]() {
         settingsWindow.close();
-        connectdialog.close();
         warningdialog.close();
         updatedialog.close();
         OPENAUTO_LOG(info) << "[Autoapp] Close all possible open dialogs.";

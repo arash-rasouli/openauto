@@ -19,7 +19,6 @@
 #include <f1x/aasdk/USB/AOAPDevice.hpp>
 #include <f1x/aasdk/Transport/SSLWrapper.hpp>
 #include <f1x/aasdk/Transport/USBTransport.hpp>
-#include <f1x/aasdk/Transport/TCPTransport.hpp>
 #include <f1x/aasdk/Messenger/Cryptor.hpp>
 #include <f1x/aasdk/Messenger/MessageInStream.hpp>
 #include <f1x/aasdk/Messenger/MessageOutStream.hpp>
@@ -50,12 +49,6 @@ AndroidAutoEntityFactory::AndroidAutoEntityFactory(boost::asio::io_service& ioSe
 IAndroidAutoEntity::Pointer AndroidAutoEntityFactory::create(aasdk::usb::IAOAPDevice::Pointer aoapDevice)
 {
     auto transport(std::make_shared<aasdk::transport::USBTransport>(ioService_, std::move(aoapDevice)));
-    return create(std::move(transport));
-}
-
-IAndroidAutoEntity::Pointer AndroidAutoEntityFactory::create(aasdk::tcp::ITCPEndpoint::Pointer tcpEndpoint)
-{
-    auto transport(std::make_shared<aasdk::transport::TCPTransport>(ioService_, std::move(tcpEndpoint)));
     return create(std::move(transport));
 }
 

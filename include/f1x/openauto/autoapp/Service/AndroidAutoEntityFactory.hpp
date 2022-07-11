@@ -41,7 +41,6 @@ public:
                              IServiceFactory& serviceFactory);
 
     IAndroidAutoEntity::Pointer create(aasdk::usb::IAOAPDevice::Pointer aoapDevice) override;
-    IAndroidAutoEntity::Pointer create(aasdk::tcp::ITCPEndpoint::Pointer tcpEndpoint) override;
 
 private:
     IAndroidAutoEntity::Pointer create(aasdk::transport::ITransport::Pointer transport);

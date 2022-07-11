@@ -119,8 +119,6 @@ MainWindow::MainWindow(configuration::IConfiguration::Pointer configuration, QWi
     connect(ui_->pushButtonUnMute, &QPushButton::clicked, this, &MainWindow::setUnMute);
     connect(ui_->pushButtonToggleGUI, &QPushButton::clicked, this, &MainWindow::toggleGUI);
     connect(ui_->pushButtonToggleGUI2, &QPushButton::clicked, this, &MainWindow::toggleGUI);
-    connect(ui_->pushButtonWifi, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
-    connect(ui_->pushButtonWifi2, &QPushButton::clicked, this, &MainWindow::openConnectDialog);
     connect(ui_->pushButtonMusic, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonMusic2, &QPushButton::clicked, this, &MainWindow::playerShow);
     connect(ui_->pushButtonBack, &QPushButton::clicked, this, &MainWindow::playerHide);

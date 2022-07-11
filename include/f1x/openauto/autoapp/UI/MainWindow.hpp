@@ -89,7 +89,6 @@ signals:
     void cameraZoomMinus();
     void cameraFlipX();
     void cameraFlipY();
-    void openConnectDialog();
     void openWifiDialog();
     void openUpdateDialog();
     void showBrightnessSlider();
