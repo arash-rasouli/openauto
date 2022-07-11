@@ -1049,19 +1049,6 @@ void SettingsWindow::show_tab4()
     ui_->tab4->show();
 }
 
-void SettingsWindow::show_tab5()
-{
-    ui_->tab1->hide();
-    ui_->tab2->hide();
-    ui_->tab3->hide();
-    ui_->tab4->hide();
-    ui_->tab6->hide();
-    ui_->tab7->hide();
-    ui_->tab8->hide();
-    ui_->tab9->hide();
-    ui_->tab5->show();
-}
-
 void SettingsWindow::show_tab6()
 {
     ui_->tab1->hide();
