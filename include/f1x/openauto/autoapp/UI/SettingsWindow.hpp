@@ -54,7 +54,6 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private slots:
-    void unpairAll();
     void onSave();
     void onResetToDefaults();
     void onUpdateScreenDPI(int value);

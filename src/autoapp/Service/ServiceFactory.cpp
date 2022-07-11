@@ -28,7 +28,6 @@
 #include <f1x/openauto/autoapp/Service/SystemAudioService.hpp>
 #include <f1x/openauto/autoapp/Service/AudioInputService.hpp>
 #include <f1x/openauto/autoapp/Service/SensorService.hpp>
-// #include <f1x/openauto/autoapp/Service/BluetoothService.hpp>
 #include <f1x/openauto/autoapp/Service/InputService.hpp>
 #include <f1x/openauto/autoapp/Projection/QtVideoOutput.hpp>
 #include <f1x/openauto/autoapp/Projection/OMXVideoOutput.hpp>
@@ -36,9 +35,6 @@
 #include <f1x/openauto/autoapp/Projection/QtAudioOutput.hpp>
 #include <f1x/openauto/autoapp/Projection/QtAudioInput.hpp>
 #include <f1x/openauto/autoapp/Projection/InputDevice.hpp>
-// #include <f1x/openauto/autoapp/Projection/LocalBluetoothDevice.hpp>
-// #include <f1x/openauto/autoapp/Projection/RemoteBluetoothDevice.hpp>
-// #include <f1x/openauto/autoapp/Projection/DummyBluetoothDevice.hpp>
 
 namespace f1x
 {
@@ -85,20 +81,7 @@ IService::Pointer ServiceFactory::createVideoService(aasdk::messenger::IMessenge
 IService::Pointer ServiceFactory::createInputService(aasdk::messenger::IMessenger::Pointer messenger)
 {
     QRect videoGeometry;
-    switch(configuration_->getVideoResolution())
-    {
-    // case aasdk::proto::enums::VideoResolution::_720p:
-    //     videoGeometry = QRect(0, 0, 1280, 720);
-    //     break;
-
-    // case aasdk::proto::enums::VideoResolution::_1080p:
-    //     videoGeometry = QRect(0, 0, 1920, 1080);
-    //     break;
-
-    default:
-        videoGeometry = QRect(0, 0, 800, 480);
-        break;
-    }
+    videoGeometry = QRect(0, 0, 800, 480);
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect screenGeometry = screen == nullptr ? QRect(0, 0, 1, 1) : screen->geometry();
