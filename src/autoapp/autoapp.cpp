@@ -203,11 +203,7 @@ int main(int argc, char* argv[])
 
     auto usbHub(std::make_shared<aasdk::usb::USBHub>(usbWrapper, ioService, queryChainFactory));
     auto connectedAccessoriesEnumerator(std::make_shared<aasdk::usb::ConnectedAccessoriesEnumerator>(usbWrapper, ioService, queryChainFactory));
-    auto app = std::make_shared<autoapp::App>(ioService, usbWrapper, tcpWrapper, androidAutoEntityFactory, std::move(usbHub), std::move(connectedAccessoriesEnumerator));
-
-    QObject::connect(&connectdialog, &autoapp::ui::ConnectDialog::connectionSucceed, [&app](auto socket) {
-        app->start(std::move(socket));
-    });
+    auto app = std::make_shared<autoapp::App>(ioService, usbWrapper, androidAutoEntityFactory, std::move(usbHub), std::move(connectedAccessoriesEnumerator));
 
     QObject::connect(&mainWindow, &autoapp::ui::MainWindow::TriggerAppStart, [&app]() {
         OPENAUTO_LOG(info) << "[Autoapp] TriggerAppStart: Manual start android auto.";
@@ -229,15 +225,6 @@ int main(int argc, char* argv[])
                 usleep(500000);
                 try {
                     app->stop();
-                    //app->pause();
-                } catch (...) {
-                    OPENAUTO_LOG(error) << "[Autoapp] TriggerAppStop: stop();";
-                }
-
-            } else {
-                OPENAUTO_LOG(info) << "[Autoapp] TriggerAppStop: Manual stop wifi android auto.";
-                try {
-                    app->onAndroidAutoQuit();
                     //app->pause();
                 } catch (...) {
                     OPENAUTO_LOG(error) << "[Autoapp] TriggerAppStop: stop();";

@@ -21,8 +21,6 @@
 #include <f1x/aasdk/USB/IUSBHub.hpp>
 #include <f1x/aasdk/USB/IConnectedAccessoriesEnumerator.hpp>
 #include <f1x/aasdk/USB/USBWrapper.hpp>
-#include <f1x/aasdk/TCP/ITCPWrapper.hpp>
-#include <f1x/aasdk/TCP/ITCPEndpoint.hpp>
 #include <f1x/openauto/autoapp/Service/IAndroidAutoEntityEventHandler.hpp>
 #include <f1x/openauto/autoapp/Service/IAndroidAutoEntityFactory.hpp>
 
@@ -38,11 +36,11 @@ class App: public service::IAndroidAutoEntityEventHandler, public std::enable_sh
 public:
     typedef std::shared_ptr<App> Pointer;
 
-    App(boost::asio::io_service& ioService, aasdk::usb::USBWrapper& usbWrapper, aasdk::tcp::ITCPWrapper& tcpWrapper, service::IAndroidAutoEntityFactory& androidAutoEntityFactory,
+    App(boost::asio::io_service& ioService, aasdk::usb::USBWrapper& usbWrapper, service::IAndroidAutoEntityFactory& androidAutoEntityFactory,
         aasdk::usb::IUSBHub::Pointer usbHub, aasdk::usb::IConnectedAccessoriesEnumerator::Pointer connectedAccessoriesEnumerator);
 
     void waitForUSBDevice();
-    void start(aasdk::tcp::ITCPEndpoint::SocketPointer socket);
+
     void stop();
     void pause();
     void resume();
@@ -58,18 +56,12 @@ private:
 
     boost::asio::io_service& ioService_;
     aasdk::usb::USBWrapper& usbWrapper_;
-    aasdk::tcp::ITCPWrapper& tcpWrapper_;
-    boost::asio::ip::tcp::acceptor acceptor_;
     boost::asio::io_service::strand strand_;
     service::IAndroidAutoEntityFactory& androidAutoEntityFactory_;
     aasdk::usb::IUSBHub::Pointer usbHub_;
     aasdk::usb::IConnectedAccessoriesEnumerator::Pointer connectedAccessoriesEnumerator_;
     service::IAndroidAutoEntity::Pointer androidAutoEntity_;
     bool isStopped_;
-
-    void startServerSocket();
-
-    void handleNewClient(std::shared_ptr<boost::asio::ip::tcp::socket> socket, const boost::system::error_code &err);
 };
 
 }

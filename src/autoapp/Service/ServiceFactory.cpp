@@ -39,7 +39,6 @@
 // #include <f1x/openauto/autoapp/Projection/LocalBluetoothDevice.hpp>
 // #include <f1x/openauto/autoapp/Projection/RemoteBluetoothDevice.hpp>
 // #include <f1x/openauto/autoapp/Projection/DummyBluetoothDevice.hpp>
-#include <f1x/openauto/autoapp/Service/WifiService.hpp>
 
 namespace f1x
 {
@@ -67,7 +66,6 @@ ServiceList ServiceFactory::create(aasdk::messenger::IMessenger::Pointer messeng
     serviceList.emplace_back(std::make_shared<SensorService>(ioService_, messenger));
     serviceList.emplace_back(this->createVideoService(messenger));
     serviceList.emplace_back(this->createInputService(messenger));
-    serviceList.emplace_back(std::make_shared<WifiService>(configuration_));
 
     return serviceList;
 }
